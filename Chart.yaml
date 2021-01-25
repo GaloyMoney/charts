@@ -1,0 +1,11 @@
+apiVersion: v1
+name: bitcoind
+version: 1.0.0
+appVersion: 0.19.1
+description: bitcoind deployment chart
+keywords:
+  - bitcoind
+maintainers:
+  - name: krtk6160
+    email: krtk6160@galoy.io
+engine: gotpl

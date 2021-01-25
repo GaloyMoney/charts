@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{  .Values.service.name }}
+  labels:
+    app: {{  .Values.service.name }}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: bitcoind
+    meta.helm.sh/release-namespace: default
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: rpc
+      port: {{ .Values.service.rpcPort }}
+      targetPort: {{ .Values.service.rpcPort }}
+    - name: p2p
+      port: {{ .Values.service.p2pPort }}
+      targetPort: {{ .Values.service.p2pPort }}
+    - name: zmqpubrawtx
+      port: {{ .Values.service.zmqpubrawtx }}
+    - name: zmqpubrawblock
+      port: {{ .Values.service.zmqpubrawblock }}
+  selector:
+    app: {{ .Values.bitcoindContainer.name }}

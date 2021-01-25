@@ -1,0 +1,26 @@
+bitcoindContainer:
+  name: bitcoind-container
+
+service:
+  name: bitcoind-service
+  zmqpubrawtx: 28333
+  zmqpubrawblock: 28332
+  type: ClusterIP
+
+bitcoindTerminationGracePeriodSeconds: 30
+
+bitcoindImage:
+  repository: ruimarinho/bitcoin-core
+  tag: 0.19.1
+
+bitcoindPVC:
+  name: bitcoind-claim
+
+bitcoindGenericConfig:
+- server=1
+- txindex=1
+- printtoconsole=1
+- rpcuser=rpcuser
+- rpcpassword=rpcpass
+- zmqpubrawtx=tcp://0.0.0.0:28333
+- zmqpubrawblock=tcp://0.0.0.0:28332

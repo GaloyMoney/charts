@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{.Values.bitcoindContainer.name }}
+  labels:
+    name: {{.Values.bitcoindContainer.name }}
+    app.kubernetes.io/managed-by: Helm
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "5"
+  annotations:
+    meta.helm.sh/release-name: bitcoind
+    meta.helm.sh/release-namespace: default
+spec:
+  replicas: 1
+  serviceName: "bitcoind"
+  selector:
+    matchLabels:
+      app: {{.Values.bitcoindContainer.name }}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.bitcoindContainer.name }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      initContainers:
+        - name: copy-bitcoind-config
+          image: busybox
+          command: ['sh', '-c', 'cp /configmap/bitcoin.conf /home/bitcoin/.bitcoin/bitcoin.conf']
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /home/bitcoin/.bitcoin/
+      containers:
+        - name: {{.Values.bitcoindContainer.name }}
+          image: "{{ .Values.bitcoindImage.repository }}:{{ .Values.bitcoindImage.tag }}"
+          resources:
+            requests:
+              cpu: 100m
+              memory: {{.Values.memory.requests }}
+            limits:
+              cpu: 3000m
+              memory: {{.Values.memory.limits }}
+          ports:
+            - name: rpc
+              containerPort: {{ .Values.service.rpcPort }}
+            - name: p2p
+              containerPort: {{ .Values.service.p2pPort }}
+            - name: zmqpubrawtx
+              containerPort: {{ .Values.service.zmqpubrawtx }}
+            - name: zmqpubrawblock
+              containerPort: {{ .Values.service.zmqpubrawblock }}
+          volumeMounts:
+            - name: data
+              mountPath: /home/bitcoin/.bitcoin
+            - name: config
+              mountPath: /home/bitcoin/.bitcoin/bitcoin.conf
+              subPath: bitcoin.conf
+          livenessProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/home/bitcoin/.bitcoin/bitcoin.conf
+              {{- if ne .Values.network "mainnet" }}
+              - -{{.Values.network}}  
+              {{- end }}
+              - getblockchaininfo
+            initialDelaySeconds: 120
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/home/bitcoin/.bitcoin/bitcoin.conf
+              {{- if ne .Values.network "mainnet" }}
+              - -{{.Values.network}}  
+              {{- end }}
+              - getblockchaininfo
+            periodSeconds: 4
+            successThreshold: 3
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: configmap
+          configMap:
+            name: bitcoind-configmap
+        - name: data
+          {{- if eq .Values.network "regtest"}}
+          emptyDir: {}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: {{.Values.bitcoindPVC.name}}
+          {{- end -}}

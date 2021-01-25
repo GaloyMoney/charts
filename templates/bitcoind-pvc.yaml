@@ -1,0 +1,18 @@
+{{ if ne .Values.network "regtest" }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{.Values.bitcoindPVC.name}}
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/resource-policy": keep
+    meta.helm.sh/release-name: bitcoind
+    meta.helm.sh/release-namespace: default
+spec:
+  accessModes: 
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: {{ .Values.bitcoindPVC.size | quote }}
+{{ end }}

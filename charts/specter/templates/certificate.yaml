@@ -1,0 +1,9 @@
+{{- if .Values.certificate }}
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: {{ .Values.certificate.name }}
+spec:
+  domains:
+    - {{ .Values.certificate.name }}
+{{- end }}
