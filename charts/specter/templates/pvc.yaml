@@ -1,4 +1,4 @@
-{{ if ne .Values.network "regtest" }}
+{{ if ne .Values.global.network "regtest" }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:

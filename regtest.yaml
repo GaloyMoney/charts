@@ -1,4 +1,5 @@
-network: regtest
+global:
+  network: regtest
 
 service:
   rpcPort: 18443

@@ -1,4 +1,5 @@
-network: mainnet
+global:
+  network: mainnet
 
 service:
   rpcPort: 8332

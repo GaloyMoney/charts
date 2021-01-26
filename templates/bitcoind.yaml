@@ -66,8 +66,8 @@ spec:
               command:
               - bitcoin-cli
               - -conf=/home/bitcoin/.bitcoin/bitcoin.conf
-              {{- if ne .Values.network "mainnet" }}
-              - -{{.Values.network}}  
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}  
               {{- end }}
               - getblockchaininfo
             initialDelaySeconds: 120
@@ -77,8 +77,8 @@ spec:
               command:
               - bitcoin-cli
               - -conf=/home/bitcoin/.bitcoin/bitcoin.conf
-              {{- if ne .Values.network "mainnet" }}
-              - -{{.Values.network}}  
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}  
               {{- end }}
               - getblockchaininfo
             periodSeconds: 4
@@ -90,7 +90,7 @@ spec:
           configMap:
             name: bitcoind-configmap
         - name: data
-          {{- if eq .Values.network "regtest"}}
+          {{- if eq .Values.global.network "regtest"}}
           emptyDir: {}
           {{- else }}
           persistentVolumeClaim:

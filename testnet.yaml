@@ -1,4 +1,5 @@
-network: testnet
+global:
+  network: testnet
 
 service:
   rpcPort: 18332
