@@ -11,7 +11,7 @@ bitcoindTerminationGracePeriodSeconds: 30
 
 bitcoindImage:
   repository: ruimarinho/bitcoin-core
-  tag: 0.19.1
+  tag: 0.20.1
 
 bitcoindPVC:
   name: bitcoind-claim
