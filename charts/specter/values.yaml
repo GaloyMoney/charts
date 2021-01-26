@@ -80,3 +80,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+pvc:
+  name: specter-claim
+  size: 256Mi

@@ -1,0 +1,18 @@
+{{ if ne .Values.network "regtest" }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.pvc.name}}
+  labels:
+    "helm.sh/resource-policy": keep
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: lnd-chart
+    meta.helm.sh/release-namespace: default
+spec:
+  accessModes: 
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: {{ .Values.pvc.size | quote }}
+{{ end }}
