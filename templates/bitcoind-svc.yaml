@@ -5,9 +5,6 @@ metadata:
   labels:
     app: {{  .Values.service.name }}
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    meta.helm.sh/release-name: bitcoind
-    meta.helm.sh/release-namespace: default
 spec:
   type: {{ .Values.service.type }}
   ports:

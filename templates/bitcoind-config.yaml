@@ -5,9 +5,6 @@ metadata:
   labels:
     app: bitcoind
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    meta.helm.sh/release-name: bitcoind
-    meta.helm.sh/release-namespace: default
 data:
   bitcoin.conf: |-
   {{- range .Values.bitcoindGenericConfig }}

@@ -7,8 +7,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/resource-policy": keep
-    meta.helm.sh/release-name: bitcoind
-    meta.helm.sh/release-namespace: default
 spec:
   accessModes: 
     - "ReadWriteOnce"

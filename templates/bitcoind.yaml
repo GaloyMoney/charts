@@ -10,9 +10,6 @@ metadata:
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "5"
-  annotations:
-    meta.helm.sh/release-name: bitcoind
-    meta.helm.sh/release-namespace: default
 spec:
   replicas: 1
   serviceName: "bitcoind"
