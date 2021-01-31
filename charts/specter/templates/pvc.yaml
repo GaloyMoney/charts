@@ -6,9 +6,6 @@ metadata:
   labels:
     "helm.sh/resource-policy": keep
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    meta.helm.sh/release-name: lnd-chart
-    meta.helm.sh/release-namespace: default
 spec:
   accessModes: 
     - "ReadWriteOnce"
