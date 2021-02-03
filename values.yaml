@@ -1,7 +1,3 @@
-ca:
-  CAEmail: krtk6160@galoy.io
-  enabled: true
-
 bitcoindContainer:
   name: bitcoind-container
 
