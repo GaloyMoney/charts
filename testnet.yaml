@@ -16,3 +16,18 @@ bitcoindPVC:
 memory:
   requests: 128Mi
   limits: 1024Mi
+
+specter:
+  ingress:
+    enabled: true
+    annotations: 
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: ca-issuer
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: specter.testnet.galoy.io
+        paths: ["/"]
+    tls: 
+     - secretName: specter-testnet-tls
+       hosts:
+         - specter.testnet.galoy.io
