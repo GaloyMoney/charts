@@ -9,11 +9,11 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: rpc
-      port: {{ .Values.service.rpcPort }}
-      targetPort: {{ .Values.service.rpcPort }}
+      port: {{ template "bitcoind.port.rpc" . }}
+      targetPort: {{ template "bitcoind.port.rpc" . }}
     - name: p2p
-      port: {{ .Values.service.p2pPort }}
-      targetPort: {{ .Values.service.p2pPort }}
+      port: {{ template "bitcoind.port.p2p" . }}
+      targetPort: {{ template "bitcoind.port.p2p" . }}
     - name: zmqpubrawtx
       port: {{ .Values.service.zmqpubrawtx }}
     - name: zmqpubrawblock

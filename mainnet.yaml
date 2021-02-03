@@ -1,10 +1,6 @@
 global:
   network: mainnet
 
-service:
-  rpcPort: 8332
-  p2pPort: 8333
-
 bitcoindCustomConfig:
 - debug=mempool
 - debug=rpc

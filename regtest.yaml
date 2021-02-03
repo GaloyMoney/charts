@@ -1,10 +1,6 @@
 global:
   network: regtest
 
-service:
-  rpcPort: 18443
-  p2pPort: 18444
-
 bitcoindCustomConfig:
 - regtest=1
 - "[regtest]"

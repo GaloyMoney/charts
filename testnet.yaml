@@ -1,10 +1,6 @@
 global:
   network: testnet
 
-service:
-  rpcPort: 18332
-  p2pPort: 18333
-
 bitcoindCustomConfig:
 - debug=mempool
 - debug=rpc
