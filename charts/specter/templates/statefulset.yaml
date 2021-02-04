@@ -62,7 +62,7 @@ spec:
           - name: BTC_RPC_HOST
             value: bitcoind-service
           - name: BTC_RPC_PORT
-            value: "18332"
+            value: {{ template "bitcoind.port.rpc" . }}
           - name: BTC_RPC_PROTOCOL
             value: http            
       volumes:
