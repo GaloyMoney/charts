@@ -29,8 +29,8 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext: 
+  fsGroup: 2000
 
 securityContext: {}
   # capabilities:
@@ -80,4 +80,4 @@ affinity: {}
 
 pvc:
   name: specter-claim
-  size: 256Mi
+  size: 1Gi

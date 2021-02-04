@@ -1,4 +1,4 @@
-{{- if .enabled }}
+{{- if .Values.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 
@@ -36,7 +36,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/usr/local/bin/python3", "-m", "cryptoadvance.specter", "server", "--host", "0.0.0.0"]
+          command: ["/usr/local/bin/python3", "-m", "cryptoadvance.specter", "server", "--host=0.0.0.0", "--specter-data-folder=/data"]
           ports:
             - name: http
               containerPort: 25441
@@ -52,10 +52,21 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: specter-storage
-              mountPath: /data/.specter
+            - name: data
+              mountPath: /data
+          env:
+          - name: BTC_RPC_USER
+            value: rpcuser
+          - name: BTC_RPC_PASSWORD
+            value: rpcpass
+          - name: BTC_RPC_HOST
+            value: bitcoind-service
+          - name: BTC_RPC_PORT
+            value: {{ template "bitcoind.port.rpc" . }}
+          - name: BTC_RPC_PROTOCOL
+            value: http            
       volumes:
-        - name: specter-storage
+        - name: data
         {{- if eq $.Values.global.network "regtest" }}
           emptyDir: {}
         {{- else }}
