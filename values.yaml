@@ -10,8 +10,8 @@ service:
 bitcoindTerminationGracePeriodSeconds: 30
 
 bitcoindImage:
-  repository: ruimarinho/bitcoin-core
-  tag: 0.20.1
+  repository: lncm/bitcoind
+  tag: v0.21.0
 
 bitcoindPVC:
   name: bitcoind-claim
