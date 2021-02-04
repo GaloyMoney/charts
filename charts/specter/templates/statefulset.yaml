@@ -62,7 +62,7 @@ spec:
           - name: BTC_RPC_HOST
             value: bitcoind-service
           - name: BTC_RPC_PORT
-            value: 18332
+            value: "18332"
       volumes:
         - name: data
         {{- if eq $.Values.global.network "regtest" }}
