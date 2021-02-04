@@ -15,3 +15,13 @@ bitcoindPVC:
 memory:
   requests: 4096Mi
   limits: 5120Mi
+
+specter:
+  ingress:
+    hosts:
+      - host: specter.mainnet.galoy.io
+        paths: ["/"]
+    tls: 
+     - secretName: specter-mainnet-tls
+       hosts:
+         - specter.mainnet.galoy.io

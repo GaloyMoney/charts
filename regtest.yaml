@@ -12,3 +12,8 @@ bitcoindCustomConfig:
 memory:
   requests: 128Mi
   limits: 1024Mi
+
+specter:
+  enabled: false
+  ingress: 
+    enabled: false
