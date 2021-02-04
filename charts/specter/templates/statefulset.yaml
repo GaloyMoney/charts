@@ -41,10 +41,10 @@ spec:
             - name: http
               containerPort: 25441
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          livenessProbe:
+            httpGet:
+              path: /about
+              port: 25441
           # readinessProbe:
           #   httpGet:
           #     path: /
