@@ -45,9 +45,9 @@ spec:
               memory: {{.Values.memory.limits }}
           ports:
             - name: rpc
-              containerPort: {{ template "bitcoind.port.rpc" . }}
+              containerPort: {{ include "bitcoind.port.rpc" . }}
             - name: p2p
-              containerPort: {{ template "bitcoind.port.p2p" . }}
+              containerPort: {{ include "bitcoind.port.p2p" . }}
             - name: zmqpubrawtx
               containerPort: {{ .Values.service.zmqpubrawtx }}
             - name: zmqpubrawblock
