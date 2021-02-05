@@ -24,6 +24,7 @@ bitcoindGenericConfig:
 - rpcpassword=rpcpass
 - zmqpubrawtx=tcp://0.0.0.0:28333
 - zmqpubrawblock=tcp://0.0.0.0:28332
+- blockfilterindex=1
 
 specter:
   enabled: true
