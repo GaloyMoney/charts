@@ -38,6 +38,8 @@ spec:
       containers:
         - name: {{.Values.bitcoindContainer.name }}
           image: "{{ .Values.bitcoindImage.repository }}:{{ .Values.bitcoindImage.tag }}"
+          securityContext:
+            privileged: true
           resources:
             requests:
               cpu: 100m
