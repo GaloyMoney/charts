@@ -27,12 +27,12 @@ spec:
       initContainers:
         - name: copy-bitcoind-config
           image: busybox
-          command: ['sh', '-c', 'cp /configmap/bitcoin.conf /home/bitcoin/.bitcoin/bitcoin.conf']
+          command: ['sh', '-c', 'cp /configmap/bitcoin.conf /data/.bitcoin/bitcoin.conf']
           volumeMounts:
             - name: configmap
               mountPath: /configmap
             - name: config
-              mountPath: /home/bitcoin/.bitcoin/
+              mountPath: /data/.bitcoin/
       containers:
         - name: {{.Values.bitcoindContainer.name }}
           image: "{{ .Values.bitcoindImage.repository }}:{{ .Values.bitcoindImage.tag }}"
@@ -54,15 +54,15 @@ spec:
               containerPort: {{ .Values.service.zmqpubrawblock }}
           volumeMounts:
             - name: data
-              mountPath: /home/bitcoin/.bitcoin
+              mountPath: /data/.bitcoin
             - name: config
-              mountPath: /home/bitcoin/.bitcoin/bitcoin.conf
+              mountPath: /data/.bitcoin/bitcoin.conf
               subPath: bitcoin.conf
           livenessProbe:
             exec:
               command:
               - bitcoin-cli
-              - -conf=/home/bitcoin/.bitcoin/bitcoin.conf
+              - -conf=/data/.bitcoin/bitcoin.conf
               {{- if ne .Values.global.network "mainnet" }}
               - -{{.Values.global.network}}  
               {{- end }}
@@ -73,7 +73,7 @@ spec:
             exec:
               command:
               - bitcoin-cli
-              - -conf=/home/bitcoin/.bitcoin/bitcoin.conf
+              - -conf=/data/.bitcoin/bitcoin.conf
               {{- if ne .Values.global.network "mainnet" }}
               - -{{.Values.global.network}}  
               {{- end }}
