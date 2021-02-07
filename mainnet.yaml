@@ -2,8 +2,6 @@ global:
   network: mainnet
 
 bitcoindCustomConfig:
-- debug=mempool
-- debug=rpc
 - dbcache=3600
 - bind=0.0.0.0
 - rpcbind=0.0.0.0

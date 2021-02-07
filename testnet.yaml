@@ -2,8 +2,6 @@ global:
   network: testnet
 
 bitcoindCustomConfig:
-- debug=mempool
-- debug=rpc
 - testnet=1
 - "[test]"
 - bind=0.0.0.0

@@ -17,6 +17,8 @@ bitcoindPVC:
   name: bitcoind-claim
 
 bitcoindGenericConfig:
+- debug=mempool
+- debug=rpc
 - server=1
 - txindex=1
 - printtoconsole=1
