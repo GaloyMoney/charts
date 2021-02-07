@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "bitcoind.fullname" . }}
+  labels:
+    {{- include "bitcoind.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: rpc
+      port: {{ include "service.port.rpc" . }}
+      targetPort: {{ include "service.port.rpc" . }}
+    - name: p2p
+      port: {{ include "service.port.p2p" . }}
+      targetPort: {{ include "service.port.p2p" . }}
+    - name: zmqpubrawtx
+      port: {{ .Values.service.port.zmqpubrawtx }}
+    - name: zmqpubrawblock
+      port: {{ .Values.service.port.zmqpubrawblock }}
+  selector:
+    {{- include "bitcoind.selectorLabels" . | nindent 4 }}
