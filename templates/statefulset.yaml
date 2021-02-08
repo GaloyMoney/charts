@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "bitcoind.fullname" . }}
+  labels:
+    {{- include "bitcoind.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "bitcoind.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "bitcoind.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "bitcoind.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/data/.bitcoin/bitcoin.conf
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}  
+              {{- end }}
+              - getblockchaininfo
+            initialDelaySeconds: 120
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/data/.bitcoin/bitcoin.conf
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}  
+              {{- end }}
+              - getblockchaininfo
+            periodSeconds: 4
+            successThreshold: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+
+spec:
+  serviceName: "bitcoind"
+  selector:
+    matchLabels:
+      app: {{.Values.bitcoindContainer.name }}
+  template:
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      initContainers:
+        - name: copy-bitcoind-config
+          image: busybox
+          command: ['sh', '-c', 'cp /configmap/bitcoin.conf /data/.bitcoin/bitcoin.conf']
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /data/.bitcoin/
+      containers:
+        - name: {{.Values.bitcoindContainer.name }}
+          image: "{{ .Values.bitcoindImage.repository }}:{{ .Values.bitcoindImage.tag }}"
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: {{.Values.memory.requests }}
+            limits:
+              cpu: 3000m
+              memory: {{.Values.memory.limits }}
+          ports:
+            - name: rpc
+              containerPort: {{ include "bitcoind.port.rpc" . }}
+            - name: p2p
+              containerPort: {{ include "bitcoind.port.p2p" . }}
+            - name: zmqpubrawtx
+              containerPort: {{ .Values.service.zmqpubrawtx }}
+            - name: zmqpubrawblock
+              containerPort: {{ .Values.service.zmqpubrawblock }}
+          volumeMounts:
+            - name: data
+              mountPath: /data/.bitcoin
+            - name: config
+              mountPath: /data/.bitcoin/bitcoin.conf
+              subPath: bitcoin.conf
+          livenessProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/data/.bitcoin/bitcoin.conf
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}  
+              {{- end }}
+              - getblockchaininfo
+            initialDelaySeconds: 120
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/data/.bitcoin/bitcoin.conf
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}  
+              {{- end }}
+              - getblockchaininfo
+            periodSeconds: 4
+            successThreshold: 3
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: configmap
+          configMap:
+            name: bitcoind-configmap
+        - name: data
+          {{- if eq .Values.global.network "regtest"}}
+          emptyDir: {}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: {{.Values.bitcoindPVC.name}}
+          {{- end -}}
