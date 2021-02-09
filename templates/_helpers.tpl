@@ -1,4 +1,4 @@
-{{- define "bitcoind.port.rpc" }}
+{{- define "service.port.rpc" }}
 {{- if eq .Values.global.network "mainnet" -}}
 8332
 {{- end -}}
@@ -8,7 +8,30 @@
 {{- if eq .Values.global.network "regtest" -}}
 18443
 {{- end -}}
+{{- end -}}
 
+{{- define "service.port.p2p" }}
+{{- if eq .Values.global.network "mainnet" -}}
+8333
+{{- end -}}
+{{- if eq .Values.global.network "testnet" -}}
+18333
+{{- end -}}
+{{- if eq .Values.global.network "regtest" -}}
+18444
+{{- end -}}
+{{- end }}
+
+
+{{- define "bitcoindCustomConfig" }}
+{{- if eq .Values.global.network "mainnet" -}}
+bitcoindCustomConfig:
+- dbcache=3600
+- bind=0.0.0.0
+- rpcbind=0.0.0.0
+- rpcallowip=0.0.0.0/0
+{{- end -}}
+{{- end }}
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.

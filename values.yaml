@@ -1,6 +1,8 @@
 # Default values for bitcoind.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  network: mainnet
 
 replicaCount: 1
 
@@ -40,8 +42,8 @@ securityContext:
 service:
   type: ClusterIP
   port:
-    - zmqpubrawtx: 28333
-    - zmqpubrawblock: 28332
+    zmqpubrawtx: 28333
+    zmqpubrawblock: 28332
 
 ingress:
   enabled: false
@@ -56,7 +58,15 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+#custom cpu
+# resources:
+#   requests:
+#     cpu: 100m
+#   limits:
+#     cpu: 3000m
+
 resources: {}
+
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -67,6 +77,19 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+persistence:
+  enabled: true
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 500Gi
 
 autoscaling:
   enabled: false
@@ -96,3 +119,15 @@ podLabels: {}
 # podLabels:
 #   - kube-monkey/enabled: enabled
 #   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
+
+bitcoindGenericConfig:
+- debug=mempool
+- debug=rpc
+- server=1
+- txindex=1
+- printtoconsole=1
+- rpcuser=rpcuser
+- rpcpassword=rpcpass
+- zmqpubrawtx=tcp://0.0.0.0:28333
+- zmqpubrawblock=tcp://0.0.0.0:28332
+- blockfilterindex=1
