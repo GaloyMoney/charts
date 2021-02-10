@@ -1,3 +1,4 @@
+{{- if .Values.enabled }}  
 {{ if ne .Values.global.network "regtest" }}
 kind: PersistentVolumeClaim
 apiVersion: v1

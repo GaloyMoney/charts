@@ -120,6 +120,9 @@ podLabels: {}
 #   - kube-monkey/enabled: enabled
 #   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
 
+
+#TODO: Document the usage of generic and custom config to instruct where to put specific flags
+
 bitcoindGenericConfig:
 - debug=mempool
 - debug=rpc
@@ -131,3 +134,9 @@ bitcoindGenericConfig:
 - zmqpubrawtx=tcp://0.0.0.0:28333
 - zmqpubrawblock=tcp://0.0.0.0:28332
 - blockfilterindex=1
+
+# these flags need to be here because they have to be present under a separate section in testnet/regtest mode
+bitcoindCustomConfig:
+- bind=0.0.0.0
+- rpcbind=0.0.0.0
+- rpcallowip=0.0.0.0/0
