@@ -3,9 +3,6 @@ global:
 
 bitcoindCustomConfig:
 - dbcache=3600
-- bind=0.0.0.0
-- rpcbind=0.0.0.0
-- rpcallowip=0.0.0.0/0
 
 bitcoindPVC:
   size: 500Gi
