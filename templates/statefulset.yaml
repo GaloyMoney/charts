@@ -58,6 +58,12 @@ spec:
               containerPort: {{ .Values.service.port.zmqpubrawtx }}
             - name: zmqpubrawblock
               containerPort: {{ .Values.service.port.zmqpubrawblock }}
+          volumeMounts:
+            - name: data
+              mountPath: /data/.bitcoin
+            - name: config
+              mountPath: /data/.bitcoin/bitcoin.conf
+              subPath: bitcoin.conf
           livenessProbe:
             exec:
               command:
