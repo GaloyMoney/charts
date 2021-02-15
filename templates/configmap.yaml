@@ -9,10 +9,15 @@ data:
   {{- range .Values.bitcoindGenericConfig }}
     {{ . }}
   {{- end }}
-  {{ .Values.global.network | indent 2 }}=1
-  {{- if or (eq .Values.global.network "testnet") (eq .Values.global.network "regtest")}}
-  {{ printf "[%s]" .Values.global.network | indent 2 }}
-  {{- end}}
   {{- range .Values.bitcoindCustomConfig }}
     {{ . }}
   {{- end }}
+  {{ .Values.global.network | indent 2 }}=1
+  {{- $sections := splitList "," "test,regtest" }}
+  {{- range $sections }}
+    {{printf "[%s]" . }}
+    {{- range $.Values.bitcoindCustomConfig }}
+    {{ . }}
+    {{- end }}
+  {{- end}}
+  
