@@ -1,0 +1,25 @@
+global:
+  network: mainnet
+
+bitcoindCustomConfig:
+- dbcache=3600
+- bind=0.0.0.0
+- rpcbind=0.0.0.0
+- rpcallowip=0.0.0.0/0
+
+bitcoindPVC:
+  size: 500Gi
+
+memory:
+  requests: 4096Mi
+  limits: 5120Mi
+
+specter:
+  ingress:
+    hosts:
+      - host: specter.mainnet.galoy.io
+        paths: ["/"]
+    tls: 
+     - secretName: specter-mainnet-tls
+       hosts:
+         - specter.mainnet.galoy.io
