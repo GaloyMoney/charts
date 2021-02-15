@@ -16,6 +16,7 @@ memory:
   limits: 1024Mi
 
 specter:
+  enabled: true
   ingress:
     hosts:
       - host: specter.testnet.galoy.io

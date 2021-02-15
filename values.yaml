@@ -140,3 +140,16 @@ bitcoindCustomConfig:
 - bind=0.0.0.0
 - rpcbind=0.0.0.0
 - rpcallowip=0.0.0.0/0
+
+# set to true to enable 
+specter:
+  enabled: false
+  # ingress:
+  #   enabled: true
+  #   hosts:
+  #     - host: xyz.com
+  #       paths: ["/"]
+  #   tls: 
+  #    - secretName: specter-tls
+  #      hosts:
+  #        - xyz.com

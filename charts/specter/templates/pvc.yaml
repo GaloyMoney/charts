@@ -1,5 +1,5 @@
 {{- if .Values.enabled }}  
-{{ if ne .Values.global.network "regtest" }}
+{{- if ne .Values.global.network "regtest" }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -13,4 +13,5 @@ spec:
   resources:
     requests:
       storage: {{ .Values.pvc.size | quote }}
-{{ end }}
+{{- end }}
+{{- end }}
