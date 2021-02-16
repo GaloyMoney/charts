@@ -60,7 +60,7 @@ spec:
           - name: BTC_RPC_PASSWORD
             value: rpcpass
           - name: BTC_RPC_HOST
-            value: bitcoind-service
+            value: bitcoind
           - name: BTC_RPC_PORT
             value: "18443"
           - name: BTC_RPC_PROTOCOL
