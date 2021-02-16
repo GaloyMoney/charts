@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: copy-bitcoind-config
           image: busybox
-          command: ['sh', '-c', 'cp /configmap/bitcoin.conf /data/.bitcoin/bitcoin.conf']
+          command: ['sh', '-c', 'cat /configmap/bitcoin.conf && cp /configmap/bitcoin.conf /data/.bitcoin/bitcoin.conf', 'ls /data/.bitcoin']
           volumeMounts:
             - name: configmap
               mountPath: /configmap
