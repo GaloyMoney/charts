@@ -2,7 +2,7 @@ global:
   network: mainnet
 
 bitcoindCustomConfig:
-- dbcache=3600
+  dbcache: 3600
 
 bitcoindPVC:
   size: 500Gi

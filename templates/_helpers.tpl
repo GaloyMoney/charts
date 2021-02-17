@@ -22,16 +22,6 @@
 {{- end -}}
 {{- end }}
 
-
-{{- define "bitcoindCustomConfig" }}
-{{- if eq .Values.global.network "mainnet" -}}
-bitcoindCustomConfig:
-- dbcache=3600
-- bind=0.0.0.0
-- rpcbind=0.0.0.0
-- rpcallowip=0.0.0.0/0
-{{- end -}}
-{{- end }}
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.
