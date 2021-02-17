@@ -11,6 +11,9 @@ memory:
   requests: 4096Mi
   limits: 5120Mi
 
+persistence:
+  existingClaim: bitcoind-claim
+
 specter:
   enabled: true
   ingress:
