@@ -9,15 +9,15 @@ data:
   {{- range .Values.bitcoindGenericConfig }}
     {{ . }}
   {{- end }}
-  {{- range .Values.bitcoindCustomConfig }}
-    {{ . }}
+  {{- range $k, $v := $.Values.bitcoindCustomConfig }}
+    {{ printf "%s=%s" $k $v}}
   {{- end }}
   {{ .Values.global.network | indent 2 }}=1
   {{- $sections := splitList "," "test,regtest" }}
   {{- range $sections }}
     {{printf "[%s]" . }}
-    {{- range $.Values.bitcoindCustomConfig }}
-    {{ . }}
+    {{- range $k, $v := $.Values.bitcoindCustomConfig }}
+    {{ printf "%s=%s" $k $v}}
     {{- end }}
   {{- end}}
   

@@ -137,9 +137,9 @@ bitcoindGenericConfig:
 
 # these flags need to be here and not in bitcoindGenericConfig because they have to be present under a separate section inside bitcoind.conf when in testnet/regtest mode
 bitcoindCustomConfig:
-- bind=0.0.0.0
-- rpcbind=0.0.0.0
-- rpcallowip=0.0.0.0/0
+  bind: 0.0.0.0
+  rpcbind: 0.0.0.0
+  rpcallowip: 0.0.0.0/0
 
 # set to true to enable 
 specter:
