@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: BITCOIN_RPC_HOST
-            value: bitcoind-service
+            value: bitcoind
           - name: BITCOIN_RPC_USER
             value: rpcuser
           - name: BITCOIN_RPC_PASSWORD
