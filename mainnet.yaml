@@ -4,15 +4,23 @@ global:
 bitcoindCustomConfig:
   dbcache: 3600
 
-bitcoindPVC:
-  size: 500Gi
-
 memory:
   requests: 4096Mi
   limits: 5120Mi
 
 persistence:
   existingClaim: bitcoind-claim
+
+labels:
+  kube-monkey/enabled: enabled
+  kube-monkey/identifier: bitcoind
+  kube-monkey/kill-mode: fixed
+  kube-monkey/kill-value: "1"
+  kube-monkey/mtbf: "5"
+
+podLabels:
+  kube-monkey/enabled: enabled
+  kube-monkey/identifier: bitcoind
 
 specter:
   enabled: true

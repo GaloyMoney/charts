@@ -1,15 +1,23 @@
 global:
   network: testnet
 
-bitcoindPVC:
-  size: 50Gi
-
 memory:
   requests: 128Mi
   limits: 1024Mi
 
 persistence:
   existingClaim: bitcoind-claim
+
+labels:
+  kube-monkey/enabled: enabled
+  kube-monkey/identifier: bitcoind
+  kube-monkey/kill-mode: fixed
+  kube-monkey/kill-value: "1"
+  kube-monkey/mtbf: "5"
+
+podLabels:
+  kube-monkey/enabled: enabled
+  kube-monkey/identifier: bitcoind
 
 specter:
   enabled: true
