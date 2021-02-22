@@ -1,0 +1,9 @@
+global:
+  network: regtest
+
+specter:
+  enabled: false
+
+bitcoindCustomConfig:
+  fallbackfee: "0.0002"
+
