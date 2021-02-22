@@ -1,5 +1,6 @@
 global:
   network: regtest
+  ports: "18443"
 
 bitcoindCustomConfig:
   fallbackfee: "0.0002"
