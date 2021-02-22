@@ -10,7 +10,7 @@ spec:
     - name: rpc
       port: {{ .Values.service.port.rpc }}
     - name: p2p
-      port: {{ Values.service.port.p2p }}
+      port: {{ .Values.service.port.p2p }}
     - name: zmqpubrawtx
       port: {{ .Values.service.port.zmqpubrawtx }}
     - name: zmqpubrawblock
