@@ -1,5 +1,7 @@
 global:
   network: testnet
+  ports:
+    rpc: "18332"
 
 memory:
   requests: 128Mi
