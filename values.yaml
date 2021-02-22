@@ -44,6 +44,8 @@ service:
   port:
     zmqpubrawtx: 28333
     zmqpubrawblock: 28332
+    rpc: 8332
+    p2p: 8333
 
 ingress:
   enabled: false
