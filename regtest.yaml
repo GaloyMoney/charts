@@ -1,0 +1,14 @@
+global:
+  network: regtest
+
+bitcoindCustomConfig:
+  fallbackfee: "0.0002"
+
+prometheus-exporter:
+  replicaCount: 0
+
+specter:
+  enabled: false
+
+persistence:
+  enabled: false

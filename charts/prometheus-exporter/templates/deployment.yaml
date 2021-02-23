@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "bitcoin-prometheus-exporter.fullname" . }}
+  name: {{ include "prometheus-exporter.fullname" . }}
   labels:
-    {{- include "bitcoin-prometheus-exporter.labels" . | nindent 4 }}
+    {{- include "prometheus-exporter.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "bitcoin-prometheus-exporter.selectorLabels" . | nindent 6 }}
+      {{- include "prometheus-exporter.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "bitcoin-prometheus-exporter.selectorLabels" . | nindent 8 }}
+        {{- include "prometheus-exporter.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "bitcoin-prometheus-exporter.serviceAccountName" . }}
+      serviceAccountName: {{ include "prometheus-exporter.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
