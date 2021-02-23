@@ -12,3 +12,9 @@ specter:
 
 persistence:
   enabled: false
+
+service:
+  type: ClusterIP
+  port:
+    rpc: 18443
+    p2p: 18444

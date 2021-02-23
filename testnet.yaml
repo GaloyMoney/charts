@@ -8,6 +8,14 @@ memory:
 persistence:
   existingClaim: bitcoind-claim
 
+service:
+  type: ClusterIP
+  port:
+    zmqpubrawtx: 28333
+    zmqpubrawblock: 28332
+    rpc: 18332
+    p2p: 18333
+
 labels:
   kube-monkey/enabled: enabled
   kube-monkey/identifier: bitcoind
