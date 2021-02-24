@@ -8,14 +8,12 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: rpc
-      port: {{ include "service.port.rpc" . }}
-      targetPort: {{ include "service.port.rpc" . }}
+      port: {{ .Values.global.service.ports.rpc }}
     - name: p2p
-      port: {{ include "service.port.p2p" . }}
-      targetPort: {{ include "service.port.p2p" . }}
+      port: {{ .Values.service.ports.p2p }}
     - name: zmqpubrawtx
-      port: {{ .Values.service.port.zmqpubrawtx }}
+      port: {{ .Values.service.ports.zmqpubrawtx }}
     - name: zmqpubrawblock
-      port: {{ .Values.service.port.zmqpubrawblock }}
+      port: {{ .Values.service.ports.zmqpubrawblock }}
   selector:
     {{- include "bitcoind.selectorLabels" . | nindent 4 }}
