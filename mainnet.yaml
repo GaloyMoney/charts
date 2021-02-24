@@ -1,7 +1,8 @@
 global:
   network: mainnet
-  ports:
-    rpc: "8332"
+  service:
+    ports:
+      rpc: "8332"
 
 bitcoindCustomConfig:
   dbcache: 3600

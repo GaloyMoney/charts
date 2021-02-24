@@ -1,7 +1,8 @@
 global:
   network: regtest
-  ports: 
-    rpc: "18443"
+  service:
+    ports:  
+      rpc: 18443
 
 bitcoindCustomConfig:
   fallbackfee: "0.0002"
@@ -16,6 +17,5 @@ persistence:
   enabled: false
 
 service:
-  port:
-    rpc: 18443
+  ports:
     p2p: 18444

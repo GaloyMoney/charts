@@ -3,6 +3,9 @@
 # Declare variables to be passed into your templates.
 global:
   network: mainnet
+  service:
+    ports:
+      rpc: 8332
 
 replicaCount: 1
 
@@ -41,10 +44,9 @@ securityContext:
 
 service:
   type: ClusterIP
-  port:
+  ports:
     zmqpubrawtx: 28333
     zmqpubrawblock: 28332
-    rpc: 8332
     p2p: 8333
 
 ingress:

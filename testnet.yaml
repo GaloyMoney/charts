@@ -1,7 +1,8 @@
 global:
   network: testnet
-  ports:
-    rpc: "18332"
+  service:
+    ports:
+      rpc: 18332
 
 memory:
   requests: 128Mi
@@ -11,8 +12,7 @@ persistence:
   existingClaim: bitcoind-claim
 
 service:
-  port:
-    rpc: 18332
+  ports:
     p2p: 18333
 
 labels:

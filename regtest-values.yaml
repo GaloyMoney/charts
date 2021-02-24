@@ -3,13 +3,15 @@
 # Declare variables to be passed into your templates.
 global:
   network: regtest
+  service:
+    ports: 
+      rpc: 18443
 
 service:
   type: ClusterIP
-  port:
+  ports:
     zmqpubrawtx: 28333
     zmqpubrawblock: 28332
-    rpc: 18443
     p2p: 18444
 
 # these flags need to be here and not in bitcoindGenericConfig because they have to be present under a separate section inside bitcoind.conf when in testnet/regtest mode
