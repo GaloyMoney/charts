@@ -43,7 +43,7 @@ spec:
           - name: METRICS_PORT
             value: "3000"
           - name: BITCOIN_RPC_PORT
-            value: {{ .Values.global.ports.rpc | quote }}
+            value: {{ .Values.global.service.ports.rpc | quote }}
           ports:
             - name: http
               containerPort: 3000
