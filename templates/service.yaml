@@ -8,11 +8,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: rpc
-      port: {{ include "service.port.rpc" . }}
-      targetPort: {{ include "service.port.rpc" . }}
+      port: {{ .Values.service.port.rpc }}
     - name: p2p
-      port: {{ include "service.port.p2p" . }}
-      targetPort: {{ include "service.port.p2p" . }}
+      port: {{ .Values.service.port.p2p }}
     - name: zmqpubrawtx
       port: {{ .Values.service.port.zmqpubrawtx }}
     - name: zmqpubrawblock

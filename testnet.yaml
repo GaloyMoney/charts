@@ -10,12 +10,17 @@ memory:
 persistence:
   existingClaim: bitcoind-claim
 
+service:
+  port:
+    rpc: 18332
+    p2p: 18333
+
 labels:
   kube-monkey/enabled: enabled
   kube-monkey/identifier: bitcoind
   kube-monkey/kill-mode: fixed
   kube-monkey/kill-value: "1"
-  kube-monkey/mtbf: "5"
+  kube-monkey/mtbf: "8"
 
 podLabels:
   kube-monkey/enabled: enabled

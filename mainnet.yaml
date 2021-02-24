@@ -18,7 +18,7 @@ labels:
   kube-monkey/identifier: bitcoind
   kube-monkey/kill-mode: fixed
   kube-monkey/kill-value: "1"
-  kube-monkey/mtbf: "5"
+  kube-monkey/mtbf: "8"
 
 podLabels:
   kube-monkey/enabled: enabled

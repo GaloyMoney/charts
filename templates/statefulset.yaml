@@ -51,9 +51,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: rpc
-              containerPort: {{ include "service.port.rpc" . }}
+              containerPort: {{ .Values.service.port.rpc }}
             - name: p2p
-              containerPort: {{ include "service.port.p2p" . }}
+              containerPort: {{ .Values.service.port.p2p }}
             - name: zmqpubrawtx
               containerPort: {{ .Values.service.port.zmqpubrawtx }}
             - name: zmqpubrawblock

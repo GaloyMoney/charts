@@ -14,3 +14,8 @@ specter:
 
 persistence:
   enabled: false
+
+service:
+  port:
+    rpc: 18443
+    p2p: 18444
