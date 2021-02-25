@@ -1,0 +1,36 @@
+apiVersion: v1
+entries:
+  bitcoind:
+  - apiVersion: v2
+    appVersion: 0.21.0
+    created: "2021-02-22T13:00:34.819214901Z"
+    description: A Helm chart for Kubernetes
+    digest: ed6f4911aa0a1d1279bbc246f2baae68fdfcf5c41c6e9fc05052180d4024e4d5
+    name: bitcoind
+    type: application
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/bitcoind-0.1.0/bitcoind-0.1.0.tgz
+    version: 0.1.0
+  prometheus-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-02-25T05:57:36.744445034Z"
+    description: A Helm chart for Kubernetes
+    digest: 7aef889ca9606d4e21eed4a0cbae55f3b9c4fec3ea2d65696db8d0a30c37e297
+    name: prometheus-exporter
+    type: application
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/prometheus-exporter-0.1.0/prometheus-exporter-0.1.0.tgz
+    version: 0.1.0
+  specter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-02-25T05:57:36.884280303Z"
+    description: A Helm chart for Kubernetes
+    digest: a404c7c6f3f5d0921a6681ace8ba5a0ea4444ba2273c7b70cb410859aed86d76
+    name: specter
+    type: application
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/specter-0.1.0/specter-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-02-25T05:57:36.884291103Z"
