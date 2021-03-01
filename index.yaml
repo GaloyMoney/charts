@@ -11,26 +11,23 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/bitcoind-0.1.0/bitcoind-0.1.0.tgz
     version: 0.1.0
-  prometheus-exporter:
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2021-02-25T05:57:36.744445034Z"
-    description: A Helm chart for Kubernetes
-    digest: 7aef889ca9606d4e21eed4a0cbae55f3b9c4fec3ea2d65696db8d0a30c37e297
-    name: prometheus-exporter
-    type: application
+  lnd:
+  - apiVersion: v1
+    appVersion: 0.12.1
+    created: "2021-03-01T13:29:54.483089111Z"
+    description: LND chart
+    digest: 44cc9f539e0fcee3e04c072dc93ab00e25420ee57b1d720eb1f5d5b5fc0783b8
+    keywords:
+    - lnd
+    - rtl
+    - loop
+    maintainers:
+    - email: krtk6160@galoy.io
+      name: Kartik Shah
+    - email: nb@galoy.io
+      name: Nicolas Burtey
+    name: lnd
     urls:
-    - https://github.com/GaloyMoney/charts/releases/download/prometheus-exporter-0.1.0/prometheus-exporter-0.1.0.tgz
-    version: 0.1.0
-  specter:
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2021-02-25T05:57:36.884280303Z"
-    description: A Helm chart for Kubernetes
-    digest: a404c7c6f3f5d0921a6681ace8ba5a0ea4444ba2273c7b70cb410859aed86d76
-    name: specter
-    type: application
-    urls:
-    - https://github.com/GaloyMoney/charts/releases/download/specter-0.1.0/specter-0.1.0.tgz
-    version: 0.1.0
-generated: "2021-02-25T05:57:36.884291103Z"
+    - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.0/lnd-1.0.0.tgz
+    version: 1.0.0
+generated: "2021-03-01T13:29:54.483098111Z"
