@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lnd-wallet-unlocker
+  labels:
+    app: lnd
+    app.kubernetes.io/managed-by: Helm
+data:
+  init.sh: |
+    #!/bin/sh
+    echo "launching lnd + unlock script"
+
+    exit_script() {
+      echo "Exit script"
+      trap - SIGINT SIGTERM # clear the trap
+      kill -- -$$ # Sends SIGTERM to child/sub processes
+    }
+
+    trap exit_script SIGINT SIGTERM
+
+    lnd &
+    status=1
+    while [ $status -ne 0 ]
+    do
+      echo "entering loop"
+      sleep 5
+      output=$( (echo $LND_PASS | lncli unlock --stdin;) 2>&1 )
+      status=$?
+    done
+    echo "[UnlockScript] wallet unlocked, exiting loop"
+    sleep infinity &
+    wait

@@ -1,0 +1,128 @@
+{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+{{- range .Values.instances }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ .container.name }}"
+  labels:
+    name: "{{ .container.name }}"
+    app: "{{ .container.name }}"
+    {{- with $.Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .replicas }}
+  serviceName: "lnd"
+  selector:
+    matchLabels:
+      app: "{{ .container.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .container.name }}"
+        {{- with $.Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        type: lnd
+      annotations:
+        checksum/config: $checksum
+    spec:
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: {{ .terminationGracePeriodSeconds }}
+      initContainers:
+        - name: copy-lnd-config
+          image: busybox
+          command: ['sh', '-c', 'cp /configmap/lnd.conf /root/.lnd/lnd.conf']
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /root/.lnd/
+      containers:
+        - name: "{{ .container.name }}"
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+          command: ["/bin/sh","-c"]
+          args: ["/root/init.sh"]
+          imagePullPolicy: {{ $.Values.image.pullPolicy | quote }}
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 1000m
+          ports:
+            - name: rpc
+              containerPort: {{ .service.ports.rpc }}
+            - name: p2p
+              containerPort: {{ .service.ports.p2p }}
+            - name: rest
+              containerPort: {{ .service.ports.rest }}
+          volumeMounts:
+            - name: lnd-storage
+              mountPath: /root/.lnd
+            - name: config
+              mountPath: /root/.lnd/lnd.conf
+              subPath: lnd.conf
+            - name: lnd-unlocker
+              mountPath: /root/init.sh
+              subPath: init.sh
+          {{- if ne $.Values.global.network "regtest" }}
+          env:
+          - name: LND_PASS
+            valueFrom:
+              secretKeyRef:
+                name: lnd-pass-secret
+                key: password
+          {{- end }}
+          # reactivate once k8s v1.16 is available on google cloud
+          # startupProbe:
+          #   exec:
+          #     command:
+          #     - lncli
+          #     - -n
+          #     - {{ $.Values.global.network}}
+          #     - getinfo
+          #   periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+              - lncli
+              - -n
+              - {{ $.Values.global.network}}
+              - getinfo
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          livenessProbe:
+            exec:
+              command:
+              - lncli
+              - -n
+              - {{ $.Values.global.network}}
+              - getinfo
+            failureThreshold: 2
+            periodSeconds: 5
+            initialDelaySeconds: 300
+      volumes:
+        - name: lnd-unlocker
+          configMap:
+            name: lnd-wallet-unlocker
+            defaultMode: 0777
+        - name: config
+          emptyDir: {}
+        - name: configmap
+          configMap:
+            name: {{ .configmap.name }}
+        - name: lnd-storage
+        {{- if .persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .persistence.existingClaim | default (include "lnd.fullname" $) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+---
+{{- end }}

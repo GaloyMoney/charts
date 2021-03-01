@@ -1,0 +1,74 @@
+image:
+  repository: lightninglabs/lnd
+  tag: v0.12.1-beta
+  pullPolicy: IfNotPresent
+
+instances:
+- container:
+    name: lnd
+  service:
+    #On google cloud, static ip can be created using `gcloud compute addresses create`
+    staticIP: {}
+    name: lnd
+    type: ClusterIP
+    ports:
+      rpc: 10009
+      p2p: 9735
+      rest: 8080
+  replicas: 1
+  terminationGracePeriodSeconds: 600
+  persistence:
+    enabled: true
+    ## database data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  configmap:
+    name: lnd-configmap-0
+    # Whether to have lnd broadcast the ip 
+    broadcastIP: true
+    customValues: 
+    - bitcoin.mainnet=true
+    - bitcoind.rpchost=bitcoind:8332
+    - minchansize=10000000
+    - bitcoin.feerate=2500
+    - db.bolt.auto-compact=true
+  affinity: {}
+
+labels: {}
+
+podLabels: {}
+
+lndGeneralConfig:
+- restlisten=0.0.0.0:8080
+- rpclisten=0.0.0.0:10009
+- bitcoin.active=true
+- bitcoin.node=bitcoind
+- bitcoind.rpcuser=rpcuser
+- bitcoind.rpcpass=rpcpass
+- bitcoind.zmqpubrawblock=tcp://bitcoind:28332
+- bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+- tlsextradomain=lnd
+- tlsextradomain=lnd-outside-1
+- tlsextradomain=lnd-outside-2
+- accept-keysend=1
+- allow-circular-route=1
+- sync-freelist=1
+- stagger-initial-reconnect=1
+- protocol.wumbo-channels=1 
+- maxchansize=500000000
+- bitcoin.timelockdelta=60
+- default-remote-max-htlcs=10
+- debuglevel=debug
+
+nameOverride: ""
+fullnameOverride: ""
+
+rtl:
+  enabled: true

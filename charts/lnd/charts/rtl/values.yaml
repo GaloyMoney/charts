@@ -1,0 +1,11 @@
+image:
+  repository: shahanafarooqui/rtl
+  tag: 0.10.0
+
+container:
+  name: RTL
+
+service:
+  port: 3000
+  name: rtl
+  type: ClusterIP

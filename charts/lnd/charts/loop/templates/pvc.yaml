@@ -1,0 +1,15 @@
+{{- if .Values.enabled -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: loop-pvc
+  labels:
+    "helm.sh/resource-policy": keep
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes: 
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: 16Mi
+{{- end }}

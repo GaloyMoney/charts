@@ -1,0 +1,29 @@
+{{- range .Values.instances }}
+{{- if and .persistence.enabled (not .persistence.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "lnd.fullname" $ }}
+  annotations:
+    "helm.sh/resource-policy": keep
+  labels:
+    app: {{ template "lnd.name" $ }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  accessModes:
+    - {{ .persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .persistence.size | quote }}
+{{- if .persistence.storageClass }}
+{{- if (eq "-" .persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
+---
+{{- end }}

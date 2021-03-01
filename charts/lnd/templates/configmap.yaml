@@ -1,0 +1,24 @@
+{{- range .Values.instances }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .configmap.name }}
+  labels:
+    app: lnd
+    app.kubernetes.io/managed-by: Helm
+data:
+  lnd.conf: |-
+  {{- range $.Values.lndGeneralConfig }}
+    {{ . }}
+  {{- end }}
+  {{- range .configmap.customValues }}
+    {{ . }}
+  {{- end }}
+  {{- if .service.staticIP }}
+    tlsextraip={{ .service.staticIP }}
+  {{- if .configmap.broadcastIP }}
+    externalip={{ .service.staticIP }}
+  {{- end}}
+  {{- end}}
+---
+{{- end }}

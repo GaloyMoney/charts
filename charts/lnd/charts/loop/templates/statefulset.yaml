@@ -1,0 +1,59 @@
+{{- if .Values.enabled -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ printf "%s-loop" .Release.Name }}
+  labels:
+    app: loop
+    app.kubernetes.io/managed-by: Helm
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: loop
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+spec:
+  replicas: 1
+  serviceName: "loop"
+  selector:
+    matchLabels:
+      app: loop
+  template:
+    metadata:
+      labels:
+        app: loop
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: loop
+    spec:
+      containers:
+        - name: loop-container
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/bin/sh","-c", "{{.Values.command}} {{.Values.args}}"]
+          resources:
+            requests:
+              cpu: 1m
+            limits:
+              cpu: 200m
+          ports:
+            - name: grpc
+              containerPort: 11010
+            - name: rest
+              containerPort: 8081
+          volumeMounts:
+            - name: lnd-tls-configmap
+              mountPath: /root/.lnd/tls.cert
+              subPath: tls.cert
+            - name: lnd-macaroon-configmap
+              mountPath: "/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/"
+            - name: loop-storage
+              mountPath: /root/.loop
+      volumes:
+      - name: lnd-tls-configmap
+        configMap:
+          name: lndtls
+      - name: lnd-macaroon-configmap
+        configMap:
+          name: lndmacaroon
+      - name: loop-storage
+        persistentVolumeClaim:
+            claimName: loop-pvc
+{{- end }}

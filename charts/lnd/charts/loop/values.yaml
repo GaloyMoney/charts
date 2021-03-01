@@ -1,0 +1,5 @@
+image:
+  repository: thesisrobot/loop
+  tag: v0.8.1-beta
+
+command: "loopd --lnd.host=lnd:10009"

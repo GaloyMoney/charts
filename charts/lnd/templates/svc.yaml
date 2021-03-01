@@ -1,0 +1,24 @@
+{{- range .Values.instances }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .service.name }}
+  labels:
+    app: {{ .container.name }}
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: {{ .service.type }}
+  {{- if and (eq .service.type "LoadBalancer") (.service.staticIP) }}
+  loadBalancerIP: {{ .service.staticIP }}
+  {{- end }}
+  ports:
+    - name: rpc
+      port: {{ .service.ports.rpc }}
+    - name: p2p
+      port: {{ .service.ports.p2p }}
+    - name: rest
+      port: {{ .service.ports.rest }}
+  selector:
+    app: {{ .container.name }}
+---
+{{- end }}
