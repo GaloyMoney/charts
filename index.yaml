@@ -28,6 +28,6 @@ entries:
       name: Nicolas Burtey
     name: lnd
     urls:
-    - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.0/lnd-1.0.0.tgz
+    - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.1/lnd-1.0.1.tgz
     version: 1.0.1
 generated: "2021-03-01T13:29:54.483098111Z"
