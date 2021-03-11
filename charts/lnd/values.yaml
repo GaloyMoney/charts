@@ -128,7 +128,7 @@ lndGeneralConfig:
 - allow-circular-route=1
 - sync-freelist=1
 - stagger-initial-reconnect=1
-- protocol.wumbo-channels=1 
+- protocol.wumbo-channels=1
 - maxchansize=500000000
 - bitcoin.timelockdelta=60
 - default-remote-max-htlcs=10
