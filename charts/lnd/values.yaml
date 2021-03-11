@@ -76,7 +76,7 @@ nodeSelector: {}
 tolerations: []
 
 service:
-  #On google cloud, static ip can be created using `gcloud compute addresses create`
+  # On google cloud, static ip can be created using `gcloud compute addresses create`
   staticIP: {}
   type: ClusterIP
   ports:
