@@ -13,3 +13,8 @@ maintainers:
   - name: nicolasburtey
     email: nb@galoy.io
 engine: gotpl
+dependencies:
+  - name: loop
+    version: x.x.x
+  - name: rtl
+    version: x.x.x
