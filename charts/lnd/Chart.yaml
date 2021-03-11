@@ -8,8 +8,8 @@ keywords:
   - rtl
   - loop
 maintainers:
-  - name: Kartik Shah
+  - name: krtk6160
     email: krtk6160@galoy.io
-  - name: Nicolas Burtey
+  - name: nicolasburtey
     email: nb@galoy.io
 engine: gotpl
