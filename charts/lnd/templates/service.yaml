@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lnd.fullname" . }}
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (.Values.service.staticIP) }}
+  loadBalancerIP: {{ .Values.service.staticIP }}
+  {{- end }}
+  ports:
+    - name: rpc
+      port: {{ .Values.service.ports.rpc }}
+    - name: p2p
+      port: {{ .Values.service.ports.p2p }}
+    - name: rest
+      port: {{ .Values.service.ports.rest }}    
+  selector:
+    {{- include "lnd.selectorLabels" . | nindent 4 }}

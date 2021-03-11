@@ -1,5 +1,4 @@
-{{- range .Values.instances }}
-{{- if and .persistence.enabled (not .persistence.existingClaim) }}
+{{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -7,23 +6,18 @@ metadata:
   annotations:
     "helm.sh/resource-policy": keep
   labels:
-    app: {{ template "lnd.name" $ }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    {{- include "lnd.labels" . | nindent 4 }}
 spec:
   accessModes:
-    - {{ .persistence.accessMode | quote }}
+    - {{ .Values.persistence.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .persistence.size | quote }}
-{{- if .persistence.storageClass }}
-{{- if (eq "-" .persistence.storageClass) }}
+      storage: {{ .Values.persistence.size | quote }}
+{{- if .Values.persistence.storageClass }}
+{{- if (eq "-" .Values.persistence.storageClass) }}
   storageClassName: ""
 {{- else }}
-  storageClassName: "{{ .persistence.storageClass }}"
+  storageClassName: "{{ .Values.persistence.storageClass }}"
 {{- end }}
 {{- end }}
-{{- end }}
----
 {{- end }}
