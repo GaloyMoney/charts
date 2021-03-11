@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: lnd-init
+  name: {{ printf "%s-init" (include "lnd.fullname" .) }}
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
 data:
