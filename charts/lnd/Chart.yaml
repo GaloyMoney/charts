@@ -15,8 +15,6 @@ maintainers:
 engine: gotpl
 dependencies:
   - name: loop
-    repository: file://charts/loop
     version: x.x.x
   - name: rtl
-    repository: file://charts/rtl
     version: x.x.x
