@@ -24,6 +24,31 @@ entries:
   lnd:
   - apiVersion: v2
     appVersion: 0.12.1
+    created: "2021-03-12T20:29:02.886979134Z"
+    dependencies:
+    - name: loop
+      repository: ""
+      version: x.x.x
+    - name: rtl
+      repository: ""
+      version: x.x.x
+    description: LND helm chart
+    digest: 9390746457c945ed38e9db51f6d83025889b9cdff0e81943efec5e1cc76db3a4
+    keywords:
+    - lnd
+    - rtl
+    - loop
+    maintainers:
+    - email: krtk6160@galoy.io
+      name: krtk6160
+    - email: nb@galoy.io
+      name: nicolasburtey
+    name: lnd
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.3/lnd-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 0.12.1
     created: "2021-03-12T07:52:16.369468332Z"
     dependencies:
     - name: loop
@@ -65,4 +90,4 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.1/lnd-1.0.1.tgz
     version: 1.0.1
-generated: "2021-03-12T11:59:47.423677436Z"
+generated: "2021-03-12T20:29:02.887001034Z"
