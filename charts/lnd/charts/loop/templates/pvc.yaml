@@ -7,7 +7,7 @@ metadata:
     "helm.sh/resource-policy": keep
     app.kubernetes.io/managed-by: Helm
 spec:
-  accessModes: 
+  accessModes:
     - "ReadWriteOnce"
   resources:
     requests:

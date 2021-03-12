@@ -1,15 +1,20 @@
-apiVersion: v1
+apiVersion: v2
 name: lnd
-version: 1.0.1
+version: 1.0.2
 appVersion: 0.12.1
-description: LND chart
+description: LND helm chart
 keywords:
   - lnd
   - rtl
   - loop
 maintainers:
-  - name: Kartik Shah
+  - name: krtk6160
     email: krtk6160@galoy.io
-  - name: Nicolas Burtey
+  - name: nicolasburtey
     email: nb@galoy.io
 engine: gotpl
+dependencies:
+  - name: loop
+    version: x.x.x
+  - name: rtl
+    version: x.x.x

@@ -1,39 +1,36 @@
 {{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-{{- range .Values.instances }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: "{{ .container.name }}"
+  name: {{ include "lnd.fullname" . }}
   labels:
-    name: "{{ .container.name }}"
-    app: "{{ .container.name }}"
-    {{- with $.Values.labels }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
+    {{- include "lnd.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .replicas }}
-  serviceName: "lnd"
+  serviceName: {{ include "lnd.fullname" . }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
-      app: "{{ .container.name }}"
+      {{- include "lnd.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      labels:
-        app: "{{ .container.name }}"
-        {{- with $.Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
-        type: lnd
       annotations:
         checksum/config: $checksum
-    spec:
-      {{- with .affinity }}
-      affinity:
+      {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      labels:
+        {{- include "lnd.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "lnd.serviceAccountName" . }}
       securityContext:
-        runAsUser: 0
-      terminationGracePeriodSeconds: {{ .terminationGracePeriodSeconds }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         - name: copy-lnd-config
           image: busybox
@@ -44,49 +41,29 @@ spec:
             - name: config
               mountPath: /root/.lnd/
       containers:
-        - name: "{{ .container.name }}"
-          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/sh","-c"]
           args: ["/root/init.sh"]
-          imagePullPolicy: {{ $.Values.image.pullPolicy | quote }}
-          resources:
-            requests:
-              cpu: 100m
-            limits:
-              cpu: 1000m
           ports:
             - name: rpc
-              containerPort: {{ .service.ports.rpc }}
+              containerPort: {{ .Values.service.ports.rpc }}
             - name: p2p
-              containerPort: {{ .service.ports.p2p }}
+              containerPort: {{ .Values.service.ports.p2p }}
             - name: rest
-              containerPort: {{ .service.ports.rest }}
+              containerPort: {{ .Values.service.ports.rest }}
           volumeMounts:
             - name: lnd-storage
               mountPath: /root/.lnd
             - name: config
               mountPath: /root/.lnd/lnd.conf
               subPath: lnd.conf
-            - name: lnd-unlocker
+            - name: lnd-init
               mountPath: /root/init.sh
               subPath: init.sh
-          {{- if ne $.Values.global.network "regtest" }}
-          env:
-          - name: LND_PASS
-            valueFrom:
-              secretKeyRef:
-                name: lnd-pass-secret
-                key: password
-          {{- end }}
-          # reactivate once k8s v1.16 is available on google cloud
-          # startupProbe:
-          #   exec:
-          #     command:
-          #     - lncli
-          #     - -n
-          #     - {{ $.Values.global.network}}
-          #     - getinfo
-          #   periodSeconds: 5
           readinessProbe:
             exec:
               command:
@@ -107,22 +84,42 @@ spec:
             failureThreshold: 2
             periodSeconds: 5
             initialDelaySeconds: 300
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if ne .Values.global.network "regtest" }}
+          env:
+          - name: LND_PASS
+            valueFrom:
+              secretKeyRef:
+                name: lnd-pass
+                key: password
+          {{- end }}
       volumes:
-        - name: lnd-unlocker
+        - name: lnd-init
           configMap:
-            name: lnd-wallet-unlocker
+            name: lnd-init
             defaultMode: 0777
         - name: config
           emptyDir: {}
         - name: configmap
           configMap:
-            name: {{ .configmap.name }}
+            name: {{ include "lnd.fullname" . }}
         - name: lnd-storage
-        {{- if .persistence.enabled }}
+        {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .persistence.existingClaim | default (include "lnd.fullname" $) }}
+            claimName: {{ .Values.persistence.existingClaim | default (include "lnd.fullname" $) }}
         {{- else }}
           emptyDir: {}
         {{- end }}
----
-{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
