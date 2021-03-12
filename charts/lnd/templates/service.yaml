@@ -15,6 +15,6 @@ spec:
     - name: p2p
       port: {{ .Values.service.ports.p2p }}
     - name: rest
-      port: {{ .Values.service.ports.rest }}    
+      port: {{ .Values.service.ports.rest }}
   selector:
     {{- include "lnd.selectorLabels" . | nindent 4 }}

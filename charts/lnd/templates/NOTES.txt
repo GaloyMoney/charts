@@ -20,3 +20,10 @@
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
+2. To get the TLS, run:
+export TLS=$(kubectl -n {{ .Release.Namespace }} exec {{ .Release.Name }}-0 -- base64 /root/.lnd/tls.cert | tr -d '\n\r')
+3. To get the macaroon, run:
+export MACAROON=$(kubectl exec -n {{ .Release.Namespace }} {{ .Release.Name }}-0 -- base64 /root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon | tr -d '\n\r')
+4. To execute lncli against the pod, run the following commands:
+kubectl -n {{ .Release.Namespace }} port-forward {{ .Release.Name }}-0 10009
+lncli -n {{ .Release.Namespace }} help
