@@ -18,3 +18,6 @@ dependencies:
     version: x.x.x
   - name: rtl
     version: x.x.x
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    version: 1.x.x
