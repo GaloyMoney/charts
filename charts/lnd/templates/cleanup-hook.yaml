@@ -1,6 +1,7 @@
-Does not work currently
-When the hook is disabled, the macaroon and tls configmaps are not deleted
-When the hook is enabled, they get deleted right before the hook runs
+# Does not work currently
+# When the hook is disabled, the macaroon and tls configmaps are not deleted
+# When the hook is enabled, they get deleted right before the hook runs
+#
 # {{- if ne .Values.global.network "regtest" }}
 # apiVersion: v1
 # kind: Pod
