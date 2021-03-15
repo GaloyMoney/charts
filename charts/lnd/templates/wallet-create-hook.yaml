@@ -21,7 +21,7 @@ spec:
         secretKeyRef:
           name: lnd-pass
           key: password
-      name: NETWORK
+    - name: NETWORK
       valueFrom:
         secretKeyRef:
           name: network
