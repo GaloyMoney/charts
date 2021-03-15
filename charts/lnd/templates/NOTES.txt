@@ -29,3 +29,6 @@ kubectl -n {{ .Release.Namespace }} port-forward {{ include "lnd.fullname" . }}-
 lncli -n {{ .Release.Namespace }} help
 5. To retrieve the seed for the lnd wallet, run:
 kubectl -n {{ .Release.Namespace }} logs {{ include "lnd.fullname" . }}-wallet-create
+kubectl -n {{ .Release.Namespace }} delete pod {{ include "lnd.fullname" . }}-wallet-create
+
+Warning: Make sure you write/store the seed somewhere, because if lost you will not be able to retrieve it again, and you might end up losing all your funds.
