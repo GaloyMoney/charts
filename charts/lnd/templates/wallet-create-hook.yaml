@@ -1,3 +1,4 @@
+{{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -12,21 +13,35 @@ spec:
   - name: create-wallet
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
-    command: ["/bin/sh","-c",'apk update && apk add expect && ./walletInit.exp {{.Values.global.network}} $LND_PASS']
+    command: ['/bin/sh']
+    args: ['-c','apk update; apk add expect; ./walletInit.exp {{.Values.global.network}} $LND_PASS; ./exportSecrets.sh']
     env:
     - name: LND_PASS
       valueFrom:
         secretKeyRef:
           name: lnd-pass
           key: password
+      name: NETWORK
+      valueFrom:
+        secretKeyRef:
+          name: network
+          key: network
     volumeMounts:
     - name: wallet-init
       mountPath: /home/alpine/walletInit.exp
       subPath: walletInit.exp
+    - name: export-secrets
+      mountPath: /home/alpine/exportSecrets.sh
+      subPath: exportSecrets.sh
   volumes:
   - name: wallet-init
     configMap:
       name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
       defaultMode: 0777
+  - name: export-secrets
+    configMap:
+      name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
+      defaultMode: 0777
   restartPolicy: Never
   terminationGracePeriodSeconds: 0
+{{- end }}
