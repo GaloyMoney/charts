@@ -95,7 +95,7 @@ spec:
       volumes:
         - name: lnd-init
           configMap:
-            name: lnd-init
+            name: {{ printf "%s-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
         - name: config
           emptyDir: {}
