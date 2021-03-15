@@ -89,7 +89,7 @@ spec:
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
-                name: lnd-pass
+                name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
           {{- end }}
       volumes:
