@@ -60,3 +60,19 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "walletPassword" -}}
+
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace ( printf "%s-pass" (include "lnd.fullname" .))) -}}
+{{- if $secret -}}
+{{/*
+   Reusing current password since secret exists
+*/}}
+{{-  $secret.data.password -}}
+{{- else -}}
+{{/*
+    Generate new password
+*/}}
+{{- (randAlpha 24) | b64enc | quote -}}
+{{- end -}}
+{{- end -}}
