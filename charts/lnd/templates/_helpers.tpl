@@ -73,6 +73,6 @@ Create the name of the service account to use
 {{/*
     Generate new password
 */}}
-{{- (randAlpha 24) | b64enc | quote -}}
+{{- (randAlpha 24) | b64enc -}}
 {{- end -}}
 {{- end -}}
