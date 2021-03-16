@@ -13,6 +13,6 @@ rules:
     resources: ["pods/exec"]
     verbs: ["create"]
   - apiGroups: [""]
-    resources: ["configmaps"]
+    resources: ["secrets"]
     verbs: ["create", "get", "patch", "delete"]
 {{- end }}
