@@ -1,4 +1,3 @@
-{{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -14,7 +13,7 @@ spec:
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
     command: ['/bin/sh']
-    args: ['-c','apk update; apk add expect; ./walletInit.exp {{.Values.global.network}} $LND_PASS; ./exportSecrets.sh']
+    args: ['-c','apk update; apk add expect;{{ if ne .Values.global.network "regtest" }} ./walletInit.exp {{.Values.global.network}} $LND_PASS;{{ end }} ./exportSecrets.sh']
     env:
     - name: LND_PASS
       valueFrom:
@@ -44,4 +43,3 @@ spec:
       defaultMode: 0777
   restartPolicy: Never
   terminationGracePeriodSeconds: 0
-{{- end }}
