@@ -73,7 +73,7 @@ tolerations: []
 
 service:
   # On google cloud, static ip can be created using `gcloud compute addresses create`
-  staticIP: {}
+  staticIP: ""
   type: ClusterIP
   ports:
     rpc: 10009
@@ -106,7 +106,7 @@ affinity:
             - bitcoind
         topologyKey: kubernetes.io/hostname
 
-walletPassword: 12345678
+walletPassword: ""
 
 lndGeneralConfig:
 - restlisten=0.0.0.0:8080

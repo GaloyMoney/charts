@@ -1,0 +1,23 @@
+# Does not work currently
+# When the hook is disabled, the macaroon and tls configmaps are not deleted
+# When the hook is enabled, they get deleted right before the hook runs
+#
+# {{- if ne .Values.global.network "regtest" }}
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: "{{ include "lnd.fullname" . }}-cleanup"
+#   annotations:
+#     "helm.sh/hook": "pre-delete"
+#     "helm.sh/hook-delete-policy": hook-succeeded
+# spec:
+#   securityContext:
+#     runAsUser: 0
+#   serviceAccountName: {{ include "lnd.serviceAccountName" . }}
+#   containers:
+#   - name: delete-configmaps
+#     image: "boxboat/kubectl"
+#     imagePullPolicy: IfNotPresent
+#     command: ['/bin/sh']
+#     args: ['-c','kubectl delete configmap {{ include "lnd.fullname" . }}-tls {{ include "lnd.fullname" . }}-macaroon']
+# {{- end }}

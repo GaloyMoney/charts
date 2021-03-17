@@ -89,13 +89,13 @@ spec:
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
-                name: lnd-pass
+                name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
           {{- end }}
       volumes:
         - name: lnd-init
           configMap:
-            name: lnd-init
+            name: {{ printf "%s-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
         - name: config
           emptyDir: {}
