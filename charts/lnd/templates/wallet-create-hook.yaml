@@ -15,11 +15,13 @@ spec:
     command: ['/bin/sh']
     args: ['-c','apk update; apk add expect;{{ if ne .Values.global.network "regtest" }} ./walletInit.exp {{.Values.global.network}} $LND_PASS;{{ end }} ./exportSecrets.sh']
     env:
+    {{- if ne .Values.global.network "regtest" }}
     - name: LND_PASS
       valueFrom:
         secretKeyRef:
           name: lnd-pass
           key: password
+    {{- end }}
     - name: NETWORK
       valueFrom:
         secretKeyRef:
