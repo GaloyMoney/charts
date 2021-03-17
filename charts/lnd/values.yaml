@@ -133,3 +133,10 @@ lndGeneralConfig:
 
 rtl:
   enabled: false
+
+rbac:
+  create: true
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
