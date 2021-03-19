@@ -16,8 +16,10 @@ engine: gotpl
 dependencies:
   - name: loop
     version: x.x.x
-  - name: rtl
+    condition: loop.enabled
+  - name: thunderhub
     version: x.x.x
+    condition: thunderhub.enabled
   - name: common
     repository: https://charts.bitnami.com/bitnami
     version: 1.x.x
