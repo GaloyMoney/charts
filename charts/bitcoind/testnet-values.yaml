@@ -4,7 +4,7 @@
 global:
   network: testnet
   service:
-    ports:  
+    ports:
       rpc: 18332
 
 service:

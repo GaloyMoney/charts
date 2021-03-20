@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "thunderhub.fullname" . }}
+  labels:
+    {{- include "thunderhub.labels" . | nindent 4 }}
+data:
+  thunderhub.yaml: |
+    masterPassword: 'password' # Default password unless defined in account
+    accounts:
+      - name: 'Primary'
+        serverUrl: '{{.Release.Name}}:10009'
+        macaroon: '{YML_ENV_1}'
+        certificate: '{YML_ENV_2}'

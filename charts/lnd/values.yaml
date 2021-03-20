@@ -131,7 +131,13 @@ lndGeneralConfig:
 - debuglevel=debug
 
 
+thunderhub:
+  enabled: false
+
 rtl:
+  enabled: false
+
+loop:
   enabled: false
 
 rbac:

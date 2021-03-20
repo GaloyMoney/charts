@@ -1,4 +1,3 @@
-{{- if .Values.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -56,4 +55,3 @@ spec:
       - name: loop-storage
         persistentVolumeClaim:
             claimName: loop-pvc
-{{- end }}
