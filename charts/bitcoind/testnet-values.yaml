@@ -7,6 +7,10 @@ global:
     ports:
       rpc: 18332
 
+persistence:
+  enabled: true
+  size: 30Gi
+
 service:
   type: ClusterIP
   ports:
