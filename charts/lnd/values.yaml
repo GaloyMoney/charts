@@ -134,6 +134,9 @@ lndGeneralConfig:
 thunderhub:
   enabled: false
 
+rtl:
+  enabled: false
+
 loop:
   enabled: false
 
