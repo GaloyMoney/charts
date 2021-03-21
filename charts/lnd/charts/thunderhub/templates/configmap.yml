@@ -12,3 +12,4 @@ data:
         serverUrl: '{{.Release.Name}}:10009'
         macaroon: '{YML_ENV_1}'
         certificate: '{YML_ENV_2}'
+        password: '{YML_ENV_3}'

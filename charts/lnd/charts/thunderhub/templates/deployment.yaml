@@ -45,6 +45,11 @@ spec:
               secretKeyRef:
                 name: {{.Release.Name}}-tls
                 key: tls.cert
+          - name: YML_ENV_3
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-pass" (include "thunderhub.fullname" .) }}-pass
+                key: password
           ports:
             - name: http
               containerPort: 3000
