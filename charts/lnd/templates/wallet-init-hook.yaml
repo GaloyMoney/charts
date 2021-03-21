@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "lnd.fullname" . }}-wallet-init"
+  annotations:
+    "helm.sh/hook": "post-install"
+spec:
+  securityContext:
+    runAsUser: 0
+  serviceAccountName: {{ include "lnd.serviceAccountName" . }}
+  containers:
+  - name: init-wallet
+    image: "boxboat/kubectl"
+    imagePullPolicy: IfNotPresent
+    command: ['/bin/sh']
+    args: ['-c','apk update; apk add expect;{{ if ne .Values.global.network "regtest" }} ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;{{ end }}']
+    env:
+    {{- if ne .Values.global.network "regtest" }}
+    - name: LND_PASS
+      valueFrom:
+        secretKeyRef:
+          name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
+          key: password
+    {{- end }}
+    - name: NETWORK
+      valueFrom:
+        secretKeyRef:
+          name: network
+          key: network
+    volumeMounts:
+    - name: wallet-init
+      mountPath: /home/alpine/walletInit.exp
+      subPath: walletInit.exp
+  volumes:
+  - name: wallet-init
+    configMap:
+      name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
+      defaultMode: 0777
+  restartPolicy: Never
+  terminationGracePeriodSeconds: 0
