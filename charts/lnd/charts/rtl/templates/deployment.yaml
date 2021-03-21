@@ -43,7 +43,7 @@ spec:
               configMap:
                 name: rtl-configmap
             - name: lnd-rpc
-              configMap:
-                name: lndmacaroon
+              secret:
+                secretName: {{.Release.Name}}-all-macaroons
 # kubectl port-forward rtl-pod-uuid 3000:3000
 {{ end }}
