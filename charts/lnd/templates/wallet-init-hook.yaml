@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "lnd.fullname" . }}-wallet-create"
+  name: "{{ include "lnd.fullname" . }}-wallet-init"
   annotations:
     "helm.sh/hook": "post-install"
 spec:
@@ -9,11 +9,11 @@ spec:
     runAsUser: 0
   serviceAccountName: {{ include "lnd.serviceAccountName" . }}
   containers:
-  - name: create-wallet
+  - name: init-wallet
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
     command: ['/bin/sh']
-    args: ['-c','apk update; apk add expect;{{ if ne .Values.global.network "regtest" }} ./walletInit.exp {{.Values.global.network}} $LND_PASS;{{ end }} ./exportSecrets.sh']
+    args: ['-c','apk update; apk add expect;{{ if ne .Values.global.network "regtest" }} ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;{{ end }}']
     env:
     {{- if ne .Values.global.network "regtest" }}
     - name: LND_PASS
@@ -31,17 +31,10 @@ spec:
     - name: wallet-init
       mountPath: /home/alpine/walletInit.exp
       subPath: walletInit.exp
-    - name: export-secrets
-      mountPath: /home/alpine/exportSecrets.sh
-      subPath: exportSecrets.sh
   volumes:
   - name: wallet-init
     configMap:
       name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
-      defaultMode: 0777
-  - name: export-secrets
-    configMap:
-      name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
       defaultMode: 0777
   restartPolicy: Never
   terminationGracePeriodSeconds: 0

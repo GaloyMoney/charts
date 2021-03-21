@@ -53,7 +53,8 @@ data:
     set timeout -1
     set NETWORK [lindex $argv 0];
     set PASSWORD [lindex $argv 1];
-    spawn kubectl exec lnd-0 -it -- lncli -n $NETWORK create
+    set POD [lindex $argv 2];
+    spawn kubectl exec $POD -it -- lncli -n $NETWORK create
     match_max 100000
     expect -exact "Input wallet password: "
     send -- "$PASSWORD\r"
