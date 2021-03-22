@@ -54,6 +54,40 @@ entries:
   lnd:
   - apiVersion: v2
     appVersion: 0.12.1
+    created: "2021-03-22T07:15:59.060980375Z"
+    dependencies:
+    - condition: loop.enabled
+      name: loop
+      repository: ""
+      version: x.x.x
+    - condition: thunderhub.enabled
+      name: thunderhub
+      repository: ""
+      version: x.x.x
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.x.x
+    - condition: rtl.enabled
+      name: rtl
+      repository: ""
+      version: x.x.x
+    description: LND helm chart
+    digest: 2e43c89c07bd20205b8bd0dd64274cb7dddf2801ab10582c81f5793663a1adc5
+    keywords:
+    - lnd
+    - rtl
+    - loop
+    maintainers:
+    - email: krtk6160@galoy.io
+      name: krtk6160
+    - email: nb@galoy.io
+      name: nicolasburtey
+    name: lnd
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/lnd-1.1.4/lnd-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v2
+    appVersion: 0.12.1
     created: "2021-03-21T13:37:59.725018909Z"
     dependencies:
     - condition: loop.enabled
@@ -449,4 +483,4 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.1/lnd-1.0.1.tgz
     version: 1.0.1
-generated: "2021-03-21T13:37:59.72532611Z"
+generated: "2021-03-22T07:15:59.061118074Z"
