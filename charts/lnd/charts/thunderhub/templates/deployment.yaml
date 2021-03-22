@@ -48,7 +48,7 @@ spec:
           - name: YML_ENV_3
             valueFrom:
               secretKeyRef:
-                name: {{ printf "%s-pass" (include "thunderhub.fullname" .) }}-pass
+                name: {{ printf "%s-pass" (include "thunderhub.fullname" .) }}
                 key: password
           ports:
             - name: http
