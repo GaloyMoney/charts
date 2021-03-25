@@ -23,7 +23,9 @@ jobs:
         uses: azure/setup-helm@v1
         with:
           version: v3.4.0
-
+      - name: Add repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.0
         env:
