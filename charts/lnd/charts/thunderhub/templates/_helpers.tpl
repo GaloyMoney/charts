@@ -70,10 +70,12 @@ Create the name of the service account to use
    Reusing current password since secret exists
 */}}
 {{-  $secret.data.password -}}
+{{- else if .Values.password -}}
+{{ .Values.password | b64enc }}
 {{- else -}}
 {{/*
     Generate new password
 */}}
-{{- (randAlpha 24) | b64enc -}}
+{{- (randAlphaNum 24) | b64enc -}}
 {{- end -}}
 {{- end -}}
