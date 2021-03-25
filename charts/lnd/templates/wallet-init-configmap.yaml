@@ -1,3 +1,4 @@
+{{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -71,3 +72,4 @@ data:
     Input your passphrase if you wish to encrypt it (or press enter to proceed without a cipher seed passphrase): "
     send -- "\r"
     expect eof
+{{- end -}}

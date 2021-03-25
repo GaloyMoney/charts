@@ -1,3 +1,4 @@
+{{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -13,7 +14,7 @@ spec:
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
     command: ['/bin/sh']
-    args: ['-c','apk update; apk add expect;{{ if ne .Values.global.network "regtest" }} ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;{{ end }}']
+    args: ['-c','apk update; apk add expect; ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
     env:
     {{- if ne .Values.global.network "regtest" }}
     - name: LND_PASS
@@ -38,3 +39,4 @@ spec:
       defaultMode: 0777
   restartPolicy: Never
   terminationGracePeriodSeconds: 0
+{{- end }}
