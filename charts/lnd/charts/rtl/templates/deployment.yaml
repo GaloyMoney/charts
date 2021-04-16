@@ -22,28 +22,32 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-        containers:
-          - name: {{.Values.container.name}}
-            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-            ports:
-              - containerPort: {{.Values.service.port}}
-            volumeMounts:
-              - name: rtl-conf
-                mountPath: "/RTL/RTL-Config.json"
-                subPath: "RTL-Config.json"
-                # readOnly: true
-              - name: lnd-rpc
-                mountPath: /rpc
-                readOnly: true
-            resources:
-              requests:
-                cpu: 35m
-        volumes:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{.Values.container.name}}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{.Values.service.port}}
+          volumeMounts:
             - name: rtl-conf
-              configMap:
-                name: rtl-configmap
+              mountPath: "/RTL/RTL-Config.json"
+              subPath: "RTL-Config.json"
+              # readOnly: true
             - name: lnd-rpc
-              secret:
-                secretName: {{.Release.Name}}-all-macaroons
+              mountPath: /rpc
+              readOnly: true
+          resources:
+            requests:
+              cpu: 10m
+      volumes:
+          - name: rtl-conf
+            configMap:
+              name: rtl-configmap
+          - name: lnd-rpc
+            secret:
+              secretName: {{.Release.Name}}-all-macaroons
 # kubectl port-forward rtl-pod-uuid 3000:3000
 {{ end }}
