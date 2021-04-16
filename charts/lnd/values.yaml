@@ -30,16 +30,16 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext:
-  fsGroup: 2000
+  # fsGroup: 2000
 
-securityContext:
+securityContext: {}
   # runAsUser: 0
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  runAsUser: 1000
-  runAsNonRoot: true
+  # runAsUser: 1000
+  # runAsNonRoot: true
 
 terminationGracePeriodSeconds: 600
 
