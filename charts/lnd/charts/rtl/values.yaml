@@ -10,7 +10,7 @@ service:
   name: rtl
   type: ClusterIP
 
-podSecurityContext: {}
+podSecurityContext: 
   fsGroup: 2000
 
 securityContext:
