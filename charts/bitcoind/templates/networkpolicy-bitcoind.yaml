@@ -1,19 +1,13 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: allow-nginx-ingress
+  name: allow-bitcoind
 spec:
   podSelector:
     matchLabels:
-      network/allow-nginx-ingress: true
-  ingress:
-  - from:
+      network/allow-bitcoind: true
+  egress:
+  - to:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: ingress-nginx
-      namespaceSelector:
-        matchLabels:
-          type: ingress-nginx
-    # ports:
-    # - protocol: TCP
-    #   port: 6379
+          app.kubernetes.io/name: bitcoind
