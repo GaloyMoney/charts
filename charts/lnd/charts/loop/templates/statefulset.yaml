@@ -38,20 +38,20 @@ spec:
             - name: rest
               containerPort: 8081
           volumeMounts:
-            - name: lnd-tls-configmap
+            - name: {{.Release.Name}}-tls
               mountPath: /root/.lnd/tls.cert
               subPath: tls.cert
-            - name: lnd-macaroon-configmap
+            - name: {{.Release.Name}}-macaroons
               mountPath: "/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/"
             - name: loop-storage
               mountPath: /root/.loop
       volumes:
-      - name: lnd-tls-configmap
-        configMap:
-          name: lndtls
-      - name: lnd-macaroon-configmap
-        configMap:
-          name: lndmacaroon
+      - name: {{.Release.Name}}-tls
+        secret:
+          secretName: {{.Release.Name}}-loop-tls
+      - name: {{.Release.Name}}-macaroons
+        secret:
+          secretName: {{.Release.Name}}-all-macaroons
       - name: loop-storage
         persistentVolumeClaim:
             claimName: loop-pvc
