@@ -5,7 +5,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      network/allow-bitcoind: true
+      network/allow-bitcoind: "true"
   egress:
   - to:
     - podSelector:

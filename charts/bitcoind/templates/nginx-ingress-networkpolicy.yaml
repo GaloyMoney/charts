@@ -5,7 +5,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      network/allow-nginx-ingress: true
+      network/allow-nginx-ingress: "true"
   ingress:
   - from:
     - podSelector:
