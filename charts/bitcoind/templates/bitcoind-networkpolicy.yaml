@@ -1,0 +1,13 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-bitcoind
+spec:
+  podSelector:
+    matchLabels:
+      network/allow-bitcoind: true
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: bitcoind

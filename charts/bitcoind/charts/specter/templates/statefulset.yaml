@@ -22,6 +22,8 @@ spec:
     {{- end }}
       labels:
         {{- include "specter.selectorLabels" . | nindent 8 }}
+        network/allow-bitcoind: "true"
+        network/allow-nginx-ingress: "true"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
