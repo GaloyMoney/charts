@@ -118,7 +118,7 @@ podLabels: {}
 #   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
 
 
-#TODO: Document the usage of generic and custom config to instruct where to put specific flags
+# TODO: Document the usage of generic and custom config to instruct where to put specific flags
 
 bitcoindGenericConfig:
 - debug=mempool
@@ -138,7 +138,8 @@ bitcoindCustomConfig:
   rpcbind: 0.0.0.0
   rpcallowip: 0.0.0.0/0
 
-# set to true to enable 
+
+# set to true to enable
 specter:
   enabled: false
   # ingress:
