@@ -1,0 +1,24 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-dns
+spec:
+  # TODO: this should eventually apply to all pod
+  # but doing so right now would active the network policy on all po
+  # podSelector: {}
+  
+  podSelector:
+    matchLabels:
+      network/allow-dns: "true"
+  policyTypes:
+  - Egress
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            contains: coredns
+            # label should be added to the kubesyste namespace, ie:
+            # kubectl label namespace kube-system contains=coredns
+        podSelector:
+          matchLabels:
+            k8s-app: kube-dns
