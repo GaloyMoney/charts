@@ -19,6 +19,8 @@ spec:
     {{- end }}
       labels:
         {{- include "prometheus-exporter.selectorLabels" . | nindent 8 }}
+        network/allow-monitoring: "true"
+        network/allow-bitcoind: "true"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
