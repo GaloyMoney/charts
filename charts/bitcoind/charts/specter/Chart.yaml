@@ -1,6 +1,7 @@
 apiVersion: v2
 name: specter
 description: A Helm chart for Kubernetes
+maintainers: Galoy
 
 # A chart can be either an 'application' or a 'library' chart.
 #
