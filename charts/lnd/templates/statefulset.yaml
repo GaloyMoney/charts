@@ -81,7 +81,7 @@ spec:
               - getinfo
             failureThreshold: 2
             periodSeconds: 5
-            initialDelaySeconds: 300
+            initialDelaySeconds: 600
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if ne .Values.global.network "regtest" }}
