@@ -60,7 +60,10 @@ spec:
           - name: BTC_RPC_USER
             value: rpcuser
           - name: BTC_RPC_PASSWORD
-            value: rpcpass
+            valueFrom:
+              secretKeyRef:
+                name: bitcoind-rpcpassword
+                key: password
           - name: BTC_RPC_HOST
             value: bitcoind
           - name: BTC_RPC_PORT

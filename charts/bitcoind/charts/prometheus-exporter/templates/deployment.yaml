@@ -39,7 +39,10 @@ spec:
           - name: BITCOIN_RPC_USER
             value: rpcuser
           - name: BITCOIN_RPC_PASSWORD
-            value: rpcpass
+            valueFrom:
+              secretKeyRef:
+                name: bitcoind-rpcpassword
+                key: password
           - name: METRICS_PORT
             value: "3000"
           - name: BITCOIN_RPC_PORT
