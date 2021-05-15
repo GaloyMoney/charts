@@ -115,7 +115,6 @@ lndGeneralConfig:
 - bitcoin.active=true
 - bitcoin.node=bitcoind
 - bitcoind.rpcuser=rpcuser
-- bitcoind.rpcpass=rpcpass
 - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
 - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
 - tlsextradomain=lnd

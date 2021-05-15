@@ -1,3 +1,4 @@
+{{ $rpcpassword := include "rpcpassword" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,6 +7,7 @@ metadata:
     {{- include "bitcoind.labels" . | nindent 4 }}
 data:
   bitcoin.conf: |-
+  {{ printf "rpcpassword=%s" $rpcpassword | indent 2 }}
   {{- range .Values.bitcoindGenericConfig }}
     {{ . }}
   {{- end }}
@@ -20,4 +22,12 @@ data:
     {{ printf "%s=%s" $k $v}}
     {{- end }}
   {{- end}}
-  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bitcoind-rpcpassword
+  labels:
+    {{- include "bitcoind.labels" . | nindent 4 }}
+stringData:
+  password: {{ $rpcpassword }}
