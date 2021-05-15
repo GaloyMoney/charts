@@ -123,8 +123,6 @@ lndGeneralConfig:
 - accept-keysend=1
 - allow-circular-route=1
 - sync-freelist=1
-- gc-canceled-invoices-on-startup=1
-- gc-canceled-invoices-on-the-fly=1
 - stagger-initial-reconnect=1
 - protocol.wumbo-channels=1
 - maxchansize=500000000
