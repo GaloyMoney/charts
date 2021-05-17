@@ -127,7 +127,6 @@ bitcoindGenericConfig:
 - txindex=1
 - printtoconsole=1
 - rpcuser=rpcuser
-- rpcpassword=rpcpass
 - zmqpubrawtx=tcp://0.0.0.0:28333
 - zmqpubrawblock=tcp://0.0.0.0:28332
 - blockfilterindex=1
@@ -144,6 +143,9 @@ specter:
   enabled: false
   # ingress:
   #   enabled: true
+  #   annotations:
+  #     cert-manager.io/cluster-issuer: ca-issuer
+  #     kubernetes.io/ingress.class: nginx
   #   hosts:
   #     - host: xyz.com
   #       paths: ["/"]

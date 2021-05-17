@@ -6,6 +6,7 @@ metadata:
     {{- include "lnd.labels" . | nindent 4 }}
 data:
   lnd.conf: |-
+  {{printf "%s=%s" "bitcoind.rpcpass" (include "bitcoind.rpcpassword" . ) | indent 2}}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
   {{- end }}

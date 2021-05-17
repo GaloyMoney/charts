@@ -115,7 +115,6 @@ lndGeneralConfig:
 - bitcoin.active=true
 - bitcoin.node=bitcoind
 - bitcoind.rpcuser=rpcuser
-- bitcoind.rpcpass=rpcpass
 - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
 - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
 - tlsextradomain=lnd
@@ -128,7 +127,7 @@ lndGeneralConfig:
 - protocol.wumbo-channels=1
 - maxchansize=500000000
 - bitcoin.timelockdelta=60
-- default-remote-max-htlcs=10
+- default-remote-max-htlcs=50
 - debuglevel=debug
 
 
