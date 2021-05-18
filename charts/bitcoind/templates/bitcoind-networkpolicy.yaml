@@ -6,6 +6,8 @@ spec:
   podSelector:
     matchLabels:
       network/allow-bitcoind: "true"
+  policyTypes:
+  - Egress
   egress:
   - to:
     - podSelector:

@@ -1,0 +1,19 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-monitoring
+spec:
+  podSelector:
+    matchLabels:
+      network/allow-monitoring: "true"
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: prometheus
+      namespaceSelector:
+        matchLabels:
+          type: monitoring
+    # ports:
+    # - protocol: TCP
+    #   port: 6379
