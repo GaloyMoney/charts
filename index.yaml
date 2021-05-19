@@ -3,6 +3,16 @@ entries:
   bitcoind:
   - apiVersion: v2
     appVersion: 0.21.0
+    created: "2021-05-19T09:23:32.357819799Z"
+    description: A Helm chart for Kubernetes
+    digest: a3343fd4434f55fcd727787fe787e4533dbd20eda5dd00234d5141afd7166f7f
+    name: bitcoind
+    type: application
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/bitcoind-0.1.15/bitcoind-0.1.15.tgz
+    version: 0.1.15
+  - apiVersion: v2
+    appVersion: 0.21.0
     created: "2021-05-18T09:36:33.961942873Z"
     description: A Helm chart for Kubernetes
     digest: daabdfb92b8f954fee0cb5cb00d637a857044e743806d5578972ad2893af7c5d
@@ -142,6 +152,40 @@ entries:
     - https://github.com/GaloyMoney/charts/releases/download/bitcoind-0.1.0/bitcoind-0.1.0.tgz
     version: 0.1.0
   lnd:
+  - apiVersion: v2
+    appVersion: 0.12.1
+    created: "2021-05-19T09:23:32.534099402Z"
+    dependencies:
+    - condition: loop.enabled
+      name: loop
+      repository: ""
+      version: x.x.x
+    - condition: thunderhub.enabled
+      name: thunderhub
+      repository: ""
+      version: x.x.x
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.x.x
+    - condition: rtl.enabled
+      name: rtl
+      repository: ""
+      version: x.x.x
+    description: LND helm chart
+    digest: f378051b8123b13f02fb4851fd115037bf1e3bb37293085890d8eef8b3114234
+    keywords:
+    - lnd
+    - rtl
+    - loop
+    maintainers:
+    - email: krtk6160@galoy.io
+      name: krtk6160
+    - email: nb@galoy.io
+      name: nicolasburtey
+    name: lnd
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/lnd-1.1.18/lnd-1.1.18.tgz
+    version: 1.1.18
   - apiVersion: v2
     appVersion: 0.12.1
     created: "2021-05-15T18:58:49.05204575Z"
@@ -947,4 +991,4 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.1/lnd-1.0.1.tgz
     version: 1.0.1
-generated: "2021-05-18T09:36:33.962218688Z"
+generated: "2021-05-19T09:23:32.534408021Z"
