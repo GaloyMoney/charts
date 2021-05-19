@@ -2,8 +2,8 @@ apiVersion: v2
 name: specter
 description: A Helm chart for Kubernetes
 maintainers: 
-  - name: dev galoy
-    email: dev@galoy.io
+- name: Galoy
+  email: dev@galoy.io
 
 # A chart can be either an 'application' or a 'library' chart.
 #
