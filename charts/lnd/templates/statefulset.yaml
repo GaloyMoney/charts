@@ -70,8 +70,8 @@ spec:
               - {{ $.Values.global.network}}
               - getinfo
             periodSeconds: 5
-            successThreshold: 1
-            failureThreshold: 6
+            timeoutSeconds: 2
+            failureThreshold: 3
           livenessProbe:
             exec:
               command:
@@ -79,8 +79,9 @@ spec:
               - -n
               - {{ $.Values.global.network}}
               - getinfo
-            failureThreshold: 2
             periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
             initialDelaySeconds: 600
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
