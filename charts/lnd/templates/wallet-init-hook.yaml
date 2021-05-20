@@ -6,6 +6,7 @@ metadata:
   annotations:
     "helm.sh/hook": "post-install"
 spec:
+  # FIXME: should not run as root
   securityContext:
     runAsUser: 0
   serviceAccountName: {{ include "lnd.serviceAccountName" . }}
@@ -14,7 +15,7 @@ spec:
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
     command: ['/bin/sh']
-    args: ['-c','apk update; apk add expect; ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
+    args: ['-c','apk update; apk add expect curl xxd ca-certificates openssl; ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
     env:
     {{- if ne .Values.global.network "regtest" }}
     - name: LND_PASS

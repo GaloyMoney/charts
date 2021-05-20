@@ -117,7 +117,9 @@ lndGeneralConfig:
 - bitcoind.rpcuser=rpcuser
 - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
 - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
-- tlsextradomain=lnd
+- tlsextradomain=lnd1
+- tlsextradomain=lnd2
+- tlsextradomain=lndonchain
 - tlsextradomain=lnd-outside-1
 - tlsextradomain=lnd-outside-2
 - accept-keysend=1
