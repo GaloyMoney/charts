@@ -15,7 +15,7 @@ spec:
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
     command: ['/bin/sh']
-    args: ['-c','apk update; apk add expect curl xxd ca-certificates openssl; ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
+    args: ['-c','./walletInit {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
     env:
     {{- if ne .Values.global.network "regtest" }}
     - name: LND_PASS
@@ -31,8 +31,8 @@ spec:
           key: network
     volumeMounts:
     - name: wallet-init
-      mountPath: /home/alpine/walletInit.exp
-      subPath: walletInit.exp
+      mountPath: /home/alpine/walletInit
+      subPath: walletInit
   volumes:
   - name: wallet-init
     configMap:
