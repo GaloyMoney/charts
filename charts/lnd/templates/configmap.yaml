@@ -13,6 +13,7 @@ data:
   {{- range .Values.configmap.customValues }}
     {{ . }}
   {{- end }}
+    tlsextradomain={{ include "lnd.fullname" . }}
   {{- if .Values.service.staticIP }}
     tlsextraip={{ .Values.service.staticIP }}
   {{- if .Values.configmap.broadcastIP }}
