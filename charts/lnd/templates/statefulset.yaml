@@ -32,12 +32,12 @@ spec:
       initContainers:
         - name: copy-lnd-config
           image: busybox
-          command: ['sh', '-c', 'cp /configmap/lnd.conf /root/.lnd/lnd.conf']
+          command: ['sh', '-c', 'cp /configmap/lnd.conf /data/.lnd/lnd.conf']
           volumeMounts:
             - name: configmap
               mountPath: /configmap
             - name: config
-              mountPath: /root/.lnd/
+              mountPath: /data/.lnd/
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -45,7 +45,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/sh","-c"]
-          args: ["/root/init.sh"]
+          args: ["/data/init.sh"]
           ports:
             - name: rpc
               containerPort: {{ .Values.service.ports.rpc }}
@@ -55,12 +55,12 @@ spec:
               containerPort: {{ .Values.service.ports.rest }}
           volumeMounts:
             - name: lnd-storage
-              mountPath: /root/.lnd
+              mountPath: /data/.lnd
             - name: config
-              mountPath: /root/.lnd/lnd.conf
+              mountPath: /data/.lnd/lnd.conf
               subPath: lnd.conf
             - name: lnd-init
-              mountPath: /root/init.sh
+              mountPath: /data/init.sh
               subPath: init.sh
           readinessProbe:
             exec:
