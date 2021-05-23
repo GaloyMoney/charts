@@ -6,6 +6,7 @@ metadata:
   annotations:
     "helm.sh/hook": "post-install"
 spec:
+  # FIXME: should not run as root
   securityContext:
     runAsUser: 0
   serviceAccountName: {{ include "lnd.serviceAccountName" . }}
