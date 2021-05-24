@@ -8,6 +8,10 @@ spec:
   selector:
     matchLabels:
       {{- include "rtl.selectorLabels" . | nindent 6 }}
+      kube-monkey/identifier: {{ .Release.Name }}
+      {{- if .Values.labels }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+      {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,6 +20,10 @@ spec:
       {{- end }}
       labels:
         {{- include "rtl.selectorLabels" . | nindent 8 }}
+        kube-monkey/identifier: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

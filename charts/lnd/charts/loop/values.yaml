@@ -2,8 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-command: "loopd"
-
 image:
   repository: thesisrobot/loop
   tag: v0.11.1-beta
@@ -14,11 +12,6 @@ nameOverride: ""
 fullnameOverride: ""
 
 podAnnotations: {}
-  # kube-monkey/enabled: enabled
-  # kube-monkey/identifier: loop
-  # kube-monkey/kill-mode: fixed
-  # kube-monkey/kill-value: "1"
-  # kube-monkey/mtbf: "8"
 
 podSecurityContext: {}
   # fsGroup: 2000
