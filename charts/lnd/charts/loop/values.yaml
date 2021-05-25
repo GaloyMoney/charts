@@ -1,5 +1,46 @@
+# Default values for loop.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 image:
   repository: thesisrobot/loop
   tag: v0.11.1-beta
+  pullPolicy: IfNotPresent
 
-command: "loopd --lnd.host=lnd:10009"
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8081
+
+resources:
+  limits:
+    cpu: 200m
+  requests:
+    cpu: 1m
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+persistence:
+  enabled: true
+  size: 16Mi
+  accessMode: ReadWriteOnce

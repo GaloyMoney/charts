@@ -7,8 +7,8 @@ global:
 replicaCount: 1
 
 image:
-  repository: lightninglabs/lnd
-  tag: v0.12.1-beta
+  repository: lncm/lnd
+  tag: v0.12.1-monitoring
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -20,14 +20,17 @@ configmap:
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: false
+  create: true
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "9092"
+  prometheus.io/scrape: "true"
 
 podSecurityContext:
   # fsGroup: 2000
@@ -112,6 +115,7 @@ walletPassword: ""
 lndGeneralConfig:
 - restlisten=0.0.0.0:8080
 - rpclisten=0.0.0.0:10009
+- prometheus.listen=0.0.0.0:9092
 - bitcoin.active=true
 - bitcoin.node=bitcoind
 - bitcoind.rpcuser=rpcuser
@@ -129,6 +133,7 @@ lndGeneralConfig:
 - bitcoin.timelockdelta=60
 - default-remote-max-htlcs=50
 - debuglevel=debug
+- prometheus.enable=1
 
 
 thunderhub:
@@ -143,6 +148,3 @@ loop:
 rbac:
   create: true
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true

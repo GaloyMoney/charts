@@ -20,7 +20,7 @@ data:
 
     lnd &
     status=1
-    while [ $status -ne 0 ]
+    while [ $status -ne 0 ] && [ "$output" != "[lncli] Wallet is already unlocked" ]
     do
       echo "entering loop"
       sleep 5

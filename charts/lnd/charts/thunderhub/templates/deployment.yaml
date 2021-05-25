@@ -8,6 +8,10 @@ spec:
   selector:
     matchLabels:
       {{- include "thunderhub.selectorLabels" . | nindent 6 }}
+      kube-monkey/identifier: {{ .Release.Name }}
+      {{- if .Values.labels }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+      {{- end }}
   template:
     metadata:
       annotations:
@@ -16,6 +20,10 @@ spec:
       {{- end }}
       labels:
         {{- include "thunderhub.selectorLabels" . | nindent 8 }}
+        kube-monkey/identifier: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -38,13 +46,13 @@ spec:
           - name: YML_ENV_1
             valueFrom:
               secretKeyRef:
-                name: {{.Release.Name}}-macaroon
-                key: admin.macaroon
+                name: {{.Release.Name}}-credentials
+                key: admin_macaroon_base64
           - name: YML_ENV_2
             valueFrom:
               secretKeyRef:
-                name: {{.Release.Name}}-tls
-                key: tls.cert
+                name: {{.Release.Name}}-credentials
+                key: tls_base64
           - name: YML_ENV_3
             valueFrom:
               secretKeyRef:
