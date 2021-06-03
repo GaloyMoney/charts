@@ -134,8 +134,6 @@ lndGeneralConfig:
 - default-remote-max-htlcs=50
 - debuglevel=debug
 - prometheus.enable=1
-- gc-canceled-invoices-on-startup=true
-- gc-canceled-invoices-on-the-fly=true
 
 
 thunderhub:
