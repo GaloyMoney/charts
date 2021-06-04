@@ -137,7 +137,6 @@ lndGeneralConfig:
 - gc-canceled-invoices-on-startup=true
 - gc-canceled-invoices-on-the-fly=true
 
-
 thunderhub:
   enabled: false
 
