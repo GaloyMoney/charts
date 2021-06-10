@@ -47,12 +47,12 @@ spec:
             httpGet:
               path: /health
               port: http
-            timeoutSeconds: 9
+            timeoutSeconds: 12
           readinessProbe:
             httpGet:
               path: /health
               port: http
-            timeoutSeconds: 9
+            timeoutSeconds: 12
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
