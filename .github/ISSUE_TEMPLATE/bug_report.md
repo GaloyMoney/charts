@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
  - OS: [e.g. Ubuntu/Windows/MacOS]
- - Environment type [e.g. AWS/GCP/Minikube] and 
+ - Environment type [e.g. AWS/GCP/Minikube]
  - k8s version [e.g. v1.21]
 
 **Additional context**
