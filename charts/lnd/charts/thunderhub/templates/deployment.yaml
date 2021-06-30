@@ -4,14 +4,14 @@ metadata:
   name: {{ include "thunderhub.fullname" . }}
   labels:
     {{- include "thunderhub.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
 spec:
   selector:
     matchLabels:
       {{- include "thunderhub.selectorLabels" . | nindent 6 }}
-      kube-monkey/identifier: {{ .Release.Name }}
-      {{- if .Values.labels }}
-      {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
-      {{- end }}
   template:
     metadata:
       annotations:
