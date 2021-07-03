@@ -35,7 +35,8 @@ podAnnotations:
 podSecurityContext:
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # runAsUser: 0
   # capabilities:
   #   drop:
@@ -48,7 +49,8 @@ terminationGracePeriodSeconds: 600
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -59,7 +61,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -100,42 +103,40 @@ persistence:
 affinity:
   podAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-    - weight: 100
-      podAffinityTerm:
-        labelSelector:
-          matchExpressions:
-          - key: app.kubernetes.io/name
-            operator: In
-            values:
-            - bitcoind
-        topologyKey: kubernetes.io/hostname
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - bitcoind
+          topologyKey: kubernetes.io/hostname
 
 walletPassword: ""
 
 lndGeneralConfig:
-- restlisten=0.0.0.0:8080
-- rpclisten=0.0.0.0:10009
-- prometheus.listen=0.0.0.0:9092
-- bitcoin.active=true
-- bitcoin.node=bitcoind
-- bitcoind.rpcuser=rpcuser
-- bitcoind.zmqpubrawblock=tcp://bitcoind:28332
-- bitcoind.zmqpubrawtx=tcp://bitcoind:28333
-- tlsextradomain=lnd
-- tlsextradomain=lnd-outside-1
-- tlsextradomain=lnd-outside-2
-- accept-keysend=1
-- allow-circular-route=1
-- sync-freelist=1
-- stagger-initial-reconnect=1
-- protocol.wumbo-channels=1
-- maxchansize=500000000
-- bitcoin.timelockdelta=60
-- default-remote-max-htlcs=50
-- debuglevel=debug
-- prometheus.enable=1
-- gc-canceled-invoices-on-startup=true
-- gc-canceled-invoices-on-the-fly=true
+  - restlisten=0.0.0.0:8080
+  - rpclisten=0.0.0.0:10009
+  - prometheus.listen=0.0.0.0:9092
+  - bitcoin.active=true
+  - bitcoin.node=bitcoind
+  - bitcoind.rpcuser=rpcuser
+  - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
+  - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+  - tlsextradomain=lnd
+  - tlsextradomain=lnd-outside-1
+  - tlsextradomain=lnd-outside-2
+  - accept-keysend=1
+  - allow-circular-route=1
+  - sync-freelist=1
+  - stagger-initial-reconnect=1
+  - protocol.wumbo-channels=1
+  - maxchansize=500000000
+  - bitcoin.timelockdelta=60
+  - default-remote-max-htlcs=50
+  - debuglevel=debug
+  - prometheus.enable=1
 
 thunderhub:
   enabled: false
@@ -148,4 +149,3 @@ loop:
 
 rbac:
   create: true
-
