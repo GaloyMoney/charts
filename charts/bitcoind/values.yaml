@@ -105,6 +105,8 @@ labels: {}
 
 podLabels: {}
 
+sidecarContainers: []
+
 # custom labels
 # labels:
 #   - kube-monkey/enabled: enabled

@@ -44,6 +44,9 @@ spec:
             - name: config
               mountPath: /data/.bitcoin/
       containers:
+      {{- if .Values.sidecarContainers }}
+      {{- toYaml .Values.sidecarContainers | nindent 8 }}
+      {{- end }}
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
