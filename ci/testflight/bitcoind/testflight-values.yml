@@ -1,0 +1,24 @@
+global:
+  network: testnet
+  service:
+    ports:
+      rpc: 18332
+
+secrets:
+  create: false
+
+persistence:
+  enabled: true
+  size: 50Gi
+
+service:
+  type: ClusterIP
+  ports:
+    zmqpubrawtx: 28333
+    zmqpubrawblock: 28332
+    p2p: 18333
+
+bitcoindCustomConfig:
+  bind: 0.0.0.0
+  rpcbind: 0.0.0.0
+  rpcallowip: 0.0.0.0/0
