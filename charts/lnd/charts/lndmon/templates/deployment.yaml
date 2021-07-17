@@ -48,11 +48,15 @@ spec:
               path: /health
               port: http
             timeoutSeconds: 30
+            periodSeconds: 30
+            failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /health
               port: http
             timeoutSeconds: 30
+            periodSeconds: 30
+            failureThreshold: 6
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
