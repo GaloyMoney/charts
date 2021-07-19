@@ -22,12 +22,3 @@ data:
     {{ printf "%s=%s" $k $v}}
     {{- end }}
   {{- end}}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: bitcoind-rpcpassword
-  labels:
-    {{- include "bitcoind.labels" . | nindent 4 }}
-stringData:
-  password: {{ $rpcpassword }}

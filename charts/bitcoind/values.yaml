@@ -7,6 +7,9 @@ global:
     ports:
       rpc: 8332
 
+secrets:
+  create: true
+
 replicaCount: 1
 
 image:
