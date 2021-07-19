@@ -7,7 +7,6 @@ metadata:
     {{- include "bitcoind.labels" . | nindent 4 }}
 data:
   bitcoin.conf: |-
-  {{ printf "rpcpassword=%s" $rpcpassword | indent 2 }}
   {{- range .Values.bitcoindGenericConfig }}
     {{ . }}
   {{- end }}
