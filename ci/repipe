@@ -10,7 +10,7 @@ fi
 target="${FLY_TARGET:-galoy}"
 team=dev
 
-TMPDIR=""¬
+TMPDIR=""
 TMPDIR=$(mktemp -d -t repipe.XXXXXX)
 trap "rm -rf ${TMPDIR}" INT TERM QUIT EXIT
 
