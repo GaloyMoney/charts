@@ -7,6 +7,9 @@ global:
     ports:
       rpc: 8332
 
+secrets:
+  create: true
+
 replicaCount: 1
 
 image:
@@ -117,6 +120,8 @@ podLabels: {}
 #   - kube-monkey/enabled: enabled
 #   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
 
+
+bitcoindRpcPassword: rpcpassword
 
 # TODO: Document the usage of generic and custom config to instruct where to put specific flags
 

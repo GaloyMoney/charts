@@ -1,0 +1,11 @@
+#@data/values
+---
+deployments_git_uri: git@github.com:GaloyMoney/galoy-deployments.git
+git_uri: git@github.com:GaloyMoney/charts.git
+git_branch: no-rpcpassword-generation
+github_private_key: ((github-ssh-key.private_key))
+docker_registry: us.gcr.io/galoy-org
+docker_registry_user: ((docker-creds.username))
+docker_registry_password: ((docker-creds.password))
+staging_state_bucket: ((staging.bucket_name))
+staging_creds: ((staging.creds_json))

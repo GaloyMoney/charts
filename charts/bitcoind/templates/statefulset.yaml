@@ -37,10 +37,19 @@ spec:
       initContainers:
         - name: copy-bitcoind-config
           image: busybox
-          command: ['sh', '-c', 'cp /configmap/bitcoin.conf /data/.bitcoin/bitcoin.conf']
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            cat <<EOF > /data/.bitcoin/bitcoin.conf
+            rpcpassword=$(cat /rpcpassword/password)
+            $(cat /configmap/bitcoin.conf)
+            EOF
           volumeMounts:
             - name: configmap
               mountPath: /configmap
+            - name: rpcpassword
+              mountPath: /rpcpassword
             - name: config
               mountPath: /data/.bitcoin/
       containers:
@@ -91,6 +100,9 @@ spec:
       volumes:
         - name: config
           emptyDir: {}
+        - name: rpcpassword
+          secret:
+            secretName: bitcoind-rpcpassword
         - name: configmap
           configMap:
             name: {{ template "bitcoind.fullname" . }}
