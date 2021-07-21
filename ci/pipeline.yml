@@ -217,7 +217,7 @@ resources:
   type: cepler-out
   source:
     uri: #@ data.values.deployments_git_uri
-    branch: #@ data.values.git_branch
+    branch: #@ data.values.deployments_git_branch
     private_key: #@ data.values.github_private_key
     environment: bitcoin-gcp-staging
 
@@ -232,4 +232,4 @@ resource_types:
   type: registry-image
   source:
     repository: cepler/cepler-concourse-resource
-    tag: 0.5.0
+    tag: 0.6.2
