@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 cd galoy-deployments
 
 make bump-chart CHART=${CHART} REF=$(cat ../chart/.git/ref)
