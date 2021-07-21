@@ -16,6 +16,6 @@ spec:
     - name: zmqpubrawblock
       port: {{ .Values.service.ports.zmqpubrawblock }}
     - name: metrics
-      port: {{ .Values.global.service.ports.metrics }}
+      port: {{ .Values.service.ports.metrics }}
   selector:
     {{- include "bitcoind.selectorLabels" . | nindent 4 }}

@@ -21,7 +21,7 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
         prometheus.io/path: /metrics
-        prometheus.io/port: {{ .Values.global.service.ports.metrics | quote }}
+        prometheus.io/port: {{ .Values.service.ports.metrics | quote }}
         prometheus.io/scrape: "true"
     {{- end }}
       labels:
@@ -114,13 +114,13 @@ spec:
                 name: bitcoind-rpcpassword
                 key: password
           - name: METRICS_PORT
-            value: "3000"
+            value: {{ .Values.service.ports.metrics | quote }}
           - name: BITCOIN_RPC_PORT
             value: {{ .Values.global.service.ports.rpc | quote }}
           ports:
-            - name: metrics
-              containerPort: {{ .Values.global.service.ports.metrics | quote }}
-              protocol: TCP
+          - name: metrics
+            containerPort: {{ .Values.service.ports.metrics }}
+            protocol: TCP
           livenessProbe:
             httpGet:
               path: /
