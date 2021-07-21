@@ -28,7 +28,7 @@ resource "kubernetes_secret" "testflight" {
 
 resource "helm_release" "bitcoind" {
   name       = "bitcoind"
-  chart      = "./chart"
+  chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 

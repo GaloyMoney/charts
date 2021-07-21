@@ -1,8 +1,9 @@
 #@data/values
 ---
 deployments_git_uri: git@github.com:GaloyMoney/galoy-deployments.git
+deployments_git_branch: main
 git_uri: git@github.com:GaloyMoney/charts.git
-git_branch: prometheus-in-pod
+git_branch: main
 github_private_key: ((github-ssh-key.private_key))
 docker_registry: us.gcr.io/galoy-org
 docker_registry_user: ((docker-creds.username))

@@ -114,7 +114,7 @@ jobs:
       - name: galoy-deployments
       params:
         CHART: bitcoind
-        BRANCH: #@ data.values.git_branch
+        BRANCH: #@ data.values.deployments_git_branch
       run:
         path: pipeline-tasks/ci/tasks/bump-chart.sh
   - put: galoy-deployments
@@ -122,6 +122,7 @@ jobs:
       repository: galoy-deployments
       rebase: true
 - name: bitcoind-staging
+  serial: true
   plan:
   - in_parallel:
     - { get: bitcoind-chart, passed: [ bump-bitcoind-in-deployments ], trigger: true }
@@ -168,7 +169,7 @@ resources:
   type: git
   source:
     uri: #@ data.values.deployments_git_uri
-    branch: #@ data.values.git_branch
+    branch: #@ data.values.deployments_git_branch
     private_key: #@ data.values.github_private_key
 
 - name: pipeline-image
