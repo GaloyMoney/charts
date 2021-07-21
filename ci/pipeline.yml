@@ -66,6 +66,8 @@ jobs:
       vars_files: [ testflight/bitcoind/terraform.tfvars ]
       terraform_source: testflight/bitcoind
       env_name_file: testflight/env_name
+      vars:
+        bitcoind_rpcpassword: #@ data.values.testflight_bitcoin_rpcpassword
   - task: smoke-test
     tags: ["staging"]
     config:
@@ -74,6 +76,8 @@ jobs:
       inputs:
       - name: pipeline-tasks
       - name: testflight
+      params:
+        BITCOIN_RPCPASSWORD: #@ data.values.testflight_bitcoin_rpcpassword
       run:
         path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
   - put: tf-bitcoind-testflight
@@ -83,6 +87,8 @@ jobs:
       terraform_source: testflight/bitcoind
       env_name_file: testflight/env_name
       action: destroy
+      vars:
+        bitcoind_rpcpassword: #@ data.values.testflight_bitcoin_rpcpassword
     get_params: { action: destroy }
 
 

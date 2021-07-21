@@ -121,8 +121,6 @@ podLabels: {}
 #   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
 
 
-bitcoindRpcPassword: rpcpassword
-
 # TODO: Document the usage of generic and custom config to instruct where to put specific flags
 
 bitcoindGenericConfig:

@@ -4,6 +4,9 @@ global:
     ports:
       rpc: 18332
 
+secrets:
+  create: false
+
 persistence:
   enabled: true
   size: 50Gi

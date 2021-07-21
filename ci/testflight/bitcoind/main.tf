@@ -1,4 +1,5 @@
 variable "testflight_namespace" {}
+variable "bitcoind_rpcpassword" {}
 
 locals {
   cluster_name             = "galoy-staging-cluster"
@@ -14,6 +15,17 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
+resource "kubernetes_secret" "testflight" {
+  metadata {
+    name = "bitcoind-rpcpassword"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    password = var.bitcoind_rpcpassword
+  }
+}
+
 resource "helm_release" "bitcoind" {
   name       = "bitcoind"
   chart      = "./chart"
@@ -22,6 +34,10 @@ resource "helm_release" "bitcoind" {
 
   values = [
     file("${path.module}/testflight-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.testflight
   ]
 }
 
