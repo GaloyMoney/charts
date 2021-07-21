@@ -100,7 +100,7 @@ spec:
             successThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: {{ .Chart.Name }}-prometheus
+        - name: exporter
           image: jvstein/bitcoin-prometheus-exporter:v0.5.0
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
