@@ -20,6 +20,9 @@ spec:
     {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        prometheus.io/path: /metrics
+        prometheus.io/port: {{ .Values.global.service.ports.metrics | quote }}
+        prometheus.io/scrape: "true"
     {{- end }}
       labels:
         {{- include "bitcoind.selectorLabels" . | nindent 8 }}
@@ -115,8 +118,8 @@ spec:
           - name: BITCOIN_RPC_PORT
             value: {{ .Values.global.service.ports.rpc | quote }}
           ports:
-            - name: http
-              containerPort: 3000
+            - name: metrics
+              containerPort: {{ .Values.global.service.ports.metrics | quote }}
               protocol: TCP
           livenessProbe:
             httpGet:
