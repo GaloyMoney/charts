@@ -108,17 +108,15 @@ jobs:
       - name: galoy-deployments
       outputs:
       - name: galoy-deployments
+      params:
+        CHART: bitcoind
+        BRANCH: #@ data.values.git_branch
       run:
-        path: pipeline-tasks/ci/tasks/bump-deployments.sh
-      #!  - in_parallel:
-      #!    - put: repo
-      #!      params:
-      #!        repository: repo
-      #!        rebase: true
-      #!    - put: galoy-staging
-      #!      params:
-      #!        repository: galoy-staging
-      #!        rebase: true
+        path: pipeline-tasks/ci/tasks/bump-chart.sh
+  - put: galoy-deployments
+    params:
+      repository: galoy-deployments
+      rebase: true
 
 
 resources:
