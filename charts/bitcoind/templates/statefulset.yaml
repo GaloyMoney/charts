@@ -124,11 +124,11 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: metrics
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: metrics
       volumes:
         - name: config
           emptyDir: {}
