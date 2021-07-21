@@ -4,7 +4,8 @@ set -eu
 
 cd galoy-deployments
 
-make bump-chart CHART=${CHART} REF=$(cat ../chart/.git/ref)
+REF=$(cat ../chart/.git/ref)
+make bump-chart CHART=${CHART} REF=${REF}
 make vendir
 
 if [[ -z $(git config --global user.email) ]]; then
@@ -19,5 +20,5 @@ fi
 git merge --no-edit ${BRANCH}
 git add -A
 git status
-git commit -m "$1"
+git commit -m "Bump ${CHART}-chart to '${REF}'"
 )
