@@ -14,7 +14,7 @@ source:
 
 groups:
 - name: bitcoind
-  jobs: [ bitcoind-testflight, bump-bitcoind-in-repos ]
+  jobs: [ bitcoind-testflight, bump-bitcoind-in-deployments ]
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -94,29 +94,22 @@ jobs:
 - name: bump-bitcoind-in-deployments
   plan:
   - in_parallel:
-    - { get: bitcoind-chart, passed: [bitcoind-testflight], trigger: true }
+    - { get: bitcoind-chart, passed: [ bitcoind-testflight ], trigger: true }
     - { get: pipeline-tasks }
     - { get: galoy-deployments }
-      #!    - { get: galoy-staging }
-      #!    - { get: modules, passed: [testflight-cleanup], trigger: true}
-      #!    - { get: repo, trigger: true, passed: [testflight-cleanup] }
-      #!    - { get: pipeline-tasks }
-      #!  - task: bump-repos
-      #!    config:
-      #!      platform: linux
-      #!      image_resource: #@ task_image_config()
-      #!      inputs:
-      #!      - name: galoy-staging
-      #!      - name: pipeline-tasks
-      #!      - name: modules
-      #!      - name: repo
-      #!      outputs:
-      #!      - name: repo
-      #!      - name: galoy-staging
-      #!      params:
-      #!        BRANCH: #@ data.values.git_branch
-      #!      run:
-      #!        path: pipeline-tasks/ci/tasks/bump-repos.sh
+  - task: bump-bitcoind
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: bitcoind-chart
+        path: chart
+      - name: pipeline-tasks
+      - name: galoy-deployments
+      outputs:
+      - name: galoy-deployments
+      run:
+        path: pipeline-tasks/ci/tasks/bump-deployments.sh
       #!  - in_parallel:
       #!    - put: repo
       #!      params:
