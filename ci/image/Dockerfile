@@ -32,3 +32,4 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
   && apt-get update -y \
   && apt-get install google-cloud-sdk -y
 
+RUN wget -O- https://k14s.io/install.sh | bash
