@@ -146,6 +146,8 @@ jobs:
         BITCOIND_RPCPORT: 18332
       run:
         path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
+  - put: cepler-bitcoin-staging
+    params: { repository: galoy-deployments }
 
 resources:
 - name: bitcoind-chart
@@ -210,9 +212,23 @@ resources:
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
 
+- name: cepler-bitcoin-staging
+  type: cepler-out
+  source:
+    uri: #@ data.values.deployments_git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+    environment: bitcoin-gcp-staging
+
 resource_types:
 - name: terraform
   type: docker-image
   source:
     repository: ljfranklin/terraform-resource
     tag: latest
+
+- name: cepler-out
+  type: registry-image
+  source:
+    repository: cepler/cepler-concourse-resource
+    tag: 0.5.0
