@@ -20,6 +20,9 @@ spec:
     {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        prometheus.io/path: /metrics
+        prometheus.io/port: {{ .Values.service.ports.metrics | quote }}
+        prometheus.io/scrape: "true"
     {{- end }}
       labels:
         {{- include "bitcoind.selectorLabels" . | nindent 8 }}
@@ -97,6 +100,35 @@ spec:
             successThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        - name: exporter
+          image: jvstein/bitcoin-prometheus-exporter:v0.5.0
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: BITCOIN_RPC_HOST
+            value: 127.0.0.1
+          - name: BITCOIN_RPC_USER
+            value: rpcuser
+          - name: BITCOIN_RPC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bitcoind-rpcpassword
+                key: password
+          - name: METRICS_PORT
+            value: {{ .Values.service.ports.metrics | quote }}
+          - name: BITCOIN_RPC_PORT
+            value: {{ .Values.global.service.ports.rpc | quote }}
+          ports:
+          - name: metrics
+            containerPort: {{ .Values.service.ports.metrics }}
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: metrics
+          readinessProbe:
+            httpGet:
+              path: /
+              port: metrics
       volumes:
         - name: config
           emptyDir: {}
