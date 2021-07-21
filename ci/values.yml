@@ -2,7 +2,7 @@
 ---
 deployments_git_uri: git@github.com:GaloyMoney/galoy-deployments.git
 git_uri: git@github.com:GaloyMoney/charts.git
-git_branch: main
+git_branch: deploy-staging
 github_private_key: ((github-ssh-key.private_key))
 docker_registry: us.gcr.io/galoy-org
 docker_registry_user: ((docker-creds.username))

@@ -14,7 +14,7 @@ source:
 
 groups:
 - name: bitcoind
-  jobs: [ bitcoind-testflight ]
+  jobs: [ bitcoind-testflight, bump-bitcoind-in-repos ]
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -91,6 +91,42 @@ jobs:
         bitcoind_rpcpassword: #@ data.values.testflight_bitcoin_rpcpassword
     get_params: { action: destroy }
 
+- name: bump-bitcoind-in-deployments
+  plan:
+  - in_parallel:
+    - { get: bitcoind-chart, passed: [bitcoind-testflight], trigger: true }
+    - { get: pipeline-tasks }
+    - { get: galoy-deployments }
+      #!    - { get: galoy-staging }
+      #!    - { get: modules, passed: [testflight-cleanup], trigger: true}
+      #!    - { get: repo, trigger: true, passed: [testflight-cleanup] }
+      #!    - { get: pipeline-tasks }
+      #!  - task: bump-repos
+      #!    config:
+      #!      platform: linux
+      #!      image_resource: #@ task_image_config()
+      #!      inputs:
+      #!      - name: galoy-staging
+      #!      - name: pipeline-tasks
+      #!      - name: modules
+      #!      - name: repo
+      #!      outputs:
+      #!      - name: repo
+      #!      - name: galoy-staging
+      #!      params:
+      #!        BRANCH: #@ data.values.git_branch
+      #!      run:
+      #!        path: pipeline-tasks/ci/tasks/bump-repos.sh
+      #!  - in_parallel:
+      #!    - put: repo
+      #!      params:
+      #!        repository: repo
+      #!        rebase: true
+      #!    - put: galoy-staging
+      #!      params:
+      #!        repository: galoy-staging
+      #!        rebase: true
+
 
 resources:
 - name: bitcoind-chart
@@ -105,6 +141,13 @@ resources:
   source:
     paths: [ci/tasks/*, ci/testflight/*, Makefile]
     uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: galoy-deployments
+  type: git
+  source:
+    uri: #@ data.values.deployments_git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
