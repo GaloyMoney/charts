@@ -14,7 +14,10 @@ source:
 
 groups:
 - name: bitcoind
-  jobs: [ bitcoind-testflight ]
+  jobs:
+  - bitcoind-testflight
+  - bump-bitcoind-in-deployments
+  - bitcoind-staging
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -67,7 +70,7 @@ jobs:
       terraform_source: testflight/bitcoind
       env_name_file: testflight/env_name
       vars:
-        bitcoind_rpcpassword: #@ data.values.testflight_bitcoin_rpcpassword
+        bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
   - task: smoke-test
     tags: ["staging"]
     config:
@@ -77,7 +80,8 @@ jobs:
       - name: pipeline-tasks
       - name: testflight
       params:
-        BITCOIN_RPCPASSWORD: #@ data.values.testflight_bitcoin_rpcpassword
+        BITCOIND_RPCPASSWORD: #@ data.values.testflight_bitcoind_rpcpassword
+        BITCOIND_RPCPORT: 18332
       run:
         path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
   - put: tf-bitcoind-testflight
@@ -88,9 +92,60 @@ jobs:
       env_name_file: testflight/env_name
       action: destroy
       vars:
-        bitcoind_rpcpassword: #@ data.values.testflight_bitcoin_rpcpassword
+        bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
     get_params: { action: destroy }
 
+- name: bump-bitcoind-in-deployments
+  plan:
+  - in_parallel:
+    - { get: bitcoind-chart, passed: [ bitcoind-testflight ], trigger: true }
+    - { get: pipeline-tasks }
+    - { get: galoy-deployments }
+  - task: bump-bitcoind
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: bitcoind-chart
+        path: chart
+      - name: pipeline-tasks
+      - name: galoy-deployments
+      outputs:
+      - name: galoy-deployments
+      params:
+        CHART: bitcoind
+        BRANCH: #@ data.values.git_branch
+      run:
+        path: pipeline-tasks/ci/tasks/bump-chart.sh
+  - put: galoy-deployments
+    params:
+      repository: galoy-deployments
+      rebase: true
+- name: bitcoind-staging
+  plan:
+  - in_parallel:
+    - { get: bitcoind-chart, passed: [ bump-bitcoind-in-deployments ], trigger: true }
+    - { get: pipeline-tasks }
+    - { get: galoy-deployments }
+  - put: tf-bitcoin-staging
+    tags: ["staging"]
+    params:
+      terraform_source: galoy-deployments/gcp/staging/bitcoin
+      vars:
+        bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
+  - task: smoke-test
+    tags: ["staging"]
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      params:
+        BITCOIND_RPCPASSWORD: #@ data.values.staging_bitcoind_rpcpassword
+        NAMESPACE: "staging-bitcoin"
+        BITCOIND_RPCPORT: 18332
+      run:
+        path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
 
 resources:
 - name: bitcoind-chart
@@ -100,11 +155,19 @@ resources:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
+
 - name: pipeline-tasks
   type: git
   source:
     paths: [ci/tasks/*, ci/testflight/*, Makefile]
     uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: galoy-deployments
+  type: git
+  source:
+    uri: #@ data.values.deployments_git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
@@ -115,6 +178,7 @@ resources:
     username: #@ data.values.docker_registry_user
     password: #@ data.values.docker_registry_password
     repository: #@ pipeline_image()
+
 - name: pipeline-image-def
   type: git
   source:
@@ -130,6 +194,18 @@ resources:
     backend_config:
       bucket: #@ data.values.staging_state_bucket
       prefix: galoy-staging/services/bitcoind-testflight
+      credentials: #@ data.values.staging_creds
+    env:
+      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+
+- name: tf-bitcoin-staging
+  type: terraform
+  source:
+    env_name: default
+    backend_type: gcs
+    backend_config:
+      bucket: #@ data.values.staging_state_bucket
+      prefix: galoy-staging/services/bitcoin
       credentials: #@ data.values.staging_creds
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
