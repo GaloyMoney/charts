@@ -7,7 +7,7 @@ cp -r repo/charts/${CHART} testflight/${CHART}/chart
 
 if [[ "${CHART}" == "lnd" ]]; then
   pushd testflight/${CHART}/chart
-  helm repo bitnami add https://charts.bitnami.com/bitnami
+  helm repo add bitnami https://charts.bitnami.com/bitnami
   helm dependency build
   popd
 fi
