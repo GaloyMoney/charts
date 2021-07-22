@@ -39,7 +39,7 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         - name: copy-lnd-config
-          image: busybox
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['sh', '-c', 'cp /configmap/lnd.conf /data/.lnd/lnd.conf']
           volumeMounts:
             - name: configmap
