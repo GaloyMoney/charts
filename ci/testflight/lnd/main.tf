@@ -45,7 +45,7 @@ resource "helm_release" "lnd" {
   ]
 
   depends_on = [
-    kubernetes_secret.testflight
+    kubernetes_secret.bitcoinrpc_password
   ]
 }
 
