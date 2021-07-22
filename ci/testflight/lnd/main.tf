@@ -28,7 +28,6 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
   }
 
   data = data.kubernetes_secret.bitcoin_rpcpassword.data
-  }
 }
 
 resource "helm_release" "lnd" {
