@@ -13,14 +13,12 @@ source:
 #@ end
 
 groups:
-- name: bitcoind
+- name: bitcoin
   jobs:
   - bitcoind-testflight
-  - bump-bitcoind-in-deployments
-  - bitcoind-staging
-- name: lnd
-  jobs:
   - lnd-testflight
+  - bump-bitcoind-in-deployments
+  - bitcoin-staging
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -126,7 +124,7 @@ jobs:
     params:
       repository: galoy-deployments
       rebase: true
-- name: bitcoind-staging
+- name: bitcoin-staging
   serial: true
   plan:
   - in_parallel:

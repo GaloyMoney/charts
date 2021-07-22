@@ -5,9 +5,12 @@ set -eu
 cp -r pipeline-tasks/ci/testflight/${CHART} testflight/${CHART}
 cp -r repo/charts/${CHART} testflight/${CHART}/chart
 
-pushd testflight/${CHART}/chart
-helm dependency build
-popd
+if [[ "${CHART}" == "lnd" ]]; then
+  pushd testflight/${CHART}/chart
+  helm repo add https://charts.bitnami.com/bitnami
+  helm dependency build
+  popd
+fi
 
 cat <<EOF > testflight/${CHART}/terraform.tfvars
 testflight_namespace = "${CHART}-testflight-$(cat repo/.git/short_ref)"
