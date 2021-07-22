@@ -134,6 +134,7 @@ jobs:
       terraform_source: galoy-deployments/gcp/staging/bitcoin
       vars:
         bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
+        name_prefix: #@ data.values.staging_name_prefix
   - task: smoke-test
     tags: ["staging"]
     config:
@@ -143,12 +144,14 @@ jobs:
       - name: pipeline-tasks
       params:
         BITCOIND_RPCPASSWORD: #@ data.values.staging_bitcoind_rpcpassword
-        NAMESPACE: "staging-bitcoin"
+        NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
         BITCOIND_RPCPORT: 18332
       run:
         path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
-  - put: cepler-bitcoin-staging
-    params: { repository: galoy-deployments }
+  - put: cepler-out
+    params:
+      repository: galoy-deployments
+      environment: gcp-staging-bitcoin
 
 resources:
 - name: bitcoind-chart
@@ -213,13 +216,12 @@ resources:
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
 
-- name: cepler-bitcoin-staging
+- name: cepler-out
   type: cepler-out
   source:
     uri: #@ data.values.deployments_git_uri
     branch: #@ data.values.deployments_git_branch
     private_key: #@ data.values.github_private_key
-    environment: bitcoin-gcp-staging
 
 resource_types:
 - name: terraform
@@ -232,4 +234,4 @@ resource_types:
   type: registry-image
   source:
     repository: cepler/cepler-concourse-resource
-    tag: 0.6.2
+    tag: latest
