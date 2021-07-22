@@ -21,13 +21,15 @@ data "kubernetes_secret" "bitcoin_rpcpassword" {
   }
 }
 
-resource "kubernetes_secret" "testflight" {
+resource "kubernetes_secret" "bitcoinrpc_password" {
   metadata {
     name = "bitcoind-rpcpassword"
     namespace  = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = data.kubernetes_secret.bitcoin_rpcpassword.data
+  data = {
+    password = data.kubernetes_secret.bitcoin_rpcpassword.data["password"]
+  }
 }
 
 resource "helm_release" "lnd" {
