@@ -1,12 +1,14 @@
 #!/bin/bash
 
-cp -r pipeline-tasks/ci/testflight/bitcoind testflight/bitcoind
-cp -r repo/charts/bitcoind testflight/bitcoind/chart
+set -eu
 
-cat <<EOF > testflight/bitcoind/terraform.tfvars
-testflight_namespace = "bitcoind-testflight-$(cat repo/.git/short_ref)"
+cp -r pipeline-tasks/ci/testflight/${CHART} testflight/${CHART}
+cp -r repo/charts/${CHART} testflight/${CHART}/chart
+
+cat <<EOF > testflight/${CHART}/terraform.tfvars
+testflight_namespace = "${CHART}-testflight-$(cat repo/.git/short_ref)"
 EOF
 
 cat <<EOF > testflight/env_name
-bitcoind-testflight-$(cat repo/.git/short_ref)
+${CHART}-testflight-$(cat repo/.git/short_ref)
 EOF
