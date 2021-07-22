@@ -234,4 +234,4 @@ resource_types:
   type: registry-image
   source:
     repository: cepler/cepler-concourse-resource
-    tag: latest
+    tag: 0.6.4
