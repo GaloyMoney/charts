@@ -2,8 +2,8 @@
 
 set -eu
 
-cp -r repo/charts/${CHART} testflight/${CHART}/chart
 cp -r pipeline-tasks/ci/testflight/${CHART} testflight/${CHART}
+cp -r repo/charts/${CHART} testflight/${CHART}/chart
 
 pushd testflight/${CHART}/
 helm dependency build
