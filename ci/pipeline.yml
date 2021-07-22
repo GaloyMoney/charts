@@ -18,6 +18,9 @@ groups:
   - bitcoind-testflight
   - bump-bitcoind-in-deployments
   - bitcoind-staging
+- name: lnd
+  jobs:
+  - lnd-testflight
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -61,6 +64,8 @@ jobs:
         path: repo
       outputs:
       - name: testflight
+      params:
+        CHART: bitcoind
       run:
         path: pipeline-tasks/ci/tasks/prepare-testflight.sh
   - put: tf-bitcoind-testflight
@@ -153,11 +158,57 @@ jobs:
       repository: galoy-deployments
       environment: gcp-staging-bitcoin
 
+- name: lnd-testflight
+  plan:
+  - in_parallel:
+    - { get: lnd-chart, trigger: true }
+    - { get: pipeline-tasks }
+  - task: prepare-testflight
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: lnd-chart
+        path: repo
+      outputs:
+      - name: testflight
+      params:
+        CHART: lnd
+      run:
+        path: pipeline-tasks/ci/tasks/prepare-testflight.sh
+  - put: tf-lnd-testflight
+    tags: ["staging"]
+    params:
+      vars_files: [ testflight/lnd/terraform.tfvars ]
+      terraform_source: testflight/lnd
+      env_name_file: testflight/env_name
+      vars:
+        bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
+  - put: tf-lnd-testflight
+    tags: ["staging"]
+    params:
+      vars_files: [ testflight/lnd/terraform.tfvars ]
+      terraform_source: testflight/lnd
+      env_name_file: testflight/env_name
+      action: destroy
+      vars:
+        bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
+    get_params: { action: destroy }
+
 resources:
 - name: bitcoind-chart
   type: git
   source:
     paths: [ "charts/bitcoind/**/*" ]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: lnd-chart
+  type: git
+  source:
+    paths: [ "charts/lnd/**/*" ]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
@@ -200,6 +251,17 @@ resources:
     backend_config:
       bucket: #@ data.values.staging_state_bucket
       prefix: galoy-staging/services/bitcoind-testflight
+      credentials: #@ data.values.staging_creds
+    env:
+      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+
+- name: tf-lnd-testflight
+  type: terraform
+  source:
+    backend_type: gcs
+    backend_config:
+      bucket: #@ data.values.staging_state_bucket
+      prefix: galoy-staging/services/lnd-testflight
       credentials: #@ data.values.staging_creds
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
