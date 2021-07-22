@@ -16,7 +16,7 @@ resource "kubernetes_namespace" "testflight" {
 
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
-    name = "bitcoin-rpcpassword"
+    name = "bitcoind-rpcpassword"
     namespace = "galoy-staging-bitcoin"
   }
 }
@@ -27,8 +27,7 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
     namespace  = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = {
-    password = data.kubernetes_secret.bitcoin_rpcpassword.data["password"]
+  data = data.kubernetes_secret.bitcoin_rpcpassword.data
   }
 }
 
