@@ -183,8 +183,6 @@ jobs:
       vars_files: [ testflight/lnd/terraform.tfvars ]
       terraform_source: testflight/lnd
       env_name_file: testflight/env_name
-      vars:
-        bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
   - put: tf-lnd-testflight
     tags: ["staging"]
     params:
@@ -192,8 +190,6 @@ jobs:
       terraform_source: testflight/lnd
       env_name_file: testflight/env_name
       action: destroy
-      vars:
-        bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
     get_params: { action: destroy }
 
 resources:
