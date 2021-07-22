@@ -22,7 +22,7 @@ dependencies:
     condition: thunderhub.enabled
   - name: common
     repository: https://charts.bitnami.com/bitnami
-    version: 1.x.x
+    version: 1.4.1
   - name: rtl
     version: x.x.x
     condition: rtl.enabled
