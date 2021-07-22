@@ -30,11 +30,13 @@ resource "kubernetes_secret" "testflight" {
   data = data.kubernetes_secret.bitcoin_rpcpassword.data
 }
 
-resource "helm_release" "bitcoind" {
+resource "helm_release" "lnd" {
   name       = "lnd"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  dependency_update = true
 
   values = [
     file("${path.module}/testflight-values.yml")
