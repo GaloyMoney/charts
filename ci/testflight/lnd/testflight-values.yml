@@ -1,0 +1,46 @@
+global:
+  network: testnet
+
+service:
+  type: ClusterIP
+  ports:
+    rpc: 10009
+    p2p: 9735
+    rest: 8080
+
+terminationGracePeriodSeconds: 600
+
+persistence:
+  enabled: true
+
+configmap:
+  customValues:
+    - bitcoin.testnet=true
+    - bitcoind.rpchost=bitcoind.galoy-staging-bitcoin.svc.local:18332
+    - minchansize=50000
+    - db.bolt.auto-compact=true
+
+resources:
+  requests:
+    cpu: 100m
+  limits:
+    cpu: 1000m
+
+loop:
+  args: "--network=testnet"
+  enabled: true
+
+rtl:
+  enabled: true
+  password: rtlgaloy
+
+thunderhub:
+  enabled: true
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+
+walletPassword: lndtestflight
