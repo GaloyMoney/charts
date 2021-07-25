@@ -62,9 +62,6 @@ spec:
             - name: config
               mountPath: /data/.lnd/lnd.conf
               subPath: lnd.conf
-            - name: lnd-init
-              mountPath: /data/init.sh
-              subPath: init.sh
             - name: lnd-password
               mountPath: /tmp/
           readinessProbe:
@@ -99,10 +96,6 @@ spec:
                 key: password
           {{- end }}
       volumes:
-        - name: lnd-init
-          configMap:
-            name: {{ printf "%s-init" (include "lnd.fullname" .) }}
-            defaultMode: 0777
         - name: config
           emptyDir: {}
         - name: configmap
