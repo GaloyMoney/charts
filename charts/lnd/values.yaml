@@ -108,5 +108,8 @@ rtl:
 loop:
   enabled: false
 
+lndmon:
+  enabled: false
+
 rbac:
   create: true

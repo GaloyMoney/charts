@@ -28,14 +28,14 @@ resources:
 
 loop:
   args: "--network=testnet"
-  enabled: true
+  enabled: false
 
 rtl:
-  enabled: true
+  enabled: false
   password: rtlgaloy
 
 thunderhub:
-  enabled: true
+  enabled: false
 
 rbac:
   create: true

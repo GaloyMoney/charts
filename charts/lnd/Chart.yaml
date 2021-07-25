@@ -26,3 +26,6 @@ dependencies:
   - name: rtl
     version: x.x.x
     condition: rtl.enabled
+  - name: lndmon
+    version: x.x.x
+    condition: lndmon.enabled
