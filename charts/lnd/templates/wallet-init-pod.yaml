@@ -13,7 +13,7 @@ spec:
     image: "boxboat/kubectl"
     imagePullPolicy: IfNotPresent
     command: ['/bin/sh']
-    args: ['-c', 'apk update; apk add expect; kubectl wait --for=condition=ready --timeout=150s pod {{ include "lnd.fullname" . }}-0; ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
+    args: ['-c', 'apk update; apk add expect; kubectl wait --for=condition=running --timeout=150s pod {{ include "lnd.fullname" . }}-0; ./walletInit.exp {{.Values.global.network}} $LND_PASS {{ include "lnd.fullname" . }}-0;']
     env:
     {{- if ne .Values.global.network "regtest" }}
     - name: LND_PASS
