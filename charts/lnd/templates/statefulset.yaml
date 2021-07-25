@@ -54,8 +54,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh","-c"]
-          args: ["/data/init.sh"]
           ports:
             - name: rpc
               containerPort: {{ .Values.service.ports.rpc }}
@@ -72,6 +70,8 @@ spec:
             - name: lnd-init
               mountPath: /data/init.sh
               subPath: init.sh
+            - name: lnd-password
+              mountPath: /tmp/
           readinessProbe:
             exec:
               command:
@@ -113,6 +113,9 @@ spec:
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
+        - name: lnd-password
+          secret:
+            secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
