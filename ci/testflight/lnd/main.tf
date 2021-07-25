@@ -30,6 +30,22 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
   data = data.kubernetes_secret.bitcoin_rpcpassword.data
 }
 
+data "kubernetes_secret" "network" {
+  metadata {
+    name = "network"
+    namespace = "galoy-staging-bitcoin"
+  }
+}
+
+resource "kubernetes_secret" "network" {
+  metadata {
+    name = "network"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = data.kubernetes_secret.network.data
+}
+
 resource "helm_release" "lnd" {
   name       = "lnd"
   chart      = "${path.module}/chart"
