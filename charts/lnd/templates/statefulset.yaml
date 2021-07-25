@@ -37,19 +37,10 @@ spec:
       initContainers:
         - name: copy-lnd-config
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command:
-          - 'sh'
-          - '-c'
-          - |
-            cat <<EOF > /data/.lnd/lnd.conf
-            bitcoind.rpcpass=$(cat /rpcpassword/password)
-            $(cat /configmap/lnd.conf)
-            EOF
+          command: ['sh', '-c', 'cp /configmap/lnd.conf /data/.lnd/lnd.conf']
           volumeMounts:
             - name: configmap
               mountPath: /configmap
-            - name: rpcpassword
-              mountPath: /rpcpassword
             - name: config
               mountPath: /data/.lnd/
       containers:
