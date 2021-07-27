@@ -49,7 +49,11 @@ spec:
             runAsUser: 0
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
-          args: ['-c', 'apk update; apk add expect; sleep 20; ./walletInit.exp {{.Values.global.network}} $LND_PASS;']
+          args:
+          - '-c'
+          - >
+            ! test -f //data/.lnd/data/chain/bitcoin/testnet/admin.macaroon &&
+            apk update; apk add expect; sleep 20; /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
           env:
           {{- if ne .Values.global.network "regtest" }}
           - name: LND_PASS
