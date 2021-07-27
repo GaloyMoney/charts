@@ -65,6 +65,8 @@ spec:
           - name: wallet-init
             mountPath: /home/alpine/walletInit.exp
             subPath: walletInit.exp
+          - name: lnd-storage
+            mountPath: /data/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
