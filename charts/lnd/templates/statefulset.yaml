@@ -47,7 +47,7 @@ spec:
         - name: init-wallet
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
-          args: ['-c', 'apk update; apk add expect; sleep 500000; ./walletInit.exp {{.Values.global.network}} $LND_PASS;']
+          args: ['-c', 'apk update; apk add expect; sleep 20; ./walletInit.exp {{.Values.global.network}} $LND_PASS;']
           env:
           {{- if ne .Values.global.network "regtest" }}
           - name: LND_PASS
