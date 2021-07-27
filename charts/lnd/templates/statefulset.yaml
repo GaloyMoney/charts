@@ -54,7 +54,9 @@ spec:
           - >
             ! test -f /data/.lnd/data/chain/bitcoin/testnet/admin.macaroon &&
             while ! test -f /data/.lnd/tls.cert; do sleep 1; done;
-            apk update; apk add expect; /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
+            apk update; apk add expect;
+            /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
+            sleep infinity;
           env:
           {{- if ne .Values.global.network "regtest" }}
           - name: LND_PASS
