@@ -44,11 +44,30 @@ spec:
             - name: config
               mountPath: /data/.lnd/
       containers:
+        - name: init-wallet
+          image: "boxboat/kubectl"
+          imagePullPolicy: IfNotPresent
+          command: ['/bin/sh']
+          args: ['-c', 'sleep 500000; apk update; apk add expect; ./walletInit.exp {{.Values.global.network}} $LND_PASS;']
+          env:
+          {{- if ne .Values.global.network "regtest" }}
+          - name: LND_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
+                key: password
+          {{- end }}
+          - name: NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: network
+                key: network
+          volumeMounts:
+          - name: wallet-init
+            mountPath: /home/alpine/walletInit.exp
+            subPath: walletInit.exp
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: rpc
               containerPort: {{ .Values.service.ports.rpc }}
@@ -96,6 +115,10 @@ spec:
                 key: password
           {{- end }}
       volumes:
+        - name: wallet-init
+          configMap:
+            name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
+            defaultMode: 0777
         - name: config
           emptyDir: {}
         - name: configmap
