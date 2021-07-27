@@ -8,7 +8,7 @@ service:
     p2p: 9735
     rest: 8080
 
-terminationGracePeriodSeconds: 600
+terminationGracePeriodSeconds: 0
 
 persistence:
   enabled: true
