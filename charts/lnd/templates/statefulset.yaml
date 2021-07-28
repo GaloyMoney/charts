@@ -76,6 +76,26 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /data/.lnd
+        - name: export-secrets
+          securityContext:
+            runAsUser: 0
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - >
+            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done;
+            home/alpine/exportSecrets.sh
+          env:
+          - name: NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: network
+                key: network
+          volumeMounts:
+          - name: export-secrets
+            mountPath: /home/alpine/exportSecrets.sh
+            subPath: exportSecrets.sh
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
@@ -128,6 +148,10 @@ spec:
         - name: wallet-init
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
+            defaultMode: 0777
+        - name: export-secrets
+          configMap:
+            name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
             defaultMode: 0777
         - name: config
           emptyDir: {}
