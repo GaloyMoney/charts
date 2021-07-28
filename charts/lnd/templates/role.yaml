@@ -7,12 +7,6 @@ metadata:
     {{- include "lnd.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["pods/exec"]
-    verbs: ["create"]
-  - apiGroups: [""]
     resources: ["secrets"]
     verbs: ["create", "get", "patch", "delete"]
 {{- end }}
