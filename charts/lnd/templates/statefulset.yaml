@@ -96,6 +96,8 @@ spec:
           - name: export-secrets
             mountPath: /home/alpine/exportSecrets.sh
             subPath: exportSecrets.sh
+          - name: lnd-storage
+            mountPath: /data/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
