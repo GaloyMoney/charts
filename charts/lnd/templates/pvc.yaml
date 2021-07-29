@@ -3,8 +3,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ template "lnd.fullname" $ }}
-  annotations:
-    "helm.sh/resource-policy": keep
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
 spec:
