@@ -1,15 +1,6 @@
 dependencies:
-- name: loop
-  repository: ""
-  version: x.x.x
-- name: thunderhub
-  repository: ""
-  version: x.x.x
 - name: common
   repository: https://charts.bitnami.com/bitnami
   version: 1.4.1
-- name: rtl
-  repository: ""
-  version: x.x.x
-digest: sha256:22d4398e9a93e42c452b4d13e741cdc7199b6f137a49a5e1e34b0445c0f725c1
-generated: "2021-03-25T19:31:55.748134345+05:30"
+digest: sha256:c53e3c3325fc8b9b8b41efd417bad52765452600992fe8612c8cb062725b505a
+generated: "2021-07-30T18:46:42.181643065+05:30"

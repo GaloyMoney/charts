@@ -99,12 +99,6 @@ lndGeneralConfig:
   - wallet-unlock-allow-create=true
   - wallet-unlock-password-file=/tmp/password
 
-thunderhub:
-  enabled: false
-
-rtl:
-  enabled: false
-
 loop:
   enabled: false
 
