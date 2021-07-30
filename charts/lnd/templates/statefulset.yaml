@@ -56,8 +56,7 @@ spec:
             while ! test -f /data/.lnd/tls.cert; do sleep 1; done;
             apk update; apk add expect;
             /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
-            exit_script() { echo "Exit script"; trap - SIGINT SIGTERM; kill -- -$$; exit 0; }
-            trap exit_script SIGINT SIGTERM
+            trap "echo received signal;exit 0" SIGINT SIGTERM;
             sleep infinity;
           env:
           {{- if ne .Values.global.network "regtest" }}
