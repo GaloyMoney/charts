@@ -100,10 +100,10 @@ lndGeneralConfig:
   - wallet-unlock-password-file=/tmp/password
 
 loop:
-  enabled: false
+  enabled: true
 
 lndmon:
-  enabled: false
+  enabled: true
 
 rbac:
   create: true
