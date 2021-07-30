@@ -56,7 +56,7 @@ spec:
             while ! test -f /data/.lnd/tls.cert; do sleep 1; done;
             apk update; apk add expect;
             /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
-            sleep infinity
+            exec sleep infinity
           env:
           {{- if ne .Values.global.network "regtest" }}
           - name: LND_PASS
@@ -86,6 +86,7 @@ spec:
           - >
             while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done;
             home/alpine/exportSecrets.sh
+            exec sleep infinity
           env:
           - name: NETWORK
             valueFrom:
