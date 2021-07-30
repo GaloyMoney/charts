@@ -36,9 +36,6 @@ rtl:
   enabled: false
   password: rtlgaloy
 
-thunderhub:
-  enabled: false
-
 rbac:
   create: true
 
