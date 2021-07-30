@@ -5,8 +5,6 @@ appVersion: 0.12.1
 description: LND helm chart
 keywords:
   - lnd
-  - rtl
-  - loop
 maintainers:
   - name: krtk6160
     email: krtk6160@galoy.io
@@ -14,18 +12,6 @@ maintainers:
     email: nb@galoy.io
 engine: gotpl
 dependencies:
-  - name: loop
-    version: x.x.x
-    condition: loop.enabled
-  - name: thunderhub
-    version: x.x.x
-    condition: thunderhub.enabled
   - name: common
     repository: https://charts.bitnami.com/bitnami
     version: 1.4.1
-  - name: rtl
-    version: x.x.x
-    condition: rtl.enabled
-  - name: lndmon
-    version: x.x.x
-    condition: lndmon.enabled
