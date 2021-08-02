@@ -89,6 +89,8 @@ lndGeneralConfig:
   - prometheus.enable=1
   - wallet-unlock-allow-create=true
   - wallet-unlock-password-file=/tmp/password
+  - gc-canceled-invoices-on-the-fly=true
+  - gc-canceled-invoices-on-startup=true
 
 loop:
   enabled: true
