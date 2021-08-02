@@ -44,14 +44,20 @@ spec:
               containerPort: 11010
             - name: rest
               containerPort: 8081
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            exec:
+              command:
+              - loop
+              - -n
+              - {{ $.Values.global.network}}
+              - terms
+          livenessProbe:
+            exec:
+              command:
+              - loop
+              - -n
+              - {{ $.Values.global.network}}
+              - terms
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

@@ -30,14 +30,7 @@ resources:
 
 loop:
   args: "--network=testnet"
-  enabled: true
-
-rtl:
-  enabled: true
-  password: rtlgaloy
-
-thunderhub:
-  enabled: true
+  enabled: false
 
 rbac:
   create: true
