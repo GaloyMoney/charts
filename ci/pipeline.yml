@@ -181,6 +181,16 @@ jobs:
       vars_files: [ testflight/lnd/terraform.tfvars ]
       terraform_source: testflight/lnd
       env_name_file: testflight/env_name
+  - task: smoke-test
+    tags: ["staging"]
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: testflight
+      run:
+        path: pipeline-tasks/ci/tasks/lnd-smoketest.sh
   - put: tf-lnd-testflight
     tags: ["staging"]
     params:
