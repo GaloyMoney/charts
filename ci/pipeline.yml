@@ -16,9 +16,10 @@ groups:
 - name: bitcoin
   jobs:
   - bitcoind-testflight
-  - lnd-testflight
   - bump-bitcoind-in-deployments
   - bitcoin-staging
+  - lnd-testflight
+  - bump-lnd-in-deployments
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -129,6 +130,7 @@ jobs:
   plan:
   - in_parallel:
     - { get: bitcoind-chart, passed: [ bump-bitcoind-in-deployments ], trigger: true }
+    - { get: lnd-chart, passed: [ bump-lnd-in-deployments ], trigger: true }
     - { get: pipeline-tasks }
     - { get: galoy-deployments }
   - put: tf-bitcoin-staging
@@ -138,19 +140,31 @@ jobs:
       vars:
         bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
         name_prefix: #@ data.values.staging_name_prefix
-  - task: smoke-test
-    tags: ["staging"]
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: pipeline-tasks
-      params:
-        BITCOIND_RPCPASSWORD: #@ data.values.staging_bitcoind_rpcpassword
-        NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
-        BITCOIND_RPCPORT: 18332
-      run:
-        path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
+  - in_parallel:
+    - task: bitcoind-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          BITCOIND_RPCPASSWORD: #@ data.values.staging_bitcoind_rpcpassword
+          NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+          BITCOIND_RPCPORT: 18332
+        run:
+          path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
+    - task: lnd-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+        run:
+          path: pipeline-tasks/ci/tasks/lnd-smoketest.sh
   - put: cepler-out
     params:
       repository: galoy-deployments
@@ -199,6 +213,33 @@ jobs:
       env_name_file: testflight/env_name
       action: destroy
     get_params: { action: destroy }
+
+- name: bump-lnd-in-deployments
+  plan:
+  - in_parallel:
+    - { get: lnd-chart, passed: [ lnd-testflight ], trigger: true }
+    - { get: pipeline-tasks }
+    - { get: galoy-deployments }
+  - task: bump-lnd
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: lnd-chart
+        path: chart
+      - name: pipeline-tasks
+      - name: galoy-deployments
+      outputs:
+      - name: galoy-deployments
+      params:
+        CHART: lnd
+        BRANCH: #@ data.values.deployments_git_branch
+      run:
+        path: pipeline-tasks/ci/tasks/bump-chart.sh
+  - put: galoy-deployments
+    params:
+      repository: galoy-deployments
+      rebase: true
 
 resources:
 - name: bitcoind-chart
