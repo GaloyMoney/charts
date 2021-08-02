@@ -144,7 +144,7 @@ bitcoindCustomConfig:
 
 # set to true to enable
 specter:
-  enabled: false
+  enabled: true
   # ingress:
   #   enabled: true
   #   annotations:
