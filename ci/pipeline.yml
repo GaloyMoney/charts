@@ -194,7 +194,9 @@ resources:
 - name: bitcoind-chart
   type: git
   source:
-    paths: [ "charts/bitcoind/**/*" ]
+    paths:
+    - "charts/bitcoind/*"
+    - "charts/bitcoind/**/*"
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
@@ -202,7 +204,9 @@ resources:
 - name: lnd-chart
   type: git
   source:
-    paths: [ "charts/lnd/**/*" ]
+    paths:
+    - "charts/lnd/*"
+    - "charts/lnd/**/*"
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
