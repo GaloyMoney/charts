@@ -63,7 +63,7 @@ spec:
           - name: BTC_RPC_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: bitcoind-rpcpassword
+                name: {{ printf "%s-rpcpassword" (include "bitcoind.fullname" .) }}
                 key: password
           - name: BTC_RPC_HOST
             value: bitcoind
