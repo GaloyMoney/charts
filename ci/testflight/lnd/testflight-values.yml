@@ -32,10 +32,6 @@ loop:
   args: "--network=testnet"
   enabled: false
 
-rtl:
-  enabled: false
-  password: rtlgaloy
-
 rbac:
   create: true
 
