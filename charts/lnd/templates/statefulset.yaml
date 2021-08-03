@@ -57,7 +57,8 @@ spec:
             while ! test -f /data/.lnd/tls.cert; do sleep 1; done;
             apk update; apk add expect;
             /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
-            exec sleep infinity
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM;
+            while true; do sleep 1; done;
           env:
           - name: LND_PASS
             valueFrom:
@@ -86,7 +87,8 @@ spec:
           - >
             while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done;
             home/alpine/exportSecrets.sh;
-            while true; do sleep 30; done;
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM;
+            while true; do sleep 1; done;
           env:
           - name: NETWORK
             valueFrom:
