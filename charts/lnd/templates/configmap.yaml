@@ -7,6 +7,10 @@ metadata:
 data:
   lnd.conf: |-
   {{ printf "%s=%s" "bitcoind.rpcpass" (include "bitcoind.rpcpassword" . ) | indent 2 }}
+  {{- if ne .Values.global.network "regtest" }}
+    wallet-unlock-password-file=/tmp/password
+    wallet-unlock-allow-create=true
+  {{- end }}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
   {{- end }}

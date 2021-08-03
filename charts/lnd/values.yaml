@@ -10,9 +10,7 @@ image:
   pullPolicy: IfNotPresent
 
 configmap:
-  customValues:
-    - wallet-unlock-password-file=/tmp/password
-    - wallet-unlock-allow-create=true
+  customValues: []
 
 serviceAccount:
   # Specifies whether a service account should be created
