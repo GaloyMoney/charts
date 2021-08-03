@@ -44,6 +44,7 @@ spec:
             - name: config
               mountPath: /data/.lnd/
       containers:
+        {{- if ne .Values.global.network "regtest" }}
         - name: init-wallet
           securityContext:
             runAsUser: 0
@@ -58,13 +59,11 @@ spec:
             /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
             exec sleep infinity
           env:
-          {{- if ne .Values.global.network "regtest" }}
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
                 name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
-          {{- end }}
           - name: NETWORK
             valueFrom:
               secretKeyRef:
@@ -76,6 +75,7 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /data/.lnd
+        {{- end }}
         - name: export-secrets
           securityContext:
             runAsUser: 0
@@ -114,8 +114,10 @@ spec:
             - name: config
               mountPath: /data/.lnd/lnd.conf
               subPath: lnd.conf
+            {{- if ne .Values.global.network "regtest" }}
             - name: lnd-password
               mountPath: /tmp/
+            {{- end }}
           readinessProbe:
             exec:
               command:
@@ -139,17 +141,21 @@ spec:
             initialDelaySeconds: 600
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if ne .Values.global.network "regtest" }}
           env:
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
                 name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
+      {{- end }}
       volumes:
+        {{- if ne .Values.global.network "regtest" }}
         - name: wallet-init
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
+        {{- end }}
         - name: export-secrets
           configMap:
             name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
@@ -159,9 +165,11 @@ spec:
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
+        {{- if ne .Values.global.network "regtest" }}
         - name: lnd-password
           secret:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
+        {{- end }}
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
