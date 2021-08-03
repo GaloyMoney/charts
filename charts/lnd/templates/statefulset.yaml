@@ -86,7 +86,7 @@ spec:
           - >
             while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done;
             home/alpine/exportSecrets.sh;
-            exec sleep infinity
+            while true; do sleep 30; done;
           env:
           - name: NETWORK
             valueFrom:
