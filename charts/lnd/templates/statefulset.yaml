@@ -53,12 +53,13 @@ spec:
           args:
           - '-c'
           - |
-            set -x
             if [ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /data/.lnd/tls.cert; do sleep 1; done
               apk update; apk add expect
               /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
             fi
+            # Trap is required otherwise signals aren't handled
+            # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
           env:
@@ -146,14 +147,6 @@ spec:
             initialDelaySeconds: 600
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if ne .Values.global.network "regtest" }}
-          env:
-          - name: LND_PASS
-            valueFrom:
-              secretKeyRef:
-                name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
-                key: password
-      {{- end }}
       volumes:
         {{- if ne .Values.global.network "regtest" }}
         - name: wallet-init
