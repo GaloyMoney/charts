@@ -56,11 +56,11 @@ spec:
             set -x
             if [ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /data/.lnd/tls.cert; do sleep 1; done
-              apk update; apk add expect;
-              /home/alpine/walletInit.exp ${NETWORK} $LND_PASS;
+              apk update; apk add expect
+              /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
             fi
-            trap "echo shutting down; exit 0" SIGKILL SIGTERM;
-            while true; do sleep 1; done;
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
           env:
           - name: LND_PASS
             valueFrom:
@@ -86,11 +86,11 @@ spec:
           command: ['/bin/sh']
           args:
           - '-c'
-          - >
-            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done;
-            home/alpine/exportSecrets.sh;
-            trap "echo shutting down; exit 0" SIGKILL SIGTERM;
-            while true; do sleep 1; done;
+          - |
+            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done
+            home/alpine/exportSecrets.sh
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
           env:
           - name: NETWORK
             valueFrom:
