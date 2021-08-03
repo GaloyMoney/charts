@@ -52,7 +52,7 @@ spec:
           command: ['/bin/sh']
           args:
           - '-c'
-          - >
+          - |
             set -x
             if [ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /data/.lnd/tls.cert; do sleep 1; done
