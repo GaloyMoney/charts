@@ -53,10 +53,11 @@ spec:
           args:
           - '-c'
           - >
-            ! test -f /data/.lnd/data/chain/bitcoin/testnet/admin.macaroon &&
-            while ! test -f /data/.lnd/tls.cert; do sleep 1; done;
-            apk update; apk add expect;
-            /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
+            if [[ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]]; then
+              while ! test -f /data/.lnd/tls.cert; do sleep 1; done
+              apk update; apk add expect;
+              /home/alpine/walletInit.exp ${NETWORK} $LND_PASS;
+            fi
             trap "echo shutting down; exit 0" SIGKILL SIGTERM;
             while true; do sleep 1; done;
           env:
