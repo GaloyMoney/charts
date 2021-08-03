@@ -120,7 +120,8 @@ spec:
               subPath: lnd.conf
             {{- if ne .Values.global.network "regtest" }}
             - name: lnd-password
-              mountPath: /tmp/
+              mountPath: /tmp/lnd-pass
+              subPath: password
             {{- end }}
           readinessProbe:
             exec:
