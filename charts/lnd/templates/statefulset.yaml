@@ -54,7 +54,7 @@ spec:
           - '-c'
           - >
             set -x
-            if [[ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]]; then
+            if [ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /data/.lnd/tls.cert; do sleep 1; done
               apk update; apk add expect;
               /home/alpine/walletInit.exp ${NETWORK} $LND_PASS;
