@@ -55,10 +55,10 @@ spec:
               mountPath: /data
           env:
           - name: BTC_RPC_USER
-            value: {{ .Values.bitcoindRpc.user }}
+            value: {{ .Values.bitcoind.rpcUser }}
           - name: BTC_RPC_PASSWORD
             valueFrom:
-              secretKeyRef: {{ .Values.bitcoindRpc.passwordRef }}
+              secretKeyRef: {{ .Values.bitcoind.rpcPasswordRef }}
           - name: BTC_RPC_HOST
             value: bitcoind
           - name: BTC_RPC_PORT

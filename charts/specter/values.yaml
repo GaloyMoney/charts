@@ -2,11 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-bitcoindRpc:
-  user: rpc_user
-  passwordRef:
+bitcoind:
+  rpcUser: rpc_user
+  rpcPasswordRef:
     name: "bitcoind-rpcpassword"
     secret: "password"
+
+global:
+  network: "regtest"
 
 image:
   repository: lncm/specter-desktop
