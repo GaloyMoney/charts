@@ -1,6 +1,5 @@
 apiVersion: apps/v1
 kind: StatefulSet
-
 metadata:
   name: {{ include "specter.fullname" . }}
   labels:
@@ -69,12 +68,12 @@ spec:
             value: http            
       volumes:
         - name: data
-        {{- if eq $.Values.global.network "regtest" }}
-          emptyDir: {}
-        {{- else }}
+        {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ $.Values.pvc.name }}
-        {{- end }}
+            claimName: {{ .Values.persistence.existingClaim | default (include "bitcoind.fullname" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
