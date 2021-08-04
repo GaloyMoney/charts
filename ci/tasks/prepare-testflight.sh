@@ -2,10 +2,10 @@
 
 set -eu
 
-cp -r pipeline-tasks/ci/testflight/${CHART} testflight/${CHART}
-cp -r repo/charts/${CHART} testflight/${CHART}/chart
+cp -r pipeline-tasks/ci/testflight/${CHART} testflight/tf
+cp -r repo/charts/${CHART} testflight/tf/chart
 
-cat <<EOF > testflight/${CHART}/terraform.tfvars
+cat <<EOF > testflight/tf/terraform.tfvars
 testflight_namespace = "${CHART}-testflight-$(cat repo/.git/short_ref)"
 EOF
 
