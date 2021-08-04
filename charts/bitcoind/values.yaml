@@ -141,19 +141,3 @@ bitcoindCustomConfig:
   rpcbind: 0.0.0.0
   rpcallowip: 0.0.0.0/0
 
-
-# set to true to enable
-specter:
-  enabled: true
-  # ingress:
-  #   enabled: true
-  #   annotations:
-  #     cert-manager.io/cluster-issuer: ca-issuer
-  #     kubernetes.io/ingress.class: nginx
-  #   hosts:
-  #     - host: xyz.com
-  #       paths: ["/"]
-  #   tls:
-  #    - secretName: specter-tls
-  #      hosts:
-  #        - xyz.com

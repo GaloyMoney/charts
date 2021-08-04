@@ -11,5 +11,3 @@ bitcoin-cli -testnet \
   -rpcport=${BITCOIND_RPCPORT} \
   -rpcconnect=${host}\
   -getinfo
-
-curl ${host}:3000/metrics
