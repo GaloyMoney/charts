@@ -110,6 +110,11 @@ groups:
   jobs: [ build-pipeline-image ]
 
 jobs:
+- #@ testflight("bitcoind")
+- #@ bump("bitcoind")
+- #@ testflight("lnd")
+- #@ bump("lnd")
+
 - name: build-pipeline-image
   serial: true
   plan:
@@ -133,11 +138,6 @@ jobs:
   - put: pipeline-image
     params:
       image: image/image.tar
-
-- #@ testflight("bitcoind")
-- #@ bump("bitcoind")
-- #@ testflight("lnd")
-- #@ bump("lnd")
 
 - name: bitcoin-staging
   serial: true
