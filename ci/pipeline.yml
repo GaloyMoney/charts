@@ -103,9 +103,10 @@ groups:
   jobs:
   - bitcoind-testflight
   - bump-bitcoind-in-deployments
-  - bitcoin-staging
   - lnd-testflight
   - bump-lnd-in-deployments
+  - specter-testflight
+  - bitcoin-staging
 - name: image
   jobs: [ build-pipeline-image ]
 
@@ -114,6 +115,7 @@ jobs:
 - #@ bump("bitcoind")
 - #@ testflight("lnd")
 - #@ bump("lnd")
+- #@ testflight("specter")
 
 - name: build-pipeline-image
   serial: true
@@ -211,9 +213,13 @@ source:
 
 resources:
 - #@ chart_repo_resource("bitcoind")
-- #@ chart_repo_resource("lnd")
 - #@ testflight_tf_resource("bitcoind")
+
+- #@ chart_repo_resource("lnd")
 - #@ testflight_tf_resource("lnd")
+
+- #@ chart_repo_resource("specter")
+- #@ testflight_tf_resource("specter")
 
 - name: pipeline-tasks
   type: git
