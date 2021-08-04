@@ -8,7 +8,7 @@ host=specter.${namespace}.svc.cluster.local
 set +e
 for i in {1..60}; do
   echo "Attempt ${i} to curl specter"
-  curl ${host}:25541
+  curl ${host}:25441
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
