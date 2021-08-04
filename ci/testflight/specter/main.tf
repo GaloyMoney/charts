@@ -26,7 +26,7 @@ resource "kubernetes_secret" "testflight" {
   }
 }
 
-resource "helm_release" "bitcoind" {
+resource "helm_release" "specter" {
   name       = "specter"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
