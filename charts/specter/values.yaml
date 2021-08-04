@@ -6,7 +6,7 @@ bitcoind:
   rpcUser: rpc_user
   rpcPasswordRef:
     name: "bitcoind-rpcpassword"
-    secret: "password"
+    key: "password"
 
 global:
   network: "regtest"

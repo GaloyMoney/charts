@@ -58,7 +58,9 @@ spec:
             value: {{ .Values.bitcoind.rpcUser }}
           - name: BTC_RPC_PASSWORD
             valueFrom:
-              secretKeyRef: {{ .Values.bitcoind.rpcPasswordRef }}
+              secretKeyRef:
+                name: {{ .Values.bitcoind.rpcPasswordRef.name }}
+                key: {{ .Values.bitcoind.rpcPasswordRef.key }}
           - name: BTC_RPC_HOST
             value: bitcoind
           - name: BTC_RPC_PORT
