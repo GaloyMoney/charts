@@ -148,6 +148,7 @@ jobs:
   - in_parallel:
     - { get: bitcoind-chart, passed: [ bump-bitcoind-in-deployments ], trigger: true }
     - { get: lnd-chart, passed: [ bump-lnd-in-deployments ], trigger: true }
+    - { get: specter-chart, passed: [ bump-specter-in-deployments ], trigger: true }
     - { get: pipeline-tasks }
     - { get: galoy-deployments }
   - put: tf-bitcoin-staging
@@ -181,6 +182,17 @@ jobs:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
         run:
           path: pipeline-tasks/ci/tasks/lnd-smoketest.sh
+    - task: specter-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+        run:
+          path: pipeline-tasks/ci/tasks/specter-smoketest.sh
   - put: cepler-out
     params:
       repository: galoy-deployments
