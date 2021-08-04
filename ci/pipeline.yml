@@ -184,26 +184,36 @@ jobs:
       repository: galoy-deployments
       environment: gcp-staging-bitcoin
 
-resources:
-- name: bitcoind-chart
-  type: git
-  source:
-    paths:
-    - "charts/bitcoind/*"
-    - "charts/bitcoind/**/*"
-    uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
+#@ def chart_repo_resource(chart_name):
+name: #@ chart_name + "-chart"
+type: git
+source:
+  paths:
+  - #@ "charts/" + chart_name + "/*"
+  - #@ "charts/" + chart_name + "/**/*"
+  uri: #@ data.values.git_uri
+  branch: #@ data.values.git_branch
+  private_key: #@ data.values.github_private_key
+#@ end
 
-- name: lnd-chart
-  type: git
-  source:
-    paths:
-    - "charts/lnd/*"
-    - "charts/lnd/**/*"
-    uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
+#@ def testflight_tf_resource(chart_name):
+name: #@ "tf-" + chart_name + "-testflight"
+type: terraform
+source:
+  backend_type: gcs
+  backend_config:
+    bucket: #@ data.values.staging_state_bucket
+    prefix: #@ "galoy-staging/services/" + chart_name + "-testflight"
+    credentials: #@ data.values.staging_creds
+  env:
+    GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+#@ end
+
+resources:
+- #@ chart_repo_resource("bitcoind")
+- #@ chart_repo_resource("lnd")
+- #@ testflight_tf_resource("bitcoind")
+- #@ testflight_tf_resource("lnd")
 
 - name: pipeline-tasks
   type: git
@@ -235,28 +245,6 @@ resources:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
-
-- name: tf-bitcoind-testflight
-  type: terraform
-  source:
-    backend_type: gcs
-    backend_config:
-      bucket: #@ data.values.staging_state_bucket
-      prefix: galoy-staging/services/bitcoind-testflight
-      credentials: #@ data.values.staging_creds
-    env:
-      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
-
-- name: tf-lnd-testflight
-  type: terraform
-  source:
-    backend_type: gcs
-    backend_config:
-      bucket: #@ data.values.staging_state_bucket
-      prefix: galoy-staging/services/lnd-testflight
-      credentials: #@ data.values.staging_creds
-    env:
-      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
 
 - name: tf-bitcoin-staging
   type: terraform
