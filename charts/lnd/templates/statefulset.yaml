@@ -58,7 +58,7 @@ spec:
               apk update; apk add expect
               /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
             fi
-            # Trap is required otherwise signals aren't handled
+            # Trap is required otherwise signals are not handled
             # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
