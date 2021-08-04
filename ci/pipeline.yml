@@ -51,7 +51,6 @@ plan:
     - name: testflight
     params:
       BITCOIND_RPCPASSWORD: #@ data.values.testflight_bitcoind_rpcpassword
-      BITCOIND_RPCPORT: 18332
     run:
       path: #@ "pipeline-tasks/ci/tasks/" + chart_name + "-smoketest.sh"
 - put: #@ "tf-" + chart_name + "-testflight"
@@ -167,7 +166,6 @@ jobs:
         params:
           BITCOIND_RPCPASSWORD: #@ data.values.staging_bitcoind_rpcpassword
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
-          BITCOIND_RPCPORT: 18332
         run:
           path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
     - task: lnd-smoke-test

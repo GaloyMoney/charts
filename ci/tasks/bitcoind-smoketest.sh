@@ -8,7 +8,7 @@ bitcoin-cli -version
 bitcoin-cli -testnet \
   -rpcuser=rpcuser \
   -rpcpassword=${BITCOIND_RPCPASSWORD} \
-  -rpcport=${BITCOIND_RPCPORT} \
+  -rpcport=18332 \
   -rpcconnect=${host}\
   -getinfo
 
