@@ -37,7 +37,7 @@ spec:
           command: ["/usr/local/bin/python3", "-m", "cryptoadvance.specter", "server", "--host=0.0.0.0", "--specter-data-folder=/data"]
           ports:
             - name: http
-              containerPort: 25441
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           # livenessProbe:
           #   httpGet:

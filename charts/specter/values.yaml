@@ -8,9 +8,6 @@ bitcoind:
     name: "bitcoind-rpcpassword"
     key: "password"
 
-global:
-  network: "regtest"
-
 image:
   repository: lncm/specter-desktop
   pullPolicy: IfNotPresent
