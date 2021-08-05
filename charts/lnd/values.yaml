@@ -87,8 +87,6 @@ lndGeneralConfig:
   - default-remote-max-htlcs=50
   - debuglevel=debug
   - prometheus.enable=1
-  - wallet-unlock-allow-create=true
-  - wallet-unlock-password-file=/tmp/password
   - gc-canceled-invoices-on-the-fly=true
   - gc-canceled-invoices-on-startup=true
 

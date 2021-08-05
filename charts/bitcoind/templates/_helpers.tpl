@@ -65,7 +65,7 @@ Create the name of the service account to use
 
 {{- define "rpcpassword" -}}
 
-{{- $secret := (lookup "v1" "Secret" .Release.Namespace "bitcoind-rpcpassword") -}}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace (printf "%s-rpcpassword" (include "bitcoind.fullname" .))) -}}
 {{- if $secret -}}
 {{/*
    Reusing current password since secret exists

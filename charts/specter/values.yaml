@@ -2,7 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+bitcoind:
+  rpcUser: rpc_user
+  rpcPasswordRef:
+    name: "bitcoind-rpcpassword"
+    key: "password"
 
 image:
   repository: lncm/specter-desktop
@@ -11,7 +15,7 @@ image:
   tag: "v1.3.1"
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 25441
 
 imagePullSecrets: []
@@ -78,6 +82,15 @@ tolerations: []
 
 affinity: {}
 
-pvc:
-  name: specter-claim
-  size: 1Gi
+persistence:
+  enabled: true
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 128Mi

@@ -44,6 +44,7 @@ spec:
             - name: config
               mountPath: /data/.lnd/
       containers:
+        {{- if ne .Values.global.network "regtest" }}
         - name: init-wallet
           securityContext:
             runAsUser: 0
@@ -51,20 +52,22 @@ spec:
           command: ['/bin/sh']
           args:
           - '-c'
-          - >
-            ! test -f /data/.lnd/data/chain/bitcoin/testnet/admin.macaroon &&
-            while ! test -f /data/.lnd/tls.cert; do sleep 1; done;
-            apk update; apk add expect;
-            /home/alpine/walletInit.exp {{.Values.global.network}} $LND_PASS;
-            exec sleep infinity
+          - |
+            if [ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
+              while ! test -f /data/.lnd/tls.cert; do sleep 1; done
+              apk update; apk add expect
+              /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
+            fi
+            # Trap is required otherwise signals are not handled
+            # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
           env:
-          {{- if ne .Values.global.network "regtest" }}
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
                 name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
-          {{- end }}
           - name: NETWORK
             valueFrom:
               secretKeyRef:
@@ -76,6 +79,7 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /data/.lnd
+        {{- end }}
         - name: export-secrets
           securityContext:
             runAsUser: 0
@@ -83,10 +87,11 @@ spec:
           command: ['/bin/sh']
           args:
           - '-c'
-          - >
-            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done;
-            home/alpine/exportSecrets.sh;
-            exec sleep infinity
+          - |
+            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done
+            home/alpine/exportSecrets.sh
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
           env:
           - name: NETWORK
             valueFrom:
@@ -114,8 +119,11 @@ spec:
             - name: config
               mountPath: /data/.lnd/lnd.conf
               subPath: lnd.conf
+            {{- if ne .Values.global.network "regtest" }}
             - name: lnd-password
-              mountPath: /tmp/
+              mountPath: /tmp/lnd-pass
+              subPath: password
+            {{- end }}
           readinessProbe:
             exec:
               command:
@@ -139,17 +147,13 @@ spec:
             initialDelaySeconds: 600
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-          - name: LND_PASS
-            valueFrom:
-              secretKeyRef:
-                name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
-                key: password
       volumes:
+        {{- if ne .Values.global.network "regtest" }}
         - name: wallet-init
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
+        {{- end }}
         - name: export-secrets
           configMap:
             name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
@@ -159,9 +163,11 @@ spec:
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
+        {{- if ne .Values.global.network "regtest" }}
         - name: lnd-password
           secret:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
+        {{- end }}
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:

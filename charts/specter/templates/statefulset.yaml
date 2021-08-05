@@ -1,16 +1,11 @@
-{{- if .Values.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
-
 metadata:
   name: {{ include "specter.fullname" . }}
   labels:
     {{- include "specter.labels" . | nindent 4 }}
 spec:
-{{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-{{- end }}
-  serviceName: "specter"
+  serviceName: {{ include "specter.fullname" . }}
   selector:
     matchLabels:
       {{- include "specter.selectorLabels" . | nindent 6 }}
@@ -42,7 +37,7 @@ spec:
           command: ["/usr/local/bin/python3", "-m", "cryptoadvance.specter", "server", "--host=0.0.0.0", "--specter-data-folder=/data"]
           ports:
             - name: http
-              containerPort: 25441
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           # livenessProbe:
           #   httpGet:
@@ -59,12 +54,12 @@ spec:
               mountPath: /data
           env:
           - name: BTC_RPC_USER
-            value: rpcuser
+            value: {{ .Values.bitcoind.rpcUser }}
           - name: BTC_RPC_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: bitcoind-rpcpassword
-                key: password
+                name: {{ .Values.bitcoind.rpcPasswordRef.name }}
+                key: {{ .Values.bitcoind.rpcPasswordRef.key }}
           - name: BTC_RPC_HOST
             value: bitcoind
           - name: BTC_RPC_PORT
@@ -73,12 +68,12 @@ spec:
             value: http            
       volumes:
         - name: data
-        {{- if eq $.Values.global.network "regtest" }}
-          emptyDir: {}
-        {{- else }}
+        {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ $.Values.pvc.name }}
-        {{- end }}
+            claimName: {{ .Values.persistence.existingClaim | default (include "specter.fullname" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -91,4 +86,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- end }}
