@@ -6,7 +6,7 @@ namespace=${NAMESPACE:-$(cat testflight/env_name)}
 host=${HOST:-specter.${namespace}.svc.cluster.local}
 
 set +e
-for i in {1..60}; do
+for i in {1..15}; do
   echo "Attempt ${i} to curl specter"
   curl ${host}:25441
   if [[ $? == 0 ]]; then success="true"; break; fi;
