@@ -191,6 +191,7 @@ jobs:
         - name: pipeline-tasks
         params:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+          HOST: #@ data.values.staging_specter_dns
         run:
           path: pipeline-tasks/ci/tasks/specter-smoketest.sh
   - put: cepler-out
