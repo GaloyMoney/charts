@@ -1,3 +1,4 @@
+{{- if .Values.networkPolicy.enabled -}}
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
@@ -10,10 +11,12 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app.kubernetes.io/name: ingress-nginx
+          {{- with .Values.networkPolicy.podSelectorLabels }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       namespaceSelector:
         matchLabels:
-          type: ingress-nginx
-    # ports:
-    # - protocol: TCP
-    #   port: 6379
+          {{- with .Values.networkPolicy.namespaceSelectorLabels }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end -}}
