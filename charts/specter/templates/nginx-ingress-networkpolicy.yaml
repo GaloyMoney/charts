@@ -11,12 +11,16 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          {{- with .Values.networkPolicy.podSelectorLabels }}
-            {{- toYaml . | nindent 12 }}
+        {{- range $idx, $value := .Values.networkPolicy.podSelectorLabels }}
+          {{- range $i, $v := keys $value }}
+            {{ $v }}: {{ get $value $v }}
           {{- end }}
+        {{- end }}
       namespaceSelector:
         matchLabels:
-          {{- with .Values.networkPolicy.namespaceSelectorLabels }}
-            {{- toYaml . | nindent 12 }}
+        {{- range $idx, $value := .Values.networkPolicy.namespaceSelectorLabels }}
+          {{- range $i, $v := keys $value }}
+            {{ $v }}: {{ get $value $v }}
           {{- end }}
+        {{- end }}
 {{- end -}}

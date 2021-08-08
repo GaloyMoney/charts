@@ -98,6 +98,6 @@ persistence:
 networkPolicy:
   enabled: true
   namespaceSelectorLabels:
-    type: nginx-ingress
+    - type: nginx-ingress
   podSelectorLabels:
-    app.kubernetes.io/name: ingress-nginx
+    - app.kubernetes.io/name: ingress-nginx
