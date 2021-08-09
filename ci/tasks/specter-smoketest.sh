@@ -4,11 +4,12 @@ set -eu
 
 namespace=${NAMESPACE:-$(cat testflight/env_name)}
 host=${HOST:-specter.${namespace}.svc.cluster.local}
+port=${PORT:-25441}
 
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl specter"
-  curl ${host}:25441
+  curl ${host}:${port}
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
