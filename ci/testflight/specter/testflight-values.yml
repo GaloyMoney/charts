@@ -1,8 +1,4 @@
 # empty
 networkPolicy:
-  namespaceSelectorLabels:
-    - type: concourse-workers
-  podSelectorLabels:
-    - app: galoy-staging-concourse-worker
-  podSelectorLabelAppName: galoy-staging-concourse-worker
   namespaceSelectorLabelType: concourse-workers
+  podSelectorLabelAppName: galoy-staging-concourse-worker
