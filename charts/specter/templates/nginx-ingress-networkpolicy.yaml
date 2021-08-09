@@ -11,16 +11,8 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-        {{- range $idx, $value := .Values.networkPolicy.podSelectorLabels }}
-          {{- range $i, $v := keys $value }}
-            {{ $v }}: {{ get $value $v }}
-          {{- end }}
-        {{- end }}
+          app.kubernetes.io/name: {{.Values.networkPolicy.podSelectorLabelAppName}}
       namespaceSelector:
         matchLabels:
-        {{- range $idx, $value := .Values.networkPolicy.namespaceSelectorLabels }}
-          {{- range $i, $v := keys $value }}
-            {{ $v }}: {{ get $value $v }}
-          {{- end }}
-        {{- end }}
+          type: {{.Values.networkPolicy.namespaceSelectorLabelType}}
 {{- end -}}
