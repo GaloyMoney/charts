@@ -127,20 +127,18 @@ spec:
           readinessProbe:
             exec:
               command:
-              - lncli
-              - -n
-              - {{ $.Values.global.network}}
-              - getinfo
+              - sh
+              - -c
+              - "lncli -n - {{ $.Values.global.network}} state | grep -q RPC_ACTIVE"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
           livenessProbe:
             exec:
               command:
-              - lncli
-              - -n
-              - {{ $.Values.global.network}}
-              - getinfo
+              - sh
+              - -c
+              - "lncli -n - {{ $.Values.global.network}} state | grep -q RPC_ACTIVE"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
