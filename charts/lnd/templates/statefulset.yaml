@@ -129,7 +129,7 @@ spec:
               command:
               - sh
               - -c
-              - "lncli -n - {{ $.Values.global.network}} state | grep -q RPC_ACTIVE"
+              - "lncli -n {{ $.Values.global.network}} state | grep -q RPC_ACTIVE"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
@@ -138,7 +138,7 @@ spec:
               command:
               - sh
               - -c
-              - "lncli -n - {{ $.Values.global.network}} state | grep -q RPC_ACTIVE"
+              - "lncli -n {{ $.Values.global.network}} state | grep -q RPC_ACTIVE"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
