@@ -8,12 +8,6 @@ locals {
   testflight_namespace = var.testflight_namespace
 }
 
-resource "kubernetes_namespace" "testflight" {
-  metadata {
-    name = local.testflight_namespace
-  }
-}
-
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
     name = "bitcoind-rpcpassword"
@@ -93,12 +87,6 @@ resource "kubernetes_secret" "lnd1_credentials" {
 
   data = data.kubernetes_secret.lnd1_credentials.data
 }
-
-
-
-
-
-
 
 resource "kubernetes_namespace" "testflight" {
   metadata {
