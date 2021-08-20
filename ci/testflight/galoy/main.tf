@@ -1,9 +1,17 @@
+variable "testflight_namespace" {}
+
 locals {
   cluster_name             = "galoy-staging-cluster"
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
   testflight_namespace = var.testflight_namespace
+}
+
+resource "kubernetes_namespace" "testflight" {
+  metadata {
+    name = local.testflight_namespace
+  }
 }
 
 data "kubernetes_secret" "bitcoin_rpcpassword" {
