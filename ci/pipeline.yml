@@ -109,6 +109,8 @@ groups:
   - bitcoin-staging
 - name: image
   jobs: [ build-pipeline-image ]
+- name: galoy
+  jobs: [ galoy-testflight ]
 
 jobs:
 - #@ testflight("bitcoind")
@@ -117,6 +119,7 @@ jobs:
 - #@ bump("lnd")
 - #@ testflight("specter")
 - #@ bump("specter")
+- #@ testflight("galoy")
 
 - name: build-pipeline-image
   serial: true
@@ -234,6 +237,9 @@ resources:
 
 - #@ chart_repo_resource("specter")
 - #@ testflight_tf_resource("specter")
+
+- #@ chart_repo_resource("galoy")
+- #@ testflight_tf_resource("galoy")
 
 - name: pipeline-tasks
   type: git
