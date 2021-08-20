@@ -54,8 +54,6 @@ resource "kubernetes_secret" "lnd1_pubkey" {
   data = data.kubernetes_secret.lnd1_pubkey.data
 }
 
-lnd2-credentials
-
 data "kubernetes_secret" "lnd2_credentials" {
   metadata {
     name = "lnd2-credentials"
