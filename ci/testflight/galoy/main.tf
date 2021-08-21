@@ -105,7 +105,11 @@ resource "helm_release" "galoy" {
   ]
 
   depends_on = [
-    kubernetes_secret.testflight
+    kubernetes_secret.bitcoinrpc_password,
+    kubernetes_secret.lnd1_credentials,
+    kubernetes_secret.lnd1_pubkey,
+    kubernetes_secret.lnd2_credentials,
+    kubernetes_secret.lnd2_pubkey
   ]
 }
 
