@@ -111,6 +111,8 @@ resource "helm_release" "galoy" {
     kubernetes_secret.lnd2_credentials,
     kubernetes_secret.lnd2_pubkey
   ]
+
+  dependency_update = true
 }
 
 data "google_container_cluster" "primary" {
