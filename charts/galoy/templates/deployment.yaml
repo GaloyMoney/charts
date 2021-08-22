@@ -32,7 +32,7 @@ spec:
         - name: {{ .name }}
           {{- if $.Values.image.tag -}}
           image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}{{- if .debugContainer -}}-debug{{- end -}}"
-          {{- else -}}
+          {{- else }}
           image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
           {{- end -}}
           {{- if .command }}
