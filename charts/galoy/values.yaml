@@ -13,7 +13,7 @@ ca:
   CAEmail: dev@galoy.io
 
 image:
-  repository: gcr.io/galoyapp/galoy
+  repository: us.gcr.io/galoy-org/galoy-app
   digest: "sha256:3e368a4e302ee92f9832c390c47970320c36245824ab1c8fdb6e8bf5b9f50959"
 
 deployment:
