@@ -8,6 +8,22 @@ locals {
   testflight_namespace = var.testflight_namespace
 }
 
+data "kubernetes_secret" "network" {
+  metadata {
+    name = "network"
+    namespace = "galoy-staging-bitcoin"
+  }
+}
+
+resource "kubernetes_secret" "network" {
+  metadata {
+    name = "network"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = data.kubernetes_secret.network.data
+}
+
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
     name = "bitcoind-rpcpassword"
