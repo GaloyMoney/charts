@@ -24,13 +24,63 @@ resource "kubernetes_secret" "network" {
   data = data.kubernetes_secret.network.data
 }
 
+resource "kubernetes_secret" "gcs_sa_key" {
+  metadata {
+    name = "gcs-sa-key"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {}
+}
+
+resource "kubernetes_secret" "dropbox_access_token" {
+  metadata {
+    name = "dropbox-access-token"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    token = ""
+  }
+}
+
 resource "kubernetes_secret" "twilio_secret" {
   metadata {
     name = "twilio-secret"
     namespace  = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = {}
+  data = {
+    TWILIO_PHONE_NUMBER = ""
+    TWILIO_ACCOUNT_SID = ""
+    TWILIO_API_KEY = ""
+    TWILIO_API_SECRET = ""
+  }
+}
+
+resource "kubernetes_secret" "smsala_secret" {
+  metadata {
+    name = "smsala-secret"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    SMSALA_SENDER_ID = ""
+    SMSALA_API_ID = ""
+    SMSALA_API_PASSWORD = ""
+  }
+}
+
+resource "kubernetes_secret" "apollo_secret" {
+  metadata {
+    name = "galoy-apollo-secret"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    key = ""
+    id = ""
+  }
 }
 
 data "kubernetes_secret" "bitcoin_rpcpassword" {
