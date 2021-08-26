@@ -98,6 +98,9 @@ plan:
 #@ end
 
 groups:
+- name: lnd-utils
+  jobs:
+  - rtl-testflight
 - name: bitcoin
   jobs:
   - bitcoind-testflight
@@ -120,6 +123,7 @@ jobs:
 - #@ testflight("specter")
 - #@ bump("specter")
 - #@ testflight("galoy")
+- #@ testflight("rtl")
 
 - name: build-pipeline-image
   serial: true
