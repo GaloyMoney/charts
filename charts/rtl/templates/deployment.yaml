@@ -63,7 +63,7 @@ spec:
             - name: lnd2-rpc
               mountPath: /lnd2/rpc
               readOnly: true
-            {{- end -}}
+            {{- end }}
       volumes:
           - name: rtl-conf
             configMap:
@@ -75,7 +75,7 @@ spec:
           - name: lnd2-rpc
             secret:
               secretName: {{ .Values.lnd2SecretName }}
-          {{- end -}}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
