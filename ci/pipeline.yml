@@ -98,15 +98,13 @@ plan:
 #@ end
 
 groups:
-- name: lnd-utils
-  jobs:
-  - rtl-testflight
 - name: bitcoin
   jobs:
   - bitcoind-testflight
   - bump-bitcoind-in-deployments
   - lnd-testflight
   - bump-lnd-in-deployments
+  - rtl-testflight
   - specter-testflight
   - bump-specter-in-deployments
   - bitcoin-staging
@@ -244,6 +242,9 @@ resources:
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
+
+- #@ chart_repo_resource("rtl")
+- #@ testflight_tf_resource("rtl")
 
 - name: pipeline-tasks
   type: git
