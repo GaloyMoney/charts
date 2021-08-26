@@ -56,16 +56,26 @@ spec:
               mountPath: "/RTL/RTL-Config.json"
               subPath: "RTL-Config.json"
               # readOnly: true
-            - name: lnd-rpc
-              mountPath: /rpc
+            - name: lnd1-rpc
+              mountPath: /lnd1/rpc
               readOnly: true
+            {{- if .Values.lnd2SecretName -}}
+            - name: lnd2-rpc
+              mountPath: /lnd2/rpc
+              readOnly: true
+            {{- end -}}
       volumes:
           - name: rtl-conf
             configMap:
               name: {{ include "rtl.fullname" . }}
-          - name: lnd-rpc
+          - name: lnd1-rpc
             secret:
-              secretName: {{.Release.Name}}-credentials
+              secretName: {{ .Values.lnd1SecretName }}
+          {{- if .Values.lnd2SecretName -}}
+          - name: lnd2-rpc
+            secret:
+              secretName: {{ .Values.lnd2SecretName }}
+          {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
