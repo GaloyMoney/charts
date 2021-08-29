@@ -1533,6 +1533,17 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/lnd-1.0.1/lnd-1.0.1.tgz
     version: 1.0.1
+  rtl:
+  - apiVersion: v2
+    appVersion: 0.10.2
+    created: "2021-08-29T08:04:50.463347952Z"
+    description: A Helm chart for Kubernetes
+    digest: d5d0a0d7acb7e77139132c23b9806a7bcf508a5e0059fe4868417fdd1ac2873b
+    name: rtl
+    type: application
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/rtl-0.1.1/rtl-0.1.1.tgz
+    version: 0.1.1
   specter:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1547,4 +1558,4 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/specter-0.1.1/specter-0.1.1.tgz
     version: 0.1.1
-generated: "2021-08-29T07:56:30.89011537Z"
+generated: "2021-08-29T08:04:50.463785855Z"
