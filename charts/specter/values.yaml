@@ -94,3 +94,8 @@ persistence:
   # storageClass: "-"
   accessMode: ReadWriteOnce
   size: 128Mi
+
+networkPolicy:
+  enabled: true
+  podSelectorLabelAppName: ingress-nginx
+  namespaceSelectorLabelType: ingress-nginx

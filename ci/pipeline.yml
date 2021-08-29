@@ -104,11 +104,15 @@ groups:
   - bump-bitcoind-in-deployments
   - lnd-testflight
   - bump-lnd-in-deployments
+  - rtl-testflight
+  - bump-rtl-in-deployments
   - specter-testflight
   - bump-specter-in-deployments
   - bitcoin-staging
 - name: image
   jobs: [ build-pipeline-image ]
+- name: galoy
+  jobs: [ galoy-testflight ]
 
 jobs:
 - #@ testflight("bitcoind")
@@ -117,6 +121,9 @@ jobs:
 - #@ bump("lnd")
 - #@ testflight("specter")
 - #@ bump("specter")
+- #@ testflight("rtl")
+- #@ bump("rtl")
+- #@ testflight("galoy")
 
 - name: build-pipeline-image
   serial: true
@@ -149,6 +156,7 @@ jobs:
     - { get: bitcoind-chart, passed: [ bump-bitcoind-in-deployments ], trigger: true }
     - { get: lnd-chart, passed: [ bump-lnd-in-deployments ], trigger: true }
     - { get: specter-chart, passed: [ bump-specter-in-deployments ], trigger: true }
+    - { get: rtl-chart, passed: [ bump-rtl-in-deployments ], trigger: true }
     - { get: pipeline-tasks }
     - { get: galoy-deployments }
   - put: tf-bitcoin-staging
@@ -191,8 +199,21 @@ jobs:
         - name: pipeline-tasks
         params:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+          HOST: #@ data.values.staging_specter_dns
+          PORT: #@ data.values.staging_specter_port
         run:
           path: pipeline-tasks/ci/tasks/specter-smoketest.sh
+    - task: rtl-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+        run:
+          path: pipeline-tasks/ci/tasks/rtl-smoketest.sh
   - put: cepler-out
     params:
       repository: galoy-deployments
@@ -232,6 +253,12 @@ resources:
 
 - #@ chart_repo_resource("specter")
 - #@ testflight_tf_resource("specter")
+
+- #@ chart_repo_resource("galoy")
+- #@ testflight_tf_resource("galoy")
+
+- #@ chart_repo_resource("rtl")
+- #@ testflight_tf_resource("rtl")
 
 - name: pipeline-tasks
   type: git

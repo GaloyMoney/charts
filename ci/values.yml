@@ -13,3 +13,5 @@ staging_state_bucket: ((staging.bucket_name))
 staging_creds: ((staging.creds_json))
 staging_bitcoind_rpcpassword: ((staging.bitcoind_rpcpassword))
 staging_name_prefix: galoy-staging
+staging_specter_dns: specter.staging.galoy.io
+staging_specter_port: 80

@@ -1,1 +1,4 @@
 # empty
+networkPolicy:
+  namespaceSelectorLabelType: concourse-workers
+  podSelectorLabelAppName: galoy-staging-concourse-worker
