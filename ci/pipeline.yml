@@ -105,6 +105,7 @@ groups:
   - lnd-testflight
   - bump-lnd-in-deployments
   - rtl-testflight
+  - bump-rtl-in-deployments
   - specter-testflight
   - bump-specter-in-deployments
   - bitcoin-staging
@@ -120,8 +121,9 @@ jobs:
 - #@ bump("lnd")
 - #@ testflight("specter")
 - #@ bump("specter")
-- #@ testflight("galoy")
 - #@ testflight("rtl")
+- #@ bump("rtl")
+- #@ testflight("galoy")
 
 - name: build-pipeline-image
   serial: true
@@ -154,6 +156,7 @@ jobs:
     - { get: bitcoind-chart, passed: [ bump-bitcoind-in-deployments ], trigger: true }
     - { get: lnd-chart, passed: [ bump-lnd-in-deployments ], trigger: true }
     - { get: specter-chart, passed: [ bump-specter-in-deployments ], trigger: true }
+    - { get: rtl-chart, passed: [ bump-rtl-in-deployments ], trigger: true }
     - { get: pipeline-tasks }
     - { get: galoy-deployments }
   - put: tf-bitcoin-staging
@@ -200,6 +203,17 @@ jobs:
           PORT: #@ data.values.staging_specter_port
         run:
           path: pipeline-tasks/ci/tasks/specter-smoketest.sh
+    - task: rtl-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+        run:
+          path: pipeline-tasks/ci/tasks/rtl-smoketest.sh
   - put: cepler-out
     params:
       repository: galoy-deployments
