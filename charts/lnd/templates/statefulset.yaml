@@ -88,7 +88,7 @@ spec:
           args:
           - '-c'
           - |
-            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/admin.macaroon; do sleep 1; done
+            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/invoices.macaroon; do sleep 1; done
             home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
