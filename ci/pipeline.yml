@@ -41,6 +41,8 @@ plan:
     env_name_file: testflight/env_name
     vars:
       bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
+      testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
+      testflight_apollo_key: #@ data.values.testflight_apollo_key
 - task: smoke-test
   tags: ["staging"]
   config:
