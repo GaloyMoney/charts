@@ -1,0 +1,14 @@
+redis:
+  master:
+    service:
+      type: LoadBalancer
+  sentinel:
+    service:
+      type: LoadBalancer
+
+mongodb:
+  architecture: standalone
+  service:
+    type: LoadBalancer
+
+deployment: []
