@@ -1,4 +1,6 @@
 variable "testflight_namespace" {}
+variable "testflight_apollo_graph_id" {}
+variable "testflight_apollo_key" {}
 
 locals {
   cluster_name             = "galoy-staging-cluster"
@@ -78,8 +80,8 @@ resource "kubernetes_secret" "apollo_secret" {
   }
 
   data = {
-    key = ""
-    id = ""
+    key = var.testflight_apollo_key
+    id = var.testflight_apollo_graph_id
   }
 }
 
