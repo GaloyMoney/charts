@@ -88,8 +88,8 @@ spec:
           args:
           - '-c'
           - |
-            lncli -n $NETWORK getinfo
-            while [[ $? != 0 ]]; do lncli -n $NETWORK getinfo; done
+            lncli --lnddir=/data/.lnd -n=$NETWORK getinfo
+            while [[ $? != 0 ]]; do lncli --lnddir=/data/.lnd -n=$NETWORK getinfo; done
             home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
