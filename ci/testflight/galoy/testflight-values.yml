@@ -1,5 +1,3 @@
-nodeEnv: staging
-
 bitcoind:
   port: 18332
 
