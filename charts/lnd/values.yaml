@@ -89,6 +89,7 @@ lndGeneralConfig:
   - prometheus.enable=1
   - gc-canceled-invoices-on-the-fly=true
   - gc-canceled-invoices-on-startup=true
+  - protocol.no-anchors=true
 
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 
