@@ -37,12 +37,21 @@ spec:
       initContainers:
         - name: copy-lnd-config
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: ['sh', '-c', 'cp /configmap/lnd.conf /data/.lnd/lnd.conf']
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            cat <<EOF > /data/.lnd/lnd.conf
+            bitcoind.rpcpass=$(cat /rpcpassword/password)
+            $(cat /configmap/lnd.conf)
+            EOF
           volumeMounts:
             - name: configmap
               mountPath: /configmap
             - name: config
               mountPath: /data/.lnd/
+            - name: rpcpassword
+              mountPath: /rpcpassword
       containers:
         {{- if ne .Values.global.network "regtest" }}
         - name: init-wallet
@@ -88,8 +97,8 @@ spec:
           args:
           - '-c'
           - |
-            # Waiting on invoices.macaroon because it's the last macaroon in the macaroon generation sequence
-            while ! test -f /data/.lnd/data/chain/bitcoin/$NETWORK/invoices.macaroon; do sleep 1; done
+            lncli --lnddir=/data/.lnd -n=$NETWORK getinfo
+            while [[ $? != 0 ]]; do lncli --lnddir=/data/.lnd -n=$NETWORK getinfo; done
             home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
@@ -159,6 +168,9 @@ spec:
             defaultMode: 0777
         - name: config
           emptyDir: {}
+        - name: rpcpassword
+          secret:
+            secretName: {{ .Values.bitcoindRpcPassSecretName }}
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
