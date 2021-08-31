@@ -90,6 +90,8 @@ lndGeneralConfig:
   - gc-canceled-invoices-on-the-fly=true
   - gc-canceled-invoices-on-startup=true
 
+bitcoindRpcPassSecretName: bitcoind-rpcpassword
+
 loop:
   enabled: true
 

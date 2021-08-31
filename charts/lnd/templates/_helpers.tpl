@@ -76,19 +76,3 @@ Create the name of the service account to use
 {{- (randAlpha 24) | b64enc -}}
 {{- end -}}
 {{- end -}}
-
-{{- define "bitcoind.rpcpassword" -}}
-
-{{- $secret := (lookup "v1" "Secret" .Release.Namespace "bitcoind-rpcpassword") -}}
-{{- if $secret -}}
-{{/*
-   Reusing current password since secret exists
-*/}}
-{{-  $secret.data.password | b64dec -}}
-{{- else -}}
-{{/*
-    use default password
-*/}}
-{{- "rpcpass" -}}
-{{- end -}}
-{{- end -}}
