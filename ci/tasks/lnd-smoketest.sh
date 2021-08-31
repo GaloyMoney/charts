@@ -1,5 +1,5 @@
 #!/bin/bash
-
+exit 1
 set -eu
 
 namespace=${NAMESPACE:-$(cat testflight/env_name)}
