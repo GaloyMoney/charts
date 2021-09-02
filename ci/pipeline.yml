@@ -100,6 +100,8 @@ plan:
 #@ end
 
 groups:
+- name: galoy
+  jobs: [ galoy-testflight ]
 - name: bitcoin
   jobs:
   - bitcoind-testflight
@@ -113,8 +115,6 @@ groups:
   - bitcoin-staging
 - name: image
   jobs: [ build-pipeline-image ]
-- name: galoy
-  jobs: [ galoy-testflight ]
 
 jobs:
 - #@ testflight("bitcoind")
