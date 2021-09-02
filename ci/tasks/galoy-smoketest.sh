@@ -1,1 +1,1 @@
-exit 0
+echo "Galoy App Smoketest"
