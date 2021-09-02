@@ -101,7 +101,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: exporter
-          image: jvstein/bitcoin-prometheus-exporter:v0.5.0
+          image: jvstein/bitcoin-prometheus-exporter:v0.6.0
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: BITCOIN_RPC_HOST
