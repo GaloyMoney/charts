@@ -23,7 +23,7 @@ bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
 
 groups:
 - name: galoy
-  jobs: [ galoy-testflight ]
+  jobs: [ galoy-testflight, bump-galoy-in-deployments ]
 - name: bitcoin
   jobs: 
 #@ for chart in bitcoin_charts:
@@ -40,6 +40,7 @@ jobs:
 - #@ bump_in_deployments_job(chart)
 #@ end
 - #@ testflight_job("galoy", galoy_chart_vars())
+- #@ bump_in_deployments_job("galoy")
 
 - name: bitcoin-staging
   serial: true
