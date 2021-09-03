@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "Galoy App Smoketest"
+exit 1
