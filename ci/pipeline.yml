@@ -1,16 +1,17 @@
 #@ load("@ytt:data", "data")
+#@ load("@ytt:template", "template")
+#@ load("pipeline-helpers.lib.yml", "pipeline_image", "task_image_config")
+#@ load("pipeline.star", "group_job_names")
 
-#@ def pipeline_image():
-#@   return data.values.docker_registry + "/helm-charts-pipeline"
-#@ end
+#@ bitcoin_charts = ["bitcoind", "lnd", "specter", "rtl"]
 
-#@ def task_image_config():
-type: registry-image
-source:
-  username: #@ data.values.docker_registry_user
-  password: #@ data.values.docker_registry_password
-  repository: #@ pipeline_image()
-#@ end
+groups:
+- name: galoy
+  jobs: [ galoy-testflight ]
+- name: bitcoin
+  jobs: #@ group_job_names(bitcoin_charts, ["bitcoin-staging"])
+- name: image
+  jobs: [ build-pipeline-image]
 
 #@ def testflight(chart_name):
 name: #@ chart_name + "-testflight"
@@ -98,23 +99,6 @@ plan:
     repository: galoy-deployments
     rebase: true
 #@ end
-
-groups:
-- name: galoy
-  jobs: [ galoy-testflight ]
-- name: bitcoin
-  jobs:
-  - bitcoind-testflight
-  - bump-bitcoind-in-deployments
-  - lnd-testflight
-  - bump-lnd-in-deployments
-  - rtl-testflight
-  - bump-rtl-in-deployments
-  - specter-testflight
-  - bump-specter-in-deployments
-  - bitcoin-staging
-- name: image
-  jobs: [ build-pipeline-image ]
 
 jobs:
 - #@ testflight("bitcoind")
