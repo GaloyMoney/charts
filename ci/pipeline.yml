@@ -8,7 +8,7 @@
 #@   "chart_repo_resource",
 #@   "testflight_tf_resource")
 #@ load("pipeline.star",
-#@   "group_job_names",
+#@   "testflight_job_name",
 #@   "bump_in_deployments_job_name",
 #@   "chart_resource_name")
 
@@ -26,7 +26,12 @@ groups:
 - name: galoy
   jobs: [ galoy-testflight ]
 - name: bitcoin
-  jobs: #@ group_job_names(bitcoin_charts, ["bitcoin-staging"])
+  jobs: 
+#@ for chart in bitcoin_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
+  - bitcoin-staging
 - name: image
   jobs: [ build-pipeline-image]
 
