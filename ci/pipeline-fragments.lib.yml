@@ -1,5 +1,4 @@
 #@ load("@ytt:data", "data")
-#@ load("pipeline.star", "chart_resource_name", "testflight_job_name")
 
 #@ def pipeline_image():
 #@   return data.values.docker_registry + "/helm-charts-pipeline"
@@ -11,6 +10,18 @@ source:
   username: #@ data.values.docker_registry_user
   password: #@ data.values.docker_registry_password
   repository: #@ pipeline_image()
+#@ end
+
+#@ def testflight_job_name(chart):
+#@  return chart + "-testflight"
+#@ end
+
+#@ def bump_in_deployments_job_name(chart):
+#@  return "bump-" + chart + "-in-deployments"
+#@ end
+
+#@ def chart_resource_name(chart):
+#@   return chart + "-chart"
 #@ end
 
 #@ def smoke_test_step(chart, params):

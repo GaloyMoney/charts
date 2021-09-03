@@ -6,8 +6,7 @@
 #@   "testflight_job",
 #@   "bump_in_deployments_job",
 #@   "chart_repo_resource",
-#@   "testflight_tf_resource")
-#@ load("pipeline.star",
+#@   "testflight_tf_resource",
 #@   "testflight_job_name",
 #@   "bump_in_deployments_job_name",
 #@   "chart_resource_name")
