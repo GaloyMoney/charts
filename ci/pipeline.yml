@@ -1,9 +1,17 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:template", "template")
-#@ load("pipeline-helpers.lib.yml", "pipeline_image", "task_image_config")
+#@ load("pipeline-helpers.lib.yml", "pipeline_image", "task_image_config", "testflight", "bump")
 #@ load("pipeline.star", "group_job_names")
 
-#@ bitcoin_charts = ["bitcoind", "lnd", "specter", "rtl"]
+#@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter"]
+#@ def galoy_chart_vars():
+bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
+testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
+testflight_apollo_key: #@ data.values.testflight_apollo_key
+#@ end
+#@ def bitcoin_chart_vars():
+bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
+#@ end
 
 groups:
 - name: galoy
@@ -13,103 +21,16 @@ groups:
 - name: image
   jobs: [ build-pipeline-image]
 
-#@ def testflight(chart_name):
-name: #@ chart_name + "-testflight"
-plan:
-- in_parallel:
-  - get: #@ chart_name + "-chart"
-    trigger: true
-  - { get: pipeline-tasks }
-- task: prepare-testflight
-  config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: pipeline-tasks
-    - name: #@ chart_name + "-chart"
-      path: repo
-    outputs:
-    - name: testflight
-    params:
-      CHART: #@ chart_name
-    run:
-      path: pipeline-tasks/ci/tasks/prepare-testflight.sh
-- put: #@ "tf-" + chart_name + "-testflight"
-  tags: ["staging"]
-  params:
-    vars_files: [ testflight/tf/terraform.tfvars ]
-    terraform_source: testflight/tf
-    env_name_file: testflight/env_name
-    vars:
-      bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
-      testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
-      testflight_apollo_key: #@ data.values.testflight_apollo_key
-- task: smoke-test
-  tags: ["staging"]
-  config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: pipeline-tasks
-    - name: testflight
-    params:
-      BITCOIND_RPCPASSWORD: #@ data.values.testflight_bitcoind_rpcpassword
-    run:
-      path: #@ "pipeline-tasks/ci/tasks/" + chart_name + "-smoketest.sh"
-- put: #@ "tf-" + chart_name + "-testflight"
-  tags: ["staging"]
-  params:
-    vars_files: [ testflight/tf/terraform.tfvars ]
-    terraform_source: testflight/tf
-    env_name_file: testflight/env_name
-    action: destroy
-    vars:
-      bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
-  get_params: { action: destroy }
-#@ end
-
-#@ def bump(chart_name):
-name: #@ "bump-" + chart_name + "-in-deployments"
-plan:
-- in_parallel:
-  - get: #@ chart_name + "-chart"
-    passed:
-    - #@ chart_name + "-testflight"
-    trigger: true
-  - { get: pipeline-tasks }
-  - { get: galoy-deployments }
-- task: #@ "bump-" + chart_name
-  config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: #@ chart_name + "-chart"
-      path: chart
-    - name: pipeline-tasks
-    - name: galoy-deployments
-    outputs:
-    - name: galoy-deployments
-    params:
-      CHART: #@ chart_name
-      BRANCH: #@ data.values.deployments_git_branch
-    run:
-      path: pipeline-tasks/ci/tasks/bump-chart.sh
-- put: galoy-deployments
-  params:
-    repository: galoy-deployments
-    rebase: true
-#@ end
-
 jobs:
-- #@ testflight("bitcoind")
+- #@ testflight("bitcoind", bitcoin_chart_vars())
 - #@ bump("bitcoind")
-- #@ testflight("lnd")
+- #@ testflight("lnd", bitcoin_chart_vars())
 - #@ bump("lnd")
-- #@ testflight("specter")
+- #@ testflight("specter", bitcoin_chart_vars())
 - #@ bump("specter")
-- #@ testflight("rtl")
+- #@ testflight("rtl", bitcoin_chart_vars())
 - #@ bump("rtl")
-- #@ testflight("galoy")
+- #@ testflight("galoy", galoy_chart_vars())
 
 - name: build-pipeline-image
   serial: true

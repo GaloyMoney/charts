@@ -1,4 +1,5 @@
 #@ load("@ytt:data", "data")
+#@ load("pipeline.star", "chart_resource_name", "testflight_job_name")
 
 #@ def pipeline_image():
 #@   return data.values.docker_registry + "/helm-charts-pipeline"
@@ -10,4 +11,90 @@ source:
   username: #@ data.values.docker_registry_user
   password: #@ data.values.docker_registry_password
   repository: #@ pipeline_image()
+#@ end
+
+#@ def smoke_test_step(chart, params):
+task: smoke-test
+tags: ["staging"]
+config:
+  platform: linux
+  image_resource: #@ task_image_config()
+  inputs:
+  - name: pipeline-tasks
+  - name: testflight
+  params: #@ params
+  run:
+    path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
+#@ end
+
+#@ def testflight(chart_name, vars = {}):
+name: #@ testflight_job_name(chart_name)
+plan:
+- in_parallel:
+  - get: #@ chart_resource_name(chart_name)
+    trigger: true
+  - { get: pipeline-tasks }
+- task: prepare-testflight
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: pipeline-tasks
+    - name: #@ chart_resource_name(chart_name)
+      path: repo
+    outputs:
+    - name: testflight
+    params:
+      CHART: #@ chart_name
+    run:
+      path: pipeline-tasks/ci/tasks/prepare-testflight.sh
+- put: #@ "tf-" + chart_name + "-testflight"
+  tags: ["staging"]
+  params:
+    vars_files: [ testflight/tf/terraform.tfvars ]
+    terraform_source: testflight/tf
+    env_name_file: testflight/env_name
+    vars: #@ vars
+- #@ smoke_test_step(chart_name, {"BITCOIND_RPCPASSWORD": data.values.testflight_bitcoind_rpcpassword} )
+- put: #@ "tf-" + chart_name + "-testflight"
+  tags: ["staging"]
+  params:
+    vars_files: [ testflight/tf/terraform.tfvars ]
+    terraform_source: testflight/tf
+    env_name_file: testflight/env_name
+    action: destroy
+    vars: #@ vars
+  get_params: { action: destroy }
+#@ end
+
+#@ def bump(chart_name):
+name: #@ "bump-" + chart_name + "-in-deployments"
+plan:
+- in_parallel:
+  - get: #@ chart_name + "-chart"
+    passed:
+    - #@ chart_name + "-testflight"
+    trigger: true
+  - { get: pipeline-tasks }
+  - { get: galoy-deployments }
+- task: #@ "bump-" + chart_name
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_name + "-chart"
+      path: chart
+    - name: pipeline-tasks
+    - name: galoy-deployments
+    outputs:
+    - name: galoy-deployments
+    params:
+      CHART: #@ chart_name
+      BRANCH: #@ data.values.deployments_git_branch
+    run:
+      path: pipeline-tasks/ci/tasks/bump-chart.sh
+- put: galoy-deployments
+  params:
+    repository: galoy-deployments
+    rebase: true
 #@ end
