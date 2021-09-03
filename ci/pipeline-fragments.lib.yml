@@ -1,0 +1,125 @@
+#@ load("@ytt:data", "data")
+#@ load("pipeline.star", "chart_resource_name", "testflight_job_name")
+
+#@ def pipeline_image():
+#@   return data.values.docker_registry + "/helm-charts-pipeline"
+#@ end
+
+#@ def task_image_config():
+type: registry-image
+source:
+  username: #@ data.values.docker_registry_user
+  password: #@ data.values.docker_registry_password
+  repository: #@ pipeline_image()
+#@ end
+
+#@ def smoke_test_step(chart, params):
+task: smoke-test
+tags: ["staging"]
+config:
+  platform: linux
+  image_resource: #@ task_image_config()
+  inputs:
+  - name: pipeline-tasks
+  - name: testflight
+  params: #@ params
+  run:
+    path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
+#@ end
+
+#@ def testflight_job(chart, vars = {}):
+name: #@ testflight_job_name(chart)
+plan:
+- in_parallel:
+  - get: #@ chart_resource_name(chart)
+    trigger: true
+  - { get: pipeline-tasks }
+- task: prepare-testflight
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: pipeline-tasks
+    - name: #@ chart_resource_name(chart)
+      path: repo
+    outputs:
+    - name: testflight
+    params:
+      CHART: #@ chart
+    run:
+      path: pipeline-tasks/ci/tasks/prepare-testflight.sh
+- put: #@ "tf-" + chart + "-testflight"
+  tags: ["staging"]
+  params:
+    vars_files: [ testflight/tf/terraform.tfvars ]
+    terraform_source: testflight/tf
+    env_name_file: testflight/env_name
+    vars: #@ vars
+- #@ smoke_test_step(chart, {"BITCOIND_RPCPASSWORD": data.values.testflight_bitcoind_rpcpassword} )
+- put: #@ "tf-" + chart + "-testflight"
+  tags: ["staging"]
+  params:
+    vars_files: [ testflight/tf/terraform.tfvars ]
+    terraform_source: testflight/tf
+    env_name_file: testflight/env_name
+    action: destroy
+    vars: #@ vars
+  get_params: { action: destroy }
+#@ end
+
+#@ def bump_in_deployments_job(chart):
+name: #@ "bump-" + chart + "-in-deployments"
+plan:
+- in_parallel:
+  - get: #@ chart_resource_name(chart)
+    passed:
+    - #@ testflight_job_name(chart)
+    trigger: true
+  - { get: pipeline-tasks }
+  - { get: galoy-deployments }
+- task: #@ "bump-" + chart
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: chart
+    - name: pipeline-tasks
+    - name: galoy-deployments
+    outputs:
+    - name: galoy-deployments
+    params:
+      CHART: #@ chart
+      BRANCH: #@ data.values.deployments_git_branch
+    run:
+      path: pipeline-tasks/ci/tasks/bump-chart.sh
+- put: galoy-deployments
+  params:
+    repository: galoy-deployments
+    rebase: true
+#@ end
+
+#@ def chart_repo_resource(chart_name):
+name: #@ chart_name + "-chart"
+type: git
+source:
+  paths:
+  - #@ "charts/" + chart_name + "/*"
+  - #@ "charts/" + chart_name + "/**/*"
+  uri: #@ data.values.git_uri
+  branch: #@ data.values.git_branch
+  private_key: #@ data.values.github_private_key
+#@ end
+
+#@ def testflight_tf_resource(chart_name):
+name: #@ "tf-" + chart_name + "-testflight"
+type: terraform
+source:
+  backend_type: gcs
+  backend_config:
+    bucket: #@ data.values.staging_state_bucket
+    prefix: #@ "galoy-staging/services/" + chart_name + "-testflight"
+    credentials: #@ data.values.staging_creds
+  env:
+    GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+#@ end
