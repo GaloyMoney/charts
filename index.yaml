@@ -1586,6 +1586,20 @@ entries:
   rtl:
   - apiVersion: v2
     appVersion: 0.10.2
+    created: "2021-09-05T14:34:04.435326737Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.4.1
+    description: A Helm chart for Kubernetes
+    digest: cd3b7dbd419e44535f3ef61075605f324d49fb092f55770577f75620d87c909c
+    name: rtl
+    type: application
+    urls:
+    - https://github.com/GaloyMoney/charts/releases/download/rtl-0.1.2/rtl-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.10.2
     created: "2021-08-29T08:04:50.463347952Z"
     description: A Helm chart for Kubernetes
     digest: d5d0a0d7acb7e77139132c23b9806a7bcf508a5e0059fe4868417fdd1ac2873b
@@ -1608,4 +1622,4 @@ entries:
     urls:
     - https://github.com/GaloyMoney/charts/releases/download/specter-0.1.1/specter-0.1.1.tgz
     version: 0.1.1
-generated: "2021-09-02T12:37:41.644333374Z"
+generated: "2021-09-05T14:34:04.43586834Z"
