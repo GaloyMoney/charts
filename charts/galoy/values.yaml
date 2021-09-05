@@ -11,6 +11,9 @@ bitcoind:
   port:
     8332
 
+lnd1: {}
+lnd2: {}
+
 ca:
   CAEmail: dev@galoy.io
 
