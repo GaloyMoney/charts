@@ -35,6 +35,8 @@ resource "helm_release" "rtl" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
+  dependency_update = true
+
   values = [
     file("${path.module}/testflight-values.yml")
   ]
