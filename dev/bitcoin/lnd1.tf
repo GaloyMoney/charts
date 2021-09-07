@@ -1,0 +1,35 @@
+resource "helm_release" "lnd" {
+  name       = "lnd1"
+  chart      = "${path.module}/../../charts/lnd"
+  repository = "https://galoymoney.github.io/charts/"
+  namespace  = kubernetes_namespace.bitcoin.metadata[0].name
+
+  dependency_update = true
+
+  values = [
+    file("${path.module}/lnd-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.bitcoind,
+    helm_release.bitcoind
+  ]
+}
+
+resource "helm_release" "lnd2" {
+  name       = "lnd2"
+  chart      = "${path.module}/../../charts/lnd"
+  repository = "https://galoymoney.github.io/charts/"
+  namespace  = kubernetes_namespace.bitcoin.metadata[0].name
+
+  dependency_update = true
+
+  values = [
+    file("${path.module}/lnd-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.bitcoind,
+    helm_release.bitcoind
+  ]
+}

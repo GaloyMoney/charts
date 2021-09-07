@@ -1,0 +1,18 @@
+bitcoind:
+  port: 18332
+
+needFirebaseServiceAccount: false
+
+lnd1:
+  dns: lnd.galoy-dev-bitcoin.svc.cluster.local
+
+lnd2:
+  dns: lnd.galoy-dev-bitcoin.svc.cluster.local
+
+mongodb:
+  volumePermissions:
+    enabled: true
+
+redis:
+  volumePermissions:
+    enabled: true

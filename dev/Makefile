@@ -3,6 +3,9 @@ TF:=terraform
 create-cluster:
 	k3d cluster create --k3s-server-arg '--no-deploy=traefik'
 
+delete-cluster:
+	k3d cluster delete
+
 init:
 	terraform init
 
@@ -15,3 +18,5 @@ deploy:
 
 fmt:
 	$(TF) fmt -recursive
+
+all: create-cluster init deploy-services deploy
