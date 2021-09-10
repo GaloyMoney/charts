@@ -194,7 +194,6 @@ spec:
             - name: LNDOUTSIDE2ADDR
               value: "lnd-outside-2"
             {{- else }}
-            {{- if eq .name "graphql" }}
             - name: APOLLO_GRAPH_VARIANT
               value: current
             - name: APOLLO_SCHEMA_REPORTING
@@ -209,7 +208,6 @@ spec:
                 secretKeyRef:
                   name: galoy-apollo-secret
                   key: key
-            {{- end}}
             - name: TWILIO_PHONE_NUMBER
               valueFrom:
                 secretKeyRef:
