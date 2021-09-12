@@ -23,7 +23,10 @@ bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
 
 groups:
 - name: galoy
-  jobs: [ galoy-testflight, bump-galoy-in-deployments ]
+  jobs: 
+    - galoy-testflight
+    - bump-galoy-in-deployments
+    - galoy-staging
 - name: bitcoin
   jobs: 
 #@ for chart in bitcoin_charts:
@@ -114,6 +117,48 @@ jobs:
       repository: galoy-deployments
       environment: gcp-staging-bitcoin
 
+- name: galoy-staging
+  serial: true
+  plan:
+  - in_parallel:
+    - get: #@ chart_resource_name("galoy")
+      passed:
+      - #@ bump_in_deployments_job_name("galoy")
+      trigger: true
+    - { get: pipeline-tasks }
+    - { get: galoy-deployments }
+  - put: tf-galoy-staging
+    tags: ["staging"]
+    params:
+      terraform_source: galoy-deployments/gcp/staging/galoy
+      vars:
+        name_prefix: #@ data.values.staging_name_prefix
+        staging_apollo_graph_id: #@ data.values.staging_apollo_graph_id
+        staging_apollo_key: #@ data.values.staging_apollo_key
+        firebase_service_account: #@ data.values.staging_firebase_service_account
+        staging_twilio_phone_number: #@ data.values.staging_twilio_phone_number
+        staging_twilio_api_key: #@ data.values.staging_twilio_api_key
+        staging_twilio_api_secret: #@ data.values.staging_twilio_api_secret
+        staging_twilio_account_sid: #@ data.values.staging_twilio_account_sid
+        staging_smsala_sender_id: #@ data.values.staging_smsala_sender_id
+        staging_smsala_api_password: #@ data.values.staging_smsala_api_password
+        staging_smsala_api_id: #@ data.values.staging_smsala_api_id
+  - in_parallel:
+    - task: galoy-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          NAMESPACE: #@ data.values.staging_name_prefix + "-galoy"
+        run:
+          path: pipeline-tasks/ci/tasks/galoy-smoketest.sh
+  - put: cepler-out
+    params:
+      repository: galoy-deployments
+      environment: gcp-staging-galoy     
 
 - name: build-pipeline-image
   serial: true
@@ -187,6 +232,18 @@ resources:
     backend_config:
       bucket: #@ data.values.staging_state_bucket
       prefix: galoy-staging/services/bitcoin
+      credentials: #@ data.values.staging_creds
+    env:
+      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+
+- name: tf-galoy-staging
+  type: terraform
+  source:
+    env_name: default
+    backend_type: gcs
+    backend_config:
+      bucket: #@ data.values.staging_state_bucket
+      prefix: galoy-staging/services/galoy
       credentials: #@ data.values.staging_creds
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
