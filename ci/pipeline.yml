@@ -143,6 +143,9 @@ jobs:
         staging_smsala_sender_id: #@ data.values.staging_smsala_sender_id
         staging_smsala_api_password: #@ data.values.staging_smsala_api_password
         staging_smsala_api_id: #@ data.values.staging_smsala_api_id
+        staging_mongo_password: #@ data.values.staging_mongo_password
+        staging_mongo_user: #@ data.values.staging_mongo_user
+        staging_mongo_database: #@ data.values.staging_mongo_database
   - in_parallel:
     - task: galoy-smoke-test
       tags: ["staging"]
