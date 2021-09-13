@@ -105,7 +105,7 @@ spec:
             - name: LOGLEVEL
               value: debug
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: "/tmp/firebase-serviceaccount/galoyapp-firebase-serviceaccont.json"
+              value: "/tmp/firebase-serviceaccount/galoyapp-firebase-serviceaccount.json"
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
