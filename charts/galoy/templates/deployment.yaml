@@ -161,7 +161,7 @@ spec:
             {{- end }}
             {{- if eq .name "trigger" }}
             - name: "GCS_APPLICATION_CREDENTIALS"
-              value: "/var/secret/cloud.google.com/galoyapp-31518a00082f.json"
+              value: "/var/secret/cloud.google.com/gcs-sa-key.json"
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
