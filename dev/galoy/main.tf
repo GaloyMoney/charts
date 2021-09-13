@@ -107,8 +107,8 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
 
 data "kubernetes_secret" "lnd2_pubkey" {
   metadata {
-    name      = "lnd-pubkey"
-    namespace = "galoy-staging-bitcoin"
+    name      = "lnd2-pubkey"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -123,8 +123,8 @@ resource "kubernetes_secret" "lnd2_pubkey" {
 
 data "kubernetes_secret" "lnd1_pubkey" {
   metadata {
-    name      = "lnd-pubkey"
-    namespace = "galoy-staging-bitcoin"
+    name      = "lnd1-pubkey"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -139,8 +139,8 @@ resource "kubernetes_secret" "lnd1_pubkey" {
 
 data "kubernetes_secret" "lnd2_credentials" {
   metadata {
-    name      = "lnd-credentials"
-    namespace = "galoy-staging-bitcoin"
+    name      = "lnd2-credentials"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -155,8 +155,8 @@ resource "kubernetes_secret" "lnd2_credentials" {
 
 data "kubernetes_secret" "lnd1_credentials" {
   metadata {
-    name      = "lnd-credentials"
-    namespace = "galoy-staging-bitcoin"
+    name      = "lnd1-credentials"
+    namespace = local.bitcoin_namespace
   }
 }
 

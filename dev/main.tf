@@ -20,6 +20,10 @@ module "galoy" {
   source = "./galoy"
 
   name_prefix = local.name_prefix
+
+  depends_on = [
+    module.bitcoin
+  ]
 }
 
 provider "kubernetes" {
