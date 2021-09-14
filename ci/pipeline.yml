@@ -149,6 +149,7 @@ jobs:
         staging_mongo_root_password: #@ data.values.staging_mongo_root_password
         staging_mongo_replicaset_key: #@ data.values.staging_mongo_replicaset_key
         staging_gcs_sa_key: #@ data.values.staging_gcs_sa_key
+        staging_dropbox_access_token: #@ data.values.staging_dropbox_access_token
   - in_parallel:
     - task: galoy-smoke-test
       tags: ["staging"]
