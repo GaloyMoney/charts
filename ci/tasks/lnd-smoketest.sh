@@ -3,7 +3,7 @@
 set -eu
 
 namespace=${NAMESPACE:-$(cat testflight/env_name)}
-host=lnd-lndmon.${namespace}.svc.cluster.local
+host=lnd1-lndmon.${namespace}.svc.cluster.local
 
 set +e
 for i in {1..60}; do
