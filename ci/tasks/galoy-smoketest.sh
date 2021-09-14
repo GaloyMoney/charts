@@ -10,6 +10,6 @@ curl --location --request POST "${host}:4000/graphql"\
 if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   echo Testflight failed! - Response:
   cat response.json
-  echo Containes "errors" key
+  echo Contains "errors" key
   exit 1
 fi
