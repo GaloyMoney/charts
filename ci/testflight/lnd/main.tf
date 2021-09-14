@@ -46,8 +46,8 @@ resource "kubernetes_secret" "network" {
   data = data.kubernetes_secret.network.data
 }
 
-resource "helm_release" "lnd" {
-  name       = "lnd"
+resource "helm_release" "lnd1" {
+  name       = "lnd1"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
