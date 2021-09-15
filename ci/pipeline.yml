@@ -120,10 +120,6 @@ jobs:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
         run:
           path: pipeline-tasks/ci/tasks/rtl-smoketest.sh
-  - put: cepler-out
-    params:
-      repository: galoy-deployments
-      environment: gcp-staging-bitcoin
 
 - name: galoy-staging
   serial: true
@@ -170,10 +166,6 @@ jobs:
           NAMESPACE: #@ data.values.staging_name_prefix + "-galoy"
         run:
           path: pipeline-tasks/ci/tasks/galoy-smoketest.sh
-  - put: cepler-out
-    params:
-      repository: galoy-deployments
-      environment: gcp-staging-galoy     
 
 - name: build-pipeline-image
   serial: true
@@ -266,22 +258,9 @@ resources:
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
 
-- name: cepler-out
-  type: cepler-out
-  source:
-    uri: #@ data.values.deployments_git_uri
-    branch: #@ data.values.deployments_git_branch
-    private_key: #@ data.values.github_private_key
-
 resource_types:
 - name: terraform
   type: docker-image
   source:
     repository: ljfranklin/terraform-resource
     tag: latest
-
-- name: cepler-out
-  type: registry-image
-  source:
-    repository: cepler/cepler-concourse-resource
-    tag: 0.6.4
