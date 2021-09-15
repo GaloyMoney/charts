@@ -2,7 +2,6 @@
 grafana:
   persistence:
     enabled: true
-    existingClaim: "grafana-pvc"
   ingress:
     path: /
     enabled: true
