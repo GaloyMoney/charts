@@ -17,8 +17,12 @@ bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
 testflight_apollo_key: #@ data.values.testflight_apollo_key
 #@ end
+
 #@ def bitcoin_chart_vars():
 bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
+#@ end
+
+#@ def monitoring_chart_vars():
 #@ end
 
 groups:
@@ -27,6 +31,8 @@ groups:
     - galoy-testflight
     - bump-galoy-in-deployments
     - galoy-staging
+    - monitoring-testflight
+    - bump-monitoring-in-deployments
 - name: bitcoin
   jobs: 
 #@ for chart in bitcoin_charts:
@@ -44,6 +50,8 @@ jobs:
 #@ end
 - #@ testflight_job("galoy", galoy_chart_vars())
 - #@ bump_in_deployments_job("galoy")
+- #@ testflight_job("monitoring", monitoring_chart_vars())
+- #@ bump_in_deployments_job("monitoring")
 
 - name: bitcoin-staging
   serial: true
@@ -199,6 +207,9 @@ resources:
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
+
+- #@ chart_repo_resource("monitoring")
+- #@ testflight_tf_resource("monitoring")
 
 - name: pipeline-tasks
   type: git
