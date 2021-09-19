@@ -1,8 +1,5 @@
 
 grafana:
-  rbac:
-    namespaced: true
-    pspEnabled: false
   persistence:
     enabled: true
   ingress:

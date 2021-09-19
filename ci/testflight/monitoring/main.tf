@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "testflight" {
 }
 
 resource "helm_release" "monitoring" {
-  name       = "monitoring"
+  name       = "monitoring-${local.testflight_namespace}"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
