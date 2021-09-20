@@ -33,6 +33,7 @@ groups:
     - galoy-staging
     - monitoring-testflight
     - bump-monitoring-in-deployments
+    - monitoring-staging
 - name: bitcoin
   jobs: 
 #@ for chart in bitcoin_charts:
@@ -162,6 +163,37 @@ jobs:
         run:
           path: pipeline-tasks/ci/tasks/galoy-smoketest.sh
 
+- name: monitoring-staging
+  serial: true
+  plan:
+  - in_parallel:
+    - get: #@ chart_resource_name("monitoring")
+      passed:
+      - #@ bump_in_deployments_job_name("monitoring")
+      trigger: true
+    - { get: pipeline-tasks }
+    - { get: galoy-deployments }
+  - put: tf-monitoring-staging
+    tags: ["staging"]
+    params:
+      terraform_source: galoy-deployments/gcp/staging/monitoring
+      vars:
+        name_prefix: #@ data.values.staging_name_prefix
+        staging_slack_api_url: #@ data.values.staging_slack_api_url
+        staging_pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
+  - in_parallel:
+    - task: monitoring-smoke-test
+      tags: ["staging"]
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        params:
+          NAMESPACE: #@ data.values.staging_name_prefix + "-monitoring"
+        run:
+          path: pipeline-tasks/ci/tasks/monitoring-smoketest.sh
+
 - name: build-pipeline-image
   serial: true
   plan:
@@ -249,6 +281,18 @@ resources:
     backend_config:
       bucket: #@ data.values.staging_state_bucket
       prefix: galoy-staging/services/galoy
+      credentials: #@ data.values.staging_creds
+    env:
+      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+
+- name: tf-monitoring-staging
+  type: terraform
+  source:
+    env_name: default
+    backend_type: gcs
+    backend_config:
+      bucket: #@ data.values.staging_state_bucket
+      prefix: galoy-staging/services/monitoring
       credentials: #@ data.values.staging_creds
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
