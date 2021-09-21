@@ -31,3 +31,4 @@ staging_pagerduty_service_key: ((staging.pagerduty_service_key))
 staging_name_prefix: galoy-staging
 staging_specter_dns: specter.staging.galoy.io
 staging_specter_port: 80
+staging_alertmanager_dns: monitoring-prometheus-alertmanager

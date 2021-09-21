@@ -191,6 +191,7 @@ jobs:
         - name: pipeline-tasks
         params:
           NAMESPACE: #@ data.values.staging_name_prefix + "-monitoring"
+          ALERTMANAGER_DNS: #@ data.values.staging_alertmanager_dns
         run:
           path: pipeline-tasks/ci/tasks/monitoring-smoketest.sh
 
