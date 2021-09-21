@@ -13,3 +13,4 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: galoybot
           MERGE_FILTER_AUTHOR: galoybot
+          MERGE_FORKS: false
