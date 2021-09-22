@@ -4,6 +4,8 @@ deployments_git_uri: git@github.com:GaloyMoney/galoy-deployments.git
 deployments_git_branch: main
 git_uri: git@github.com:GaloyMoney/charts.git
 git_branch: dev
+staging_environment: gcp-staging
+gates_branch: cepler-gates
 github_private_key: ((github.private_key))
 docker_registry: us.gcr.io/galoy-org
 docker_registry_user: ((docker-creds.username))

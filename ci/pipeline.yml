@@ -9,7 +9,11 @@
 #@   "testflight_tf_resource",
 #@   "testflight_job_name",
 #@   "bump_in_deployments_job_name",
-#@   "chart_resource_name")
+#@   "chart_resource_name",
+#@   "cepler_resource_name",
+#@   "cepler_in",
+#@   "cepler_out",
+#@   "cepler_out_name")
 
 #@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter"]
 #@ def galoy_chart_vars():
@@ -41,6 +45,11 @@ groups:
   - #@ bump_in_deployments_job_name(chart)
 #@ end
   - bitcoin-staging
+- name: staging
+  jobs:
+  - bitcoin-staging
+  - galoy-staging
+  - monitoring-staging
 - name: image
   jobs: [ build-pipeline-image]
 
@@ -57,19 +66,12 @@ jobs:
 - name: bitcoin-staging
   serial: true
   plan:
-  - in_parallel:
-#@ for chart in bitcoin_charts:
-    - get: #@ chart_resource_name(chart)
-      passed:
-      - #@ bump_in_deployments_job_name(chart)
-      trigger: true
-#@ end
-    - { get: pipeline-tasks }
-    - { get: galoy-deployments }
+  - get: #@ cepler_resource_name("bitcoin")
+    trigger: true
   - put: tf-bitcoin-staging
     tags: ["staging"]
     params:
-      terraform_source: galoy-deployments/gcp/staging/bitcoin
+      terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
       vars:
         bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
         name_prefix: #@ data.values.staging_name_prefix
@@ -80,47 +82,55 @@ jobs:
         platform: linux
         image_resource: #@ task_image_config()
         inputs:
-        - name: pipeline-tasks
+        - name: #@ cepler_resource_name("bitcoin")
+          path: pipeline-tasks
         params:
           BITCOIND_RPCPASSWORD: #@ data.values.staging_bitcoind_rpcpassword
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
         run:
-          path: pipeline-tasks/ci/tasks/bitcoind-smoketest.sh
+          path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/bitcoind-smoketest.sh
     - task: lnd-smoke-test
       tags: ["staging"]
       config:
         platform: linux
         image_resource: #@ task_image_config()
         inputs:
-        - name: pipeline-tasks
+        - name: #@ cepler_resource_name("bitcoin")
+          path: pipeline-tasks
         params:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
         run:
-          path: pipeline-tasks/ci/tasks/lnd-smoketest.sh
+          path: pipeline-tasks/modules/services/bitcoin/vendor/lnd/ci/tasks/lnd-smoketest.sh
     - task: specter-smoke-test
       tags: ["staging"]
       config:
         platform: linux
         image_resource: #@ task_image_config()
         inputs:
-        - name: pipeline-tasks
+        - name: #@ cepler_resource_name("bitcoin")
+          path: pipeline-tasks
         params:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
           HOST: #@ data.values.staging_specter_dns
           PORT: #@ data.values.staging_specter_port
         run:
-          path: pipeline-tasks/ci/tasks/specter-smoketest.sh
+          path: pipeline-tasks/modules/services/bitcoin/vendor/specter/ci/tasks/specter-smoketest.sh
     - task: rtl-smoke-test
       tags: ["staging"]
       config:
         platform: linux
         image_resource: #@ task_image_config()
         inputs:
-        - name: pipeline-tasks
+        - name: #@ cepler_resource_name("bitcoin")
+          path: pipeline-tasks
         params:
           NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
         run:
-          path: pipeline-tasks/ci/tasks/rtl-smoketest.sh
+          path: pipeline-tasks/modules/services/bitcoin/vendor/rtl/ci/tasks/rtl-smoketest.sh
+  - put: #@ cepler_out_name("bitcoin")
+    params:
+      repository: #@ cepler_resource_name("bitcoin")
+
 
 - name: galoy-staging
   serial: true
@@ -190,6 +200,7 @@ jobs:
         inputs:
         - name: pipeline-tasks
         params:
+          ALERTMANAGER_DNS: monitoring-prometheus-alertmanager
           NAMESPACE: #@ data.values.staging_name_prefix + "-monitoring"
           ALERTMANAGER_DNS: #@ data.values.staging_alertmanager_dns
         run:
@@ -224,6 +235,8 @@ resources:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
+- #@ cepler_in("bitcoin")
+- #@ cepler_out("bitcoin")
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
@@ -304,3 +317,15 @@ resource_types:
   source:
     repository: ljfranklin/terraform-resource
     tag: latest
+
+- name: cepler-in
+  type: registry-image
+  source:
+    repository: cepler/cepler-concourse-resource
+    tag: 0.7.1
+
+- name: cepler-out
+  type: registry-image
+  source:
+    repository: cepler/cepler-concourse-resource
+    tag: 0.7.1
