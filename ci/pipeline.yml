@@ -74,7 +74,6 @@ jobs:
       terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
       vars:
         bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
-        name_prefix: #@ data.values.staging_name_prefix
   - in_parallel:
     - task: bitcoind-smoke-test
       tags: ["staging"]
@@ -200,7 +199,6 @@ jobs:
         inputs:
         - name: pipeline-tasks
         params:
-          ALERTMANAGER_DNS: monitoring-prometheus-alertmanager
           NAMESPACE: #@ data.values.staging_name_prefix + "-monitoring"
           ALERTMANAGER_DNS: #@ data.values.staging_alertmanager_dns
         run:
