@@ -12,7 +12,7 @@ RUN apt-get update \
   vim jq rsync wget \
   && apt-get clean all
 
-ARG BITCOIN_VERSION=0.21.1
+ARG BITCOIN_VERSION=0.22.0
 RUN wget https://bitcoin.org/bin/bitcoin-core-${BITCOIN_VERSION}/bitcoin-${BITCOIN_VERSION}-x86_64-linux-gnu.tar.gz \
   && tar -xvf bitcoin-${BITCOIN_VERSION}-x86_64-linux-gnu.tar.gz \
   && mv bitcoin-${BITCOIN_VERSION}/bin/* /usr/local/bin && bitcoin-cli -version
