@@ -5,7 +5,7 @@ set -eu
 cd galoy-deployments
 
 REF=$(cat ../chart/.git/ref)
-make bump-chart CHART=${CHART} REF=${REF}
+make bump-vendored-ref DEP=${CHART} REF=${REF}
 make vendir
 
 if [[ -z $(git config --global user.email) ]]; then

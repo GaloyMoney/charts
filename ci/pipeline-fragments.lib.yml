@@ -161,8 +161,8 @@ source:
   uri: #@ data.values.deployments_git_uri
   branch: #@ data.values.deployments_git_branch
   private_key: #@ data.values.github_private_key
-  environment: #@ data.values.staging_environment
   config: #@ cepler_config(deployment)
+  environment: #@ data.values.staging_environment
   gates_branch: #@ data.values.gates_branch
   gates_file: #@ gates_file(deployment)
 #@ end
