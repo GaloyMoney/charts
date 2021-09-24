@@ -65,6 +65,7 @@ plan:
     - name: smoketest-settings
     params:
       SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+      OUT: smoketest-settings
     run:
       path: pipeline-tasks/ci/tasks/get-smoketest-settings.sh
 - task: smoketest
