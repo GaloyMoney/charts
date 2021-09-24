@@ -6,6 +6,7 @@ locals {
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
+  smoketest_namespace = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -23,6 +24,17 @@ resource "kubernetes_secret" "testflight" {
 
   data = {
     password = var.bitcoind_rpcpassword
+  }
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    specter_endpoint = "specter.${local.testflight_namespace}.svc.cluster.local"
+    specter_port = 25441
   }
 }
 

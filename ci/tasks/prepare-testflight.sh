@@ -2,6 +2,8 @@
 
 set -eu
 
+echo "Preparing testflight"
+
 cp -r pipeline-tasks/ci/testflight/${CHART} testflight/tf
 cp -r repo/charts/${CHART} testflight/tf/chart
 
