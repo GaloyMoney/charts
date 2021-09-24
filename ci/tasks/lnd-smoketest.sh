@@ -2,8 +2,9 @@
 
 set -eu
 
-namespace=${NAMESPACE:-$(cat testflight/env_name)}
-host=lnd1-lndmon.${namespace}.svc.cluster.local
+source smoketest-settings/helpers.sh
+
+host=`setting "lndmon_endpoint"`
 
 set +e
 for i in {1..60}; do

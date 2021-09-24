@@ -2,9 +2,10 @@
 
 set -eu
 
-namespace=${NAMESPACE:-$(cat testflight/env_name)}
-host=${HOST:-specter.${namespace}.svc.cluster.local}
-port=${PORT:-25441}
+source smoketest-settings/helpers.sh
+
+host=`setting "specter_endpoint"`
+port=`setting "specter_port"`
 
 set +e
 for i in {1..15}; do

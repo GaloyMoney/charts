@@ -24,21 +24,6 @@ source:
 #@   return chart + "-chart"
 #@ end
 
-#@ def smoke_test_step(chart, params):
-task: smoke-test
-tags: ["staging"]
-config:
-  platform: linux
-  image_resource: #@ task_image_config()
-  inputs:
-  - name: #@ chart_resource_name(chart)
-    path: pipeline-tasks
-  - name: testflight
-  params: #@ params
-  run:
-    path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
-#@ end
-
 #@ def testflight_job(chart, vars = {}):
 name: #@ testflight_job_name(chart)
 plan:
@@ -67,7 +52,33 @@ plan:
     terraform_source: testflight/tf
     env_name_file: testflight/env_name
     vars: #@ vars
-- #@ smoke_test_step(chart, {"BITCOIND_RPCPASSWORD": data.values.testflight_bitcoind_rpcpassword} )
+- task: get-smoketest-settings
+  tags: ["staging"]
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: pipeline-tasks
+    - name: testflight
+    outputs:
+    - name: smoketest-settings
+    params:
+      SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+    run:
+      path: pipeline-tasks/ci/tasks/get-smoketest-settings.sh
+- task: smoketest
+  tags: ["staging"]
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: pipeline-tasks
+    - name: smoketest-settings
+    params:
+    run:
+      path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
 - put: #@ "tf-" + chart + "-testflight"
   tags: ["staging"]
   params:
@@ -119,6 +130,7 @@ source:
   - #@ "charts/" + chart_name + "/*"
   - #@ "charts/" + chart_name + "/**/*"
   - #@ "ci/tasks/" + chart_name + "-smoketest.sh"
+  - #@ "ci/tasks/get-smoketest-settings.sh"
   uri: #@ data.values.git_uri
   branch: #@ data.values.git_branch
   private_key: #@ data.values.github_private_key

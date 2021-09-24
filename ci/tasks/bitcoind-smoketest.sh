@@ -2,13 +2,14 @@
 
 set -eu
 
-namespace=${NAMESPACE:-$(cat testflight/env_name)}
-host=bitcoind.${namespace}.svc.cluster.local
+source smoketest-settings/helpers.sh
+
+host=`setting "bitcoind_endpoint"`
 bitcoin-cli -version
 bitcoin-cli -testnet \
-  -rpcuser=rpcuser \
-  -rpcpassword=${BITCOIND_RPCPASSWORD} \
-  -rpcport=18332 \
+  -rpcuser=`setting "bitcoind_user"` \
+  -rpcpassword=`setting "bitcoind_rpcpassword"` \
+  -rpcport=`setting "bitcoind_port"` \
   -rpcconnect=${host}\
   -getinfo
 
