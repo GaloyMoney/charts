@@ -118,8 +118,8 @@ jobs:
             SMOKETEST_SECRET: "lnd1-smoketest"
             SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
           run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/get-smoketest-settings.sh
-      - task: lnd-smoke-test
+            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/get-smoketest-settings.sh
+      - task: lnd1-smoke-test
         tags: ["staging"]
         config:
           platform: linux
@@ -131,7 +131,7 @@ jobs:
           params:
             NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
           run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd/ci/tasks/lnd-smoketest.sh
+            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/lnd-smoketest.sh
     - do:
       - task: get-smoketest-settings
         tags: ["staging"]
@@ -147,7 +147,7 @@ jobs:
             SMOKETEST_SECRET: "specter-smoketest"
             SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
           run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/get-smoketest-settings.sh
+            path: pipeline-tasks/modules/services/bitcoin/vendor/specter/ci/tasks/get-smoketest-settings.sh
       - task: specter-smoketest
         tags: ["staging"]
         config:
@@ -174,7 +174,7 @@ jobs:
             SMOKETEST_SECRET: "rtl-smoketest"
             SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
           run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/get-smoketest-settings.sh
+            path: pipeline-tasks/modules/services/bitcoin/vendor/rtl/ci/tasks/get-smoketest-settings.sh
       - task: rtl-smoketest
         tags: ["staging"]
         config:
