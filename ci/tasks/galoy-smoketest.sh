@@ -1,7 +1,8 @@
 #!/bin/bash
 
-namespace=${NAMESPACE:-$(cat testflight/env_name)}
-host=graphql.${namespace}.svc.cluster.local
+source smoketest-settings/helpers.sh
+
+host=`setting "galoy_endpoint"`
 
 curl --location --request POST "${host}:4000/graphql"\
  --header 'Content-Type: application/json' \

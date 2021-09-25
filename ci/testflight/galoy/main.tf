@@ -7,6 +7,7 @@ locals {
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
+  smoketest_namespace = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -168,6 +169,16 @@ resource "kubernetes_secret" "lnd1_credentials" {
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
+  }
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    galoy_endpoint = "graphql.${local.testflight_namespace}.svc.cluster.local"
   }
 }
 
