@@ -146,6 +146,37 @@ jobs:
           - name: #@ cepler_resource_name("bitcoin")
             path: pipeline-tasks
           outputs:
+          - name: lnd2-smoketest-settings
+          params:
+            SMOKETEST_SECRET: "lnd2-smoketest"
+            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+            OUT: lnd2-smoketest-settings
+          run:
+            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/get-smoketest-settings.sh
+      - task: lnd2-smoke-test
+        tags: ["staging"]
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: #@ cepler_resource_name("bitcoin")
+            path: pipeline-tasks
+          - name: lnd2-smoketest-settings
+            path: smoketest-settings
+          params:
+            NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
+          run:
+            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/lnd-smoketest.sh
+    - do:
+      - task: get-smoketest-settings
+        tags: ["staging"]
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: #@ cepler_resource_name("bitcoin")
+            path: pipeline-tasks
+          outputs:
           - name: specter-smoketest-settings
           params:
             SMOKETEST_SECRET: "specter-smoketest"
@@ -227,18 +258,34 @@ jobs:
         staging_smsala_api_id: #@ data.values.staging_smsala_api_id
         staging_gcs_sa_key: #@ data.values.staging_gcs_sa_key
         staging_dropbox_access_token: #@ data.values.staging_dropbox_access_token
-  - in_parallel:
-    - task: galoy-smoke-test
-      tags: ["staging"]
-      config:
-        platform: linux
-        image_resource: #@ task_image_config()
-        inputs:
-        - name: pipeline-tasks
-        params:
-          NAMESPACE: #@ data.values.staging_name_prefix + "-galoy"
-        run:
-          path: pipeline-tasks/ci/tasks/galoy-smoketest.sh
+  - task: get-smoketest-settings
+    tags: ["staging"]
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: #@ cepler_resource_name("galoy")
+        path: pipeline-tasks
+      outputs:
+      - name: galoy-smoketest-settings
+      params:
+        SMOKETEST_SECRET: "galoy-smoketest"
+        SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+        OUT: galoy-smoketest-settings
+      run:
+        path: pipeline-tasks/modules/services/bitcoin/vendor/galoy/ci/tasks/get-smoketest-settings.sh
+  - task: galoy-smoke-test
+    tags: ["staging"]
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: #@ cepler_resource_name("galoy")
+        path: pipeline-tasks
+      - name: galoy-smoketest-settings
+        path: smoketest-settings
+      run:
+        path: pipeline-tasks/modules/services/bitcoin/vendor/galoy/ci/tasks/galoy-smoketest.sh
 
 - name: monitoring-staging
   serial: true
