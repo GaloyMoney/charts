@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 
 #@ def pipeline_image():
-#@   return data.values.docker_registry + "/helm-charts-pipeline"
+#@   return data.values.docker_registry + "/helm-deployments-pipeline"
 #@ end
 
 #@ def task_image_config():
