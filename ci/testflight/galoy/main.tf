@@ -36,6 +36,17 @@ resource "kubernetes_secret" "gcs_sa_key" {
   data = {}
 }
 
+resource "kubernetes_secret" "geetest_key" {
+  metadata {
+    name = "geetest-key"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    geetest_key = "geetest_key"
+  }
+}
+
 resource "kubernetes_secret" "dropbox_access_token" {
   metadata {
     name = "dropbox-access-token"
