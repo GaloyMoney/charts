@@ -254,7 +254,7 @@ jobs:
         SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
         OUT: galoy-smoketest-settings
       run:
-        path: pipeline-tasks/modules/galoy/vendor/ci/tasks/get-smoketest-settings.sh
+        path: pipeline-tasks/modules/galoy/vendor/galoy/ci/tasks/get-smoketest-settings.sh
   - task: galoy-smoke-test
     tags: ["staging"]
     config:
@@ -266,7 +266,7 @@ jobs:
       - name: galoy-smoketest-settings
         path: smoketest-settings
       run:
-        path: pipeline-tasks/modules/galoy/vendor/ci/tasks/galoy-smoketest.sh
+        path: pipeline-tasks/modules/galoy/vendor/galoy/ci/tasks/galoy-smoketest.sh
   - put: #@ cepler_out_name("galoy")
     params:
       repository: #@ cepler_resource_name("galoy")
@@ -298,7 +298,7 @@ jobs:
         SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
         OUT: monitoring-smoketest-settings
       run:
-        path: pipeline-tasks/modules/services/monitoring/vendor/ci/tasks/get-smoketest-settings.sh
+        path: pipeline-tasks/modules/services/monitoring/vendor/monitoring/ci/tasks/get-smoketest-settings.sh
   - task: monitoring-smoke-test
     tags: ["staging"]
     config:
@@ -310,7 +310,7 @@ jobs:
       - name: monitoring-smoketest-settings
         path: smoketest-settings
       run:
-        path: pipeline-tasks/modules/services/monitoring/vendor/ci/tasks/monitoring-smoketest.sh
+        path: pipeline-tasks/modules/services/monitoring/vendor/monitoring/ci/tasks/monitoring-smoketest.sh
   - put: #@ cepler_out_name("monitoring")
     params:
       repository: #@ cepler_resource_name("monitoring")
