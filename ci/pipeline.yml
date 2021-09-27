@@ -311,20 +311,7 @@ jobs:
       - name: monitoring-smoketest-settings
         path: smoketest-settings
       run:
-        path: pipeline-tasks/modules/services/monitoring/vendor/ci/tasks/galoy-smoketest.sh
-  - in_parallel:
-    - task: monitoring-smoke-test
-      tags: ["staging"]
-      config:
-        platform: linux
-        image_resource: #@ task_image_config()
-        inputs:
-        - name: pipeline-tasks
-        params:
-          NAMESPACE: #@ data.values.staging_name_prefix + "-monitoring"
-          ALERTMANAGER_DNS: #@ data.values.staging_alertmanager_dns
-        run:
-          path: pipeline-tasks/ci/tasks/monitoring-smoketest.sh
+        path: pipeline-tasks/modules/services/monitoring/vendor/ci/tasks/monitoring-smoketest.sh
   - put: #@ cepler_out_name("monitoring")
     params:
       repository: #@ cepler_resource_name("monitoring")
