@@ -281,8 +281,8 @@ jobs:
     params:
       terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/staging/monitoring"
       vars:
-        staging_slack_api_url: #@ data.values.staging_slack_api_url
-        staging_pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
+        slack_api_url: #@ data.values.staging_slack_api_url
+        pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
