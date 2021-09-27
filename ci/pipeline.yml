@@ -123,8 +123,6 @@ jobs:
             path: pipeline-tasks
           - name: lnd1-smoketest-settings
             path: smoketest-settings
-          params:
-            NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/lnd-smoketest.sh
     - do:
@@ -154,8 +152,6 @@ jobs:
             path: pipeline-tasks
           - name: lnd2-smoketest-settings
             path: smoketest-settings
-          params:
-            NAMESPACE: #@ data.values.staging_name_prefix + "-bitcoin"
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/lnd-smoketest.sh
     - do:
@@ -231,7 +227,6 @@ jobs:
     params:
       terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
       vars:
-        name_prefix: #@ data.values.staging_name_prefix
         staging_apollo_graph_id: #@ data.values.staging_apollo_graph_id
         staging_apollo_key: #@ data.values.staging_apollo_key
         firebase_service_account: #@ data.values.staging_firebase_service_account
