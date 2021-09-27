@@ -29,5 +29,3 @@ staging_creds: ((staging.creds_json))
 staging_smoketest_kubeconfig: ((staging.smoketest_kubeconfig))
 staging_slack_api_url: ((staging.slack_api_url))
 staging_pagerduty_service_key: ((staging.pagerduty_service_key))
-staging_name_prefix: galoy-staging
-staging_alertmanager_dns: monitoring-prometheus-alertmanager
