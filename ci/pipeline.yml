@@ -227,18 +227,18 @@ jobs:
     params:
       terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
       vars:
-        staging_apollo_graph_id: #@ data.values.staging_apollo_graph_id
-        staging_apollo_key: #@ data.values.staging_apollo_key
+        apollo_graph_id: #@ data.values.staging_apollo_graph_id
+        apollo_key: #@ data.values.staging_apollo_key
         firebase_service_account: #@ data.values.staging_firebase_service_account
-        staging_twilio_phone_number: #@ data.values.staging_twilio_phone_number
-        staging_twilio_api_key: #@ data.values.staging_twilio_api_key
-        staging_twilio_api_secret: #@ data.values.staging_twilio_api_secret
-        staging_twilio_account_sid: #@ data.values.staging_twilio_account_sid
-        staging_smsala_sender_id: #@ data.values.staging_smsala_sender_id
-        staging_smsala_api_password: #@ data.values.staging_smsala_api_password
-        staging_smsala_api_id: #@ data.values.staging_smsala_api_id
-        staging_gcs_sa_key: #@ data.values.staging_gcs_sa_key
-        staging_dropbox_access_token: #@ data.values.staging_dropbox_access_token
+        twilio_phone_number: #@ data.values.staging_twilio_phone_number
+        twilio_api_key: #@ data.values.staging_twilio_api_key
+        twilio_api_secret: #@ data.values.staging_twilio_api_secret
+        twilio_account_sid: #@ data.values.staging_twilio_account_sid
+        smsala_sender_id: #@ data.values.staging_smsala_sender_id
+        smsala_api_password: #@ data.values.staging_smsala_api_password
+        smsala_api_id: #@ data.values.staging_smsala_api_id
+        gcs_sa_key: #@ data.values.staging_gcs_sa_key
+        dropbox_access_token: #@ data.values.staging_dropbox_access_token
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
