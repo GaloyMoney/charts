@@ -274,21 +274,44 @@ jobs:
 - name: monitoring-staging
   serial: true
   plan:
-  - in_parallel:
-    - get: #@ chart_resource_name("monitoring")
-      passed:
-      - #@ bump_in_deployments_job_name("monitoring")
-      trigger: true
-    - { get: pipeline-tasks }
-    - { get: galoy-deployments }
+  - get: #@ cepler_resource_name("monitoring")
+    trigger: true
   - put: tf-monitoring-staging
     tags: ["staging"]
     params:
-      terraform_source: galoy-deployments/gcp/staging/monitoring
+      terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/staging/monitoring"
       vars:
         name_prefix: #@ data.values.staging_name_prefix
         staging_slack_api_url: #@ data.values.staging_slack_api_url
         staging_pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
+  - task: get-smoketest-settings
+    tags: ["staging"]
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: #@ cepler_resource_name("monitoring")
+        path: pipeline-tasks
+      outputs:
+      - name: monitoring-smoketest-settings
+      params:
+        SMOKETEST_SECRET: "monitoring-smoketest"
+        SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+        OUT: monitoring-smoketest-settings
+      run:
+        path: pipeline-tasks/modules/services/monitoring/vendor/ci/tasks/get-smoketest-settings.sh
+  - task: monitoring-smoke-test
+    tags: ["staging"]
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: #@ cepler_resource_name("monitoring")
+        path: pipeline-tasks
+      - name: monitoring-smoketest-settings
+        path: smoketest-settings
+      run:
+        path: pipeline-tasks/modules/services/monitoring/vendor/ci/tasks/galoy-smoketest.sh
   - in_parallel:
     - task: monitoring-smoke-test
       tags: ["staging"]
@@ -302,6 +325,9 @@ jobs:
           ALERTMANAGER_DNS: #@ data.values.staging_alertmanager_dns
         run:
           path: pipeline-tasks/ci/tasks/monitoring-smoketest.sh
+  - put: #@ cepler_out_name("monitoring")
+    params:
+      repository: #@ cepler_resource_name("monitoring")
 
 resources:
 #@ for chart in bitcoin_charts:
@@ -318,6 +344,8 @@ resources:
 
 - #@ chart_repo_resource("monitoring")
 - #@ testflight_tf_resource("monitoring")
+- #@ cepler_in("monitoring")
+- #@ cepler_out("monitoring")
 
 - name: pipeline-tasks
   type: git

@@ -6,11 +6,22 @@ locals {
   gcp_project              = "galoy-staging"
 
   testflight_namespace = var.testflight_namespace
+  smoketest_namespace = "galoy-staging-smoketest"
 }
 
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
+  }
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    alertmanager_host = "${local.testflight_namespace}-prometheus-alertmanager"
   }
 }
 
