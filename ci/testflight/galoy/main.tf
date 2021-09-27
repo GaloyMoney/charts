@@ -44,8 +44,8 @@ resource "kubernetes_secret" "geetest_key" {
   }
 
   data = {
-    geetest_key = "geetest_key"
-    geetest_id = "geetest_id"
+    key = "geetest_key"
+    id = "geetest_id"
   }
 }
 
