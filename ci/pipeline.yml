@@ -17,13 +17,8 @@
 
 #@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter"]
 #@ def galoy_chart_vars():
-bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
 testflight_apollo_key: #@ data.values.testflight_apollo_key
-#@ end
-
-#@ def bitcoin_chart_vars():
-bitcoind_rpcpassword: #@ data.values.testflight_bitcoind_rpcpassword
 #@ end
 
 #@ def monitoring_chart_vars():
@@ -53,7 +48,7 @@ groups:
 
 jobs:
 #@ for chart in bitcoin_charts:
-- #@ testflight_job(chart, bitcoin_chart_vars())
+- #@ testflight_job(chart)
 - #@ bump_in_deployments_job(chart)
 #@ end
 - #@ testflight_job("galoy", galoy_chart_vars())
@@ -70,8 +65,6 @@ jobs:
     tags: ["staging"]
     params:
       terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
-      vars:
-        bitcoind_rpcpassword: #@ data.values.staging_bitcoind_rpcpassword
   - in_parallel:
     - do:
       - task: get-smoketest-settings
@@ -231,17 +224,12 @@ jobs:
 - name: galoy-staging
   serial: true
   plan:
-  - in_parallel:
-    - get: #@ chart_resource_name("galoy")
-      passed:
-      - #@ bump_in_deployments_job_name("galoy")
-      trigger: true
-    - { get: pipeline-tasks }
-    - { get: galoy-deployments }
+  - get: #@ cepler_resource_name("galoy")
+    trigger: true
   - put: tf-galoy-staging
     tags: ["staging"]
     params:
-      terraform_source: galoy-deployments/gcp/staging/galoy
+      terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
       vars:
         name_prefix: #@ data.values.staging_name_prefix
         staging_apollo_graph_id: #@ data.values.staging_apollo_graph_id
@@ -271,7 +259,7 @@ jobs:
         SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
         OUT: galoy-smoketest-settings
       run:
-        path: pipeline-tasks/modules/services/bitcoin/vendor/galoy/ci/tasks/get-smoketest-settings.sh
+        path: pipeline-tasks/modules/galoy/vendor/ci/tasks/get-smoketest-settings.sh
   - task: galoy-smoke-test
     tags: ["staging"]
     config:
@@ -283,7 +271,10 @@ jobs:
       - name: galoy-smoketest-settings
         path: smoketest-settings
       run:
-        path: pipeline-tasks/modules/services/bitcoin/vendor/galoy/ci/tasks/galoy-smoketest.sh
+        path: pipeline-tasks/modules/galoy/vendor/ci/tasks/galoy-smoketest.sh
+  - put: #@ cepler_out_name("galoy")
+    params:
+      repository: #@ cepler_resource_name("galoy")
 
 - name: monitoring-staging
   serial: true
@@ -327,6 +318,8 @@ resources:
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
+- #@ cepler_in("galoy")
+- #@ cepler_out("galoy")
 
 - #@ chart_repo_resource("monitoring")
 - #@ testflight_tf_resource("monitoring")
