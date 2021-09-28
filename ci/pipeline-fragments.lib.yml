@@ -4,6 +4,10 @@
 #@   return data.values.docker_registry + "/galoy-deployments-pipeline"
 #@ end
 
+#@ def chain_dl_image():
+#@   return data.values.docker_registry + "/bitcoin-chain-dl"
+#@ end
+
 #@ def task_image_config():
 type: registry-image
 source:
