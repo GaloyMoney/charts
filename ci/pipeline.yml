@@ -336,7 +336,7 @@ jobs:
       outputs:
       - name: image
       params:
-        CONTEXT: chain-dl-image-def/ci/image
+        CONTEXT: chain-dl-image-def/ci/chain-dl-image
       run:
         path: build
   - put: chain-dl-image
