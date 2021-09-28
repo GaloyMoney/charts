@@ -18,6 +18,8 @@ image:
   # Overrides the image tag whose default is the chart version.
   tag: v0.21.1
 
+extraInitContainers: []
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

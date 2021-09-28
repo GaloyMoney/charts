@@ -38,6 +38,9 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
+      {{- if .Values.extraInitContainers }}
+      {{- toYaml .Values.extraInitContainers | nindent 8 }}
+      {{- end }}
         - name: copy-bitcoind-config
           image: busybox
           command:
