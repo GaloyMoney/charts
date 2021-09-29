@@ -32,6 +32,11 @@ grafana:
         type: prometheus
         url: http://monitoring-prometheus-server
         isDefault: true
+      - name: Google Cloud Monitoring
+        type: stackdriver
+        access: proxy
+        jsonData:
+          authenticationType: gce
 
 # TODO: Add script to fetch mongodb plugin from github
 # extraInitContainers: |
