@@ -23,6 +23,15 @@ grafana:
   grafana.ini:
     plugins:
       allow_loading_unsigned_plugins: "doitintl-bigquery-datasource"
+  
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://monitoring-prometheus-server
+        isDefault: true
 
 # TODO: Add script to fetch mongodb plugin from github
 # extraInitContainers: |
