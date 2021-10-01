@@ -287,9 +287,7 @@ jobs:
       vars:
         slack_api_url: #@ data.values.staging_slack_api_url
         pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
-        grafana_sa_private_key: #@ data.values.staging_grafana_sa_private_key
-        grafana_sa_email: #@ data.values.staging_grafana_sa_email
-        grafana_sa_project_id: #@ data.values.staging_grafana_sa_project_id
+        grafana_sa_key: #@ data.values.staging_grafana_sa_key
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
