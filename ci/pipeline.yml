@@ -28,12 +28,14 @@ testflight_apollo_key: #@ data.values.testflight_apollo_key
 groups:
 - name: galoy
   jobs: 
-    - galoy-testflight
-    - bump-galoy-in-deployments
-    - galoy-staging
-    - monitoring-testflight
-    - bump-monitoring-in-deployments
-    - monitoring-staging
+  - galoy-testflight
+  - bump-galoy-in-deployments
+  - galoy-staging
+- name: monitoring
+  jobs:
+  - monitoring-testflight
+  - bump-monitoring-in-deployments
+  - monitoring-staging
 - name: bitcoin
   jobs: 
 #@ for chart in bitcoin_charts:
