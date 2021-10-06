@@ -111,6 +111,13 @@ redis:
   metrics:
     enabled: true
 
+ingress:
+  clusterIssuer: ca-issuer
+apiIngress:
+  clusterIssuer: ca-issuer
+adminIngress:
+  clusterIssuer: ca-issuer
+
 
 admin-panel:
   enabled: false
