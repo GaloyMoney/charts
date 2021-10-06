@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: {{ .values.apiIngress.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.apiIngress.clusterIssuer }}
     nginx.ingress.kubernetes.io/limit-rpm: "60"
 spec:
   tls:
