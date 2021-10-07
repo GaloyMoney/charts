@@ -19,8 +19,8 @@ ca:
 
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:3786aa8251b03037da0832f4ab1235f07ec4569fd2279dbb54a3615eb13b18aa"
-  # git_ref: "d6b465b"
+  digest: "sha256:df256e969b29cf2544c9533b94e64e5ebe436178b00d6f4e82b7fa7a41131449"
+  # git_ref: "85897d6"
 
 deployment:
 - name: graphql
