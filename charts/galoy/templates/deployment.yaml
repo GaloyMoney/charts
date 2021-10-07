@@ -118,7 +118,7 @@ spec:
                   key: pubkey
 
             - name: BITCOINDADDR
-              value: "bitcoind"
+              value: {{ default "bitcoind" $.Values.bitcoind.address }}
             - name: BITCOINDRPCPASS
               valueFrom:
                 secretKeyRef:
