@@ -71,6 +71,8 @@ jobs:
     tags: ["staging"]
     params:
       terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
+      vars:
+        lnd1_pass: #@ data.values.staging_lnd1_pass
   - in_parallel:
     - do:
       - task: get-smoketest-settings
