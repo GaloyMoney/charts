@@ -239,6 +239,8 @@ jobs:
         apollo_key: #@ data.values.staging_apollo_key
         firebase_service_account: #@ data.values.staging_firebase_service_account
         proxy_check_api_key: #@ data.values.staging_proxy_check_api_key
+        geetest_key: #@ data.values.staging_geetest_key
+        geetest_id: #@ data.values.staging_geetest_id
         twilio_phone_number: #@ data.values.staging_twilio_phone_number
         twilio_api_key: #@ data.values.staging_twilio_api_key
         twilio_api_secret: #@ data.values.staging_twilio_api_secret
