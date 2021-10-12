@@ -1,5 +1,3 @@
-nodeEnv: staging
-
 bitcoind:
   port: 18332
 
@@ -22,3 +20,9 @@ galoy:
     username: "bankowner"
   funder: "GaloyFunder"
   name: "Galoy Wallet"
+
+lnd1:
+  dns: lnd1.galoy-staging-bitcoin.svc.cluster.local
+
+lnd2:
+  dns: lnd2.galoy-staging-bitcoin.svc.cluster.local

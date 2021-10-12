@@ -5,6 +5,7 @@ locals {
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
+  smoketest_namespace = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 resource "kubernetes_namespace" "testflight" {
@@ -29,11 +30,24 @@ resource "kubernetes_secret" "lnd1_credentials" {
   data = data.kubernetes_secret.lnd1_credentials.data
 }
 
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    rtl_endpoint = "rtl.${local.testflight_namespace}.svc.cluster.local"
+    rtl_port = 3000
+  }
+}
+
 resource "helm_release" "rtl" {
   name       = "rtl"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  dependency_update = true
 
   values = [
     file("${path.module}/testflight-values.yml")

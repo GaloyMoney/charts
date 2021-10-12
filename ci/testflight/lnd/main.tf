@@ -5,6 +5,7 @@ locals {
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
+  smoketest_namespace = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -46,8 +47,18 @@ resource "kubernetes_secret" "network" {
   data = data.kubernetes_secret.network.data
 }
 
-resource "helm_release" "lnd" {
-  name       = "lnd"
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    lndmon_endpoint = "lnd1-lndmon.${local.testflight_namespace}.svc.cluster.local"
+  }
+}
+
+resource "helm_release" "lnd1" {
+  name       = "lnd1"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name

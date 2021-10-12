@@ -2,9 +2,10 @@
 
 set -eu
 
-namespace=${NAMESPACE:-$(cat testflight/env_name)}
-host=${HOST:-rtl.${namespace}.svc.cluster.local}
-port=${PORT:-3000}
+source smoketest-settings/helpers.sh
+
+host=`setting "rtl_endpoint"`
+port=`setting "rtl_port"`
 
 set +e
 for i in {1..15}; do

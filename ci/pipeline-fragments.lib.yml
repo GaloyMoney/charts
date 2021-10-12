@@ -1,0 +1,198 @@
+#@ load("@ytt:data", "data")
+
+#@ def pipeline_image():
+#@   return data.values.docker_registry + "/galoy-deployments-pipeline"
+#@ end
+
+#@ def chain_dl_image():
+#@   return data.values.docker_registry + "/bitcoin-chain-dl"
+#@ end
+
+#@ def task_image_config():
+type: registry-image
+source:
+  username: #@ data.values.docker_registry_user
+  password: #@ data.values.docker_registry_password
+  repository: #@ pipeline_image()
+#@ end
+
+#@ def testflight_job_name(chart):
+#@  return chart + "-testflight"
+#@ end
+
+#@ def bump_in_deployments_job_name(chart):
+#@  return "bump-" + chart + "-in-deployments"
+#@ end
+
+#@ def chart_resource_name(chart):
+#@   return chart + "-chart"
+#@ end
+
+#@ def testflight_job(chart, vars = {}):
+name: #@ testflight_job_name(chart)
+plan:
+- in_parallel:
+  - get: #@ chart_resource_name(chart)
+    trigger: true
+  - { get: pipeline-tasks }
+- task: prepare-testflight
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: pipeline-tasks
+    - name: #@ chart_resource_name(chart)
+      path: repo
+    outputs:
+    - name: testflight
+    params:
+      CHART: #@ chart
+    run:
+      path: pipeline-tasks/ci/tasks/prepare-testflight.sh
+- put: #@ "tf-" + chart + "-testflight"
+  tags: ["staging"]
+  params:
+    vars_files: [ testflight/tf/terraform.tfvars ]
+    terraform_source: testflight/tf
+    env_name_file: testflight/env_name
+    vars: #@ vars
+- task: get-smoketest-settings
+  tags: ["staging"]
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: pipeline-tasks
+    - name: testflight
+    outputs:
+    - name: smoketest-settings
+    params:
+      SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+      OUT: smoketest-settings
+    run:
+      path: pipeline-tasks/ci/tasks/get-smoketest-settings.sh
+- task: smoketest
+  tags: ["staging"]
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: pipeline-tasks
+    - name: smoketest-settings
+    params:
+    run:
+      path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
+- put: #@ "tf-" + chart + "-testflight"
+  tags: ["staging"]
+  params:
+    vars_files: [ testflight/tf/terraform.tfvars ]
+    terraform_source: testflight/tf
+    env_name_file: testflight/env_name
+    action: destroy
+    vars: #@ vars
+  get_params: { action: destroy }
+#@ end
+
+#@ def bump_in_deployments_job(chart):
+name: #@ "bump-" + chart + "-in-deployments"
+plan:
+- in_parallel:
+  - get: #@ chart_resource_name(chart)
+    passed:
+    - #@ testflight_job_name(chart)
+    trigger: true
+  - { get: pipeline-tasks }
+  - { get: galoy-deployments }
+- task: #@ "bump-" + chart
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: chart
+    - name: pipeline-tasks
+    - name: galoy-deployments
+    outputs:
+    - name: galoy-deployments
+    params:
+      CHART: #@ chart
+      BRANCH: #@ data.values.deployments_git_branch
+    run:
+      path: pipeline-tasks/ci/tasks/bump-chart.sh
+- put: galoy-deployments
+  params:
+    repository: galoy-deployments
+    rebase: true
+#@ end
+
+#@ def chart_repo_resource(chart_name):
+name: #@ chart_name + "-chart"
+type: git
+source:
+  paths:
+  - #@ "charts/" + chart_name + "/*"
+  - #@ "charts/" + chart_name + "/**/*"
+  - #@ "ci/tasks/" + chart_name + "-smoketest.sh"
+  - #@ "ci/tasks/get-smoketest-settings.sh"
+  uri: #@ data.values.git_uri
+  branch: #@ data.values.git_branch
+  private_key: #@ data.values.github_private_key
+#@ end
+
+#@ def testflight_tf_resource(chart_name):
+name: #@ "tf-" + chart_name + "-testflight"
+type: terraform
+source:
+  backend_type: gcs
+  backend_config:
+    bucket: #@ data.values.staging_state_bucket
+    prefix: #@ "galoy-staging/services/" + chart_name + "-testflight"
+    credentials: #@ data.values.staging_creds
+  env:
+    GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+#@ end
+
+
+#@ def cepler_config(deployment):
+#@   return "cepler/" + deployment + ".yml"
+#@ end
+
+#@ def gates_file(deployment):
+#@   return "cepler-gates/" + deployment + ".yml"
+#@ end
+
+#@ def cepler_resource_name(deployment):
+#@   return deployment + "-" + data.values.staging_environment
+#@ end
+
+#@ def cepler_out_name(deployment):
+#@   return deployment + "-out"
+#@ end
+
+#@ def cepler_in(deployment):
+name: #@ cepler_resource_name(deployment)
+type: cepler-in
+source:
+  uri: #@ data.values.deployments_git_uri
+  branch: #@ data.values.deployments_git_branch
+  private_key: #@ data.values.github_private_key
+  config: #@ cepler_config(deployment)
+  environment: #@ data.values.staging_environment
+  gates_branch: #@ data.values.gates_branch
+  gates_file: #@ gates_file(deployment)
+#@ end
+
+#@ def cepler_out(deployment):
+name: #@ cepler_out_name(deployment)
+type: cepler-out
+source:
+  uri: #@ data.values.deployments_git_uri
+  branch: #@ data.values.deployments_git_branch
+  private_key: #@ data.values.github_private_key
+  config: #@ cepler_config(deployment)
+  environment: #@ data.values.staging_environment
+  gates_branch: #@ data.values.gates_branch
+  gates_file: #@ gates_file(deployment)
+#@ end

@@ -1,17 +1,21 @@
 variable "testflight_namespace" {}
+variable "testflight_apollo_graph_id" {}
+variable "testflight_apollo_key" {}
 
 locals {
   cluster_name             = "galoy-staging-cluster"
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
+  smoketest_namespace = "galoy-staging-smoketest"
+  bitcoin_namespace = "galoy-staging-bitcoin"
   testflight_namespace = var.testflight_namespace
 }
 
 data "kubernetes_secret" "network" {
   metadata {
     name = "network"
-    namespace = "galoy-staging-bitcoin"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -31,6 +35,18 @@ resource "kubernetes_secret" "gcs_sa_key" {
   }
 
   data = {}
+}
+
+resource "kubernetes_secret" "geetest_key" {
+  metadata {
+    name = "geetest-key"
+    namespace  = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    key = "geetest_key"
+    id = "geetest_id"
+  }
 }
 
 resource "kubernetes_secret" "dropbox_access_token" {
@@ -78,15 +94,15 @@ resource "kubernetes_secret" "apollo_secret" {
   }
 
   data = {
-    key = ""
-    id = ""
+    key = var.testflight_apollo_key
+    id = var.testflight_apollo_graph_id
   }
 }
 
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
     name = "bitcoind-rpcpassword"
-    namespace = "galoy-staging-bitcoin"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -101,8 +117,8 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
 
 data "kubernetes_secret" "lnd2_pubkey" {
   metadata {
-    name = "lnd-pubkey"
-    namespace = "galoy-staging-bitcoin"
+    name = "lnd2-pubkey"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -117,8 +133,8 @@ resource "kubernetes_secret" "lnd2_pubkey" {
 
 data "kubernetes_secret" "lnd1_pubkey" {
   metadata {
-    name = "lnd-pubkey"
-    namespace = "galoy-staging-bitcoin"
+    name = "lnd1-pubkey"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -133,8 +149,8 @@ resource "kubernetes_secret" "lnd1_pubkey" {
 
 data "kubernetes_secret" "lnd2_credentials" {
   metadata {
-    name = "lnd-credentials"
-    namespace = "galoy-staging-bitcoin"
+    name = "lnd2-credentials"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -149,8 +165,8 @@ resource "kubernetes_secret" "lnd2_credentials" {
 
 data "kubernetes_secret" "lnd1_credentials" {
   metadata {
-    name = "lnd-credentials"
-    namespace = "galoy-staging-bitcoin"
+    name = "lnd1-credentials"
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -166,6 +182,16 @@ resource "kubernetes_secret" "lnd1_credentials" {
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
+  }
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    galoy_endpoint = "graphql.${local.testflight_namespace}.svc.cluster.local"
   }
 }
 

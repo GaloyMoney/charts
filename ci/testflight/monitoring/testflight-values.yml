@@ -1,0 +1,7 @@
+grafana:
+  ingress:
+    enabled: false
+prometheus:
+  nodeExporter:
+    service:
+      hostPort: 9101
