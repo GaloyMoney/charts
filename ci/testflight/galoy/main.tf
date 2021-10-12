@@ -74,19 +74,6 @@ resource "kubernetes_secret" "twilio_secret" {
   }
 }
 
-resource "kubernetes_secret" "smsala_secret" {
-  metadata {
-    name = "smsala-secret"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = {
-    SMSALA_SENDER_ID = ""
-    SMSALA_API_ID = ""
-    SMSALA_API_PASSWORD = ""
-  }
-}
-
 resource "kubernetes_secret" "apollo_secret" {
   metadata {
     name = "galoy-apollo-secret"
