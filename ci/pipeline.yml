@@ -245,9 +245,6 @@ jobs:
         twilio_api_key: #@ data.values.staging_twilio_api_key
         twilio_api_secret: #@ data.values.staging_twilio_api_secret
         twilio_account_sid: #@ data.values.staging_twilio_account_sid
-        smsala_sender_id: #@ data.values.staging_smsala_sender_id
-        smsala_api_password: #@ data.values.staging_smsala_api_password
-        smsala_api_id: #@ data.values.staging_smsala_api_id
         backups_sa_creds: #@ data.values.staging_backups_sa_creds
         dropbox_access_token: #@ data.values.staging_dropbox_access_token
   - task: get-smoketest-settings
