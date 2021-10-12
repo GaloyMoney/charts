@@ -6,7 +6,7 @@ global:
 
 image:
   repository: lncm/lnd
-  tag: v0.13.1-monitoring
+  tag: v0.13.3-monitoring
   pullPolicy: IfNotPresent
 
 configmap:
