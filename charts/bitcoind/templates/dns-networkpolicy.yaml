@@ -16,9 +16,7 @@ spec:
     - to:
       - namespaceSelector:
           matchLabels:
-            contains: coredns
-            # label should be added to the kubesyste namespace, ie:
-            # kubectl label namespace kube-system contains=coredns
+            kubernetes.io/metadata.name: kube-system
         podSelector:
           matchLabels:
             k8s-app: kube-dns
