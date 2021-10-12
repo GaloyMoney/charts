@@ -1,5 +1,4 @@
 variable "testflight_namespace" {}
-variable "bitcoind_rpcpassword" {}
 
 locals {
   cluster_name             = "galoy-staging-cluster"
@@ -16,15 +15,20 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
+data "kubernetes_secret" "bitcoin_rpcpassword" {
+  metadata {
+    name = "bitcoind-rpcpassword"
+    namespace = "galoy-staging-bitcoin"
+  }
+}
+
 resource "kubernetes_secret" "testflight" {
   metadata {
     name = "bitcoind-rpcpassword"
     namespace  = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = {
-    password = var.bitcoind_rpcpassword
-  }
+  data = data.kubernetes_secret.bitcoin_rpcpassword.data
 }
 
 resource "kubernetes_secret" "smoketest" {
