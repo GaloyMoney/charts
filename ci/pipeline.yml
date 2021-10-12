@@ -48,6 +48,19 @@ groups:
   - bitcoin-staging
   - galoy-staging
   - monitoring-staging
+- name: all
+  jobs:
+  - galoy-testflight
+  - bump-galoy-in-deployments
+  - monitoring-testflight
+  - bump-monitoring-in-deployments
+#@ for chart in bitcoin_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
+  - bitcoin-staging
+  - galoy-staging
+  - monitoring-staging
 - name: chain-dl-image
   jobs:
   - build-chain-dl-image
