@@ -5,10 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/galoyapp/price
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  repository: us.gcr.io/galoy-org/price
+  digest: "sha256:7379fd4b5046e1a8ebebe35e3466279a3a74a986c33607007ee8fd3e5ccee3f4"
+  # git_ref: "34690d2"
 
 imagePullSecrets: []
 nameOverride: ""
