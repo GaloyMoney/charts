@@ -47,6 +47,8 @@ prometheus:
     enabled: true
     strategy:
       type: Recreate
+    image:
+      tag: v0.23.0
 
   configmapReload:
     alertmanager:
