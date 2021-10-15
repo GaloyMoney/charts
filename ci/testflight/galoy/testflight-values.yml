@@ -1,3 +1,5 @@
+global:
+  network: testnet
 bitcoind:
   port: 18332
 
