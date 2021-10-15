@@ -154,10 +154,7 @@ spec:
                   name: jwt-secret
                   key: secret
             - name: NETWORK
-              valueFrom:
-                secretKeyRef:
-                  name: network
-                  key: network
+              value: $.Values.global.network
             {{- if $.Values.loglevel}}
             - name: LOGLEVEL
               value: {{ $.Values.loglevel }}
