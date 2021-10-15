@@ -43,7 +43,7 @@ spec:
               value: {{ $.Values.mongodbaddress }}
 
             - name: LND1_DNS
-              value: "lnd1"
+              value: {{ $.Values.lnd1.dns }}
             - name: LND1_MACAROON
               valueFrom:
                 secretKeyRef:
@@ -61,7 +61,7 @@ spec:
                   key: pubkey
 
             - name: LND2_DNS
-              value: "lnd2"
+              value: {{ $.Values.lnd2.dns }}
             - name: LND2_MACAROON
               valueFrom:
                 secretKeyRef:
