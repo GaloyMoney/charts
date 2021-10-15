@@ -14,7 +14,7 @@ spec:
         spec:
           containers:
           - name: {{ .name }}
-            image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+            image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
             {{- if .command }}
             command: ["/bin/sh","-c", {{ .command | quote }}]
             {{- end }}
