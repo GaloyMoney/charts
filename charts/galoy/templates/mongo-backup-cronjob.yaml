@@ -24,10 +24,7 @@ spec:
               mountPath: "/var/secret/cloud.google.com"
             env:
             - name: NETWORK
-              valueFrom:
-                secretKeyRef:
-                  name: network
-                  key: network
+              value: {{ $.Values.global.network }}
             - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:

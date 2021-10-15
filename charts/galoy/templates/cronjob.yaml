@@ -9,7 +9,7 @@ spec:
   schedule: {{ .schedule }}
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 7200
+      activeDeadlineSeconds: 7201
       template:
         spec:
           containers:
@@ -28,8 +28,6 @@ spec:
             - name: "custom-yaml"
               mountPath: "/var/yaml/"
             env:
-            # TODO: refactor with a yaml template
-            # dedupe with deployment.yaml
             - name: HELMREVISION
               value: {{ $.Release.Revision | quote}}
             - name: MONGODB_PASSWORD
@@ -77,7 +75,6 @@ spec:
                 secretKeyRef:
                   name: lnd2-pubkey
                   key: pubkey
-
             - name: BITCOINDADDR
               value: {{ $.Values.bitcoind.address }}
             - name: BITCOINDRPCPASS
@@ -89,7 +86,6 @@ spec:
               value: {{ $.Values.bitcoind.port | quote }}
             - name: NETWORK
               value: {{ $.Values.global.network }}
-
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
