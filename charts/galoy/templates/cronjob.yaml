@@ -88,7 +88,7 @@ spec:
             - name: BITCOINDPORT
               value: {{ $.Values.bitcoind.port | quote }}
             - name: NETWORK
-              value: $.Values.global.network
+              value: {{ $.Values.global.network }}
 
             - name: REDIS_PASSWORD
               valueFrom:
