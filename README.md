@@ -6,7 +6,7 @@ Galoy community banking application, launchable on Kubernetes using [Kubernetes 
 
 ### Setup a Kubernetes Cluster
 
-These charts have been tested for GCP's [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/).
+These charts have been tested on top of the galoy infrastructure ([`galoy-infra`](https://github.com/GaloyMoney/galoy-infra)).
 
 ### Install Helm
 [Helm](https://helm.sh) must be installed to use the charts.
@@ -16,6 +16,10 @@ Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 
 This repo includes charts for:
 - [`galoy`](https://github.com/GaloyMoney/galoy) Our bitcoin banking application
+  - [`galoy-pay`](https://github.com/GaloyMoney/galoy-pay)
+  - [`admin-panel`](https://github.com/GaloyMoney/admin-panel)
+  - [`dealer`](https://github.com/GaloyMoney/dealer)
+  - [`price`](https://github.com/GaloyMoney/price)
 
 - [`bitcoind`](https://github.com/bitcoin/bitcoin) Bitcoin full node
 
@@ -25,4 +29,6 @@ This repo includes charts for:
 
 - [`specter`](https://github.com/cryptoadvance/specter-desktop) On-chain wallet and multisig co-ordinator
 
-- `monitoring` Metrics dashboard using [`grafana`](https://github.com/grafana/grafana) and [`prometheus`](https://github.com/prometheus/prometheus)
+- `monitoring` Metrics dashboard
+  - [`grafana`](https://github.com/grafana/grafana)
+  - [`prometheus`](https://github.com/prometheus/prometheus)
