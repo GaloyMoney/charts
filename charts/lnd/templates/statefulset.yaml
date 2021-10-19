@@ -97,8 +97,8 @@ spec:
           args:
           - '-c'
           - |
-            sed "1cControlPort 9051\n\
-            SocksPort 127.0.0.1:9050\n" /etc/tor/torrc > ~/torrc
+            sed 's/SocksPort 0.0.0.0:9050/SocksPort 127.0.0.1:9050/g' /etc/tor/torrc > ~/torrc
+            echo "ControlPort 9051" >> ~/torrc
             tor -f ~/torrc
         - name: export-secrets
           securityContext:
