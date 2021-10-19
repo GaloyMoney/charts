@@ -89,6 +89,17 @@ spec:
           - name: lnd-storage
             mountPath: /data/.lnd
         {{- end }}
+        - name: tor
+          image: osminogin/tor-simple
+          securityContext:
+            runAsUser: 100
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            sed 's/SocksPort 0.0.0.0:9050/SocksPort 127.0.0.1:9050/g' /etc/tor/torrc > ~/torrc
+            echo "ControlPort 9051" >> ~/torrc
+            tor -f ~/torrc
         - name: export-secrets
           securityContext:
             runAsUser: 0
