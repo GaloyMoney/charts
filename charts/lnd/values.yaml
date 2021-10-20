@@ -93,6 +93,8 @@ lndGeneralConfig:
   - gc-canceled-invoices-on-the-fly=true
   - gc-canceled-invoices-on-startup=true
   - protocol.no-anchors=true
+  - tor.active=true
+  - tor.v3=true
 
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 
