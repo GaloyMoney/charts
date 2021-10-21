@@ -37,10 +37,7 @@ deployment:
   replicaCount: 1
 - name: api
   command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/graphql-main-server.js"
+  appEntrypoint: "lib/servers/graphql-main-server.js"
   healthz: true
   targetPort: 4002
   replicaCount: 1
