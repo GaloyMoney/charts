@@ -17,8 +17,8 @@ ca:
 
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:7ca157d40250f14d5a9469974c0b342deca417ee07dddeb6393c89a63606d6ec"
-  # git_ref: "d688e3d"
+  digest: "sha256:01cd9414574cf17088acbf5963ff51ab3a5e759e20d25d685c4f9c98f0382a4a"
+  # git_ref: "613f8eb"
 
 jaegerHost: localhost
 tracingPrefix: "galoy"
