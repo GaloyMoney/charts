@@ -94,11 +94,17 @@ spec:
           securityContext:
             runAsUser: 100
           command: ['/bin/sh']
+          volumeMounts:
+          - name: tor-cookie-auth
+            mountPath: /var/lib/tor/auth
           args:
           - '-c'
           - |
             sed 's/SocksPort 0.0.0.0:9050/SocksPort 127.0.0.1:9050/g' /etc/tor/torrc > ~/torrc
             echo "ControlPort 9051" >> ~/torrc
+            echo "CookieAuthentication 1" >> ~/torrc
+            echo "CookieAuthFile /var/lib/tor/auth/cookie" >> ~/torrc
+            echo "CookieAuthFileGroupReadable 1" >> ~/torrc
             tor -f ~/torrc
         - name: export-secrets
           securityContext:
@@ -135,6 +141,8 @@ spec:
             - name: rest
               containerPort: {{ .Values.service.ports.rest }}
           volumeMounts:
+            - name: tor-cookie-auth
+              mountPath: /var/lib/tor/auth
             - name: lnd-storage
               mountPath: /data/.lnd
             - name: config
@@ -197,6 +205,8 @@ spec:
         {{- else }}
           emptyDir: {}
         {{- end }}
+        - name: tor-cookie-auth
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
