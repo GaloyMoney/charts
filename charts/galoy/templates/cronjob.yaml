@@ -37,6 +37,10 @@ spec:
                   key: "mongodb-password"
             - name: MONGODB_USER
               value: "testGaloy"
+            - name: JAEGER_HOST
+              value: {{ $.Values.jaeger_host }}
+            - name: TRACING_SERVICE_NAME
+              value: {{ $.Values.tracing_prefix }}-{{ .name }}
             - name: MONGODB_ADDRESS
               value: {{ $.Values.mongodbaddress }}
 

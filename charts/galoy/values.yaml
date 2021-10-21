@@ -1,8 +1,6 @@
 global:
   network: mainnet
 
-nodeEnv: production
-
 galoy:
   name: "Galoy Wallet"
 
@@ -22,25 +20,40 @@ image:
   digest: "sha256:7ca157d40250f14d5a9469974c0b342deca417ee07dddeb6393c89a63606d6ec"
   # git_ref: "d688e3d"
 
+jaeger_host: localhost
+tracing_prefix: "galoy"
+
 deployment:
 - name: graphql
-  args: ["lib/servers/graphql-old-server.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/graphql-old-server.js"
   healthz: true
   targetPort: 4000
   replicaCount: 2
   podAnnotations: {}
 - name: graphql-admin
-  args: ["lib/servers/graphql-admin-server.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/graphql-admin-server.js"
   healthz: true
   targetPort: 4001
   replicaCount: 1
 - name: api
-  args: ["lib/servers/graphql-main-server.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/graphql-main-server.js"
   healthz: true
   targetPort: 4002
   replicaCount: 1
 - name: exporter
-  args: ["lib/servers/exporter.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/exporter.js"
   healthz: true
   targetPort: 3000
   replicaCount: 1
@@ -49,7 +62,10 @@ deployment:
     prometheus.io/port: "3000"
     prometheus.io/scrape: "true"
 - name: trigger
-  args: ["lib/servers/trigger.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/trigger.js"
   healthz: true
   targetPort: 8888
   replicaCount: 1
@@ -76,10 +92,16 @@ service:
 
 cron:
 - name: cronjob
-  args: ["lib/servers/cron.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/cron.js"
   schedule: "0 2 * * *"
 - name: balance-notif
-  args: ["lib/servers/daily-balance-notification.js"]
+  args:
+  - "-r"
+  - "lib/services/tracing.js"
+  - "lib/servers/daily-balance-notification.js"
   schedule: "0 14 * * *"
 
 mongobackup:
