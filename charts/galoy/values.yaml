@@ -20,8 +20,8 @@ image:
   digest: "sha256:7ca157d40250f14d5a9469974c0b342deca417ee07dddeb6393c89a63606d6ec"
   # git_ref: "d688e3d"
 
-jaeger_host: localhost
-tracing_prefix: "galoy"
+jaegerHost: localhost
+tracingPrefix: "galoy"
 
 deployment:
 - name: graphql

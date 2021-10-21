@@ -66,9 +66,9 @@ spec:
             - name: NODE_ENV
               value: production
             - name: JAEGER_HOST
-              value: {{ $.Values.jaeger_host }}
+              value: {{ $.Values.jaegerHost }}
             - name: TRACING_SERVICE_NAME
-              value: {{ $.Values.tracing_prefix }}-{{ .name }}
+              value: {{ $.Values.tracingPrefix }}-{{ .name }}
             - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
