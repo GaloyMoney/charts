@@ -27,7 +27,7 @@ deployment:
 - name: graphql
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/graphql-old-server.js"
   healthz: true
   targetPort: 4000
@@ -36,7 +36,7 @@ deployment:
 - name: graphql-admin
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/graphql-admin-server.js"
   healthz: true
   targetPort: 4001
@@ -44,7 +44,7 @@ deployment:
 - name: api
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/graphql-main-server.js"
   healthz: true
   targetPort: 4002
@@ -52,7 +52,7 @@ deployment:
 - name: exporter
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/exporter.js"
   healthz: true
   targetPort: 3000
@@ -64,7 +64,7 @@ deployment:
 - name: trigger
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/trigger.js"
   healthz: true
   targetPort: 8888
@@ -94,13 +94,13 @@ cron:
 - name: cronjob
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/cron.js"
   schedule: "0 2 * * *"
 - name: balance-notif
   args:
   - "-r"
-  - "lib/services/tracing.js"
+  - "/app/lib/services/tracing.js"
   - "lib/servers/daily-balance-notification.js"
   schedule: "0 14 * * *"
 
