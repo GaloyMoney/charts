@@ -25,6 +25,7 @@ tracing_prefix: "galoy"
 
 deployment:
 - name: graphql
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
@@ -34,6 +35,7 @@ deployment:
   replicaCount: 2
   podAnnotations: {}
 - name: graphql-admin
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
@@ -42,6 +44,7 @@ deployment:
   targetPort: 4001
   replicaCount: 1
 - name: api
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
@@ -50,6 +53,7 @@ deployment:
   targetPort: 4002
   replicaCount: 1
 - name: exporter
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
@@ -62,6 +66,7 @@ deployment:
     prometheus.io/port: "3000"
     prometheus.io/scrape: "true"
 - name: trigger
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
@@ -92,12 +97,14 @@ service:
 
 cron:
 - name: cronjob
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
   - "lib/servers/cron.js"
   schedule: "0 2 * * *"
 - name: balance-notif
+  command: /nodejs/bin/node
   args:
   - "-r"
   - "/app/lib/services/tracing.js"
