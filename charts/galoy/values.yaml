@@ -25,21 +25,13 @@ tracing_prefix: "galoy"
 
 deployment:
 - name: graphql
-  command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/graphql-old-server.js"
+  app_entrypoint: "lib/servers/graphql-old-server.js"
   healthz: true
   targetPort: 4000
   replicaCount: 2
   podAnnotations: {}
 - name: graphql-admin
-  command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/graphql-admin-server.js"
+  app_entrypoint: "lib/servers/graphql-admin-server.js"
   healthz: true
   targetPort: 4001
   replicaCount: 1
@@ -53,11 +45,7 @@ deployment:
   targetPort: 4002
   replicaCount: 1
 - name: exporter
-  command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/exporter.js"
+  app_entrypoint: "lib/servers/exporter.js"
   healthz: true
   targetPort: 3000
   replicaCount: 1
@@ -66,11 +54,7 @@ deployment:
     prometheus.io/port: "3000"
     prometheus.io/scrape: "true"
 - name: trigger
-  command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/trigger.js"
+  app_entrypoint: "lib/servers/trigger.js"
   healthz: true
   targetPort: 8888
   replicaCount: 1
@@ -97,18 +81,10 @@ service:
 
 cron:
 - name: cronjob
-  command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/cron.js"
+  app_entrypoint: "lib/servers/cron.js"
   schedule: "0 2 * * *"
 - name: balance-notif
-  command: /nodejs/bin/node
-  args:
-  - "-r"
-  - "/app/lib/services/tracing.js"
-  - "lib/servers/daily-balance-notification.js"
+  app_entrypoint: "lib/servers/daily-balance-notification.js"
   schedule: "0 14 * * *"
 
 mongobackup:

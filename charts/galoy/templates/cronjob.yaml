@@ -15,12 +15,10 @@ spec:
           containers:
           - name: {{ .name }}
             image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
-            {{- if .command }}
-            command: [{{ .command }}]
-            {{- end }}
-            {{- if .args }}
-            args: {{ .args }}
-            {{- end }}
+            args:
+            - "-r"
+            - "/app/lib/services/tracing.js"
+            - {{ .app_entrypoint }}
             volumeMounts:
             - name: firebase-serviceaccount
               mountPath: "/tmp/firebase-serviceaccount"
