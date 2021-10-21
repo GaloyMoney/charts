@@ -34,7 +34,7 @@ spec:
           args:
           - "-r"
           - "/app/lib/services/tracing.js"
-          - {{ .app_entrypoint }}
+          - {{ .appEntrypoint }}
           volumeMounts:
           {{- if $.Values.needFirebaseServiceAccount }}
           - name: firebase-serviceaccount

@@ -25,13 +25,13 @@ tracing_prefix: "galoy"
 
 deployment:
 - name: graphql
-  app_entrypoint: "lib/servers/graphql-old-server.js"
+  appEntrypoint: "lib/servers/graphql-old-server.js"
   healthz: true
   targetPort: 4000
   replicaCount: 2
   podAnnotations: {}
 - name: graphql-admin
-  app_entrypoint: "lib/servers/graphql-admin-server.js"
+  appEntrypoint: "lib/servers/graphql-admin-server.js"
   healthz: true
   targetPort: 4001
   replicaCount: 1
@@ -45,7 +45,7 @@ deployment:
   targetPort: 4002
   replicaCount: 1
 - name: exporter
-  app_entrypoint: "lib/servers/exporter.js"
+  appEntrypoint: "lib/servers/exporter.js"
   healthz: true
   targetPort: 3000
   replicaCount: 1
@@ -54,7 +54,7 @@ deployment:
     prometheus.io/port: "3000"
     prometheus.io/scrape: "true"
 - name: trigger
-  app_entrypoint: "lib/servers/trigger.js"
+  appEntrypoint: "lib/servers/trigger.js"
   healthz: true
   targetPort: 8888
   replicaCount: 1
@@ -81,10 +81,10 @@ service:
 
 cron:
 - name: cronjob
-  app_entrypoint: "lib/servers/cron.js"
+  appEntrypoint: "lib/servers/cron.js"
   schedule: "0 2 * * *"
 - name: balance-notif
-  app_entrypoint: "lib/servers/daily-balance-notification.js"
+  appEntrypoint: "lib/servers/daily-balance-notification.js"
   schedule: "0 14 * * *"
 
 mongobackup:
