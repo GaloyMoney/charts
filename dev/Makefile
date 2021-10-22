@@ -1,7 +1,7 @@
 TF:=terraform
 
 create-cluster:
-	k3d cluster create --k3s-server-arg "--disable=traefik" --k3s-server-arg "--disable=servicelb"
+	k3d cluster create --k3s-arg "--disable=traefik@server:0" --k3s-arg "--disable=servicelb@server:0"
 
 delete-cluster:
 	k3d cluster delete
