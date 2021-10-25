@@ -193,6 +193,7 @@ mongodb:
   architecture: replicaset
 
   auth:
+    existingSecret: galoy-mongodb
     username: testGaloy
     database: galoy
 

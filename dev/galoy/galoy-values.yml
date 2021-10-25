@@ -1,0 +1,63 @@
+galoy:
+  test_accounts:
+  - phone: "+59981730222"
+    code: 111111
+    role: "bankowner"
+    username: "bankowner"
+  helmet:
+    disableContentPolicy: true
+
+apiIngress:
+  name: api-ingress
+  host: localhost
+
+bitcoind:
+  port: 18332
+
+needFirebaseServiceAccount: false
+
+lnd1:
+  dns: lnd.galoy-dev-bitcoin.svc.cluster.local
+
+lnd2:
+  dns: lnd.galoy-dev-bitcoin.svc.cluster.local
+
+jwtSecret: "my_non_secured_secret"
+
+mongodb:
+  architecture: standalone
+  volumePermissions:
+    enabled: true
+  persistence:
+    enabled: false
+  replicaCount: 1
+  metrics:
+    enabled: false
+  initDbScripts: {}
+
+redis:
+  volumePermissions:
+    enabled: true
+  replica:
+    replicaCount: 1
+  master:
+    persistence:
+      enabled: false
+  metrics:
+    enabled: false
+
+lnpage:
+  enabled: false
+admin-panel:
+  enabled: false
+
+mongodbaddress: "galoy-mongodb"
+
+cron: []
+
+needFirebaseServiceAccount: false
+twilio: false
+
+price:
+  service:
+    type: NodePort
