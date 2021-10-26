@@ -66,9 +66,7 @@ spec:
             - name: NODE_ENV
               value: production
             - name: JAEGER_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+              value: {{ $.Values.jaegerHost }}
             - name: TRACING_SERVICE_NAME
               value: {{ $.Values.tracingPrefix }}-{{ .name }}
             - name: MONGODB_PASSWORD
