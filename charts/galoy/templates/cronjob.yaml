@@ -36,7 +36,9 @@ spec:
             - name: MONGODB_USER
               value: "testGaloy"
             - name: JAEGER_HOST
-              value: {{ $.Values.jaegerHost }}
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: TRACING_SERVICE_NAME
               value: {{ $.Values.tracingPrefix }}-{{ .name }}
             - name: MONGODB_ADDRESS
