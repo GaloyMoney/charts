@@ -60,6 +60,19 @@ resource "kubernetes_secret" "dropbox_access_token" {
   }
 }
 
+resource "kubernetes_secret" "mongodb_creds" {
+  metadata {
+    name      = "galoy-mongodb"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "mongodb-password" : "password"
+    "mongodb-root-password" : "password"
+    "mongodb-replica-set-key" : "replica"
+  }
+}
+
 resource "kubernetes_secret" "twilio_secret" {
   metadata {
     name = "twilio-secret"
