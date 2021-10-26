@@ -63,7 +63,7 @@ resource "kubernetes_secret" "dropbox_access_token" {
 resource "kubernetes_secret" "mongodb_creds" {
   metadata {
     name      = "galoy-mongodb"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
