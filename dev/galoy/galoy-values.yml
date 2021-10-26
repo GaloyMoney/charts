@@ -55,7 +55,6 @@ mongodbaddress: "galoy-mongodb"
 
 cron: []
 
-needFirebaseServiceAccount: false
 twilio: false
 
 price:
