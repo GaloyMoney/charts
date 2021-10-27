@@ -241,25 +241,49 @@ jobs:
 - name: galoy-staging
   serial: true
   plan:
-  - get: #@ cepler_resource_name("galoy")
-    trigger: true
-  - put: tf-galoy-staging
-    tags: ["staging"]
-    params:
-      terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
-      vars:
-        apollo_graph_id: #@ data.values.staging_apollo_graph_id
-        apollo_key: #@ data.values.staging_apollo_key
-        firebase_service_account: #@ data.values.staging_firebase_service_account
-        proxy_check_api_key: #@ data.values.staging_proxy_check_api_key
-        geetest_key: #@ data.values.staging_geetest_key
-        geetest_id: #@ data.values.staging_geetest_id
-        twilio_phone_number: #@ data.values.staging_twilio_phone_number
-        twilio_api_key: #@ data.values.staging_twilio_api_key
-        twilio_api_secret: #@ data.values.staging_twilio_api_secret
-        twilio_account_sid: #@ data.values.staging_twilio_account_sid
-        backups_sa_creds: #@ data.values.staging_backups_sa_creds
-        dropbox_access_token: #@ data.values.staging_dropbox_access_token
+  - in_parallel:
+    - get: #@ cepler_resource_name("galoy")
+      trigger: true
+    - get: galoy-main-repo
+    - get: galoy-deployments
+  - in_parallel:
+    - do:
+      - task: checkout-main-repo
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: galoy-deployments
+            path: pipeline-tasks
+          - name: galoy-main-repo
+          - name: #@ cepler_resource_name("galoy")
+            path: deployment-files
+          outputs:
+          - name: galoy-main-repo
+          run:
+            path: pipeline-tasks/ci/tasks/checkout-main-repo.sh
+      - put: galoy-main-repo
+        params:
+          repository: galoy-main-repo
+          force: true
+          branch: staging
+    - put: tf-galoy-staging
+      tags: ["staging"]
+      params:
+        terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
+        vars:
+          apollo_graph_id: #@ data.values.staging_apollo_graph_id
+          apollo_key: #@ data.values.staging_apollo_key
+          firebase_service_account: #@ data.values.staging_firebase_service_account
+          proxy_check_api_key: #@ data.values.staging_proxy_check_api_key
+          geetest_key: #@ data.values.staging_geetest_key
+          geetest_id: #@ data.values.staging_geetest_id
+          twilio_phone_number: #@ data.values.staging_twilio_phone_number
+          twilio_api_key: #@ data.values.staging_twilio_api_key
+          twilio_api_secret: #@ data.values.staging_twilio_api_secret
+          twilio_account_sid: #@ data.values.staging_twilio_account_sid
+          backups_sa_creds: #@ data.values.staging_backups_sa_creds
+          dropbox_access_token: #@ data.values.staging_dropbox_access_token
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
@@ -388,6 +412,13 @@ resources:
   source:
     paths: [ci/tasks/*, ci/testflight/*, Makefile]
     uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: galoy-main-repo
+  type: git
+  source:
+    uri: #@ data.values.galoy_git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
