@@ -25,7 +25,7 @@ kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:80
 ```
 In other terminal:
 ```
-$ curl 'localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"# Write your query or mutation here\nmutation login($input: UserLoginInput!) {\n  userLogin(input: $input) {\n    authToken\n  }\n}","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+$ curl 'localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
 {"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MTc2YmQ2NmQ0MmFkYWIzNjM2MmEyY2QiLCJuZXR3b3JrIjoibWFpbm5ldCIsImlhdCI6MTYzNTE3MTY4Nn0.n-p5sA9meAmZrVOdngYr216jG3LKOFsFdJmVw6XND3A"}}}
 ```
 

@@ -29,6 +29,13 @@ module "galoy" {
   ]
 }
 
+module "monitoring" {
+  source = "./monitoring"
+
+  name_prefix       = local.name_prefix
+}
+
+
 provider "kubernetes" {
   experiments {
     manifest_resource = true
