@@ -332,7 +332,6 @@ jobs:
         grafana_sa_key: #@ data.values.staging_grafana_sa_key
         oauth_client_id: #@ data.values.staging_oauth_client_id
         oauth_client_secret: #@ data.values.staging_oauth_client_secret
-        honeycomb_api_key: #@ data.values.staging_honeycomb_api_key
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
