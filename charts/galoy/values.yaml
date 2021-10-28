@@ -100,8 +100,8 @@ admin-panel:
   enabled: true
   image:
     repository: us.gcr.io/galoy-org/admin-panel
-    digest: "testing"
-    git_ref: "dummy" # Not used by helm
+    digest: ""
+    git_ref: "" # Not used by helm
   labels: {}
   service:
     type: ClusterIP
