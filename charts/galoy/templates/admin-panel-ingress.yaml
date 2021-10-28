@@ -29,6 +29,6 @@ spec:
                   number: {{ (index .Values "admin-panel").service.port }}
   {{- if (index .Values "admin-panel").ingress.tls }}
   tls:
-{{ toYaml (index .Values "admin-panel")ingress.tls | indent 4 }}
+{{ toYaml (index .Values "admin-panel").ingress.tls | indent 4 }}
   {{- end -}}
 {{- end }}
