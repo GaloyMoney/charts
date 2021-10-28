@@ -14,3 +14,12 @@
 {{- (randAlpha 24) | b64enc -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "admin-panel.fullname" -}}
+{{- $name := default "admin-panel" (index .Values "admin-panel").nameOverride -}}
+{{- if .Values.fullnameOverride -}}
+{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}

@@ -197,7 +197,6 @@ resource "kubernetes_secret" "lnd1_credentials" {
 resource "helm_release" "galoy" {
   name       = "galoy"
   chart      = "${path.module}/../../charts/galoy"
-  repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.galoy.metadata[0].name
 
   values = [

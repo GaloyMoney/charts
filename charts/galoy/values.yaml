@@ -114,24 +114,19 @@ redis:
     enabled: true
 
 admin-panel:
-  enabled: false
+  enabled: true
+  image:
+    repository: us.gcr.io/galoy-org/admin-panel
+  labels: {}
   service:
     type: ClusterIP
-  cloneStaticSiteFromGit:
-    enabled: true
-    repository: https://github.com/GaloyMoney/admin-panel.git
-    branch: build
-  podSecurityContext:
-    enabled: true
-    runAsUser: 1001
-    # there seems to be inconsistency on sysctls on bitnami
-    # sometimes it's a map, sometimes an array
-    sysctls: []
+    port: 80
   ingress:
     enabled: false
-  podLabels:
-    app: admin-panel
-  command: ['/bin/sh', '-c' , 'echo "window.env={\"GRAPHQL_URI\":\"https://graphql.{{.Values.global.network}}.galoy.io/graphql\"}" > /app/env.js && /opt/bitnami/scripts/nginx/entrypoint.sh /opt/bitnami/scripts/nginx/run.sh']
+    certManager: false
+    annotations: {}
+    tls: true
+    hostname: {}
   serverBlock: |-
     server {
       listen 8080;

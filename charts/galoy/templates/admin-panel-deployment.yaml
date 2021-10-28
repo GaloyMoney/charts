@@ -1,0 +1,32 @@
+{{ if (index .Values "admin-panel").enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "admin-panel.fullname" . }}
+  labels:
+    app: {{ template "admin-panel.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "admin-panel.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "admin-panel.fullname" . }}
+        release: "{{ .Release.Name }}"
+        {{- with (index .Values "admin-panel").labels }}
+{{ toYaml . | trim | indent 8 }}
+        {{- end }}
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ (index .Values "admin-panel").image.repository }}@sha256:ef1dd82fbf42c40d49870ec68adc41701a346c7752ee7a076620d8b7f3bb036c"
+        # git_ref: dummy
+        ports:
+        - containerPort: 80
+{{ end }}
