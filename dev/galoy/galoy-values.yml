@@ -49,7 +49,7 @@ redis:
 lnpage:
   enabled: false
 admin-panel:
-  enabled: true
+  enabled: false
 
 mongodbaddress: "galoy-mongodb"
 
