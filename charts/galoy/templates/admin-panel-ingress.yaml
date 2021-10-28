@@ -27,6 +27,7 @@ spec:
                 name: {{ template "admin-panel.fullname" . }}
                 port:
                   number: {{ (index .Values "admin-panel").service.port }}
+    {{- end }}
   {{- if (index .Values "admin-panel").ingress.tls }}
   tls:
 {{ toYaml (index .Values "admin-panel").ingress.tls | indent 4 }}
