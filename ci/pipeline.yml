@@ -80,12 +80,16 @@ jobs:
   plan:
   - get: #@ cepler_resource_name("bitcoin")
     trigger: true
-  - put: tf-bitcoin-staging
-    tags: ["staging"]
-    params:
-      terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
-      vars:
-        lnd1_pass: #@ data.values.staging_lnd1_pass
+  - in_parallel:
+    - put: staging-honeymarker
+      params:
+        message: "galoy-staging-bitcoin"
+    - put: tf-bitcoin-staging
+      tags: ["staging"]
+      params:
+        terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
+        vars:
+          lnd1_pass: #@ data.values.staging_lnd1_pass
   - in_parallel:
     - do:
       - task: get-smoketest-settings
@@ -247,6 +251,9 @@ jobs:
     - get: galoy-main-repo
     - get: galoy-deployments
   - in_parallel:
+    - put: staging-honeymarker
+      params:
+        message: "galoy-staging-galoy"
     - do:
       - task: checkout-main-repo
         config:
@@ -319,19 +326,24 @@ jobs:
 - name: monitoring-staging
   serial: true
   plan:
-  - get: #@ cepler_resource_name("monitoring")
-    trigger: true
-  - put: tf-monitoring-staging
-    tags: ["staging"]
-    params:
-      terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/staging/monitoring"
-      vars:
-        probe_auth_token: #@ data.values.staging_monitoring_probe_auth_token
-        slack_api_url: #@ data.values.staging_slack_api_url
-        pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
-        grafana_sa_key: #@ data.values.staging_grafana_sa_key
-        oauth_client_id: #@ data.values.staging_oauth_client_id
-        oauth_client_secret: #@ data.values.staging_oauth_client_secret
+  - in_parallel:
+    - put: staging-honeymarker
+      params:
+        message: "galoy-staging-monitoring"
+    - do:
+      - get: #@ cepler_resource_name("monitoring")
+        trigger: true
+      - put: tf-monitoring-staging
+        tags: ["staging"]
+        params:
+          terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/staging/monitoring"
+          vars:
+            probe_auth_token: #@ data.values.staging_monitoring_probe_auth_token
+            slack_api_url: #@ data.values.staging_slack_api_url
+            pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
+            grafana_sa_key: #@ data.values.staging_grafana_sa_key
+            oauth_client_id: #@ data.values.staging_oauth_client_id
+            oauth_client_secret: #@ data.values.staging_oauth_client_secret
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
@@ -480,6 +492,12 @@ resources:
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
+- name: staging-honeymarker
+  type: honeymarker
+  source:
+    api_key: #@ data.values.staging_honeycomb_api_key
+    dataset: galoy-staging
+
 resource_types:
 - name: terraform
   type: docker-image
@@ -498,3 +516,9 @@ resource_types:
   source:
     repository: cepler/cepler-concourse-resource
     tag: latest
+
+- name: honeymarker
+  type: docker-image
+  source:
+    repository: #@ data.values.docker_registry + "/honeymarker-resource"
+    tag: edge
