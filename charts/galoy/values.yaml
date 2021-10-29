@@ -11,8 +11,8 @@ ca:
   CAEmail: dev@galoy.io
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:be6c9bb3c97c7d074e5031d1093097708c2a622499ec6c55b9e89fde50ef3a1b"
-  git_ref: "eaa921b" # Not used by helm
+  digest: "sha256:27d18618554dfad760b89fabb3fa680d86a790bda075006c4ca9d222b88e1f9d"
+  git_ref: "ced9048" # Not used by helm
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
@@ -96,7 +96,6 @@ redis:
     enabled: true
   metrics:
     enabled: true
-
 admin-panel:
   enabled: false
   service:
@@ -115,7 +114,7 @@ admin-panel:
     enabled: false
   podLabels:
     app: admin-panel
-  command: ['/bin/sh', '-c' , 'echo "window.env={\"GRAPHQL_URI\":\"https://graphql.{{.Values.global.network}}.galoy.io/graphql\"}" > /app/env.js && /opt/bitnami/scripts/nginx/entrypoint.sh /opt/bitnami/scripts/nginx/run.sh']
+  command: ['/bin/sh', '-c', 'echo "window.env={\"GRAPHQL_URI\":\"https://graphql.{{.Values.global.network}}.galoy.io/graphql\"}" > /app/env.js && /opt/bitnami/scripts/nginx/entrypoint.sh /opt/bitnami/scripts/nginx/run.sh']
   serverBlock: |-
     server {
       listen 8080;
