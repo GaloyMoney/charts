@@ -14,7 +14,3 @@
 {{- (randAlpha 24) | b64enc -}}
 {{- end -}}
 {{- end -}}
-
-{{- define "admin-panel.fullname" -}}
-admin-panel
-{{- end -}}
