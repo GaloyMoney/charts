@@ -269,7 +269,7 @@ jobs:
           - name: galoy-main-repo
           run:
             path: pipeline-tasks/ci/tasks/checkout-main-repo.sh
-      - put: galoy-main-repo
+      - put: galoy-main-out
         params:
           repository: galoy-main-repo
           force: true
@@ -431,6 +431,13 @@ resources:
   source:
     uri: #@ data.values.galoy_git_uri
     branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: galoy-main-out
+  type: git
+  source:
+    uri: #@ data.values.galoy_git_uri
+    branch: staging
     private_key: #@ data.values.github_private_key
 
 - name: galoy-deployments
