@@ -82,8 +82,6 @@ jobs:
     trigger: true
   - in_parallel:
     - put: staging-honeymarker
-      params:
-        message: "galoy-staging-bitcoin"
     - put: tf-bitcoin-staging
       tags: ["staging"]
       params:
@@ -252,8 +250,6 @@ jobs:
     - get: galoy-deployments
   - in_parallel:
     - put: staging-honeymarker
-      params:
-        message: "galoy-staging-galoy"
     - do:
       - task: checkout-main-repo
         config:
@@ -328,8 +324,6 @@ jobs:
   plan:
   - in_parallel:
     - put: staging-honeymarker
-      params:
-        message: "galoy-staging-monitoring"
     - do:
       - get: #@ cepler_resource_name("monitoring")
         trigger: true
@@ -344,6 +338,8 @@ jobs:
             grafana_sa_key: #@ data.values.staging_grafana_sa_key
             oauth_client_id: #@ data.values.staging_oauth_client_id
             oauth_client_secret: #@ data.values.staging_oauth_client_secret
+          env:
+            HONEYCOMBIO_APIKEY: #@ data.values.staging_honeycomb_api_key
   - task: get-smoketest-settings
     tags: ["staging"]
     config:
