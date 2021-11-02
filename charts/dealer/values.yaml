@@ -1,0 +1,33 @@
+# Default values for dealer.
+# This is a YAML-formatted file.
+
+replicaCount: 1
+
+image:
+  repository: us.gcr.io/galoy-org/dealer
+  digest: "sha256:78f163e2e26a0eab585bc9f833c246ef85710f52dcdd705dd8359d55b527b7ce" # Auto updated by Galoy Bot
+  git_ref: "" # Not used by helm, auto updated by Galoy Bot
+
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "3333"
+  prometheus.io/scrape: "true"
+
+# === NOTE: Everything below this is for faking the graphql backend. ===
+fakeGaloyApi:
+  enabled: true
+  name: "fake-galoyapi"
+  image:
+    repository: us.gcr.io/galoy-org/fake-galoyapi
+    digest: "sha256:684fccd8d64027a4e74dcd57a68af90a66cd31158f966c89878b90d756709b53" # Auto updated by Galoy Bot
+    git_ref: "" # Not used by helm, auto updated by Galoy Bot
+  service:
+    type: ClusterIP
+    port: 4000
+  db_url: "postgres://postgres:postgres@dealer-postgresql:5432/galoy"
+
+postgresql:
+  enabled: true
+  postgresqlUser: postgres
+  postgresqlPassword: postgres
+  postgresqlDatabase: galoy

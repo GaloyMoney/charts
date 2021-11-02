@@ -1,0 +1,30 @@
+{{ if .Values.fakeGaloyApi.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fakeGaloyApi.name }}
+  labels:
+    app: {{ .Values.fakeGaloyApi.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.fakeGaloyApi.name }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fakeGaloyApi.name }}
+        release: "{{ .Release.Name }}"
+    spec:
+      containers:
+      - name: graphql
+        image: "{{ .Values.fakeGaloyApi.image.repository }}@{{ .Values.fakeGaloyApi.image.digest }}"
+        ports:
+        - containerPort: 4000
+        env:
+        - name: DATABASE_URL
+          value: {{ .Values.fakeGaloyApi.db_url }}
+{{- end }}
