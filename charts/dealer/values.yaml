@@ -8,10 +8,7 @@ image:
   digest: "sha256:78f163e2e26a0eab585bc9f833c246ef85710f52dcdd705dd8359d55b527b7ce" # Auto updated by Galoy Bot
   git_ref: "" # Not used by helm, auto updated by Galoy Bot
 
-podAnnotations:
-  prometheus.io/path: /metrics
-  prometheus.io/port: "3333"
-  prometheus.io/scrape: "true"
+annotations: {}
 
 # === NOTE: Everything below this is for faking the graphql backend. ===
 fakeGaloyApi:
