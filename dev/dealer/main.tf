@@ -10,6 +10,19 @@ resource "kubernetes_namespace" "dealer" {
   }
 }
 
+resource "kubernetes_secret" "postgres_creds" {
+  metadata {
+    name      = "dealer-postgres"
+    namespace = kubernetes_namespace.dealer.metadata[0].name
+  }
+
+  data = {
+    "postgresql-username" : "postgres"
+    "postgresql-password" : "postgres"
+    "postgresql-database" : "dealer"
+  }
+}
+
 resource "helm_release" "dealer" {
   name       = "dealer"
   chart      = "${path.module}/../../charts/dealer"

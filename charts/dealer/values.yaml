@@ -28,6 +28,4 @@ fakeGaloyApi:
 
 postgresql:
   enabled: true
-  postgresqlUser: postgres
-  postgresqlPassword: postgres
-  postgresqlDatabase: galoy
+  existingSecret: dealer-postgres
