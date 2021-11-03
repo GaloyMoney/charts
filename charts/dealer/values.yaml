@@ -21,8 +21,12 @@ fakeGaloyApi:
   service:
     type: ClusterIP
     port: 4000
-  db_url: "postgres://postgres:postgres@dealer-postgresql:5432/galoy"
+  db_uri_secret_key_ref:
+    name: dealer-postgres
+    key: postgresql-db-uri
 
 postgresql:
   enabled: true
+  postgresqlUsername: postgres
   existingSecret: dealer-postgres
+  postgresqlDatabase: dealer

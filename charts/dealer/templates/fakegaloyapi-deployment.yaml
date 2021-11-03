@@ -26,5 +26,8 @@ spec:
         - containerPort: 4000
         env:
         - name: DATABASE_URL
-          value: {{ .Values.fakeGaloyApi.db_url }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.fakeGaloyApi.db_uri_secret_key_ref.name }}
+              key: {{ .Values.fakeGaloyApi.db_uri_secret_key_ref.key }}
 {{- end }}

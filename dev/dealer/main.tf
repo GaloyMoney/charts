@@ -1,7 +1,9 @@
 variable "name_prefix" {}
 
 locals {
-  dealer_namespace = "${var.name_prefix}-dealer"
+  dealer_namespace  = "${var.name_prefix}-dealer"
+  postgres_password = "postgres"
+  postgres_db_uri   = "postgres://postgres:postgres@dealer-postgresql:5432/dealer"
 }
 
 resource "kubernetes_namespace" "dealer" {
@@ -17,9 +19,8 @@ resource "kubernetes_secret" "postgres_creds" {
   }
 
   data = {
-    "postgresql-username" : "postgres"
-    "postgresql-password" : "postgres"
-    "postgresql-database" : "dealer"
+    "postgresql-password" : local.postgres_password
+    "postgresql-db-uri" : local.postgres_db_uri
   }
 }
 
@@ -31,6 +32,10 @@ resource "helm_release" "dealer" {
 
   values = [
     file("${path.module}/dealer-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.postgres_creds
   ]
 
   dependency_update = true
