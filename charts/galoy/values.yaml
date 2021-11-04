@@ -134,8 +134,8 @@ admin-panel:
       }
     }
   image:
-    digest: sha256:7111264a05448d9d7d4749fcffb81d3b1c61b1e01825618d69ceab287da0fef5
-    git_ref: 877cd3e
+    digest: sha256:e81c14d0d31108aac84f9d917af306e6c5305a06106d6724ecfc6df7640cd8eb
+    git_ref: 867ea44
 lnpage:
   enabled: false
   service:
