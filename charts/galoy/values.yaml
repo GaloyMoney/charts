@@ -133,6 +133,9 @@ admin-panel:
         root  /opt/bitnami/nginx/html;
       }
     }
+  image:
+    digest: sha256:7111264a05448d9d7d4749fcffb81d3b1c61b1e01825618d69ceab287da0fef5
+    git_ref: 877cd3e
 lnpage:
   enabled: false
   service:
