@@ -34,6 +34,6 @@ To test the jupyter lab:
 kubectl -n galoy-dev-data port-forward service/proxy-public 8080:80
 ```
 
-Then open the browser to: http://127.0.0.1:8000/
+Then open the browser to: http://127.0.0.1:8080/
 
 Currently incomplete functionality - but depending on what you want to hack on it'll work
