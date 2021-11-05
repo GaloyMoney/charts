@@ -21,7 +21,7 @@ fakeGaloyApi:
   service:
     type: ClusterIP
     port: 4000
-  db_uri_secret_key_ref:
+  dbSecretKeyRef:
     name: dealer-postgres
     key: postgresql-db-uri
 
