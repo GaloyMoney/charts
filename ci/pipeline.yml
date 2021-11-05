@@ -11,18 +11,18 @@
 #@   "testflight_job_name",
 #@   "bump_in_deployments_job_name",
 #@   "chart_resource_name",
+#@   "slack_resource",
+#@   "slack_failure_notification",
+#@   "slack_success_notification",
 #@   "cepler_resource_name",
+#@   "bitcoin_charts",
 #@   "cepler_in",
 #@   "cepler_out",
 #@   "cepler_out_name")
 
-#@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter"]
 #@ def galoy_chart_vars():
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
 testflight_apollo_key: #@ data.values.testflight_apollo_key
-#@ end
-
-#@ def monitoring_chart_vars():
 #@ end
 
 groups:
@@ -72,7 +72,7 @@ jobs:
 #@ end
 - #@ testflight_job("galoy", galoy_chart_vars())
 - #@ bump_in_deployments_job("galoy")
-- #@ testflight_job("monitoring", monitoring_chart_vars())
+- #@ testflight_job("monitoring")
 - #@ bump_in_deployments_job("monitoring")
 
 - name: bitcoin-staging
@@ -238,6 +238,8 @@ jobs:
   - put: #@ cepler_out_name("bitcoin")
     params:
       repository: #@ cepler_resource_name("bitcoin")
+  - #@ slack_success_notification("bitcoin")
+  on_failure: #@ slack_failure_notification("bitcoin")
 
 
 - name: galoy-staging
@@ -318,6 +320,8 @@ jobs:
   - put: #@ cepler_out_name("galoy")
     params:
       repository: #@ cepler_resource_name("galoy")
+  - #@ slack_success_notification("galoy")
+  on_failure: #@ slack_failure_notification("galoy")
 
 - name: monitoring-staging
   serial: true
@@ -371,6 +375,8 @@ jobs:
   - put: #@ cepler_out_name("monitoring")
     params:
       repository: #@ cepler_resource_name("monitoring")
+  - #@ slack_success_notification("monitoring")
+  on_failure: #@ slack_failure_notification("monitoring")
 
 - name: build-chain-dl-image
   serial: true
@@ -403,16 +409,19 @@ resources:
 #@ end
 - #@ cepler_in("bitcoin")
 - #@ cepler_out("bitcoin")
+- #@ slack_resource("bitcoin")
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
 - #@ cepler_in("galoy")
 - #@ cepler_out("galoy")
+- #@ slack_resource("galoy")
 
 - #@ chart_repo_resource("monitoring")
 - #@ testflight_tf_resource("monitoring")
 - #@ cepler_in("monitoring")
 - #@ cepler_out("monitoring")
+- #@ slack_resource("monitoring")
 
 - name: pipeline-tasks
   type: git
@@ -525,3 +534,8 @@ resource_types:
   source:
     repository: #@ data.values.docker_registry + "/honeymarker-resource"
     tag: edge
+
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource

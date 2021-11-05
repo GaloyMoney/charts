@@ -36,3 +36,8 @@ staging_grafana_sa_key: ((staging-grafana.creds_json))
 staging_oauth_client_id: ((staging-grafana.client_id))
 staging_oauth_client_secret: ((staging-grafana.client_secret))
 staging_honeycomb_api_key: ((staging-honeycomb.api_key))
+
+galoy_slack_webhook_url: ((galoy-main-slack.api_url))
+monitoring_slack_webhook_url: ((monitoring-slack.api_url))
+bitcoin_slack_webhook_url: ((bitcoin-slack.api_url))
+slack_username: concourse

@@ -28,7 +28,10 @@ source:
 #@   return chart + "-chart"
 #@ end
 
+#@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter"]
+
 #@ def testflight_job(chart, vars = {}):
+#@ deployment = "bitcoin" if chart in bitcoin_charts else chart
 name: #@ testflight_job_name(chart)
 plan:
 - in_parallel:
@@ -93,6 +96,8 @@ plan:
     action: destroy
     vars: #@ vars
   get_params: { action: destroy }
+- #@ slack_success_notification(deployment)
+on_failure: #@ slack_failure_notification(deployment)
 #@ end
 
 #@ def bump_in_deployments_job(chart):
@@ -195,4 +200,29 @@ source:
   environment: #@ data.values.staging_environment
   gates_branch: #@ data.values.gates_branch
   gates_file: #@ gates_file(deployment)
+#@ end
+
+#@ def slack_failure_notification(deployment):
+#@ fail_url = "<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| :face_with_symbols_on_mouth: $BUILD_JOB_NAME> failed!"
+put: #@ deployment + "-slack"
+params:
+  username: #@ data.values.slack_username
+  icon_url: https://cl.ly/2F421Y300u07/concourse-logo-blue-transparent.png
+  text:    #@ fail_url
+#@ end
+
+#@ def slack_success_notification(deployment):
+#@ success_url = "<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| :zap: $BUILD_JOB_NAME> completed!"
+put: #@ deployment + "-slack"
+params:
+  username: #@ data.values.slack_username
+  icon_url: https://cl.ly/2F421Y300u07/concourse-logo-blue-transparent.png
+  text:    #@ success_url
+#@ end
+
+#@ def slack_resource(deployment):
+name: #@ deployment + "-slack"
+type: slack-notification
+source:
+  url: #@ getattr(data.values, deployment + "_slack_webhook_url")
 #@ end
