@@ -28,7 +28,7 @@ dependencies:
     version: 15.3.1
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
-    version: 10.25.1
+    version: 10.x.x
   - name: common
     version: 1.8.0
     repository: https://charts.bitnami.com/bitnami
