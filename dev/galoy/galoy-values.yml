@@ -24,17 +24,6 @@ lnd2:
 
 jwtSecret: "my_non_secured_secret"
 
-mongodb:
-  architecture: standalone
-  volumePermissions:
-    enabled: true
-  persistence:
-    enabled: false
-  replicaCount: 1
-  metrics:
-    enabled: false
-  initDbScripts: {}
-
 redis:
   volumePermissions:
     enabled: true
