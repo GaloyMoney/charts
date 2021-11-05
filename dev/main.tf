@@ -35,6 +35,11 @@ module "monitoring" {
   name_prefix       = local.name_prefix
 }
 
+module "data" {
+  source = "./data"
+
+  name_prefix       = local.name_prefix
+}
 
 provider "kubernetes" {
   experiments {
