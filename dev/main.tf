@@ -11,6 +11,7 @@ module "infra_services" {
   local_deploy             = true
   cluster_endpoint         = "dummy"
   cluster_ca_cert          = "dummy"
+  honeycomb_api_key        = "dummy"
 }
 
 module "bitcoin" {
