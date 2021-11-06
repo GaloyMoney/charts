@@ -5,7 +5,7 @@ galoy:
     role: "bankowner"
     username: "bankowner"
   apollo:
-    playground: false
+    playground: true
 
 apiIngress:
   name: api-ingress
