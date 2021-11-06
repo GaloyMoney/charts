@@ -4,8 +4,8 @@ galoy:
     code: 111111
     role: "bankowner"
     username: "bankowner"
-  helmet:
-    disableContentPolicy: true
+  apollo:
+    playground: false
 
 apiIngress:
   name: api-ingress
