@@ -1,9 +1,5 @@
 singleuser:
   image:
-    # You should replace the "latest" tag with a fixed version from:
-    # https://hub.docker.com/r/jupyter/datascience-notebook/tags/
-    # Inspect the Dockerfile at:
-    # https://github.com/jupyter/docker-stacks/tree/HEAD/datascience-notebook/Dockerfile
     name: jupyter/datascience-notebook
     tag: notebook-6.4.4
 
