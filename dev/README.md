@@ -29,11 +29,13 @@ $ curl 'localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: 
 {"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MTc2YmQ2NmQ0MmFkYWIzNjM2MmEyY2QiLCJuZXR3b3JrIjoibWFpbm5ldCIsImlhdCI6MTYzNTE3MTY4Nn0.n-p5sA9meAmZrVOdngYr216jG3LKOFsFdJmVw6XND3A"}}}
 ```
 
+Currently incomplete functionality - but depending on what you want to hack on it'll work
+
+## JupyterLab
+
 To test the jupyter lab:
 ```
 kubectl -n galoy-dev-data port-forward service/proxy-public 8080:80
 ```
 
 Then open the browser to: http://127.0.0.1:8080/
-
-Currently incomplete functionality - but depending on what you want to hack on it'll work
