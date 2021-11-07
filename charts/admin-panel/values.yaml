@@ -1,0 +1,11 @@
+image:
+  repository: us.gcr.io/galoy-org/admin-panel
+  digest: "sha256:bd4f821f3c7e2cff57361f2f52ef85855585c42c997750a37ef7df970cfb3377"
+  git_ref: "3666aa3" # Not used by helm
+
+ingress:
+  enabled: false
+
+service:
+  port: 80
+  type: ClusterIP
