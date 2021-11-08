@@ -33,7 +33,13 @@ Currently incomplete functionality - but depending on what you want to hack on i
 
 ## JupyterLab
 
-To test the jupyter lab:
+Add the JupyterHub Helm chart repository:
+```
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+helm repo update
+```
+
+Then, to test the jupyter lab:
 ```
 kubectl -n galoy-dev-data port-forward service/proxy-public 8080:80
 ```
