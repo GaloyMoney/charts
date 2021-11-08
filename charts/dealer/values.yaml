@@ -10,6 +10,21 @@ image:
 
 annotations: {}
 
+# Environments
+network: regtest
+log_level: debug
+active_strategy: OKEX_PERPETUAL_SWAP
+active_wallet: REMOTE_WALLET
+graphql_uri: http://fake-galoyapi:4000/graphql
+
+okex5:
+  secret_name: dealer-okex5
+  secret_key:
+    key: okex5_key
+    secret: okex5_secret
+    password: okex5_password
+    fund_password: okex5_fund_password
+
 # === NOTE: Everything below this is for faking the graphql backend. ===
 fakeGaloyApi:
   enabled: true

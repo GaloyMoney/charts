@@ -30,23 +30,35 @@ spec:
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         env:
         - name: NETWORK
-          value: regtest
+          value: {{ .Values.network }}
         - name: LOG_LEVEL
-          value: debug
+          value: {{ .Values.log_level }}
         - name: ACTIVE_STRATEGY
-          value: OKEX_PERPETUAL_SWAP
+          value: {{ .Values.active_strategy }}
         - name: ACTIVE_WALLET
-          value: REMOTE_WALLET
+          value: {{ .Values.active_wallet }}
         - name: OKEX5_KEY
-          value: key
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.okex5.secret_name }}
+              key: {{ .Values.okex5.secret_key.key }}
         - name: OKEX5_SECRET
-          value: secret
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.okex5.secret_name }}
+              key: {{ .Values.okex5.secret_key.secret }}
         - name: OKEX5_PASSWORD
-          value: pwd
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.okex5.secret_name }}
+              key: {{ .Values.okex5.secret_key.password }}
         - name: OKEX5_FUND_PASSWORD
-          value: none
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.okex5.secret_name }}
+              key: {{ .Values.okex5.secret_key.fund_password }}
         - name: GRAPHQL_URI
-          value: "http://fake-galoyapi:4000/graphql"
+          value: {{ .Values.graphql_uri }}
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
