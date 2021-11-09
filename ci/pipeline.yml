@@ -16,6 +16,7 @@
 #@   "slack_success_notification",
 #@   "cepler_resource_name",
 #@   "bitcoin_charts",
+#@   "addons_charts",
 #@   "cepler_in",
 #@   "cepler_out",
 #@   "cepler_out_name")
@@ -43,6 +44,12 @@ groups:
   - #@ bump_in_deployments_job_name(chart)
 #@ end
   - bitcoin-staging
+- name: addons
+  jobs: 
+#@ for chart in addons_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
 - name: staging
   jobs:
   - bitcoin-staging
@@ -59,6 +66,10 @@ groups:
   - #@ bump_in_deployments_job_name(chart)
 #@ end
   - bitcoin-staging
+#@ for chart in addons_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
   - galoy-staging
   - monitoring-staging
 - name: chain-dl-image
@@ -67,6 +78,10 @@ groups:
 
 jobs:
 #@ for chart in bitcoin_charts:
+- #@ testflight_job(chart)
+- #@ bump_in_deployments_job(chart)
+#@ end
+#@ for chart in addons_charts:
 - #@ testflight_job(chart)
 - #@ bump_in_deployments_job(chart)
 #@ end
@@ -410,6 +425,12 @@ resources:
 - #@ cepler_in("bitcoin")
 - #@ cepler_out("bitcoin")
 - #@ slack_resource("bitcoin")
+
+#@ for chart in addons_charts:
+- #@ chart_repo_resource(chart)
+- #@ testflight_tf_resource(chart)
+#@ end
+- #@ slack_resource("addons")
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")

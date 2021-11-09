@@ -40,4 +40,5 @@ staging_honeycomb_api_key: ((staging-honeycomb.api_key))
 galoy_slack_webhook_url: ((galoy-main-slack.api_url))
 monitoring_slack_webhook_url: ((monitoring-slack.api_url))
 bitcoin_slack_webhook_url: ((bitcoin-slack.api_url))
+addons_slack_webhook_url: ((addons-slack.api_url))
 slack_username: concourse
