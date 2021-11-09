@@ -21,44 +21,44 @@ spec:
         prometheus.io/path: /metrics
         prometheus.io/port: "3333"
         prometheus.io/scrape: "true"
-      {{- with .Values.annotations }}
+      {{- with .Values.dealer.annotations }}
         {{ toYaml . | nindent 8 }}
       {{- end }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        image: "{{ .Values.dealer.image.repository }}@{{ .Values.dealer.image.digest }}"
         env:
         - name: NETWORK
-          value: {{ .Values.network }}
+          value: {{ .Values.dealer.network }}
         - name: LOG_LEVEL
-          value: {{ .Values.log_level }}
+          value: {{ .Values.dealer.logLevel }}
         - name: ACTIVE_STRATEGY
-          value: {{ .Values.active_strategy }}
+          value: {{ .Values.dealer.activeStrategy }}
         - name: ACTIVE_WALLET
-          value: {{ .Values.active_wallet }}
+          value: {{ .Values.dealer.activeWallet }}
         - name: OKEX5_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.okex5.secret_name }}
-              key: {{ .Values.okex5.secret_key.key }}
+              name: {{ .Values.dealer.okex5.secretName }}
+              key: {{ .Values.dealer.okex5.secretKey.key }}
         - name: OKEX5_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.okex5.secret_name }}
-              key: {{ .Values.okex5.secret_key.secret }}
+              name: {{ .Values.dealer.okex5.secretName }}
+              key: {{ .Values.dealer.okex5.secretKey.secret }}
         - name: OKEX5_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.okex5.secret_name }}
-              key: {{ .Values.okex5.secret_key.password }}
+              name: {{ .Values.dealer.okex5.secretName }}
+              key: {{ .Values.dealer.okex5.secretKey.password }}
         - name: OKEX5_FUND_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.okex5.secret_name }}
-              key: {{ .Values.okex5.secret_key.fund_password }}
+              name: {{ .Values.dealer.okex5.secretName }}
+              key: {{ .Values.dealer.okex5.secretKey.fundPassword }}
         - name: GRAPHQL_URI
-          value: {{ .Values.graphql_uri }}
+          value: {{ .Values.dealer.graphqlUri }}
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
