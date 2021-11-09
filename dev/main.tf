@@ -36,6 +36,15 @@ module "monitoring" {
   name_prefix       = local.name_prefix
 }
 
+module "addons" {
+  source = "./addons"
+
+  name_prefix = local.name_prefix
+
+  depends_on = [
+    module.galoy
+  ]
+}
 
 provider "kubernetes" {
   experiments {
