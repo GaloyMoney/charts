@@ -1,7 +1,4 @@
-variable "name_prefix" {}
-
 locals {
-  dealer_namespace    = "${var.name_prefix}-dealer"
   postgres_password   = "postgres"
   postgres_db_uri     = "postgres://postgres:postgres@dealer-postgresql:5432/dealer"
   okex5_key           = "key"
@@ -10,16 +7,10 @@ locals {
   okex5_fund_password = "none"
 }
 
-resource "kubernetes_namespace" "dealer" {
-  metadata {
-    name = local.dealer_namespace
-  }
-}
-
 resource "kubernetes_secret" "okex5_creds" {
   metadata {
     name      = "dealer-okex5"
-    namespace = kubernetes_namespace.dealer.metadata[0].name
+    namespace = kubernetes_namespace.addons.metadata[0].name
   }
 
   data = {
@@ -33,7 +24,7 @@ resource "kubernetes_secret" "okex5_creds" {
 resource "kubernetes_secret" "postgres_creds" {
   metadata {
     name      = "dealer-postgres"
-    namespace = kubernetes_namespace.dealer.metadata[0].name
+    namespace = kubernetes_namespace.addons.metadata[0].name
   }
 
   data = {
@@ -46,11 +37,7 @@ resource "helm_release" "dealer" {
   name       = "dealer"
   chart      = "${path.module}/../../charts/dealer"
   repository = "https://galoymoney.github.io/charts"
-  namespace  = kubernetes_namespace.dealer.metadata[0].name
-
-  values = [
-    file("${path.module}/dealer-values.yml")
-  ]
+  namespace  = kubernetes_namespace.addons.metadata[0].name
 
   depends_on = [
     kubernetes_secret.postgres_creds,
