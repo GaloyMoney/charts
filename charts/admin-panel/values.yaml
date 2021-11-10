@@ -6,6 +6,7 @@ image:
 ingress:
   enabled: false
 
+
 service:
   port: 80
   type: ClusterIP
