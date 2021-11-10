@@ -8,6 +8,12 @@ locals {
   testflight_namespace = var.testflight_namespace
 }
 
+resource "kubernetes_namespace" "testflight" {
+  metadata {
+    name = local.testflight_namespace
+  }
+}
+
 resource "helm_release" "admin_panel" {
   name       = "admin-panel"
   chart      = "${path.module}/chart"
