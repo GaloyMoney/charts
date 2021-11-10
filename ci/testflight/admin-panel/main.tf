@@ -1,3 +1,11 @@
+locals {
+  cluster_name             = "galoy-staging-cluster"
+  cluster_location         = "us-east1"
+  gcp_project              = "galoy-staging"
+
+  testflight_namespace = var.testflight_namespace
+}
+
 resource "helm_release" "admin_panel" {
   name       = "admin-panel"
   chart      = "${path.module}/chart"
