@@ -50,6 +50,7 @@ groups:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
+  - addons-staging
 - name: staging
   jobs:
   - bitcoin-staging
@@ -256,6 +257,53 @@ jobs:
   - #@ slack_success_notification("bitcoin")
   on_failure: #@ slack_failure_notification("bitcoin")
 
+- name: addons-staging
+  serial: true
+  plan:
+  - get: #@ cepler_resource_name("addons")
+    trigger: true
+  - in_parallel:
+    - put: staging-honeymarker
+    - put: tf-addons-staging
+      tags: ["staging"]
+      params:
+        terraform_source: #@ cepler_resource_name("addons") + "/gcp/staging/addons"
+  - in_parallel:
+    - do:
+      - task: get-smoketest-settings
+        tags: ["staging"]
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: #@ cepler_resource_name("addons")
+            path: pipeline-tasks
+          outputs:
+          - name: admin-panel-smoketest-settings
+          params:
+            SMOKETEST_SECRET: "admin-panel-smoketest"
+            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+            OUT: admin-panel-smoketest-settings
+          run:
+            path: pipeline-tasks/modules/services/addons/vendor/admin-panel/ci/tasks/get-smoketest-settings.sh
+      - task: admin-panel-smoketest
+        tags: ["staging"]
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: #@ cepler_resource_name("addons")
+            path: pipeline-tasks
+          - name: admin-panel-smoketest-settings
+            path: smoketest-settings
+          params:
+          run:
+            path: pipeline-tasks/modules/services/addons/vendor/admin-panel/ci/tasks/admin-panel-smoketest.sh
+  - put: #@ cepler_out_name("addons")
+    params:
+      repository: #@ cepler_resource_name("addons")
+  - #@ slack_success_notification("addons")
+  on_failure: #@ slack_failure_notification("addons")
 
 - name: galoy-staging
   serial: true
@@ -430,6 +478,8 @@ resources:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
+- #@ cepler_in("addons")
+- #@ cepler_out("addons")
 - #@ slack_resource("addons")
 
 - #@ chart_repo_resource("galoy")
@@ -505,6 +555,18 @@ resources:
     backend_config:
       bucket: #@ data.values.staging_state_bucket
       prefix: galoy-staging/services/monitoring
+      credentials: #@ data.values.staging_creds
+    env:
+      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
+
+- name: tf-addons-staging
+  type: terraform
+  source:
+    env_name: default
+    backend_type: gcs
+    backend_config:
+      bucket: #@ data.values.staging_state_bucket
+      prefix: galoy-staging/services/addons
       credentials: #@ data.values.staging_creds
     env:
       GOOGLE_CREDENTIALS: #@ data.values.staging_creds
