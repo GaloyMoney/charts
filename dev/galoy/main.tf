@@ -195,9 +195,9 @@ resource "kubernetes_secret" "lnd1_credentials" {
 }
 
 resource "helm_release" "galoy" {
-  name       = "galoy"
-  chart      = "${path.module}/../../charts/galoy"
-  namespace  = kubernetes_namespace.galoy.metadata[0].name
+  name      = "galoy"
+  chart     = "${path.module}/../../charts/galoy"
+  namespace = kubernetes_namespace.galoy.metadata[0].name
 
   values = [
     file("${path.module}/galoy-values.yml")

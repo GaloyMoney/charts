@@ -5,6 +5,7 @@ locals {
   cluster_location         = "us-east1"
   gcp_project              = "galoy-staging"
 
+  smoketest_namespace = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
