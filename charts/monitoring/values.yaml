@@ -307,54 +307,7 @@ prometheus:
   # adds additional scrape configs to prometheus.yml
   # must be a string so you have to add a | after extraScrapeConfigs:
   # example adds prometheus-blackbox-exporter scrape config
-  extraScrapeConfigs: |
-    - job_name: 'prometheus-blackbox-exporter-noauth'
-      metrics_path: /probe
-      params:
-        module: [buildParameters]
-      static_configs:
-        - targets:
-          - https://graphql.testnet.galoy.io:443/graphql
-          - https://graphql.mainnet.galoy.io:443/graphql
-      relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          target_label: instance
-        - target_label: __address__
-          replacement: monitoring-prometheus-blackbox-exporter:9115
-        - source_labels: [__meta_kubernetes_namespace]
-          target_label: namespace
-    - job_name: 'prometheus-blackbox-exporter-testnet'
-      scrape_timeout: 30s
-      metrics_path: /probe
-      params:
-        module: [walletTestnetAuth]
-      static_configs:
-        - targets:
-          - https://graphql.testnet.galoy.io:443/graphql
-      relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          target_label: instance
-        - target_label: __address__
-          replacement: monitoring-prometheus-blackbox-exporter:9115
-    - job_name: 'prometheus-blackbox-exporter-mainnet'
-      scrape_timeout: 30s
-      metrics_path: /probe
-      params:
-        module: [walletMainnetAuth]
-      static_configs:
-        - targets:
-          - https://graphql.mainnet.galoy.io:443/graphql
-      relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          target_label: instance
-        - target_label: __address__
-          replacement: monitoring-prometheus-blackbox-exporter:9115
+  extraScrapeConfigs: ""
 
 prometheus-blackbox-exporter:
   secretConfig: true
@@ -368,25 +321,3 @@ prometheus-blackbox-exporter:
           headers:
             Content-Type: application/json
           body: '{"query":"query buildParameters {\n    buildParameters {\n        id\n        commitHash\n        buildTime\n        helmRevision\n        minBuildNumberAndroid\n        minBuildNumberIos\n        lastBuildNumberAndroid\n        lastBuildNumberIos\n    }\n}","variables":{}}'
-      walletTestnetAuth:
-        prober: http
-        timeout: 30s
-        http:
-          method: POST
-          fail_if_body_matches_regexp:
-            - "errors+"
-          headers:
-            Content-Type: application/json
-            # add token with --set prometheus-blackbox-exporter.config.modules.walletTestnetAuth.http.headers.Authorization
-          body: '{"query":"query gql_query_logged {\n  prices {\n    __typename\n    id\n    o\n  }\n  earnList {\n    __typename\n    id\n    value\n    completed\n  }\n  wallet {\n    __typename\n    id\n    balance\n    currency\n    transactions {\n      __typename\n      id\n      amount\n      description\n      created_at\n      hash\n      type\n      usd\n      fee\n      feeUsd\n      pending\n    }\n  }\n  getLastOnChainAddress {\n    __typename\n    id\n  }\n  me {\n    __typename\n    id\n    level\n    username\n    phone\n  }\n  maps {\n    __typename\n    id\n    title\n    coordinate {\n        __typename\n        latitude\n        longitude\n    }\n  }\n  nodeStats {\n    __typename\n    id\n  }\n}","variables":{}}'
-      walletMainnetAuth:
-        prober: http
-        timeout: 30s
-        http:
-          method: POST
-          fail_if_body_matches_regexp:
-            - "errors+"
-          headers:
-            Content-Type: application/json
-            # add token with --set prometheus-blackbox-exporter.config.modules.walletMainnetAuth.http.headers.Authorization
-          body: '{"query":"query gql_query_logged {\n  prices {\n    __typename\n    id\n    o\n  }\n  earnList {\n    __typename\n    id\n    value\n    completed\n  }\n  wallet {\n    __typename\n    id\n    balance\n    currency\n    transactions {\n      __typename\n      id\n      amount\n      description\n      created_at\n      hash\n      type\n      usd\n      fee\n      feeUsd\n      pending\n    }\n  }\n  getLastOnChainAddress {\n    __typename\n    id\n  }\n  me {\n    __typename\n    id\n    level\n    username\n    phone\n  }\n  maps {\n    __typename\n    id\n    title\n    coordinate {\n        __typename\n        latitude\n        longitude\n    }\n  }\n  nodeStats {\n    __typename\n    id\n  }\n}","variables":{}}'
