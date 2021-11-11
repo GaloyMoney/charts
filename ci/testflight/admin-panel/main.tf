@@ -14,6 +14,17 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    admin_panel_endpoint = "admin-panel.${local.testflight_namespace}.svc.cluster.local"
+    admin_panel_port = 80
+  }
+}
+
 resource "helm_release" "admin_panel" {
   name       = "admin-panel"
   chart      = "${path.module}/chart"
