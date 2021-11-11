@@ -1,23 +1,18 @@
 # Default values for dealer.
 # This is a YAML-formatted file.
-
 dealer:
   replicaCount: 1
-
   image:
     repository: us.gcr.io/galoy-org/dealer
     digest: "sha256:78f163e2e26a0eab585bc9f833c246ef85710f52dcdd705dd8359d55b527b7ce" # Auto updated by Galoy Bot
     git_ref: "" # Not used by helm, auto updated by Galoy Bot
-
   annotations: {}
-
   # Environments
   network: regtest
   logLevel: debug
   activeStrategy: OKEX_PERPETUAL_SWAP
   activeWallet: REMOTE_WALLET
   graphqlUri: http://fake-galoyapi:4000/graphql
-
   okex5:
     secretName: dealer-okex5
     secretKey:
@@ -25,7 +20,6 @@ dealer:
       secret: okex5_secret
       password: okex5_password
       fundPassword: okex5_fund_password
-
 # === NOTE: Everything below this is for faking the graphql backend. ===
 fakeGaloyApi:
   enabled: true
@@ -40,9 +34,14 @@ fakeGaloyApi:
   dbSecretKeyRef:
     name: dealer-postgres
     key: postgresql-db-uri
-
 postgresql:
   enabled: true
   postgresqlUsername: postgres
   existingSecret: dealer-postgres
   postgresqlDatabase: dealer
+image:
+  digest: sha256:16a350b10554eedfddd6ff740ac094f33ee75386dd91e2743666cd5f255ecf89
+  git_ref: 2e3f64b
+fake-galoyapi:
+  image:
+    digest: sha256:16a350b10554eedfddd6ff740ac094f33ee75386dd91e2743666cd5f255ecf89
