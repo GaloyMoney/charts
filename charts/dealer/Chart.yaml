@@ -1,5 +1,5 @@
 apiVersion: v2
-name: monitoring
+name: dealer
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -20,15 +20,11 @@ version: 0.1.0
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
 appVersion: 0.1.0
 
 dependencies:
-  - name: grafana
-    repository: https://grafana.github.io/helm-charts
-    version: 6.17.3
-  - name: prometheus
-    repository: https://prometheus-community.github.io/helm-charts
-    version: 14.11.0
-  - name: prometheus-blackbox-exporter
-    repository: https://prometheus-community.github.io/helm-charts
-    version: 5.2.0
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 10.12.9
+    condition: postgresql.enabled

@@ -33,7 +33,7 @@ module "galoy" {
 module "monitoring" {
   source = "./monitoring"
 
-  name_prefix       = local.name_prefix
+  name_prefix = local.name_prefix
 }
 
 module "addons" {
