@@ -1,0 +1,11 @@
+image:
+  repository: us.gcr.io/galoy-org/galoy-pay
+  digest: "dummy"
+  git_ref: "dummy" # Not used by helm
+
+ingress:
+  enabled: false
+
+service:
+  port: 80
+  type: ClusterIP

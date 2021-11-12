@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoyPay.fullname" . }}
+  labels:
+    app: {{ template "galoyPay.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "galoyPay.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "galoyPay.fullname" . }}
+        release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: 80
