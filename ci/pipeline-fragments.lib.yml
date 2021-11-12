@@ -30,7 +30,7 @@ source:
 
 #@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter"]
 
-#@ addons_charts = ["admin-panel", "dealer"]
+#@ addons_charts = ["admin-panel", "dealer", "galoy-pay"]
 
 #@ def testflight_job(chart, vars = {}):
 #@ deployment = "bitcoin" if chart in bitcoin_charts else "addons" if chart in addons_charts else chart
