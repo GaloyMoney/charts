@@ -53,6 +53,10 @@ resource "helm_release" "dealer" {
   repository = "https://galoymoney.github.io/charts"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
+  values = [
+    file("${path.module}/testflight-values.yml")
+  ]
+
   depends_on = [
     kubernetes_secret.postgres_creds,
     kubernetes_secret.okex5_creds
