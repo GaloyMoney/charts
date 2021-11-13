@@ -21,8 +21,8 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    admin_panel_endpoint = "galoy-pay.${local.testflight_namespace}.svc.cluster.local"
-    admin_panel_port = 80
+    galoy_pay_endpoint = "galoy-pay.${local.testflight_namespace}.svc.cluster.local"
+    galoy_pay_port = 80
   }
 }
 
