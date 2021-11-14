@@ -47,6 +47,17 @@ resource "kubernetes_secret" "postgres_creds" {
   }
 }
 
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name      = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    dealer_endpoint = "dealer.${local.testflight_namespace}.svc.cluster.local"
+    dealer_port     = 80
+  }
+}
+
 resource "helm_release" "dealer" {
   name       = "dealer"
   chart      = "${path.module}/chart"
