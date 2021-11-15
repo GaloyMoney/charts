@@ -30,6 +30,6 @@ spec:
     {{- end }}
   {{- if .Values.ingress.tls }}
   tls:
-{{ toYaml index .Values.ingress.tls | indent 4 }}
+{{ toYaml .Values.ingress.tls | indent 4 }}
   {{- end -}}
 {{- end }}
