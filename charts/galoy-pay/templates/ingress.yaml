@@ -28,8 +28,13 @@ spec:
                   number: {{ $.Values.service.port }}
     {{- end -}}
     {{- end }}
-  {{- if .Values.ingress.tls }}
   tls:
-{{ toYaml index .Values.ingress.tls | indent 4 }}
-  {{- end -}}
+    {{- range .Values.ingress.hosts }}
+    - hosts:
+      - {{ . }}
+      secretName: {{ printf "%s-tls" . }}
+    {{- end }}
+    {{- if .Values.ingress.extraTls }}
+    {{- toYaml .Values.ingress.extraTls | nindent 4 }}
+    {{- end }}
 {{- end }}
