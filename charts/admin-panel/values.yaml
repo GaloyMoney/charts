@@ -4,6 +4,7 @@ image:
   git_ref: "502c656" # Not used by helm
 ingress:
   enabled: false
+  tls: true
 service:
   port: 80
   type: ClusterIP
