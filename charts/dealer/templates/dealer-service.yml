@@ -9,8 +9,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 3333
+    - port: {{ .Values.dealer.exporter.port }}
+      targetPort: {{ .Values.dealer.exporter.port }}
       protocol: TCP
       name: http
   selector:

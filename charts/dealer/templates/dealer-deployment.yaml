@@ -18,8 +18,8 @@ spec:
         app: {{ template "dealer.fullname" . }}
         release: "{{ .Release.Name }}"
       annotations:
-        prometheus.io/path: /metrics
-        prometheus.io/port: "3333"
+        prometheus.io/path: {{ .Values.dealer.exporter.path }}
+        prometheus.io/port: "{{ .Values.dealer.exporter.port }}"
         prometheus.io/scrape: "true"
       {{- with .Values.dealer.annotations }}
         {{ toYaml . | nindent 8 }}
