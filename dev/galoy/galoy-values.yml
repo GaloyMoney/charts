@@ -46,11 +46,6 @@ redis:
   metrics:
     enabled: false
 
-lnpage:
-  enabled: false
-admin-panel:
-  enabled: true
-
 mongodbaddress: "galoy-mongodb"
 
 cron: []
