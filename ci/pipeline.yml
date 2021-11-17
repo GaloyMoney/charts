@@ -270,6 +270,11 @@ jobs:
       tags: ["staging"]
       params:
         terraform_source: #@ cepler_resource_name("addons") + "/gcp/staging/addons"
+        vars:
+          okex_key: #@ data.values.staging_okex_key
+          okex_secret: #@ data.values.staging_okex_secret
+          okex_password: #@ data.values.staging_okex_password
+          okex_fund_password: #@ data.values.staging_okex_fund_password
   - in_parallel:
     - do:
       - task: get-smoketest-settings
@@ -331,6 +336,36 @@ jobs:
           params:
           run:
             path: pipeline-tasks/modules/services/addons/vendor/galoy-pay/ci/tasks/galoy-pay-smoketest.sh
+    - do:
+      - task: get-smoketest-settings
+        tags: ["staging"]
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: #@ cepler_resource_name("addons")
+            path: pipeline-tasks
+          outputs:
+          - name: dealer-smoketest-settings
+          params:
+            SMOKETEST_SECRET: "dealer-smoketest"
+            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+            OUT: dealer-smoketest-settings
+          run:
+            path: pipeline-tasks/modules/services/addons/vendor/dealer/ci/tasks/get-smoketest-settings.sh
+      - task: dealer-smoketest
+        tags: ["staging"]
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: #@ cepler_resource_name("addons")
+            path: pipeline-tasks
+          - name: dealer-smoketest-settings
+            path: smoketest-settings
+          params:
+          run:
+            path: pipeline-tasks/modules/services/addons/vendor/dealer/ci/tasks/dealer-smoketest.sh
   - put: #@ cepler_out_name("addons")
     params:
       repository: #@ cepler_resource_name("addons")

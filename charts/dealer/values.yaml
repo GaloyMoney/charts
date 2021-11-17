@@ -6,6 +6,9 @@ dealer:
     repository: us.gcr.io/galoy-org/dealer
     digest: "sha256:16a350b10554eedfddd6ff740ac094f33ee75386dd91e2743666cd5f255ecf89" # Auto updated by Galoy Bot
     git_ref: "2e3f64b" # Not used by helm, auto updated by Galoy Bot
+  exporter:
+    path: /metrics
+    port: 3333
   annotations: {}
   # Environments
   network: regtest
