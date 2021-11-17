@@ -5,6 +5,7 @@ locals {
   cluster_location = "us-east1"
   gcp_project      = "galoy-staging"
 
+  smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 
   postgres_password   = "postgres"
@@ -54,7 +55,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     dealer_endpoint = "dealer.${local.testflight_namespace}.svc.cluster.local"
-    dealer_port     = 80
+    dealer_port     = 3333
   }
 }
 
