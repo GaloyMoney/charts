@@ -32,7 +32,3 @@ dependencies:
   - name: common
     version: 1.8.0
     repository: https://charts.bitnami.com/bitnami
-  - name: nginx
-    alias: lnpage
-    repository: https://charts.bitnami.com/bitnami
-    version: 9.5.3
