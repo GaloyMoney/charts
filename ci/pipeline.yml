@@ -383,7 +383,7 @@ jobs:
   - in_parallel:
     - put: staging-honeymarker
     - do:
-      - task: checkout-main-repo
+      - task: checkout-repo
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -396,7 +396,7 @@ jobs:
           outputs:
           - name: galoy-main-repo
           run:
-            path: pipeline-tasks/ci/tasks/checkout-main-repo.sh
+            path: pipeline-tasks/ci/tasks/checkout-repo.sh
       - put: galoy-main-out
         params:
           repository: galoy-main-repo
