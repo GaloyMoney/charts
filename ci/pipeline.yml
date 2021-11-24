@@ -364,34 +364,7 @@ jobs:
             oauth_client_secret: #@ data.values.staging_oauth_client_secret
           env:
             HONEYCOMBIO_APIKEY: #@ data.values.staging_honeycomb_api_key
-  - task: get-smoketest-settings
-    tags: ["staging"]
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: #@ cepler_resource_name("monitoring")
-        path: pipeline-tasks
-      outputs:
-      - name: monitoring-smoketest-settings
-      params:
-        SMOKETEST_SECRET: "monitoring-smoketest"
-        SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-        OUT: monitoring-smoketest-settings
-      run:
-        path: pipeline-tasks/modules/services/monitoring/vendor/monitoring/ci/tasks/get-smoketest-settings.sh
-  - task: monitoring-smoke-test
-    tags: ["staging"]
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: #@ cepler_resource_name("monitoring")
-        path: pipeline-tasks
-      - name: monitoring-smoketest-settings
-        path: smoketest-settings
-      run:
-        path: pipeline-tasks/modules/services/monitoring/vendor/monitoring/ci/tasks/monitoring-smoketest.sh
+  - #@ chart_smoke_test("monitoring", "monitoring")
   - put: #@ cepler_out_name("monitoring")
     params:
       repository: #@ cepler_resource_name("monitoring")
