@@ -378,7 +378,7 @@ jobs:
   - in_parallel:
     - get: #@ cepler_resource_name("galoy")
       trigger: true
-    - get: galoy-main-repo
+    - get: galoy-repo
     - get: galoy-deployments
   - in_parallel:
     - put: staging-honeymarker
@@ -390,18 +390,19 @@ jobs:
           inputs:
           - name: galoy-deployments
             path: pipeline-tasks
-          - name: galoy-main-repo
+          - name: galoy-repo
+            path: repo
           - name: #@ cepler_resource_name("galoy")
             path: deployment-files
           outputs:
-          - name: galoy-main-repo
+          - name: repo
           run:
             path: pipeline-tasks/ci/tasks/checkout-repo.sh
           params:
             CHART_SUBPATH: galoy/vendor/galoy
-      - put: galoy-main-out
+      - put: galoy-repo-out
         params:
-          repository: galoy-main-repo
+          repository: repo
           force: true
           branch: staging
     - put: tf-galoy-staging
@@ -571,14 +572,14 @@ resources:
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
-- name: galoy-main-repo
+- name: galoy-repo
   type: git
   source:
     uri: #@ data.values.galoy_git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
-- name: galoy-main-out
+- name: galoy-repo-out
   type: git
   source:
     uri: #@ data.values.galoy_git_uri
