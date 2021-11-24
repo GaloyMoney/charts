@@ -228,3 +228,39 @@ type: slack-notification
 source:
   url: #@ getattr(data.values, deployment + "_slack_webhook_url")
 #@ end
+
+#@ def chart_smoke_test(chart, deployment):
+#@ base_path = "pipeline-tasks/modules/services/" + deployment
+#@ if chart == "galoy":
+#@   base_path = "pipeline-tasks/modules/" + deployment
+#@ end
+do:
+- task: get-smoketest-settings
+  tags: ["staging"]
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ cepler_resource_name(deployment)
+      path: pipeline-tasks
+    outputs:
+    - name: #@ chart + "-smoketest-settings"
+    params:
+      SMOKETEST_SECRET: #@ chart + "-smoketest"
+      SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
+      OUT: #@ chart + "-smoketest-settings"
+    run:
+      path: #@ base_path + "/vendor/" + chart + "/ci/tasks/get-smoketest-settings.sh"
+- task: #@ chart + "-smoketest"
+  tags: ["staging"]
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ cepler_resource_name(deployment)
+      path: pipeline-tasks
+    - name: #@ chart + "-smoketest-settings"
+      path: smoketest-settings
+    run:
+      path: #@ base_path + "/vendor/" + chart + "/ci/tasks/" + chart + "-smoketest.sh"
+#@ end
