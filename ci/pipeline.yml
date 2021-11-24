@@ -336,34 +336,7 @@ jobs:
           twilio_account_sid: #@ data.values.staging_twilio_account_sid
           backups_sa_creds: #@ data.values.staging_backups_sa_creds
           dropbox_access_token: #@ data.values.staging_dropbox_access_token
-  - task: get-smoketest-settings
-    tags: ["staging"]
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: #@ cepler_resource_name("galoy")
-        path: pipeline-tasks
-      outputs:
-      - name: galoy-smoketest-settings
-      params:
-        SMOKETEST_SECRET: "galoy-smoketest"
-        SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-        OUT: galoy-smoketest-settings
-      run:
-        path: pipeline-tasks/modules/galoy/vendor/galoy/ci/tasks/get-smoketest-settings.sh
-  - task: galoy-smoke-test
-    tags: ["staging"]
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: #@ cepler_resource_name("galoy")
-        path: pipeline-tasks
-      - name: galoy-smoketest-settings
-        path: smoketest-settings
-      run:
-        path: pipeline-tasks/modules/galoy/vendor/galoy/ci/tasks/galoy-smoketest.sh
+  - #@ chart_smoke_test("galoy", "galoy")
   - put: #@ cepler_out_name("galoy")
     params:
       repository: #@ cepler_resource_name("galoy")
