@@ -397,6 +397,8 @@ jobs:
           - name: galoy-main-repo
           run:
             path: pipeline-tasks/ci/tasks/checkout-repo.sh
+          params:
+            CHART_SUBPATH: galoy/vendor/galoy
       - put: galoy-main-out
         params:
           repository: galoy-main-repo
