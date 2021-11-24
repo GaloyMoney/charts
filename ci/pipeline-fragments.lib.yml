@@ -264,3 +264,27 @@ do:
     run:
       path: #@ base_path + "/vendor/" + chart + "/ci/tasks/" + chart + "-smoketest.sh"
 #@ end
+
+#@ def repo_out_resource(repo_name):
+name: #@ repo_out_resource_name(repo_name)
+type: git
+source:
+  uri: #@ data.values.git_org_uri + "/" + repo_name + ".git"
+  private_key: #@ data.values.github_private_key
+#@ end
+
+#@ def repo_out_resource_name(repo_name):
+#@   return repo_name + "-repo-out"
+#@ end
+
+#@ def repo_resource(repo_name):
+name: #@ repo_resource_name(repo_name)
+type: git
+source:
+  uri: #@ data.values.git_org_uri + "/" + repo_name + ".git"
+  private_key: #@ data.values.github_private_key
+#@ end
+
+#@ def repo_resource_name(repo_name):
+#@   return repo_name + "-repo"
+#@ end

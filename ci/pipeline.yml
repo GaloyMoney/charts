@@ -20,7 +20,11 @@
 #@   "cepler_in",
 #@   "cepler_out",
 #@   "cepler_out_name",
-#@   "chart_smoke_test")
+#@   "chart_smoke_test",
+#@   "repo_resource",
+#@   "repo_resource_name",
+#@   "repo_out_resource",
+#@   "repo_out_resource_name")
 
 #@ def galoy_chart_vars():
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
@@ -265,8 +269,39 @@ jobs:
   plan:
   - get: #@ cepler_resource_name("addons")
     trigger: true
+  - get: galoy-deployments
+  #@ for chart in addons_charts:
+  - get: #@ repo_resource_name(chart)
+  #@ end
   - in_parallel:
     - put: staging-honeymarker
+    #@ for chart in addons_charts:
+    #@ if chart != "dealer":
+    - do:
+      - task: #@ "checkout-" + chart + "-repo"
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+          - name: galoy-deployments
+            path: pipeline-tasks
+          - name: #@ repo_resource_name(chart)
+            path: repo
+          - name: #@ cepler_resource_name("addons")
+            path: deployment-files
+          outputs:
+          - name: repo
+          run:
+            path: pipeline-tasks/ci/tasks/checkout-repo.sh
+          params:
+            CHART_SUBPATH: #@ "services/addons/vendor/" + chart
+      - put: #@ repo_out_resource_name(chart)
+        params:
+          repository: repo
+          force: true
+          branch: staging
+    #@ end
+    #@ end
     - put: tf-addons-staging
       tags: ["staging"]
       params:
@@ -304,7 +339,7 @@ jobs:
           inputs:
           - name: galoy-deployments
             path: pipeline-tasks
-          - name: galoy-repo
+          - name: #@ repo_resource_name("galoy")
             path: repo
           - name: #@ cepler_resource_name("galoy")
             path: deployment-files
@@ -314,7 +349,7 @@ jobs:
             path: pipeline-tasks/ci/tasks/checkout-repo.sh
           params:
             CHART_SUBPATH: galoy/vendor/galoy
-      - put: galoy-repo-out
+      - put: #@ repo_out_resource_name("galoy")
         params:
           repository: repo
           force: true
@@ -424,26 +459,21 @@ resources:
 - #@ cepler_out("monitoring")
 - #@ slack_resource("monitoring")
 
+- #@ repo_out_resource("galoy")
+- #@ repo_out_resource("admin-panel")
+- #@ repo_out_resource("galoy-pay")
+
+- #@ repo_resource("galoy")
+- #@ repo_resource("admin-panel")
+- #@ repo_resource("galoy-pay")
+- #@ repo_resource("dealer")
+
 - name: pipeline-tasks
   type: git
   source:
     paths: [ci/tasks/*, ci/testflight/*, Makefile]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
-
-- name: galoy-repo
-  type: git
-  source:
-    uri: #@ data.values.galoy_git_uri
-    branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
-
-- name: galoy-repo-out
-  type: git
-  source:
-    uri: #@ data.values.galoy_git_uri
-    branch: staging
     private_key: #@ data.values.github_private_key
 
 - name: galoy-deployments
