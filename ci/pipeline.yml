@@ -19,7 +19,8 @@
 #@   "addons_charts",
 #@   "cepler_in",
 #@   "cepler_out",
-#@   "cepler_out_name")
+#@   "cepler_out_name",
+#@   "chart_smoke_test")
 
 #@ def galoy_chart_vars():
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
@@ -276,96 +277,9 @@ jobs:
           okex_password: #@ data.values.staging_okex_password
           okex_fund_password: #@ data.values.staging_okex_fund_password
   - in_parallel:
-    - do:
-      - task: get-smoketest-settings
-        tags: ["staging"]
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("addons")
-            path: pipeline-tasks
-          outputs:
-          - name: admin-panel-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "admin-panel-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: admin-panel-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/addons/vendor/admin-panel/ci/tasks/get-smoketest-settings.sh
-      - task: admin-panel-smoketest
-        tags: ["staging"]
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("addons")
-            path: pipeline-tasks
-          - name: admin-panel-smoketest-settings
-            path: smoketest-settings
-          params:
-          run:
-            path: pipeline-tasks/modules/services/addons/vendor/admin-panel/ci/tasks/admin-panel-smoketest.sh
-    - do:
-      - task: get-smoketest-settings
-        tags: ["staging"]
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("addons")
-            path: pipeline-tasks
-          outputs:
-          - name: galoy-pay-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "galoy-pay-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: galoy-pay-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/addons/vendor/galoy-pay/ci/tasks/get-smoketest-settings.sh
-      - task: galoy-pay-smoketest
-        tags: ["staging"]
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("addons")
-            path: pipeline-tasks
-          - name: galoy-pay-smoketest-settings
-            path: smoketest-settings
-          params:
-          run:
-            path: pipeline-tasks/modules/services/addons/vendor/galoy-pay/ci/tasks/galoy-pay-smoketest.sh
-    - do:
-      - task: get-smoketest-settings
-        tags: ["staging"]
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("addons")
-            path: pipeline-tasks
-          outputs:
-          - name: dealer-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "dealer-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: dealer-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/addons/vendor/dealer/ci/tasks/get-smoketest-settings.sh
-      - task: dealer-smoketest
-        tags: ["staging"]
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("addons")
-            path: pipeline-tasks
-          - name: dealer-smoketest-settings
-            path: smoketest-settings
-          params:
-          run:
-            path: pipeline-tasks/modules/services/addons/vendor/dealer/ci/tasks/dealer-smoketest.sh
+    #@ for chart in addons_charts:
+    - #@ chart_smoke_test(chart, "addons")
+    #@ end
   - put: #@ cepler_out_name("addons")
     params:
       repository: #@ cepler_resource_name("addons")
