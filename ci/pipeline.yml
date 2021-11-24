@@ -313,7 +313,9 @@ jobs:
           okex_fund_password: #@ data.values.staging_okex_fund_password
   - in_parallel:
     #@ for chart in addons_charts:
+    #@ if chart != "dealer":
     - #@ chart_smoke_test(chart, "addons")
+    #@ end
     #@ end
   - put: #@ cepler_out_name("addons")
     params:
