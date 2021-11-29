@@ -294,6 +294,7 @@ jobs:
             path: pipeline-tasks/ci/tasks/checkout-repo.sh
           params:
             CHART_SUBPATH: #@ "services/addons/vendor/" + chart
+            CHART: #@ chart
       - put: #@ repo_out_resource_name(chart)
         params:
           repository: repo
@@ -461,6 +462,7 @@ resources:
 - #@ repo_out_resource("galoy")
 - #@ repo_out_resource("admin-panel")
 - #@ repo_out_resource("galoy-pay")
+- #@ repo_out_resource("dealer")
 
 - #@ repo_resource("galoy")
 - #@ repo_resource("admin-panel")
