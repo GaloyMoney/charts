@@ -294,6 +294,7 @@ jobs:
             path: pipeline-tasks/ci/tasks/checkout-repo.sh
           params:
             CHART_SUBPATH: #@ "services/addons/vendor/" + chart
+            CHART: #@ chart
       - put: #@ repo_out_resource_name(chart)
         params:
           repository: repo

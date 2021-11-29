@@ -283,6 +283,7 @@ type: git
 source:
   uri: #@ data.values.git_org_uri + "/" + repo_name + ".git"
   private_key: #@ data.values.github_private_key
+  branch: main
 #@ end
 
 #@ def repo_resource_name(repo_name):
