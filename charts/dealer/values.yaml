@@ -38,7 +38,7 @@ fakeGaloyApi:
     name: dealer-postgres
     key: postgresql-db-uri
 postgresql:
-  enabled: true
+  enabled: false
   postgresqlUsername: postgres
   existingSecret: dealer-postgres
   postgresqlDatabase: dealer

@@ -1,3 +1,4 @@
 postgresql:
+  enabled: true
   persistence:
     enabled: false
