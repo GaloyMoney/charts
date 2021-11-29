@@ -311,7 +311,7 @@ jobs:
           okex_secret: #@ data.values.staging_okex_secret
           okex_password: #@ data.values.staging_okex_password
           okex_fund_password: #@ data.values.staging_okex_fund_password
-          shared_pg_admin_password: #@data.values.staging_shared_pg_admin_password
+          shared_pg_admin_password: #@ data.values.staging_shared_pg_admin_password
   - in_parallel:
     #@ for chart in addons_charts:
     #@ if chart != "dealer":
