@@ -461,6 +461,7 @@ resources:
 - #@ repo_out_resource("galoy")
 - #@ repo_out_resource("admin-panel")
 - #@ repo_out_resource("galoy-pay")
+- #@ repo_out_resource("dealer")
 
 - #@ repo_resource("galoy")
 - #@ repo_resource("admin-panel")
