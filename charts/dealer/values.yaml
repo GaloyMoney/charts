@@ -16,7 +16,7 @@ dealer:
   activeStrategy: OKEX_PERPETUAL_SWAP
   activeWallet: REMOTE_WALLET
   graphqlUri: http://fake-galoyapi:4000/graphql
-  hedgingNotInSimulation: "TRUE"
+  hedgingNotInSimulation: TRUE
   okex5:
     secretName: dealer-okex5
     secretKey:
