@@ -11,7 +11,7 @@ spec:
   type: {{ .Values.fakeGaloyApi.service.type }}
   ports:
     - port: {{ .Values.fakeGaloyApi.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.fakeGaloyApi.service.port }}
       protocol: TCP
       name: http
   selector:
