@@ -40,7 +40,9 @@ resource "helm_release" "dealer" {
   namespace  = kubernetes_namespace.addons.metadata[0].name
 
   values = [
-    file("${path.module}/dealer-values.yml")
+    templatefile("${path.module}/dealer-values.yml.tmpl", {
+      addons_namespace : kubernetes_namespace.addons.metadata[0].name
+    })
   ]
 
   depends_on = [
