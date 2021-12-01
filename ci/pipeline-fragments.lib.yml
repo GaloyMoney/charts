@@ -112,6 +112,9 @@ plan:
     trigger: true
   - { get: pipeline-tasks }
   - { get: galoy-deployments }
+  #@ if chart == "dealer":
+  - get: #@ repo_resource_name(chart)
+  #@ end
 - task: #@ "bump-" + chart
   config:
     platform: linux
@@ -128,6 +131,26 @@ plan:
       BRANCH: #@ data.values.deployments_git_branch
     run:
       path: pipeline-tasks/ci/tasks/bump-chart.sh
+#@ if chart == "dealer":
+- task: #@ "bump-" + chart + "-dashboard"
+  config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: #@ chart_resource_name(chart)
+      path: chart
+    - name: #@ repo_resource_name(chart)
+    - name: pipeline-tasks
+    - name: galoy-deployments
+    outputs:
+    - name: galoy-deployments
+    params:
+      REPO: #@ repo_resource_name(chart)
+      CHART: #@ chart
+      BRANCH: #@ data.values.deployments_git_branch
+    run:
+      path: pipeline-tasks/ci/tasks/bump-dealer-dashboard.sh
+#@ end
 - put: galoy-deployments
   params:
     repository: galoy-deployments
