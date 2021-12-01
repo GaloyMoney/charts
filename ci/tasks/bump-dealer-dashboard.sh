@@ -3,18 +3,24 @@
 set -eu
 
 pushd chart
+repo_ref=$(yq e ".dealer.image.git_ref" charts/dealer/values.yml )
+popd
 
-repo_ref=$(yq e ".image.git_ref" charts/${CHART}/values.yml )
-
-if [[ $repo_ref == "null" ]]; then
-  repo_ref=$(yq e ".${CHART}.image.git_ref" charts/${CHART}/values.yml )
-fi
-
+pushd galoy-deployments
+# Last ref that changed dashboard
+last_ref=$(cat modules/services/addons/vendor/dealer/dashboards/git-ref/ref)
 popd
 
 pushd $REPO
+
+# Check if dashboard files have changed between last vendir ref and now
+if ! git diff --name-only ${last_ref} ${repo_ref} | grep "grafana/provisioning/dashboards"; then
+  exit 0
+fi
+
 git checkout --force ${repo_ref}
 REF=$(git rev-parse HEAD) # Fetch the complete ref
+
 popd
 
 cd galoy-deployments
@@ -28,7 +34,6 @@ fi
 if [[ -z $(git config --global user.name) ]]; then
   git config --global user.name "CI Bot"
 fi
-
 
 (cd $(git rev-parse --show-toplevel)
 git merge --no-edit ${BRANCH}
