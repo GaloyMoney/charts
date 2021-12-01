@@ -3,7 +3,7 @@
 set -eu
 
 pushd chart
-repo_ref=$(yq e ".dealer.image.git_ref" charts/dealer/values.yml )
+repo_ref=$(yq e ".dealer.image.git_ref" charts/dealer/values.yaml )
 popd
 
 pushd galoy-deployments
