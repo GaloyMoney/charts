@@ -21,6 +21,8 @@ spec:
         prometheus.io/path: {{ .Values.dealer.exporter.path }}
         prometheus.io/port: "{{ .Values.dealer.exporter.port }}"
         prometheus.io/scrape: "true"
+        prometheus.io/scrape_interval: "1m"
+        prometheus.io/scrape_timeout: "59s"
       {{- with .Values.dealer.annotations }}
         {{ toYaml . | nindent 8 }}
       {{- end }}
