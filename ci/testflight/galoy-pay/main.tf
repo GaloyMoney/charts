@@ -22,7 +22,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     galoy_pay_endpoint = "galoy-pay.${local.testflight_namespace}.svc.cluster.local"
-    galoy_pay_port = 3000
+    galoy_pay_port = 80
   }
 }
 
