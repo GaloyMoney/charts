@@ -309,7 +309,7 @@ prometheus:
               regex: 'lnd.*'
               action: drop
             - source_labels: [__meta_kubernetes_pod_name]
-              regex: '*.dealer.*'
+              regex: 'dealer.*'
               action: drop
 
         # - job_name: 'kubernetes-services'
