@@ -311,6 +311,9 @@ jobs:
           okex_password: #@ data.values.staging_okex_password
           okex_fund_password: #@ data.values.staging_okex_fund_password
           shared_pg_admin_password: #@ data.values.staging_shared_pg_admin_password
+          jupyterhub_oauth_client_id: #@ data.values.staging_jupyterhub_oauth_client_id
+          jupyterhub_oauth_client_secret: #@ data.values.staging_jupyterhub_oauth_client_secret
+
   - in_parallel:
     #@ for chart in addons_charts:
     - #@ chart_smoke_test(chart, "addons")
@@ -395,8 +398,8 @@ jobs:
             slack_api_url: #@ data.values.staging_slack_api_url
             pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
             grafana_sa_key: #@ data.values.staging_grafana_sa_key
-            oauth_client_id: #@ data.values.staging_oauth_client_id
-            oauth_client_secret: #@ data.values.staging_oauth_client_secret
+            oauth_client_id: #@ data.values.staging_grafana_oauth_client_id
+            oauth_client_secret: #@ data.values.staging_grafana_oauth_client_secret
           env:
             HONEYCOMBIO_APIKEY: #@ data.values.staging_honeycomb_api_key
   - #@ chart_smoke_test("monitoring", "monitoring")
