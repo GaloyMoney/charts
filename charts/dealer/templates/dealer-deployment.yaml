@@ -20,7 +20,7 @@ spec:
       annotations:
         prometheus.io/path: {{ .Values.dealer.exporter.path }}
         prometheus.io/port: "{{ .Values.dealer.exporter.port }}"
-        prometheus.io/scrape_every_1m: "true"
+        galoy.io/dealer: "true"
       {{- with .Values.dealer.annotations }}
         {{ toYaml . | nindent 8 }}
       {{- end }}
