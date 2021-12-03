@@ -362,18 +362,7 @@ jobs:
       params:
         terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
         vars:
-          apollo_graph_id: #@ data.values.staging_apollo_graph_id
-          apollo_key: #@ data.values.staging_apollo_key
-          firebase_service_account: #@ data.values.staging_firebase_service_account
-          proxy_check_api_key: #@ data.values.staging_proxy_check_api_key
-          geetest_key: #@ data.values.staging_geetest_key
-          geetest_id: #@ data.values.staging_geetest_id
-          twilio_phone_number: #@ data.values.staging_twilio_phone_number
-          twilio_api_key: #@ data.values.staging_twilio_api_key
-          twilio_api_secret: #@ data.values.staging_twilio_api_secret
-          twilio_account_sid: #@ data.values.staging_twilio_account_sid
-          backups_sa_creds: #@ data.values.staging_backups_sa_creds
-          dropbox_access_token: #@ data.values.staging_dropbox_access_token
+          secrets: #@ data.values.staging_galoy_secrets
   - #@ chart_smoke_test("galoy", "galoy")
   - put: #@ cepler_out_name("galoy")
     params:
