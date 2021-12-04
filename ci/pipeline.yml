@@ -383,12 +383,7 @@ jobs:
         params:
           terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/staging/monitoring"
           vars:
-            probe_auth_token: #@ data.values.staging_monitoring_probe_auth_token
-            slack_api_url: #@ data.values.staging_slack_api_url
-            pagerduty_service_key: #@ data.values.staging_pagerduty_service_key
-            grafana_sa_key: #@ data.values.staging_grafana_sa_key
-            oauth_client_id: #@ data.values.staging_grafana_oauth_client_id
-            oauth_client_secret: #@ data.values.staging_grafana_oauth_client_secret
+            secrets: #@ data.values.staging_monitoring_secrets
           env:
             HONEYCOMBIO_APIKEY: #@ data.values.staging_honeycomb_api_key
   - #@ chart_smoke_test("monitoring", "monitoring")
