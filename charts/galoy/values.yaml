@@ -4,6 +4,7 @@ galoy:
   name: "Galoy Wallet"
   apollo:
     playground: false
+
 # todo: this should be injected in a configmap from bitcoind
 bitcoind:
   port: 8332
