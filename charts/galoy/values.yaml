@@ -4,7 +4,6 @@ galoy:
   name: "Galoy Wallet"
   apollo:
     playground: false
-
 # todo: this should be injected in a configmap from bitcoind
 bitcoind:
   port: 8332
@@ -14,8 +13,8 @@ ca:
   CAEmail: dev@galoy.io
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:dc9225836e9df0fab160387556d0564aa8cebe0f7d339951a1396a79c4a0719c"
-  git_ref: "a5e2eae" # Not used by helm
+  digest: "sha256:4d89a3e7dbb97e0e0a853a0f1f7f3c1c9cafbc3d839e4f1b444e2543e81365c3"
+  git_ref: "c67fe48" # Not used by helm
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
