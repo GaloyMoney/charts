@@ -22,7 +22,7 @@ spec:
 {{- end }}
     spec:
       containers:
-      - name: nginx
+      - name: pay
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         ports:
-        - containerPort: 80
+        - containerPort: 3000
