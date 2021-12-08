@@ -136,6 +136,7 @@ spec:
             mountPath: /data/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          args: ["--lnddir=/data/.lnd"]
           ports:
             - name: rpc
               containerPort: {{ .Values.service.ports.rpc }}
