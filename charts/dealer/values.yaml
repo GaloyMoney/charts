@@ -4,7 +4,7 @@ dealer:
   replicaCount: 1
   image:
     repository: us.gcr.io/galoy-org/dealer
-    digest: "sha256:265a415898b5b95feee17361da9cb1cf6e7d119447770d77455b499c8562b15b" # Auto updated by Galoy Bot
+    digest: "sha256:05db0ea9585c3551b4d61e11de252c255af2178e888e782f469a52107039c384" # Auto updated by Galoy Bot
     git_ref: "f17fb63" # Not used by helm, auto updated by Galoy Bot
   exporter:
     path: /metrics
