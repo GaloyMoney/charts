@@ -108,7 +108,7 @@ jobs:
     - put: tf-bitcoin-staging
       tags: ["staging"]
       params:
-        terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/staging/bitcoin"
+        terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/galoy-staging/bitcoin"
         vars:
           lnd1_pass: #@ data.values.staging_lnd1_pass
   - in_parallel:
@@ -304,7 +304,7 @@ jobs:
     - put: tf-addons-staging
       tags: ["staging"]
       params:
-        terraform_source: #@ cepler_resource_name("addons") + "/gcp/staging/addons"
+        terraform_source: #@ cepler_resource_name("addons") + "/gcp/galoy-staging/addons"
         vars:
           secrets: #@ data.values.staging_addons_secrets
 
@@ -354,7 +354,7 @@ jobs:
     - put: tf-galoy-staging
       tags: ["staging"]
       params:
-        terraform_source: #@ cepler_resource_name("galoy") + "/gcp/staging/galoy"
+        terraform_source: #@ cepler_resource_name("galoy") + "/gcp/galoy-staging/galoy"
         vars:
           secrets: #@ data.values.staging_galoy_secrets
   - #@ chart_smoke_test("galoy", "galoy")
@@ -375,7 +375,7 @@ jobs:
       - put: tf-monitoring-staging
         tags: ["staging"]
         params:
-          terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/staging/monitoring"
+          terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/galoy-staging/monitoring"
           vars:
             secrets: #@ data.values.staging_monitoring_secrets
           env:
