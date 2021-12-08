@@ -9,3 +9,5 @@ service:
   type: ClusterIP
 graphqlHostname: domain.example
 graphqlHostnameInternal: service-name.namespace.svc.cluster.local
+kubemonkey:
+  enabled: true

@@ -7,6 +7,13 @@ metadata:
     app: {{ .Values.fakeGaloyApi.name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+    {{- if .Values.fakeGaloyApi.kubemonkey.enabled }}
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: fake-galoyapi
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+    {{- end }}
 spec:
   selector:
     matchLabels:
@@ -18,6 +25,10 @@ spec:
       labels:
         app: {{ .Values.fakeGaloyApi.name }}
         release: "{{ .Release.Name }}"
+        {{- if .Values.fakeGaloyApi.kubemonkey.enabled }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: fake-galoyapi
+        {{- end }}
     spec:
       containers:
       - name: graphql

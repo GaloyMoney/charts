@@ -7,3 +7,5 @@ ingress:
 service:
   port: 80
   type: ClusterIP
+kubemonkey:
+  enabled: true

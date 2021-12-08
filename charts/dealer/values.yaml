@@ -24,6 +24,8 @@ dealer:
       secret: okex5_secret
       password: okex5_password
       fundPassword: okex5_fund_password
+  kubemonkey:
+    enabled: true
 # === NOTE: Everything below this is for faking the graphql backend. ===
 fakeGaloyApi:
   enabled: true
@@ -38,6 +40,8 @@ fakeGaloyApi:
   dbSecretKeyRef:
     name: dealer-postgres
     key: postgresql-db-uri
+  kubemonkey:
+    enabled: true
 postgresql:
   enabled: false
   postgresqlUsername: postgres
