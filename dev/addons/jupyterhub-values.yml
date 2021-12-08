@@ -1,0 +1,6 @@
+singleuser:
+  image:
+    name: jupyter/datascience-notebook
+    tag: notebook-6.4.4
+
+  defaultUrl: "/lab"
