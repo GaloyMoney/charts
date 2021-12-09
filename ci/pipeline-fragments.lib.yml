@@ -198,7 +198,7 @@ source:
 #@ end
 
 #@ def cepler_resource_name(deployment):
-#@   return deployment + "-" + data.values.staging_environment
+#@   return data.values.staging_environment + "-" + deployment
 #@ end
 
 #@ def cepler_out_name(deployment):
