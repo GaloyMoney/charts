@@ -55,14 +55,14 @@ plan:
     run:
       path: pipeline-tasks/ci/tasks/prepare-testflight.sh
 - put: #@ "tf-" + chart + "-testflight"
-  tags: ["staging"]
+  tags: ["galoy-staging"]
   params:
     vars_files: [ testflight/tf/terraform.tfvars ]
     terraform_source: testflight/tf
     env_name_file: testflight/env_name
     vars: #@ vars
 - task: get-smoketest-settings
-  tags: ["staging"]
+  tags: ["galoy-staging"]
   config:
     platform: linux
     image_resource: #@ task_image_config()
@@ -78,7 +78,7 @@ plan:
     run:
       path: pipeline-tasks/ci/tasks/get-smoketest-settings.sh
 - task: smoketest
-  tags: ["staging"]
+  tags: ["galoy-staging"]
   config:
     platform: linux
     image_resource: #@ task_image_config()
@@ -90,7 +90,7 @@ plan:
     run:
       path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
 - put: #@ "tf-" + chart + "-testflight"
-  tags: ["staging"]
+  tags: ["galoy-staging"]
   params:
     vars_files: [ testflight/tf/terraform.tfvars ]
     terraform_source: testflight/tf
@@ -259,7 +259,7 @@ source:
 #@ end
 do:
 - task: get-smoketest-settings
-  tags: ["staging"]
+  tags: ["galoy-staging"]
   config:
     platform: linux
     image_resource: #@ task_image_config()
@@ -275,7 +275,7 @@ do:
     run:
       path: #@ base_path + "/vendor/" + chart + "/ci/tasks/get-smoketest-settings.sh"
 - task: #@ chart + "-smoketest"
-  tags: ["staging"]
+  tags: ["galoy-staging"]
   config:
     platform: linux
     image_resource: #@ task_image_config()
