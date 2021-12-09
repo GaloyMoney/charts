@@ -202,7 +202,7 @@ source:
 #@ end
 
 #@ def cepler_out_name(deployment):
-#@   return deployment + "-out"
+#@   return data.values.staging_environment + "-" + deployment + "-out"
 #@ end
 
 #@ def cepler_in(deployment):
