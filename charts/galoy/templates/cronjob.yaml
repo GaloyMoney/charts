@@ -33,6 +33,8 @@ spec:
                 secretKeyRef:
                   name: {{ $.Release.Name }}-mongodb
                   key: "mongodb-password"
+            - name: JWT_SECRET
+              value: "dummy"
             - name: MONGODB_USER
               value: "testGaloy"
             - name: JAEGER_HOST
