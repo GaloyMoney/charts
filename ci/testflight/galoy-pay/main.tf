@@ -29,7 +29,6 @@ resource "kubernetes_secret" "smoketest" {
 resource "helm_release" "galoy_pay" {
   name       = "galoy-pay"
   chart      = "${path.module}/chart"
-  repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 }
 
