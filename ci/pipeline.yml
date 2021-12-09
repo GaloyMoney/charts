@@ -106,7 +106,8 @@ jobs:
   - in_parallel:
     - put: staging-honeymarker
     - put: tf-bitcoin-staging
-      tags: ["galoy-staging"]
+      tags: 
+        - #@ data.values.staging_worker_tag
       params:
         terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/galoy-staging/bitcoin"
         vars:
@@ -114,7 +115,8 @@ jobs:
   - in_parallel:
     - do:
       - task: get-smoketest-settings
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -130,7 +132,8 @@ jobs:
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/get-smoketest-settings.sh
       - task: bitcoind-smoketest
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -144,7 +147,8 @@ jobs:
             path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/bitcoind-smoketest.sh
     - do:
       - task: get-smoketest-settings
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -160,7 +164,8 @@ jobs:
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/get-smoketest-settings.sh
       - task: lnd1-smoke-test
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -173,7 +178,8 @@ jobs:
             path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/lnd-smoketest.sh
     - do:
       - task: get-smoketest-settings
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -189,7 +195,8 @@ jobs:
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/get-smoketest-settings.sh
       - task: lnd2-smoke-test
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -202,7 +209,8 @@ jobs:
             path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/lnd-smoketest.sh
     - do:
       - task: get-smoketest-settings
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -218,7 +226,8 @@ jobs:
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/specter/ci/tasks/get-smoketest-settings.sh
       - task: specter-smoketest
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -231,7 +240,8 @@ jobs:
             path: pipeline-tasks/modules/services/bitcoin/vendor/specter/ci/tasks/specter-smoketest.sh
     - do:
       - task: get-smoketest-settings
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -247,7 +257,8 @@ jobs:
           run:
             path: pipeline-tasks/modules/services/bitcoin/vendor/rtl/ci/tasks/get-smoketest-settings.sh
       - task: rtl-smoketest
-        tags: ["galoy-staging"]
+        tags: 
+          - #@ data.values.staging_worker_tag
         config:
           platform: linux
           image_resource: #@ task_image_config()
@@ -302,7 +313,8 @@ jobs:
           branch: staging
     #@ end
     - put: tf-addons-staging
-      tags: ["galoy-staging"]
+      tags: 
+        - #@ data.values.staging_worker_tag
       params:
         terraform_source: #@ cepler_resource_name("addons") + "/gcp/galoy-staging/addons"
         vars:
@@ -352,7 +364,8 @@ jobs:
           force: true
           branch: staging
     - put: tf-galoy-staging
-      tags: ["galoy-staging"]
+      tags: 
+        - #@ data.values.staging_worker_tag
       params:
         terraform_source: #@ cepler_resource_name("galoy") + "/gcp/galoy-staging/galoy"
         vars:
@@ -373,7 +386,8 @@ jobs:
       - get: #@ cepler_resource_name("monitoring")
         trigger: true
       - put: tf-monitoring-staging
-        tags: ["galoy-staging"]
+        tags: 
+        - #@ data.values.staging_worker_tag
         params:
           terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/galoy-staging/monitoring"
           vars:
