@@ -4,14 +4,15 @@ locals {
 }
 
 module "infra_services" {
-  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=fbafa3f"
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=f41cee3"
 
-  name_prefix              = local.name_prefix
-  letsencrypt_issuer_email = local.letsencrypt_issuer_email
-  local_deploy             = true
-  cluster_endpoint         = "dummy"
-  cluster_ca_cert          = "dummy"
-  honeycomb_api_key        = "dummy"
+  name_prefix                 = local.name_prefix
+  letsencrypt_issuer_email    = local.letsencrypt_issuer_email
+  local_deploy                = true
+  cluster_endpoint            = "dummy"
+  cluster_ca_cert             = "dummy"
+  honeycomb_api_key           = "dummy"
+  kubemonkey_notification_url = "dummy"
 }
 
 module "bitcoin" {
