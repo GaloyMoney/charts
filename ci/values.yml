@@ -20,7 +20,7 @@ staging_monitoring_secrets: ((staging-secrets.monitoring))
 staging_addons_secrets: ((staging-secrets.addons))
 
 staging_lnd1_pass: ((staging-lnd1.password))
-staging_state_bucket: ((staging-gcp-creds.bucket_name))
+staging_state_bucket: "galoy-staging-tf-state"
 staging_creds: ((staging-gcp-creds.creds_json))
 staging_smoketest_kubeconfig: ((staging-smoketest.kubeconfig))
 staging_slack_api_url: ((staging-slack.api_url))
