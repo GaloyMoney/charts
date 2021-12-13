@@ -19,6 +19,7 @@ image:
   tag: v22.0
 
 extraInitContainers: []
+sidecarContainers: []
 
 imagePullSecrets: []
 nameOverride: ""
