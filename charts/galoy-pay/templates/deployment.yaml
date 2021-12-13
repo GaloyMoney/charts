@@ -26,3 +26,8 @@ spec:
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         ports:
         - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_GRAPHQL_URI
+          value: "{{ .Values.graphqlUri }}"
+        - name: NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URI
+          value: "{{ .Values.graphqlSubscriptionUri }}"
