@@ -27,7 +27,5 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: NEXT_PUBLIC_GRAPHQL_URI
-          value: "{{ .Values.graphqlUri }}"
-        - name: NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URI
-          value: "{{ .Values.graphqlSubscriptionUri }}"
+        - name: NEXT_PUBLIC_GRAPHQL_HOSTNAME
+          value: "{{ .Values.graphqlHostname }}"

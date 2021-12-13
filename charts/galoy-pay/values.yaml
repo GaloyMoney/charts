@@ -7,3 +7,4 @@ ingress:
 service:
   port: 80
   type: ClusterIP
+graphqlHostname: domain.example
