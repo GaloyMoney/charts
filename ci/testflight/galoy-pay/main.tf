@@ -1,11 +1,11 @@
 variable "testflight_namespace" {}
 
 locals {
-  cluster_name             = "galoy-staging-cluster"
-  cluster_location         = "us-east1"
-  gcp_project              = "galoy-staging"
+  cluster_name     = "galoy-staging-cluster"
+  cluster_location = "us-east1"
+  gcp_project      = "galoy-staging"
 
-  smoketest_namespace = "galoy-staging-smoketest"
+  smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -17,19 +17,19 @@ resource "kubernetes_namespace" "testflight" {
 
 resource "kubernetes_secret" "smoketest" {
   metadata {
-    name = local.testflight_namespace
+    name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
   data = {
     galoy_pay_endpoint = "galoy-pay.${local.testflight_namespace}.svc.cluster.local"
-    galoy_pay_port = 80
+    galoy_pay_port     = 80
   }
 }
 
 resource "helm_release" "galoy_pay" {
-  name       = "galoy-pay"
-  chart      = "${path.module}/chart"
-  namespace  = kubernetes_namespace.testflight.metadata[0].name
+  name      = "galoy-pay"
+  chart     = "${path.module}/chart"
+  namespace = kubernetes_namespace.testflight.metadata[0].name
 }
 
 data "google_container_cluster" "primary" {

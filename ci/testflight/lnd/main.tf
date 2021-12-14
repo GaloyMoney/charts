@@ -1,11 +1,11 @@
 variable "testflight_namespace" {}
 
 locals {
-  cluster_name             = "galoy-staging-cluster"
-  cluster_location         = "us-east1"
-  gcp_project              = "galoy-staging"
+  cluster_name     = "galoy-staging-cluster"
+  cluster_location = "us-east1"
+  gcp_project      = "galoy-staging"
 
-  smoketest_namespace = "galoy-staging-smoketest"
+  smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -17,15 +17,15 @@ resource "kubernetes_namespace" "testflight" {
 
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
-    name = "bitcoind-rpcpassword"
+    name      = "bitcoind-rpcpassword"
     namespace = "galoy-staging-bitcoin"
   }
 }
 
 resource "kubernetes_secret" "bitcoinrpc_password" {
   metadata {
-    name = "bitcoind-rpcpassword"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "bitcoind-rpcpassword"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.bitcoin_rpcpassword.data
@@ -33,15 +33,15 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
 
 data "kubernetes_secret" "network" {
   metadata {
-    name = "network"
+    name      = "network"
     namespace = "galoy-staging-bitcoin"
   }
 }
 
 resource "kubernetes_secret" "network" {
   metadata {
-    name = "network"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "network"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.network.data
@@ -49,7 +49,7 @@ resource "kubernetes_secret" "network" {
 
 resource "kubernetes_secret" "smoketest" {
   metadata {
-    name = local.testflight_namespace
+    name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
   data = {

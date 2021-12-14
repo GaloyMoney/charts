@@ -1,11 +1,11 @@
 variable "testflight_namespace" {}
 
 locals {
-  cluster_name             = "galoy-staging-cluster"
-  cluster_location         = "us-east1"
-  gcp_project              = "galoy-staging"
+  cluster_name     = "galoy-staging-cluster"
+  cluster_location = "us-east1"
+  gcp_project      = "galoy-staging"
 
-  smoketest_namespace = "galoy-staging-smoketest"
+  smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -17,12 +17,12 @@ resource "kubernetes_namespace" "testflight" {
 
 resource "kubernetes_secret" "smoketest" {
   metadata {
-    name = local.testflight_namespace
+    name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
   data = {
     admin_panel_endpoint = "admin-panel.${local.testflight_namespace}.svc.cluster.local"
-    admin_panel_port = 80
+    admin_panel_port     = 80
   }
 }
 

@@ -1,11 +1,11 @@
 variable "testflight_namespace" {}
 
 locals {
-  cluster_name             = "galoy-staging-cluster"
-  cluster_location         = "us-east1"
-  gcp_project              = "galoy-staging"
+  cluster_name     = "galoy-staging-cluster"
+  cluster_location = "us-east1"
+  gcp_project      = "galoy-staging"
 
-  smoketest_namespace = "galoy-staging-smoketest"
+  smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 resource "kubernetes_namespace" "testflight" {
@@ -16,15 +16,15 @@ resource "kubernetes_namespace" "testflight" {
 
 data "kubernetes_secret" "lnd1_credentials" {
   metadata {
-    name = "lnd-credentials"
+    name      = "lnd-credentials"
     namespace = "galoy-staging-bitcoin"
   }
 }
 
 resource "kubernetes_secret" "lnd1_credentials" {
   metadata {
-    name = "lnd1-credentials"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "lnd1-credentials"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.lnd1_credentials.data
@@ -32,12 +32,12 @@ resource "kubernetes_secret" "lnd1_credentials" {
 
 resource "kubernetes_secret" "smoketest" {
   metadata {
-    name = local.testflight_namespace
+    name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
   data = {
     rtl_endpoint = "rtl.${local.testflight_namespace}.svc.cluster.local"
-    rtl_port = 3000
+    rtl_port     = 3000
   }
 }
 

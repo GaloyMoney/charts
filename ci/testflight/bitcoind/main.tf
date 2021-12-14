@@ -1,11 +1,11 @@
 variable "testflight_namespace" {}
 
 locals {
-  cluster_name             = "galoy-staging-cluster"
-  cluster_location         = "us-east1"
-  gcp_project              = "galoy-staging"
+  cluster_name     = "galoy-staging-cluster"
+  cluster_location = "us-east1"
+  gcp_project      = "galoy-staging"
 
-  smoketest_namespace = "galoy-staging-smoketest"
+  smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -22,8 +22,8 @@ resource "kubernetes_namespace" "testflight" {
 
 resource "kubernetes_secret" "testflight" {
   metadata {
-    name = "bitcoind-rpcpassword"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "bitcoind-rpcpassword"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
@@ -33,14 +33,14 @@ resource "kubernetes_secret" "testflight" {
 
 resource "kubernetes_secret" "smoketest" {
   metadata {
-    name = local.testflight_namespace
+    name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
   data = {
     bitcoind_rpcpassword = random_password.bitcoind_rpcpassword.result
-    bitcoind_endpoint = "bitcoind.${local.testflight_namespace}.svc.cluster.local"
-    bitcoind_port = 18332
-    bitcoind_user = "rpcuser"
+    bitcoind_endpoint    = "bitcoind.${local.testflight_namespace}.svc.cluster.local"
+    bitcoind_port        = 18332
+    bitcoind_user        = "rpcuser"
   }
 }
 
