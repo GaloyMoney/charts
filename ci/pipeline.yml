@@ -29,6 +29,7 @@
 #@ def galoy_chart_vars():
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
 testflight_apollo_key: #@ data.values.testflight_apollo_key
+smoketest_kubeconfig: #@ data.values.staging_smoketest_kubeconfig
 #@ end
 
 groups:

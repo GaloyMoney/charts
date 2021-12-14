@@ -1,28 +1,30 @@
 variable "testflight_namespace" {}
 variable "testflight_apollo_graph_id" {}
 variable "testflight_apollo_key" {}
+variable "smoketest_kubeconfig" {}
 
 locals {
-  cluster_name             = "galoy-staging-cluster"
-  cluster_location         = "us-east1"
-  gcp_project              = "galoy-staging"
+  cluster_name     = "galoy-staging-cluster"
+  cluster_location = "us-east1"
+  gcp_project      = "galoy-staging"
 
-  smoketest_namespace = "galoy-staging-smoketest"
-  bitcoin_namespace = "galoy-staging-bitcoin"
+  smoketest_namespace  = "galoy-staging-smoketest"
+  bitcoin_namespace    = "galoy-staging-bitcoin"
   testflight_namespace = var.testflight_namespace
+  smoketest_kubeconfig = var.smoketest_kubeconfig
 }
 
 data "kubernetes_secret" "network" {
   metadata {
-    name = "network"
+    name      = "network"
     namespace = local.bitcoin_namespace
   }
 }
 
 resource "kubernetes_secret" "network" {
   metadata {
-    name = "network"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "network"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.network.data
@@ -30,8 +32,8 @@ resource "kubernetes_secret" "network" {
 
 resource "kubernetes_secret" "gcs_sa_key" {
   metadata {
-    name = "gcs-sa-key"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "gcs-sa-key"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {}
@@ -39,20 +41,20 @@ resource "kubernetes_secret" "gcs_sa_key" {
 
 resource "kubernetes_secret" "geetest_key" {
   metadata {
-    name = "geetest-key"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "geetest-key"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
     key = "geetest_key"
-    id = "geetest_id"
+    id  = "geetest_id"
   }
 }
 
 resource "kubernetes_secret" "dropbox_access_token" {
   metadata {
-    name = "dropbox-access-token"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "dropbox-access-token"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
@@ -75,41 +77,41 @@ resource "kubernetes_secret" "mongodb_creds" {
 
 resource "kubernetes_secret" "twilio_secret" {
   metadata {
-    name = "twilio-secret"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "twilio-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
     TWILIO_PHONE_NUMBER = ""
-    TWILIO_ACCOUNT_SID = ""
-    TWILIO_API_KEY = ""
-    TWILIO_API_SECRET = ""
+    TWILIO_ACCOUNT_SID  = ""
+    TWILIO_API_KEY      = ""
+    TWILIO_API_SECRET   = ""
   }
 }
 
 resource "kubernetes_secret" "apollo_secret" {
   metadata {
-    name = "galoy-apollo-secret"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "galoy-apollo-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
     key = var.testflight_apollo_key
-    id = var.testflight_apollo_graph_id
+    id  = var.testflight_apollo_graph_id
   }
 }
 
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
-    name = "bitcoind-rpcpassword"
+    name      = "bitcoind-rpcpassword"
     namespace = local.bitcoin_namespace
   }
 }
 
 resource "kubernetes_secret" "bitcoinrpc_password" {
   metadata {
-    name = "bitcoind-rpcpassword"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "bitcoind-rpcpassword"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.bitcoin_rpcpassword.data
@@ -117,15 +119,15 @@ resource "kubernetes_secret" "bitcoinrpc_password" {
 
 data "kubernetes_secret" "lnd2_pubkey" {
   metadata {
-    name = "lnd2-pubkey"
+    name      = "lnd2-pubkey"
     namespace = local.bitcoin_namespace
   }
 }
 
 resource "kubernetes_secret" "lnd2_pubkey" {
   metadata {
-    name = "lnd2-pubkey"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "lnd2-pubkey"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.lnd2_pubkey.data
@@ -133,15 +135,15 @@ resource "kubernetes_secret" "lnd2_pubkey" {
 
 data "kubernetes_secret" "lnd1_pubkey" {
   metadata {
-    name = "lnd1-pubkey"
+    name      = "lnd1-pubkey"
     namespace = local.bitcoin_namespace
   }
 }
 
 resource "kubernetes_secret" "lnd1_pubkey" {
   metadata {
-    name = "lnd1-pubkey"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "lnd1-pubkey"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.lnd1_pubkey.data
@@ -149,15 +151,15 @@ resource "kubernetes_secret" "lnd1_pubkey" {
 
 data "kubernetes_secret" "lnd2_credentials" {
   metadata {
-    name = "lnd2-credentials"
+    name      = "lnd2-credentials"
     namespace = local.bitcoin_namespace
   }
 }
 
 resource "kubernetes_secret" "lnd2_credentials" {
   metadata {
-    name = "lnd2-credentials"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "lnd2-credentials"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.lnd2_credentials.data
@@ -165,15 +167,15 @@ resource "kubernetes_secret" "lnd2_credentials" {
 
 data "kubernetes_secret" "lnd1_credentials" {
   metadata {
-    name = "lnd1-credentials"
+    name      = "lnd1-credentials"
     namespace = local.bitcoin_namespace
   }
 }
 
 resource "kubernetes_secret" "lnd1_credentials" {
   metadata {
-    name = "lnd1-credentials"
-    namespace  = kubernetes_namespace.testflight.metadata[0].name
+    name      = "lnd1-credentials"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = data.kubernetes_secret.lnd1_credentials.data
@@ -187,12 +189,13 @@ resource "kubernetes_namespace" "testflight" {
 
 resource "kubernetes_secret" "smoketest" {
   metadata {
-    name = local.testflight_namespace
+    name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_endpoint = "graphql.${local.testflight_namespace}.svc.cluster.local"
-    galoy_port = 4000
+    galoy_endpoint       = "graphql.${local.testflight_namespace}.svc.cluster.local"
+    galoy_port           = 4000
+    smoketest_kubeconfig = local.smoketest_kubeconfig
   }
 }
 
