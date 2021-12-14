@@ -15,3 +15,19 @@ if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   echo Contains "errors" key
   exit 1
 fi
+
+if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
+  setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
+  export KUBECONFIG=$(pwd)/kubeconfig.json
+  namespace=`setting "galoy_namespace"`
+  job_name="${namespace}-cronjob"
+  echo "Executing cronjob"
+  kubectl -n ${namespace} create job --from=cronjob/cronjob "${job_name}"
+  kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
+  status="$(kubectl -n ${namespace} get job "${job_name}" -o jsonpath='{.status.succeeded}')"
+  if [[ "${status}" != "1" ]]; then
+    echo "Cronjob failed!"
+    exit 1
+  fi
+  kubectl -n ${namespace} delete job "${job_name}"
+fi

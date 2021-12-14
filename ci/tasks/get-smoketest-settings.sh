@@ -13,4 +13,7 @@ cat <<EOF > ${OUT}/helpers.sh
 function setting() {
   cat smoketest-settings/data.json | jq -r ".\$1" | base64 --decode
 }
+function setting_exists() {
+  cat smoketest-settings/data.json | jq -r ".\$1 // null"
+}
 EOF

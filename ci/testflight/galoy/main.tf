@@ -195,6 +195,7 @@ resource "kubernetes_secret" "smoketest" {
   data = {
     galoy_endpoint       = "graphql.${local.testflight_namespace}.svc.cluster.local"
     galoy_port           = 4000
+    galoy_namespace      = local.testflight_namespace
     smoketest_kubeconfig = local.smoketest_kubeconfig
   }
 }
