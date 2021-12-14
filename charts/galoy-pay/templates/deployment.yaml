@@ -26,3 +26,6 @@ spec:
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         ports:
         - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_GRAPHQL_HOSTNAME
+          value: "{{ .Values.graphqlHostname }}"
