@@ -371,6 +371,7 @@ jobs:
         terraform_source: #@ cepler_resource_name("galoy") + "/gcp/galoy-staging/galoy"
         vars:
           secrets: #@ data.values.staging_galoy_secrets
+          smoketest_kubeconfig: #@ data.values.staging_smoketest_kubeconfig
   - #@ chart_smoke_test("galoy", "galoy")
   - put: #@ cepler_out_name("galoy")
     params:
