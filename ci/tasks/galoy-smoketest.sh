@@ -21,21 +21,23 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   export KUBECONFIG=$(pwd)/kubeconfig.json
   namespace=`setting "galoy_namespace"`
   job_name="${namespace}-cronjob-smoketest"
+  kubectl -n ${namespace} delete job "${job_name}" || true
   echo "Executing cronjob"
   kubectl -n ${namespace} create job --from=cronjob/cronjob "${job_name}"
   for i in {1..10}; do
-     kubectl -n ${namespace} get jobs | grep "${job_name}"
+    kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
     if [[ $? -eq 0 ]]; then
-      echo "Cronjob started"
+      echo "Cronjob execution completed"
       break
     fi
     sleep 1
   done
-  kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
   status="$(kubectl -n ${namespace} get job ${job_name} -o jsonpath='{.status.succeeded}')"
   if [[ "${status}" != "1" ]]; then
     echo "Cronjob failed!"
     exit 1
+  else
+    echo "Cronjob succeeded!"
   fi
   kubectl -n ${namespace} delete job "${job_name}"
 fi
