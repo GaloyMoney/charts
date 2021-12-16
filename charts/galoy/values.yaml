@@ -13,8 +13,8 @@ ca:
   CAEmail: dev@galoy.io
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:9efe53a6c045fcd97293833b53ab07b47fc0deec5baa1359d8aed1aaf7292102"
-  git_ref: "951b1a9" # Not used by helm
+  digest: "sha256:599b7828583eab2d23c2b556a14e7392b33ac95bfe365b49517c3da340b1122d"
+  git_ref: "9759a52" # Not used by helm
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
