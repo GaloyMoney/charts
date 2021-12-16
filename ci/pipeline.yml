@@ -1,9 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:template", "template")
 #@ load("pipeline-fragments.lib.yml",
-#@   "pipeline_image",
 #@   "chain_dl_image",
-#@   "task_image_config",
 #@   "testflight_job",
 #@   "bump_in_deployments_job",
 #@   "chart_repo_resource",
@@ -12,19 +10,9 @@
 #@   "bump_in_deployments_job_name",
 #@   "chart_resource_name",
 #@   "slack_resource",
-#@   "slack_failure_notification",
-#@   "slack_success_notification",
-#@   "cepler_resource_name",
 #@   "bitcoin_charts",
 #@   "addons_charts",
-#@   "cepler_in",
-#@   "cepler_out",
-#@   "cepler_out_name",
-#@   "chart_smoke_test",
-#@   "repo_resource",
-#@   "repo_resource_name",
-#@   "repo_out_resource",
-#@   "repo_out_resource_name")
+#@   "repo_resource")
 
 #@ def galoy_chart_vars():
 testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
@@ -37,32 +25,22 @@ groups:
   jobs: 
   - galoy-testflight
   - bump-galoy-in-deployments
-  - galoy-staging
 - name: monitoring
   jobs:
   - monitoring-testflight
   - bump-monitoring-in-deployments
-  - monitoring-staging
 - name: bitcoin
   jobs: 
 #@ for chart in bitcoin_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
-  - bitcoin-staging
 - name: addons
   jobs: 
 #@ for chart in addons_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
-  - addons-staging
-- name: staging
-  jobs:
-  - bitcoin-staging
-  - galoy-staging
-  - monitoring-staging
-  - addons-staging
 - name: all
   jobs:
   - galoy-testflight
@@ -73,14 +51,10 @@ groups:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
-  - bitcoin-staging
 #@ for chart in addons_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
-  - addons-staging
-  - galoy-staging
-  - monitoring-staging
 - name: chain-dl-image
   jobs:
   - build-chain-dl-image
@@ -98,310 +72,6 @@ jobs:
 - #@ bump_in_deployments_job("galoy")
 - #@ testflight_job("monitoring")
 - #@ bump_in_deployments_job("monitoring")
-
-- name: bitcoin-staging
-  serial: true
-  plan:
-  - get: #@ cepler_resource_name("bitcoin")
-    trigger: true
-  - in_parallel:
-    - put: staging-honeymarker
-    - put: tf-bitcoin-staging
-      tags: 
-        - #@ data.values.staging_worker_tag
-      params:
-        terraform_source: #@ cepler_resource_name("bitcoin") + "/gcp/galoy-staging/bitcoin"
-        vars:
-          lnd1_pass: #@ data.values.staging_lnd1_pass
-  - in_parallel:
-    - do:
-      - task: get-smoketest-settings
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          outputs:
-          - name: bitcoind-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "bitcoind-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: bitcoind-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/get-smoketest-settings.sh
-      - task: bitcoind-smoketest
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          - name: bitcoind-smoketest-settings
-            path: smoketest-settings
-          params:
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/bitcoind/ci/tasks/bitcoind-smoketest.sh
-    - do:
-      - task: get-smoketest-settings
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          outputs:
-          - name: lnd1-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "lnd1-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: lnd1-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/get-smoketest-settings.sh
-      - task: lnd1-smoke-test
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          - name: lnd1-smoketest-settings
-            path: smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd1/ci/tasks/lnd-smoketest.sh
-    - do:
-      - task: get-smoketest-settings
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          outputs:
-          - name: lnd2-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "lnd2-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: lnd2-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/get-smoketest-settings.sh
-      - task: lnd2-smoke-test
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          - name: lnd2-smoketest-settings
-            path: smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/lnd2/ci/tasks/lnd-smoketest.sh
-    - do:
-      - task: get-smoketest-settings
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          outputs:
-          - name: specter-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "specter-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: specter-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/specter/ci/tasks/get-smoketest-settings.sh
-      - task: specter-smoketest
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          - name: specter-smoketest-settings
-            path: smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/specter/ci/tasks/specter-smoketest.sh
-    - do:
-      - task: get-smoketest-settings
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          outputs:
-          - name: rtl-smoketest-settings
-          params:
-            SMOKETEST_SECRET: "rtl-smoketest"
-            SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-            OUT: rtl-smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/rtl/ci/tasks/get-smoketest-settings.sh
-      - task: rtl-smoketest
-        tags: 
-          - #@ data.values.staging_worker_tag
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: #@ cepler_resource_name("bitcoin")
-            path: pipeline-tasks
-          - name: rtl-smoketest-settings
-            path: smoketest-settings
-          run:
-            path: pipeline-tasks/modules/services/bitcoin/vendor/rtl/ci/tasks/rtl-smoketest.sh
-  - put: #@ cepler_out_name("bitcoin")
-    params:
-      repository: #@ cepler_resource_name("bitcoin")
-  - #@ slack_success_notification("bitcoin")
-  on_failure: #@ slack_failure_notification("bitcoin")
-
-- name: addons-staging
-  serial: true
-  plan:
-  - get: #@ cepler_resource_name("addons")
-    trigger: true
-  - get: galoy-deployments
-  #@ for chart in addons_charts:
-  - get: #@ repo_resource_name(chart)
-  #@ end
-  - in_parallel:
-    - put: staging-honeymarker
-    #@ for chart in addons_charts:
-    - do:
-      - task: #@ "checkout-" + chart + "-repo"
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: galoy-deployments
-            path: pipeline-tasks
-          - name: #@ repo_resource_name(chart)
-            path: repo
-          - name: #@ cepler_resource_name("addons")
-            path: deployment-files
-          outputs:
-          - name: repo
-          run:
-            path: pipeline-tasks/ci/tasks/checkout-repo.sh
-          params:
-            CHART_SUBPATH: #@ "services/addons/vendor/" + chart
-            CHART: #@ chart
-      - put: #@ repo_out_resource_name(chart)
-        params:
-          repository: repo
-          force: true
-          branch: staging
-    #@ end
-    - put: tf-addons-staging
-      tags: 
-        - #@ data.values.staging_worker_tag
-      params:
-        terraform_source: #@ cepler_resource_name("addons") + "/gcp/galoy-staging/addons"
-        vars:
-          secrets: #@ data.values.staging_addons_secrets
-
-  - in_parallel:
-    #@ for chart in addons_charts:
-    - #@ chart_smoke_test(chart, "addons")
-    #@ end
-  - put: #@ cepler_out_name("addons")
-    params:
-      repository: #@ cepler_resource_name("addons")
-  - #@ slack_success_notification("addons")
-  on_failure: #@ slack_failure_notification("addons")
-
-- name: galoy-staging
-  serial: true
-  plan:
-  - in_parallel:
-    - get: #@ cepler_resource_name("galoy")
-      trigger: true
-    - get: galoy-repo
-    - get: galoy-deployments
-  - in_parallel:
-    - put: staging-honeymarker
-    - do:
-      - task: checkout-repo
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-          - name: galoy-deployments
-            path: pipeline-tasks
-          - name: #@ repo_resource_name("galoy")
-            path: repo
-          - name: #@ cepler_resource_name("galoy")
-            path: deployment-files
-          outputs:
-          - name: repo
-          run:
-            path: pipeline-tasks/ci/tasks/checkout-repo.sh
-          params:
-            CHART_SUBPATH: galoy/vendor/galoy
-      - put: #@ repo_out_resource_name("galoy")
-        params:
-          repository: repo
-          force: true
-          branch: staging
-    - put: tf-galoy-staging
-      tags: 
-        - #@ data.values.staging_worker_tag
-      params:
-        terraform_source: #@ cepler_resource_name("galoy") + "/gcp/galoy-staging/galoy"
-        vars:
-          secrets: #@ data.values.staging_galoy_secrets
-          smoketest_kubeconfig: #@ data.values.staging_smoketest_kubeconfig
-  - #@ chart_smoke_test("galoy", "galoy")
-  - put: #@ cepler_out_name("galoy")
-    params:
-      repository: #@ cepler_resource_name("galoy")
-  - #@ slack_success_notification("galoy")
-  on_failure: #@ slack_failure_notification("galoy")
-
-- name: monitoring-staging
-  serial: true
-  plan:
-  - in_parallel:
-    - put: staging-honeymarker
-    - do:
-      - get: #@ cepler_resource_name("monitoring")
-        trigger: true
-      - put: tf-monitoring-staging
-        tags: 
-        - #@ data.values.staging_worker_tag
-        params:
-          terraform_source: #@ cepler_resource_name("monitoring") + "/gcp/galoy-staging/monitoring"
-          vars:
-            secrets: #@ data.values.staging_monitoring_secrets
-          env:
-            HONEYCOMBIO_APIKEY: #@ data.values.staging_honeycomb_api_key
-  - #@ chart_smoke_test("monitoring", "monitoring")
-  - put: #@ cepler_out_name("monitoring")
-    params:
-      repository: #@ cepler_resource_name("monitoring")
-  - #@ slack_success_notification("monitoring")
-  on_failure: #@ slack_failure_notification("monitoring")
 
 - name: build-chain-dl-image
   serial: true
@@ -432,38 +102,22 @@ resources:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
-- #@ cepler_in("bitcoin")
-- #@ cepler_out("bitcoin")
 - #@ slack_resource("bitcoin")
 
 #@ for chart in addons_charts:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
-- #@ cepler_in("addons")
-- #@ cepler_out("addons")
 - #@ slack_resource("addons")
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
-- #@ cepler_in("galoy")
-- #@ cepler_out("galoy")
 - #@ slack_resource("galoy")
 
 - #@ chart_repo_resource("monitoring")
 - #@ testflight_tf_resource("monitoring")
-- #@ cepler_in("monitoring")
-- #@ cepler_out("monitoring")
 - #@ slack_resource("monitoring")
 
-- #@ repo_out_resource("galoy")
-- #@ repo_out_resource("admin-panel")
-- #@ repo_out_resource("galoy-pay")
-- #@ repo_out_resource("dealer")
-
-- #@ repo_resource("galoy")
-- #@ repo_resource("admin-panel")
-- #@ repo_resource("galoy-pay")
 - #@ repo_resource("dealer")
 
 - name: pipeline-tasks
@@ -481,54 +135,6 @@ resources:
     branch: #@ data.values.deployments_git_branch
     private_key: #@ data.values.github_private_key
 
-- name: tf-bitcoin-staging
-  type: terraform
-  source:
-    env_name: default
-    backend_type: gcs
-    backend_config:
-      bucket: #@ data.values.staging_state_bucket
-      prefix: galoy-staging/services/bitcoin
-      credentials: #@ data.values.staging_creds
-    env:
-      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
-
-- name: tf-galoy-staging
-  type: terraform
-  source:
-    env_name: default
-    backend_type: gcs
-    backend_config:
-      bucket: #@ data.values.staging_state_bucket
-      prefix: galoy-staging/services/galoy
-      credentials: #@ data.values.staging_creds
-    env:
-      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
-
-- name: tf-monitoring-staging
-  type: terraform
-  source:
-    env_name: default
-    backend_type: gcs
-    backend_config:
-      bucket: #@ data.values.staging_state_bucket
-      prefix: galoy-staging/services/monitoring
-      credentials: #@ data.values.staging_creds
-    env:
-      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
-
-- name: tf-addons-staging
-  type: terraform
-  source:
-    env_name: default
-    backend_type: gcs
-    backend_config:
-      bucket: #@ data.values.staging_state_bucket
-      prefix: galoy-staging/services/addons
-      credentials: #@ data.values.staging_creds
-    env:
-      GOOGLE_CREDENTIALS: #@ data.values.staging_creds
-
 - name: chain-dl-image
   type: registry-image
   source:
@@ -545,29 +151,11 @@ resources:
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
-- name: staging-honeymarker
-  type: honeymarker
-  source:
-    api_key: #@ data.values.staging_honeycomb_api_key
-    dataset: galoy-staging
-
 resource_types:
 - name: terraform
   type: docker-image
   source:
     repository: ljfranklin/terraform-resource
-    tag: latest
-
-- name: cepler-in
-  type: registry-image
-  source:
-    repository: cepler/cepler-concourse-resource
-    tag: latest
-
-- name: cepler-out
-  type: registry-image
-  source:
-    repository: cepler/cepler-concourse-resource
     tag: latest
 
 - name: honeymarker

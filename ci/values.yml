@@ -5,8 +5,6 @@ deployments_git_branch: main
 git_org_uri: git@github.com:GaloyMoney
 git_uri: git@github.com:GaloyMoney/charts.git
 git_branch: main
-staging_environment: gcp-galoy-staging
-staging_worker_tag: galoy-staging
 gates_branch: cepler-gates
 github_private_key: ((github.private_key))
 docker_registry: us.gcr.io/galoy-org
@@ -14,17 +12,10 @@ docker_registry_user: ((docker-creds.username))
 docker_registry_password: ((docker-creds.password))
 testflight_apollo_key: ((testflight-apollo.apollo_key))
 testflight_apollo_graph_id: ((testflight-apollo.apollo_graph_id))
-
-staging_galoy_secrets: ((staging-secrets.galoy))
-staging_monitoring_secrets: ((staging-secrets.monitoring))
-staging_addons_secrets: ((staging-secrets.addons))
-
-staging_lnd1_pass: ((staging-lnd1.password))
+staging_worker_tag: galoy-staging
+staging_smoketest_kubeconfig: ((staging-smoketest.kubeconfig))
 staging_state_bucket: "galoy-staging-tf-state"
 staging_creds: ((staging-gcp-creds.creds_json))
-staging_smoketest_kubeconfig: ((staging-smoketest.kubeconfig))
-staging_slack_api_url: ((staging-slack.api_url))
-staging_honeycomb_api_key: ((staging-honeycomb.api_key))
 
 galoy_slack_webhook_url: ((galoy-main-slack.api_url))
 monitoring_slack_webhook_url: ((monitoring-slack.api_url))

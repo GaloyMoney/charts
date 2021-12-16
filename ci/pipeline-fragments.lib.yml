@@ -188,49 +188,6 @@ source:
     GOOGLE_CREDENTIALS: #@ data.values.staging_creds
 #@ end
 
-
-#@ def cepler_config(deployment):
-#@   return "cepler/" + deployment + ".yml"
-#@ end
-
-#@ def gates_file(deployment):
-#@   return "cepler-gates/" + deployment + ".yml"
-#@ end
-
-#@ def cepler_resource_name(deployment):
-#@   return data.values.staging_environment + "-" + deployment
-#@ end
-
-#@ def cepler_out_name(deployment):
-#@   return data.values.staging_environment + "-" + deployment + "-out"
-#@ end
-
-#@ def cepler_in(deployment):
-name: #@ cepler_resource_name(deployment)
-type: cepler-in
-source:
-  uri: #@ data.values.deployments_git_uri
-  branch: #@ data.values.deployments_git_branch
-  private_key: #@ data.values.github_private_key
-  config: #@ cepler_config(deployment)
-  environment: #@ data.values.staging_environment
-  gates_branch: #@ data.values.gates_branch
-  gates_file: #@ gates_file(deployment)
-#@ end
-
-#@ def cepler_out(deployment):
-name: #@ cepler_out_name(deployment)
-type: cepler-out
-source:
-  uri: #@ data.values.deployments_git_uri
-  branch: #@ data.values.deployments_git_branch
-  private_key: #@ data.values.github_private_key
-  config: #@ cepler_config(deployment)
-  environment: #@ data.values.staging_environment
-  gates_branch: #@ data.values.gates_branch
-  gates_file: #@ gates_file(deployment)
-#@ end
-
 #@ def slack_failure_notification(deployment):
 #@ fail_url = "<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| :face_with_symbols_on_mouth: $BUILD_JOB_NAME> failed!"
 put: #@ deployment + "-slack"
@@ -254,44 +211,6 @@ name: #@ deployment + "-slack"
 type: slack-notification
 source:
   url: #@ getattr(data.values, deployment + "_slack_webhook_url")
-#@ end
-
-#@ def chart_smoke_test(chart, deployment):
-#@ base_path = "pipeline-tasks/modules/services/" + deployment
-#@ if chart == "galoy":
-#@   base_path = "pipeline-tasks/modules/" + deployment
-#@ end
-do:
-- task: get-smoketest-settings
-  tags: 
-    - #@ data.values.staging_worker_tag
-  config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: #@ cepler_resource_name(deployment)
-      path: pipeline-tasks
-    outputs:
-    - name: #@ chart + "-smoketest-settings"
-    params:
-      SMOKETEST_SECRET: #@ chart + "-smoketest"
-      SMOKETEST_KUBECONFIG: #@ data.values.staging_smoketest_kubeconfig
-      OUT: #@ chart + "-smoketest-settings"
-    run:
-      path: #@ base_path + "/vendor/" + chart + "/ci/tasks/get-smoketest-settings.sh"
-- task: #@ chart + "-smoketest"
-  tags: 
-    - #@ data.values.staging_worker_tag
-  config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: #@ cepler_resource_name(deployment)
-      path: pipeline-tasks
-    - name: #@ chart + "-smoketest-settings"
-      path: smoketest-settings
-    run:
-      path: #@ base_path + "/vendor/" + chart + "/ci/tasks/" + chart + "-smoketest.sh"
 #@ end
 
 #@ def repo_out_resource(repo_name):
