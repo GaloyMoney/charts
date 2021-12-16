@@ -43,7 +43,6 @@ prometheus:
 
   ## kube-state-metrics sub-chart configurable values
   ## Please see https://github.com/helm/charts/tree/master/stable/kube-state-metrics
-  ##
   kube-state-metrics:
     podAnnotations:
       prometheus.io/path: /metrics
