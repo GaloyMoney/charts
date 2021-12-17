@@ -71,6 +71,7 @@ secrets:
 lndGeneralConfig:
   - restlisten=0.0.0.0:8080
   - rpclisten=0.0.0.0:10009
+  - listen=0.0.0.0:9735
   - prometheus.listen=0.0.0.0:9092
   - bitcoin.active=true
   - bitcoin.node=bitcoind

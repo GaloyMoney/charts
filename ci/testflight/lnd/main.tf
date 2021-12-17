@@ -54,6 +54,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     lndmon_endpoint = "lnd1-lndmon.${local.testflight_namespace}.svc.cluster.local"
+    lnd_endpoint    = "lnd1.${local.testflight_namespace}.svc.cluster.local"
   }
 }
 
