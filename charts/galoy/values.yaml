@@ -101,7 +101,7 @@ mongodbaddress: "galoy-mongodb-0.galoy-mongodb-headless,galoy-mongodb-1.galoy-mo
 mongodb:
   initdbScripts:
     grant_any_db_role.sh: |
-      $MONGODB_BIN_DIR/mongo admin --host 127.0.0.1 --port $MONGODB_PORT_NUMBER -u root -p $MONGODB_ROOT_PASSWORD << EOF
+      $MONGODB_BIN_DIR/mongo admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
       use admin;
       db.grantRolesToUser('root', [ {role: "userAdmin", db: "${MONGODB_DATABASE}"} ]);
       EOF
