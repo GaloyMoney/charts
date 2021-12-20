@@ -100,12 +100,6 @@ redis:
     enabled: true
 mongodbaddress: "galoy-mongodb-0.galoy-mongodb-headless,galoy-mongodb-1.galoy-mongodb-headless,galoy-mongodb-2.galoy-mongodb-headless"
 mongodb:
-  initdbScripts:
-    grant_any_db_role.sh: |
-      $MONGODB_BIN_DIR/mongo admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
-      use admin;
-      db.grantRolesToUser('root', [ {role: "userAdmin", db: "${MONGODB_DATABASE}"} ]);
-      EOF
   architecture: replicaset
   auth:
     existingSecret: galoy-mongodb
