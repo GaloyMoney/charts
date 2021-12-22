@@ -20,6 +20,9 @@ galoy:
     code: 824197
     role: "bankowner"
     username: "bankowner"
+  - phone: "+59981730223" # dealer
+    code: 824199
+    role: "dealer"
   funder: "GaloyFunder"
   name: "Galoy Wallet"
 
