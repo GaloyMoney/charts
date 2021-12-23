@@ -53,7 +53,7 @@ data:
     set timeout -1
     set NETWORK [lindex $argv 0];
     set PASSWORD [lindex $argv 1];
-    spawn lncli -n $NETWORK --tlscertpath /data/.lnd/tls.cert create
+    spawn lncli -n $NETWORK create
     match_max 100000
     expect -exact "Input wallet password: "
     send -- "$PASSWORD\r"
