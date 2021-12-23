@@ -30,7 +30,7 @@ fakeGaloyApi:
   name: "fake-galoyapi"
   image:
     repository: us.gcr.io/galoy-org/fake-galoyapi
-    digest: "sha256:fabd9bfd2cca90123ff655fbfa720c615d2498d9c3cd7d9bb7e26e8525b20bab" # Auto updated by Galoy Bot
+    digest: "sha256:6686dad5806a32443ef21f77bae37c7f3b93be0aab72dc1d9d0cd4fd49611997" # Auto updated by Galoy Bot
     git_ref: "bb8dc14" # Not used by helm, auto updated by Galoy Bot
   service:
     type: ClusterIP
