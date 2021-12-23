@@ -5,8 +5,8 @@ global:
   network: mainnet
 
 image:
-  repository: lncm/lnd
-  tag: v0.13.3-monitoring
+  repository: lightninglabs/lnd
+  tag: v0.14.1-beta
   pullPolicy: IfNotPresent
 
 configmap:

@@ -29,10 +29,6 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: {{ include "lnd.serviceAccountName" . }}
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         - name: copy-lnd-config
@@ -41,7 +37,7 @@ spec:
           - 'sh'
           - '-c'
           - |
-            cat <<EOF > /data/.lnd/lnd.conf
+            cat <<EOF > /root/.lnd/lnd.conf
             bitcoind.rpcpass=$(cat /rpcpassword/password)
             $(cat /configmap/lnd.conf)
             EOF
@@ -49,21 +45,19 @@ spec:
             - name: configmap
               mountPath: /configmap
             - name: config
-              mountPath: /data/.lnd/
+              mountPath: /root/.lnd/
             - name: rpcpassword
               mountPath: /rpcpassword
       containers:
         {{- if ne .Values.global.network "regtest" }}
         - name: init-wallet
-          securityContext:
-            runAsUser: 0
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
           args:
           - '-c'
           - |
-            if [ ! -f /data/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
-              while ! test -f /data/.lnd/tls.cert; do sleep 1; done
+            if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
+              while ! test -f /root/.lnd/tls.cert; do sleep 1; done
               apk update; apk add expect
               /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
             fi
@@ -87,7 +81,7 @@ spec:
             mountPath: /home/alpine/walletInit.exp
             subPath: walletInit.exp
           - name: lnd-storage
-            mountPath: /data/.lnd
+            mountPath: /root/.lnd
         {{- end }}
         - name: tor
           image: osminogin/tor-simple
@@ -110,15 +104,13 @@ spec:
             EOF
             tor -f ~/torrc
         - name: export-secrets
-          securityContext:
-            runAsUser: 0
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
           args:
           - '-c'
           - |
-            lncli --lnddir=/data/.lnd -n=$NETWORK getinfo
-            while [[ $? != 0 ]]; do lncli --lnddir=/data/.lnd -n=$NETWORK getinfo; done
+            lncli -n=$NETWORK getinfo
+            while [[ $? != 0 ]]; do lncli -n=$NETWORK getinfo; done
             home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
@@ -133,7 +125,7 @@ spec:
             mountPath: /home/alpine/exportSecrets.sh
             subPath: exportSecrets.sh
           - name: lnd-storage
-            mountPath: /data/.lnd
+            mountPath: /root/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
@@ -147,9 +139,9 @@ spec:
             - name: tor-cookie-auth
               mountPath: /var/lib/tor/auth
             - name: lnd-storage
-              mountPath: /data/.lnd
+              mountPath: /root/.lnd
             - name: config
-              mountPath: /data/.lnd/lnd.conf
+              mountPath: /root/.lnd/lnd.conf
               subPath: lnd.conf
             {{- if ne .Values.global.network "regtest" }}
             - name: lnd-password
