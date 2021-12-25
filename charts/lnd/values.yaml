@@ -16,11 +16,6 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
 
-podAnnotations:
-  prometheus.io/path: /metrics
-  prometheus.io/port: "9092"
-  prometheus.io/scrape: "true"
-
 terminationGracePeriodSeconds: 600
 
 resources:
