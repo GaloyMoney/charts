@@ -29,5 +29,5 @@ spec:
         env:
         - name: NEXT_PUBLIC_GRAPHQL_HOSTNAME
           value: "{{ .Values.graphqlHostname }}"
-        - name: INTERNAL_GRAPHQL_HOSTNAME
+        - name: GRAPHQL_HOSTNAME_INTERNAL
           value: "{{ .Values.graphqlHostnameInternal }}"
