@@ -8,3 +8,4 @@ service:
   port: 80
   type: ClusterIP
 graphqlHostname: domain.example
+internalGraphqlHostname: service-name.namespace.svc.cluster.local
