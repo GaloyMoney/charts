@@ -30,4 +30,4 @@ spec:
         - name: NEXT_PUBLIC_GRAPHQL_HOSTNAME
           value: "{{ .Values.graphqlHostname }}"
         - name: INTERNAL_GRAPHQL_HOSTNAME
-          value: "{{ .Values.internalGraphqlHostname }}"
+          value: "{{ .Values.graphqlHostnameInternal }}"
