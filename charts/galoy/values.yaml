@@ -22,7 +22,7 @@ deployment:
     appEntrypoint: "lib/servers/graphql-old-server.js"
     healthz: true
     targetPort: 4000
-    replicaCount: 2
+    replicaCount: 1
     podAnnotations: {}
   - name: graphql-admin
     appEntrypoint: "lib/servers/graphql-admin-server.js"
@@ -34,7 +34,7 @@ deployment:
     appEntrypoint: "lib/servers/graphql-main-server.js"
     healthz: true
     targetPort: 4002
-    replicaCount: 1
+    replicaCount: 2
   - name: exporter
     appEntrypoint: "lib/servers/exporter.js"
     healthz: true
