@@ -17,10 +17,10 @@ bitcoind:
 needFirebaseServiceAccount: false
 
 lnd1:
-  dns: lnd.galoy-dev-bitcoin.svc.cluster.local
+  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
 
 lnd2:
-  dns: lnd.galoy-dev-bitcoin.svc.cluster.local
+  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
 
 jwtSecret: "my_non_secured_secret"
 
