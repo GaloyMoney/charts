@@ -224,11 +224,16 @@ spec:
                 secretKeyRef:
                   name: twilio-secret
                   key: TWILIO_ACCOUNT_SID
-            - name: TWILIO_AUTH_TOKEN
+            - name: TWILIO_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: twilio-secret
-                  key: TWILIO_AUTH_TOKEN
+                  key: TWILIO_API_KEY
+            - name: TWILIO_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: twilio-secret
+                  key: TWILIO_API_SECRET
             {{- end }}
           {{- if .healthz }}
           livenessProbe:
