@@ -85,9 +85,8 @@ twilio: true
 # ie: helm upgrade -i --set twilio.TWILIO_PHONE_NUMBER=6505550001,TWILIO_ACCOUNT_SID=AKBQWN...
 # twilio:
 #   TWILIO_PHONE_NUMBER: "phone"
-#   TWILIO_ACCOUNT_SID: sid
-#   TWILIO_API_KEY: apikey
-#   TWILIO_API_SECRET: apisecret
+#   TWILIO_ACCOUNT_SID: "sid"
+#   TWILIO_AUTH_TOKEN: "authtoken"
 redis:
   master:
     persistence:
