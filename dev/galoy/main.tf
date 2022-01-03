@@ -84,8 +84,7 @@ resource "kubernetes_secret" "twilio_secret" {
   data = {
     TWILIO_PHONE_NUMBER = ""
     TWILIO_ACCOUNT_SID  = ""
-    TWILIO_API_KEY      = ""
-    TWILIO_API_SECRET   = ""
+    TWILIO_AUTH_TOKEN   = ""
   }
 }
 
