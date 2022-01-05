@@ -101,10 +101,13 @@ mongodbaddress: "galoy-mongodb-0.galoy-mongodb-headless,galoy-mongodb-1.galoy-mo
 mongodb:
   initdbScripts:
     grant_user_admin_role.sh: |
+      isMaster=$(mongo admin -u root -p "$MONGODB_ROOT_PASSWORD" --eval "rs.isMaster().ismaster" | tail -1 | tr -d '\n')
+      if [ "$isMaster" == "true" ]; then
       $MONGODB_BIN_DIR/mongo admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
-      use admin;
-      db.grantRolesToUser('root', [ {role: "userAdmin", db: "${MONGODB_DATABASE}"} ]);
+        use admin;
+        db.grantRolesToUser('root', [ {role: "userAdmin", db: "${MONGODB_DATABASE}"} ]);
       EOF
+      fi;
   architecture: replicaset
   auth:
     existingSecret: galoy-mongodb
