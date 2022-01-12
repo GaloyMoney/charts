@@ -4,6 +4,7 @@ global:
     ports:
       rpc: 8332
 
+
 secrets:
   create: true
 
