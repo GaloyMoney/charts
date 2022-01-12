@@ -21,7 +21,7 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    alertmanager_host = "${local.testflight_namespace}-prometheus-alertmanager.${local.testflight_namespace}.svc.cluster.local"
+    grafana_host = "${local.testflight_namespace}-grafana.${local.testflight_namespace}.svc.cluster.local"
   }
 }
 

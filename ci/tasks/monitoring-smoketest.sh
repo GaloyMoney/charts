@@ -4,6 +4,6 @@ set -eu
 
 source smoketest-settings/helpers.sh
 
-alertmanager_host=`setting "alertmanager_host"`
+grafana_host=`setting "grafana_host"`
 
-curl ${alertmanager_host}/-/healthy
+curl ${grafana_host}
