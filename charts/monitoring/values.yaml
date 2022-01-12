@@ -27,17 +27,6 @@ prometheus:
   nodeExporter:
     enabled: true
 
-  alertmanager:
-    enabled: true
-    strategy:
-      type: Recreate
-    image:
-      tag: v0.23.0
-
-  configmapReload:
-    alertmanager:
-      enabled: false
-
   kubeStateMetrics:
     enabled: true
 
@@ -59,103 +48,9 @@ prometheus:
   pushgateway:
     enabled: false
 
-  ## alertmanager ConfigMap entries
-  ##
-  alertmanagerFiles:
-    alertmanager.yml:
-      global: {}
-      receivers:
-        - name: default-receiver
-      route:
-        group_wait: 10s
-        group_interval: 5m
-        receiver: default-receiver
-        repeat_interval: 3h
-
   ## Prometheus server ConfigMap entries
   ##
   serverFiles:
-
-    alerts:
-      groups:
-      - name: Ingress Controller
-        rules:
-        - alert: NGINXTooMany500s
-          expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"5.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
-          for: 1m
-          labels:
-            severity: critical
-          annotations:
-            description: Too many 5XXs
-            summary: More than 5% of all requests returned 5XX
-        - alert: NGINXTooMany400s
-          expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"4.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
-          for: 1m
-          labels:
-            severity: critical
-          annotations:
-            description: Too many 4XXs
-            summary: More than 5% of all requests returned 4XX
-      - name: Testnet
-        rules:
-        - alert: TestnetPodRestart
-          expr: increase(kube_pod_container_status_restarts_total{namespace='testnet'}[2m]) >= 3
-          labels:
-            severity: warning
-          annotations:
-            summary: "Testnet: {{$labels.container}} restarted too many times"
-        - alert: TestnetPodStartupError
-          for: 2m
-          expr: kube_pod_container_status_waiting_reason{reason!="ContainerCreating",namespace='testnet'} == 1
-          labels:
-            severity: warning
-          annotations:
-            summary: "Testnet: {{$labels.container}} is unable to start"
-        - alert: TestnetGraphqlDown
-          for: 3m
-          expr: probe_success{job="prometheus-blackbox-exporter-testnet"} == 0
-          labels:
-            severity: warning
-          annotations:
-            summary: "Testnet graphql is down"
-        - alert: TestnetGraphqlNoAuthIssue
-          for: 3m
-          expr: probe_success{namespace="testnet", job="prometheus-blackbox-exporter-noauth"} == 0
-          labels:
-            severity: warning
-          annotations:
-            summary: "Testnet graphql is down"
-      - name: Mainnet
-        rules:
-        - alert: MainnetPodRestart
-          expr: increase(kube_pod_container_status_restarts_total{namespace='mainnet',container!='loop-container'}[10m]) >= 2
-          labels:
-            severity: critical
-          annotations:
-            summary: "Mainnet: {{$labels.container}} restarted too many times"
-        - alert: MainnetPodStartupError
-          for: 1m
-          expr: kube_pod_container_status_waiting_reason{reason!="ContainerCreating",namespace='mainnet',container!='loop-container'} == 1
-          labels:
-            severity: critical
-          annotations:
-            summary: "Mainnet: {{$labels.container}} is unable to start"
-        - alert: MainnetGraphqlIssue
-          for: 3m
-          expr: probe_success{job="prometheus-blackbox-exporter-mainnet"} == 0
-          labels:
-            severity: critical
-          annotations:
-            summary: "Mainnet graphql is down"
-        - alert: MainnetGraphqlNoAuthIssue
-          for: 3m
-          expr: probe_success{namespace="mainnet", job="prometheus-blackbox-exporter-noauth"} == 0
-          labels:
-            severity: critical
-          annotations:
-            summary: "Mainnet graphql is down"
-
-
     prometheus.yml:
       rule_files:
         - /etc/config/recording_rules.yml
@@ -354,4 +249,14 @@ prometheus-blackbox-exporter:
           method: POST
           headers:
             Content-Type: application/json
-          body: '{"query":"query buildParameters {\n    buildParameters {\n        id\n        commitHash\n        buildTime\n        helmRevision\n        minBuildNumberAndroid\n        minBuildNumberIos\n        lastBuildNumberAndroid\n        lastBuildNumberIos\n    }\n}","variables":{}}'
+          body: '{"query":"query monitoringPing { mobileVersions { platform currentSupported minSupported } }","variables":{}}'
+      walletAuth:
+        prober: http
+        timeout: 30s
+        http:
+          method: POST
+          fail_if_body_matches_regexp:
+            - "errors+"
+          headers:
+            Content-Type: application/json
+          body: '{"query":"query monitoringPingAuth { me { __typename id phone quizQuestions { __typename question{ id earnAmount } } defaultAccount { __typename id defaultWalletId wallets { __typename id balance walletCurrency transactions(first: 3) { pageInfo { hasNextPage } edges { cursor node { __typename id status direction memo createdAt settlementAmount settlementFee settlementPrice { base offset } initiationVia { __typename ... on InitiationViaIntraLedger { counterPartyWalletId counterPartyUsername } ... on InitiationViaLn { paymentHash } ... on InitiationViaOnChain { address } } settlementVia { __typename ... on SettlementViaIntraLedger { counterPartyWalletId counterPartyUsername } ... on SettlementViaLn { paymentSecret } ... on SettlementViaOnChain { transactionHash } } } } } } } } }","variables":{}}'
