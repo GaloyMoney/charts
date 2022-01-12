@@ -24,6 +24,9 @@ grafana:
         isDefault: true
 
 prometheus:
+  alertmanager:
+    enabled: false
+
   nodeExporter:
     enabled: true
 
