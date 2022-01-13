@@ -37,7 +37,7 @@ spec:
         - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
         env:
         - name: TREAT_ERRORS_AS_READY
-          value: 2
+          value: "2"
       containers:
         - name: {{ .name }}
           image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
