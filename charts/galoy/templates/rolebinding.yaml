@@ -1,0 +1,12 @@
+apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+kind: RoleBinding
+metadata:
+  name: {{ $.Release.Name }}-wait-for-migration
+roleRef:
+  kind: Role
+  name: {{ $.Release.Name }}-wait-for-migration
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: {{ $.Release.Name}}-serviceaccount
+    namespace: {{ .Release.Namespace }}
