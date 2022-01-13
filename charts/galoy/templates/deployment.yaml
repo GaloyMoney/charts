@@ -34,7 +34,7 @@ spec:
         image: "groundnuty/k8s-wait-for:1.5"
         args:
         - "job"
-        - "{{ .Release.Name }}-mongodb-migrate-{{ .Release.Revision }}"
+        - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
       containers:
       # application container definitions
       - name: {{ .Chart.Name }}
