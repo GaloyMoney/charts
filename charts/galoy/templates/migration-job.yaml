@@ -19,4 +19,4 @@ spec:
           value: "testGaloy"
         - name: MONGODB_ADDRESS
           value: {{ $.Values.mongodbaddress }}
-      restartPolicy: never
+      restartPolicy: Never
