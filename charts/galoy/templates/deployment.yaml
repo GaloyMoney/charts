@@ -29,12 +29,15 @@ spec:
     {{- end }}
     spec:
       serviceAccountName: {{ $.Release.Name}}-serviceaccount
-      # initContainers:
-      # - name: wait-for-mongodb-migrate
-      #   image: "groundnuty/k8s-wait-for:1.3"
-      #   args:
-      #   - "job"
-      #   - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
+      initContainers:
+      - name: wait-for-mongodb-migrate
+        image: "bodymindarts/k8s-wait-for:v1.5.1-fix"
+        args:
+        - "job"
+        - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
+        env:
+        - name: TREAT_ERRORS_AS_READY
+          value: 2
       containers:
         - name: {{ .name }}
           image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
