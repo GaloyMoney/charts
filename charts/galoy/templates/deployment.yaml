@@ -28,6 +28,18 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
+      apiVersion: apps/v1
+      initContainers:
+      - name: wait-for-mongodb-migrate
+        image: "groundnuty/k8s-wait-for:1.5"
+        args:
+        - "job"
+        - "{{ .Release.Name }}-mongodb-migrate-{{ .Release.Revision }}"
+      containers:
+      # application container definitions
+      - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        # ...other container configuration
       containers:
         - name: {{ .name }}
           image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"

@@ -15,6 +15,11 @@ image:
   repository: us.gcr.io/galoy-org/galoy-app
   digest: "sha256:de8fc8f506d79eb77e11ae6fb3a916c3e6bead406ac97e08b94c582029dc279b"
   git_ref: "c84829d" # Not used by helm
+
+mongodbMigrateImage:
+  repository: us.gcr.io/galoy-org/galoy-app-migrate
+  digest: "sha256:edc5321ef5951505e613cef59e8c10bc3e5a58b5c6d24c6eeb2a66004b487ca8"
+
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
