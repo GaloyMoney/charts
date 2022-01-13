@@ -28,7 +28,6 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
-      apiVersion: apps/v1
       initContainers:
       - name: wait-for-mongodb-migrate
         image: "groundnuty/k8s-wait-for:1.5"
