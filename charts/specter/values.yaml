@@ -12,7 +12,7 @@ image:
   repository: lncm/specter-desktop
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.7.0"
+  tag: "v1.7.2"
 
 service:
   type: ClusterIP
