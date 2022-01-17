@@ -2,7 +2,7 @@ variable "testflight_namespace" {}
 variable "testflight_apollo_graph_id" {}
 variable "testflight_apollo_key" {}
 variable "smoketest_kubeconfig" {}
-variable "testflight_backups_sa_creds" {}
+variable "testflight_backups_creds" {}
 
 locals {
   cluster_name     = "galoy-staging-cluster"
