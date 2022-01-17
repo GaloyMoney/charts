@@ -1,8 +1,0 @@
-apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
-kind: Role
-metadata:
-  name: {{ $.Release.Name}}-wait-for-migration
-rules:
-- apiGroups: ["batch"]
-  resources: ["jobs"]
-  verbs: ["get"]
