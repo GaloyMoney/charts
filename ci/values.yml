@@ -12,6 +12,7 @@ docker_registry_user: ((docker-creds.username))
 docker_registry_password: ((docker-creds.password))
 testflight_apollo_key: ((testflight-apollo.apollo_key))
 testflight_apollo_graph_id: ((testflight-apollo.apollo_graph_id))
+testflight_backups_creds: ((testflight-backups-bucket.creds_json))
 staging_worker_tag: galoy-staging
 staging_smoketest_kubeconfig: ((staging-smoketest.kubeconfig))
 staging_state_bucket: "galoy-staging-tf-state"

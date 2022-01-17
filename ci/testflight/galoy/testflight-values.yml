@@ -26,6 +26,9 @@ galoy:
   funder: "GaloyFunder"
   name: "Galoy Wallet"
 
+mongobackup:
+  bucketName: "galoy-staging-backups"
+
 lnd1:
   dns: lnd1.galoy-staging-bitcoin.svc.cluster.local
 

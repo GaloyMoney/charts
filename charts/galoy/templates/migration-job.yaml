@@ -14,7 +14,7 @@ spec:
         - "/bin/sh"
         - "-c"
         - |
-          job_name="pre-migration-backup"
+          job_name="{{ $.Release.Name }}-pre-migration-backup-{{ $.Release.Revision }}"
           echo "Executing ${job_name}"
           kubectl delete job "${job_name}" || true
           kubectl create job --from=cronjob/mongo-backup "${job_name}"

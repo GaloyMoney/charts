@@ -2,6 +2,7 @@ variable "testflight_namespace" {}
 variable "testflight_apollo_graph_id" {}
 variable "testflight_apollo_key" {}
 variable "smoketest_kubeconfig" {}
+variable "testflight_backups_sa_creds" {}
 
 locals {
   cluster_name     = "galoy-staging-cluster"
@@ -12,6 +13,7 @@ locals {
   bitcoin_namespace    = "galoy-staging-bitcoin"
   testflight_namespace = var.testflight_namespace
   smoketest_kubeconfig = var.smoketest_kubeconfig
+  backups_sa_creds     = var.testflight_backups_creds
 }
 
 data "kubernetes_secret" "network" {
@@ -36,7 +38,9 @@ resource "kubernetes_secret" "gcs_sa_key" {
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = {}
+  data = {
+    "galoyapp-31518a00082f.json" : local.backups_sa_creds
+  }
 }
 
 resource "kubernetes_secret" "geetest_key" {
@@ -192,8 +196,8 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_endpoint       = "graphql.${local.testflight_namespace}.svc.cluster.local"
-    galoy_port           = 4000
+    galoy_endpoint = "graphql.${local.testflight_namespace}.svc.cluster.local"
+    galoy_port     = 4000
   }
 }
 
