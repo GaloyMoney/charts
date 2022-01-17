@@ -6,6 +6,27 @@ spec:
   backoffLimit: 1
   template:
     spec:
+      serviceAccountName: {{ $.Release.Name}}-serviceaccount
+      initContainers:
+      - name: "trigger-mongodb-backup"
+        image: "bodymindarts/k8s-wait-for:v1.5.1-fix"
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          job_name="pre-migration-backup"
+          echo "Executing ${job_name}"
+          kubectl delete job "${job_name}" || true
+          kubectl create job --from=cronjob/mongo-backup "${job_name}"
+          wait_for.sh job "${job_name}"
+          status="$(kubectl get job ${job_name} -o jsonpath='{.status.succeeded}')"
+          if [[ "${status}" != "1" ]]; then
+            echo "Backup failed!"
+            exit 1
+          else
+            echo "Backup succeeded!"
+          fi
+          kubectl delete job "${job_name}"
       containers:
       - name: mongodb-migrate
         image: "{{ $.Values.mongodbMigrateImage.repository }}@{{ $.Values.mongodbMigrateImage.digest }}"
