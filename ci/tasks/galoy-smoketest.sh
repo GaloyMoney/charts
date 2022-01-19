@@ -30,7 +30,7 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
       echo "Cronjob execution completed"
       break
     fi
-    sleep 1
+    sleep 2
   done
   status="$(kubectl -n ${namespace} get job ${job_name} -o jsonpath='{.status.succeeded}')"
   if [[ "${status}" != "1" ]]; then
