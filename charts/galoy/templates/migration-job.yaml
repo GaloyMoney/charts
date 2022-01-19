@@ -18,7 +18,9 @@ spec:
           echo "Executing ${job_name}"
           kubectl delete job "${job_name}" || true
           kubectl create job --from=cronjob/mongo-backup "${job_name}"
+          sleep 1
           wait_for.sh job "${job_name}"
+          sleep 1
           status="$(kubectl get job ${job_name} -o jsonpath='{.status.succeeded}')"
           if [[ "${status}" != "1" ]]; then
             echo "Backup failed!"
