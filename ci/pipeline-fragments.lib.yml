@@ -168,6 +168,7 @@ source:
   paths:
   - #@ "charts/" + chart_name + "/*"
   - #@ "charts/" + chart_name + "/**/*"
+  - #@ "!charts/" + chart_name + "/Chart.yaml"
   - #@ "ci/tasks/" + chart_name + "-smoketest.sh"
   - #@ "ci/tasks/get-smoketest-settings.sh"
   uri: #@ data.values.git_uri
