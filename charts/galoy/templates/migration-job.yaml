@@ -9,7 +9,7 @@ spec:
       serviceAccountName: {{ $.Release.Name}}-serviceaccount
       initContainers:
       - name: "trigger-mongodb-backup"
-        image: "bodymindarts/k8s-wait-for:v1.5.1-fix"
+        image: "groundnuty/k8s-wait-for:v1.5.1"
         command:
         - "/bin/sh"
         - "-c"
