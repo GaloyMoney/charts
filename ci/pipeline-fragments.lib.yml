@@ -165,10 +165,11 @@ plan:
 name: #@ chart_name + "-chart"
 type: git
 source:
+  ignore_paths:
+  - #@ "charts/" + chart_name + "/Chart.yaml"
   paths:
   - #@ "charts/" + chart_name + "/*"
   - #@ "charts/" + chart_name + "/**/*"
-  - #@ "!charts/" + chart_name + "/Chart.yaml"
   - #@ "ci/tasks/" + chart_name + "-smoketest.sh"
   - #@ "ci/tasks/get-smoketest-settings.sh"
   uri: #@ data.values.git_uri
