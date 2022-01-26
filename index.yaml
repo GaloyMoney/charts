@@ -11,4 +11,33 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bitcoind-v0.1.0/bitcoind-0.1.0.tgz
       version: 0.1.0
-generated: "2022-01-26T10:41:25.504614034Z"
+  lnd:
+    - apiVersion: v2
+      appVersion: 0.12.1
+      created: "2022-01-26T10:43:14.224589964Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.4.1
+        - condition: loop.enabled
+          name: loop
+          repository: ""
+          version: x.x.x
+        - condition: lndmon.enabled
+          name: lndmon
+          repository: ""
+          version: x.x.x
+      description: LND helm chart
+      digest: 97ff7102398b7eb5e1625b49456b10e8a9f228b30a4ae614b345f2240834f8f5
+      keywords:
+        - lnd
+      maintainers:
+        - email: krtk6160@galoy.io
+          name: krtk6160
+        - email: nb@galoy.io
+          name: nicolasburtey
+      name: lnd
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.1.0/lnd-0.1.0.tgz
+      version: 0.1.0
+generated: "2022-01-26T10:43:14.224680767Z"
