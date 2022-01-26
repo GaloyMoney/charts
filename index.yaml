@@ -55,4 +55,18 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.1.0/rtl-0.1.0.tgz
       version: 0.1.0
-generated: "2022-01-26T10:48:10.747314847Z"
+  specter:
+    - apiVersion: v2
+      appVersion: 1.7.2
+      created: "2022-01-26T10:50:10.346498973Z"
+      description: A Helm chart for Kubernetes
+      digest: 65b2743b2b52e0b1f261dad1c26b991344741cfc3b210f775ba26ff18d110540
+      maintainers:
+        - email: dev@galoy.io
+          name: Galoy
+      name: specter
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/specter-v0.1.0/specter-0.1.0.tgz
+      version: 0.1.0
+generated: "2022-01-26T10:50:10.346514613Z"
