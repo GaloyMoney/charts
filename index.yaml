@@ -69,4 +69,25 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/specter-v0.1.0/specter-0.1.0.tgz
       version: 0.1.0
-generated: "2022-01-26T10:50:10.346514613Z"
+  monitoring:
+    - apiVersion: v2
+      appVersion: 0.1.0
+      created: "2022-01-26T11:37:53.195338878Z"
+      dependencies:
+        - name: grafana
+          repository: https://grafana.github.io/helm-charts
+          version: 6.17.3
+        - name: prometheus
+          repository: https://prometheus-community.github.io/helm-charts
+          version: 14.11.0
+        - name: prometheus-blackbox-exporter
+          repository: https://prometheus-community.github.io/helm-charts
+          version: 5.2.0
+      description: A Helm chart for Kubernetes
+      digest: cd5a3e6a122390118e3adf86d4e34c235976dd0f2cc1eb6cdaf59f041476c3eb
+      name: monitoring
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/monitoring-v0.1.0/monitoring-0.1.0.tgz
+      version: 0.1.0
+generated: "2022-01-26T11:37:53.195360324Z"
