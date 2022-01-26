@@ -9,6 +9,9 @@ image:
   tag: v0.14.1-beta
   pullPolicy: IfNotPresent
 
+kubemonkey:
+  enabled: false
+
 configmap:
   customValues: []
 
