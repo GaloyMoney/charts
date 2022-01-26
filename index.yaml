@@ -112,4 +112,20 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-pay-v0.1.0/galoy-pay-0.1.0.tgz
       version: 0.1.0
-generated: "2022-01-26T11:56:26.375977572Z"
+  dealer:
+    - apiVersion: v2
+      appVersion: 0.1.0
+      created: "2022-01-26T11:59:04.937750074Z"
+      dependencies:
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 10.13.8
+      description: A Helm chart for Kubernetes
+      digest: 149e4041182f255e47d840de2ddb4a5f5116b4b6e003111b59a446dfb89bcbaa
+      name: dealer
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/dealer-v0.1.0/dealer-0.1.0.tgz
+      version: 0.1.0
+generated: "2022-01-26T11:59:04.937766579Z"
