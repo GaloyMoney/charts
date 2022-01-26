@@ -40,4 +40,19 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.1.0/lnd-0.1.0.tgz
       version: 0.1.0
-generated: "2022-01-26T10:43:14.224680767Z"
+  rtl:
+    - apiVersion: v2
+      appVersion: 0.10.2
+      created: "2022-01-26T10:48:10.74730072Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.4.1
+      description: A Helm chart for Kubernetes
+      digest: 374ea4cf682970266f890e6a6e2a3479f7da7000f0cf047b1b893748bab9ff36
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.1.0/rtl-0.1.0.tgz
+      version: 0.1.0
+generated: "2022-01-26T10:48:10.747314847Z"
