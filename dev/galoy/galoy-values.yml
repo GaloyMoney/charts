@@ -1,3 +1,6 @@
+global:
+  network: regtest
+
 galoy:
   test_accounts:
   - phone: "+59981730222"
