@@ -82,8 +82,6 @@ lndGeneralConfig:
   - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
   - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
   - tlsextradomain=lnd
-  - tlsextradomain=lnd-outside-1
-  - tlsextradomain=lnd-outside-2
   - accept-keysend=1
   - allow-circular-route=1
   - sync-freelist=1

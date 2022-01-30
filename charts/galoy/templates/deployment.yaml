@@ -181,32 +181,6 @@ spec:
                   name: dropbox-access-token
                   key: token
             {{- end }}
-            {{- if eq $.Values.global.network "regtest" }}
-            - name: MACAROONOUTSIDE1
-              valueFrom:
-                secretKeyRef:
-                  name: lnd-outside-1-credentials
-                  key: admin_macaroon_base64
-            - name: TLSOUTSIDE1
-              valueFrom:
-                secretKeyRef:
-                  name: lnd-outside-1-credentials
-                  key: tls_base64
-            - name: MACAROONOUTSIDE2
-              valueFrom:
-                secretKeyRef:
-                  name: lnd-outside-2-credentials
-                  key: admin_macaroon_base64
-            - name: TLSOUTSIDE2
-              valueFrom:
-                secretKeyRef:
-                  name: lnd-outside-2-credentials
-                  key: tls_base64
-            - name: LNDOUTSIDE1ADDR
-              value: "lnd-outside-1"
-            - name: LNDOUTSIDE2ADDR
-              value: "lnd-outside-2"
-            {{- else }}
             - name: APOLLO_GRAPH_VARIANT
               value: current
             - name: APOLLO_SCHEMA_REPORTING
@@ -236,7 +210,6 @@ spec:
                 secretKeyRef:
                   name: twilio-secret
                   key: TWILIO_AUTH_TOKEN
-            {{- end }}
           {{- if .healthz }}
           livenessProbe:
             httpGet:
