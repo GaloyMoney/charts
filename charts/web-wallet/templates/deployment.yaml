@@ -30,7 +30,10 @@ spec:
         - name: NODE_ENV
           value: production
         - name: SESSION_KEYS
-          value: {{ .Values.sessionKeys }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "webWallet.fullname" . }}
+              key: session-keys
         - name: HOST
           value: {{ .Values.host }}
         - name: PORT
