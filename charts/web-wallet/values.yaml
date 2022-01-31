@@ -1,0 +1,23 @@
+image:
+  repository: us.gcr.io/galoy-org/web-wallet
+  digest: "sha256:96ff8e1ae8a736b2a875d8e4fa1f5901b50669a976c91910a45c3e9ee35c85ff"
+  git_ref: "8189266" # Not used by helm
+
+ingress:
+  enabled: false
+
+service:
+  port: 3000
+  type: ClusterIP
+
+authEndpoint: https://example.com/api/login
+
+graphqlUri: https://example.com
+
+graphqlSubscriptionUri: wss://example.com
+
+sessionKeys: "session-keys"
+
+supportEmail: help@example.com
+
+host: localhost

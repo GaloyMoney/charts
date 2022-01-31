@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "webWallet.fullname" . }}
+  labels:
+    app: {{ template "webWallet.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "webWallet.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "webWallet.fullname" . }}
+        release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: web-wallet
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: NODE_PATH
+          value: "./src"
+        - name: SESSION_KEYS
+          value: {{ .Values.sessionKeys }}
+        - name: HOST
+          value: {{ .Values.host }}
+        - name: PORT
+          value: {{ .Values.service.port | quote }}
+        - name: SUPPORT_EMAIL
+          value: {{ .Values.supportEmail }}
+        - name: GRAPHQL_URI
+          value: {{ .Values.graphqlUri }}
+        - name: GRAPHQL_SUBSCRIPTION_URI
+          value: {{ .Values.graphqlSubscriptionUri }}
+          value: "wss://api.staging.galoy.io/graphql"
+        - name: AUTH_ENDPOINT
+          value: {{ .Values.authEndpoint }}
