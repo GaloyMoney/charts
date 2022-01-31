@@ -41,6 +41,5 @@ spec:
           value: {{ .Values.graphqlUri }}
         - name: GRAPHQL_SUBSCRIPTION_URI
           value: {{ .Values.graphqlSubscriptionUri }}
-          value: "wss://api.staging.galoy.io/graphql"
         - name: AUTH_ENDPOINT
           value: {{ .Values.authEndpoint }}
