@@ -29,8 +29,6 @@ spec:
         env:
         - name: NODE_ENV
           value: production
-        - name: NODE_PATH
-          value: "./src"
         - name: SESSION_KEYS
           value: {{ .Values.sessionKeys }}
         - name: HOST
