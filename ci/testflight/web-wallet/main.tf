@@ -22,7 +22,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     web_wallet_endpoint = "web-wallet.${local.testflight_namespace}.svc.cluster.local"
-    web_wallet_port     = 80
+    web_wallet_port     = 3000
   }
 }
 
