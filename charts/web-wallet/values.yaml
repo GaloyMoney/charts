@@ -1,25 +1,17 @@
 image:
   repository: us.gcr.io/galoy-org/web-wallet
   digest: "sha256:7dbd09af34ac8c4bbd1f2a860d9bcfce9143227da314afd138db68299d18d030"
-  git_ref: "8189266" # Not used by helm
-
+  git_ref: "e7b910a" # Not used by helm
 ingress:
   enabled: false
-
 service:
   port: 3000
   type: ClusterIP
-
 authEndpoint: http://localhost:3000/api/login
-
 graphqlUri: http://localhost:4002/graphql
-
 graphqlSubscriptionUri: wss://localhost:4002/graphql
-
 supportEmail: help@example.com
-
 host: localhost
-
 secrets:
   ## Create the secret resource from the following values. Set this to
   ## false to manage these secrets outside Helm.
@@ -27,6 +19,5 @@ secrets:
   ## Set this to true and set secrets.sessionKeys to the
   ## value of the session key to have a secret be created
   create: false
-
   ## cookieSession keys
   sessionKeys: "session-keys"
