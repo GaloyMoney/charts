@@ -7,6 +7,8 @@ locals {
 
   smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
+
+  session_keys = "session-keys"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -23,6 +25,16 @@ resource "kubernetes_secret" "smoketest" {
   data = {
     web_wallet_endpoint = "web-wallet.${local.testflight_namespace}.svc.cluster.local"
     web_wallet_port     = 3000
+  }
+}
+
+resource "kubernetes_secret" "web_wallet" {
+  metadata {
+    name = "web-wallet"
+    namespace = local.testflight_namespace
+  }
+  data = {
+    "session-keys": local.session_keys
   }
 }
 
