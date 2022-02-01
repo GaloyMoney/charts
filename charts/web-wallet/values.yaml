@@ -7,10 +7,10 @@ ingress:
 service:
   port: 3000
   type: ClusterIP
-authEndpoint: http://localhost:3000/api/login
+authEndpoint: api/login
 graphqlUri: http://localhost:4002/graphql
 graphqlSubscriptionUri: wss://localhost:4002/graphql
-supportEmail: help@example.com
+supportEmail: support@galoy.io
 host: "0.0.0.0"
 secrets:
   ## Create the secret resource from the following values. Set this to
