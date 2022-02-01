@@ -13,11 +13,11 @@ ca:
   CAEmail: dev@galoy.io
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:35323dd1801b1b3ed6096ca8637cc6b204307e7587636f675c9a931f15363991"
-  git_ref: "df1c601" # Not used by helm
+  digest: "sha256:1587790c1d4b2eaa357f5bd35af6f54b7da68c737cb2ebeafeefcf2e4cadd70a"
+  git_ref: "61b1300" # Not used by helm
 mongodbMigrateImage:
   repository: us.gcr.io/galoy-org/galoy-app-migrate
-  digest: "sha256:ac7edaedbbb1f97e4a191a00be31b889271967eee5e3e02d7e2349b2c41dacda"
+  digest: "sha256:204023d9a938a37ec1147476059ce095765ff8dd25f6bb3f8dfbf63b5b2210e6"
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
@@ -148,8 +148,6 @@ mongodb:
   ## TODO: Could be useful for having mongo metrics
   metrics:
     enabled: true
-
-
 ## Warning: Setting this to true will disable automatic mongodb backups
 ## It is only intended for use in development environments
 devDisableMongoBackup: false
