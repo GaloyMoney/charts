@@ -6,6 +6,10 @@ metadata:
     app: galoy
 data:
   backup.sh: |
+    {{- if .Values.devDisableMongoBackup }}
+    echo "Warning: devDisableMongoBackup is enabled, therefore automatic mongodb backups will be disabled"
+    exit 0
+    {{- end }}
     echo "backup script starts"
     export BUCKET_NAME="{{ .Values.mongobackup.bucketName }}"
     MONGO_TOOLS_VERSION="{{ .Values.mongobackup.mongoToolsVersion }}"

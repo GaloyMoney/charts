@@ -58,3 +58,5 @@ twilio: false
 price:
   service:
     type: NodePort
+
+devDisableMongoBackup: true
