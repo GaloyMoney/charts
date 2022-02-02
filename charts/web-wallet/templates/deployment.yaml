@@ -37,7 +37,7 @@ spec:
         - name: HOST
           value: {{ .Values.host }}
         - name: PORT
-          value: {{ .Values.service.port | quote }}
+          value: 3000
         - name: SUPPORT_EMAIL
           value: {{ .Values.supportEmail }}
         - name: GRAPHQL_URI
