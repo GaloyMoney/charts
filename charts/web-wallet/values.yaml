@@ -5,7 +5,7 @@ image:
 ingress:
   enabled: false
 service:
-  port: 3000
+  port: 80
   type: ClusterIP
 authEndpoint: api/login
 graphqlUri: http://localhost:4002/graphql

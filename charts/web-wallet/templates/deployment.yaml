@@ -25,7 +25,7 @@ spec:
       - name: web-wallet
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         ports:
-        - containerPort: {{ .Values.service.port }}
+        - containerPort: 3000
         env:
         - name: NODE_ENV
           value: production
