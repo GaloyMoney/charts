@@ -1,18 +1,14 @@
 # Default values for price.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
-
 image:
   repository: us.gcr.io/galoy-org/price
-  digest: "sha256:682340744cda37b8f1f5c964e795ffacfdec862bb74c7deb6c4a837875d74296"
-  git_ref: "17e3929"
-
+  digest: "sha256:53d29068b504bd817d1578f2cf1b125889f7bee48a0cd76e030f69ce302b52f8"
+  git_ref: "a769686"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
@@ -21,14 +17,12 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-
-podAnnotations: 
+podAnnotations:
   prometheus.io/path: /metrics
   prometheus.io/port: "9464"
   prometheus.io/scrape: "true"
-
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext:
   # capabilities:
@@ -37,40 +31,37 @@ securityContext:
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   runAsUser: 1000
-
 service:
   type: ClusterIP
   prometheus: 9464
   grpc: 50051
-
 ingress:
   enabled: false
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
-      - path: /
-        backend:
-          serviceName: chart-example.local
-          servicePort: 80
+        - path: /
+          backend:
+            serviceName: chart-example.local
+            servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
 autoscaling:
   enabled: false
@@ -78,9 +69,6 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
