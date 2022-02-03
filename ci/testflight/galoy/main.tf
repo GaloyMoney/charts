@@ -197,7 +197,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     galoy_endpoint = "api.${local.testflight_namespace}.svc.cluster.local"
-    galoy_port     = 4000
+    galoy_port     = 4002
   }
 }
 
