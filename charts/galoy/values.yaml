@@ -21,12 +21,6 @@ mongodbMigrateImage:
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
-  - name: graphql
-    appEntrypoint: "lib/servers/graphql-old-server.js"
-    healthz: true
-    targetPort: 4000
-    replicaCount: 1
-    podAnnotations: {}
   - name: graphql-admin
     appEntrypoint: "lib/servers/graphql-admin-server.js"
     healthz: true
