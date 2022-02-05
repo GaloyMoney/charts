@@ -10,3 +10,13 @@ resource "kubernetes_namespace" "bitcoin" {
     name = local.bitcoin_namespace
   }
 }
+
+resource "null_resource" "bitcoind_block_generator" {
+
+  provisioner "local-exec" {
+    command = "./bitcoin/generateBlock.sh"
+    interpreter = ["sh"]
+  }
+
+  depends_on = [helm_release.bitcoind]
+}
