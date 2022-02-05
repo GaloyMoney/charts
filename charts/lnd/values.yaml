@@ -6,7 +6,7 @@ global:
 
 image:
   repository: lightninglabs/lnd
-  tag: v0.14.1-beta
+  tag: v0.14.2-beta
   pullPolicy: IfNotPresent
 
 kubemonkey:
