@@ -23,6 +23,34 @@ entries:
       version: 0.1.0
   lnd:
     - apiVersion: v2
+      appVersion: 0.14.2
+      created: "2022-02-06T10:36:17.235465508Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.4.1
+        - condition: loop.enabled
+          name: loop
+          repository: ""
+          version: x.x.x
+        - condition: lndmon.enabled
+          name: lndmon
+          repository: ""
+          version: x.x.x
+      description: LND helm chart
+      digest: 94ee1534eeba2e833d1ca7a404560ac807292ed4e19070ca512b8279d164665e
+      keywords:
+        - lnd
+      maintainers:
+        - email: krtk6160@galoy.io
+          name: krtk6160
+        - email: nb@galoy.io
+          name: nicolasburtey
+      name: lnd
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.1.2/lnd-0.1.2.tgz
+      version: 0.1.2
+    - apiVersion: v2
       appVersion: 0.12.1
       created: "2022-01-31T09:27:03.647623825Z"
       dependencies:
@@ -485,4 +513,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-v0.1.0/galoy-0.1.0.tgz
       version: 0.1.0
-generated: "2022-02-05T10:47:27.631193754Z"
+generated: "2022-02-06T10:36:17.235479209Z"
