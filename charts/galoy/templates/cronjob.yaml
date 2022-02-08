@@ -5,6 +5,7 @@ metadata:
   name: {{ .name }}
   labels:
     app.kubernetes.io/managed-by: Helm
+    app: {{ .name }}
 spec:
   schedule: {{ .schedule }}
   jobTemplate:

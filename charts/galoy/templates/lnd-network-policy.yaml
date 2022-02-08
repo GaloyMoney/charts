@@ -19,6 +19,12 @@ spec:
           matchLabels:
             kubernetes.io/metadata.name: {{ $.Release.Namespace }}
       {{- end }}
+      - podSelector:
+          matchLabels:
+            app: cronjob
+        namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: {{ $.Release.Namespace }}
       ports:
        - port: 10009
     
