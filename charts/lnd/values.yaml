@@ -97,6 +97,7 @@ lndGeneralConfig:
   - protocol.no-anchors=true
   - tor.active=true
   - tor.v3=true
+  - tor.skip-proxy-for-clearnet-targets=true
 
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 
