@@ -36,7 +36,6 @@ resource "kubernetes_secret" "postgres_creds" {
 resource "helm_release" "dealer" {
   name       = "dealer"
   chart      = "${path.module}/../../charts/dealer"
-  repository = "https://galoymoney.github.io/charts"
   namespace  = kubernetes_namespace.addons.metadata[0].name
 
   values = [
