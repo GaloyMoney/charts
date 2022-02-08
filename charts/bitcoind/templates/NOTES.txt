@@ -5,7 +5,7 @@ To connect to bitcoind RPC:
 
 1. Forward the port for the node:
 
-  $ kubectl port-forward --namespace {{ .Release.Namespace }} $(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "bitcoind.name" . }},release={{ .Release.Name }}" -o jsonpath="{ .items[0].metadata.name }") {{ .Values.service.rpcPort }}
+  $ kubectl port-forward --namespace {{ .Release.Namespace }} $(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ .Chart.Name }},release={{ .Release.Name }}" -o jsonpath="{ .items[0].metadata.name }") {{ .Values.service.rpcPort }}
 
 2. Test connection with user and password provided in configuration file:
 
