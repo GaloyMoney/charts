@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-lnd-from-lndmon
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: lnd
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+          {{- include "lndmon.selectorLabels" . | nindent 12 }}
