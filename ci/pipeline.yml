@@ -59,6 +59,9 @@ groups:
 - name: chain-dl-image
   jobs:
   - build-chain-dl-image
+- name: lnd-sidecar-image
+  jobs:
+  - build-lnd-sidecar-image
 
 jobs:
 #@ for chart in bitcoin_charts:
@@ -95,6 +98,30 @@ jobs:
       run:
         path: build
   - put: chain-dl-image
+    params:
+      image: image/image.tar
+
+- name: build-lnd-sidecar-image
+  serial: true
+  plan:
+  - {get: lnd-sidecar-image-def, trigger: true}
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: lnd-sidecar-image-def
+      outputs:
+      - name: image
+      params:
+        CONTEXT: lnd-sidecar-image-def/ci/lnd-sidecar-image
+      run:
+        path: build
+  - put: lnd-sidecar-image
     params:
       image: image/image.tar
 
@@ -148,6 +175,14 @@ resources:
   type: git
   source:
     paths: [ci/chain-dl-image/Dockerfile]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: lnd-sidecar-image-def
+  type: git
+  source:
+    paths: [ci/lnd-sidecar-image/Dockerfile]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
