@@ -2,6 +2,7 @@
 #@ load("@ytt:template", "template")
 #@ load("pipeline-fragments.lib.yml",
 #@   "chain_dl_image",
+#@   "lnd_sidecar_image",
 #@   "testflight_job",
 #@   "bump_in_deployments_job",
 #@   "chart_repo_resource",
@@ -94,7 +95,7 @@ jobs:
       outputs:
       - name: image
       params:
-        CONTEXT: chain-dl-image-def/ci/chain-dl-image
+        CONTEXT: chain-dl-image-def/images/chain-dl-image
       run:
         path: build
   - put: chain-dl-image
@@ -118,7 +119,7 @@ jobs:
       outputs:
       - name: image
       params:
-        CONTEXT: lnd-sidecar-image-def/ci/lnd-sidecar-image
+        CONTEXT: lnd-sidecar-image-def/images/lnd-sidecar-image
       run:
         path: build
   - put: lnd-sidecar-image
