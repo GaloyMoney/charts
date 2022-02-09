@@ -8,6 +8,10 @@
 #@   return data.values.docker_registry + "/bitcoin-chain-dl"
 #@ end
 
+#@ def lnd_sidecar_image():
+#@   return data.values.docker_registry + "/lnd-sidecar"
+#@ end
+
 #@ def task_image_config():
 type: registry-image
 source:

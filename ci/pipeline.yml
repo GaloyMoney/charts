@@ -2,6 +2,7 @@
 #@ load("@ytt:template", "template")
 #@ load("pipeline-fragments.lib.yml",
 #@   "chain_dl_image",
+#@   "lnd_sidecar_image",
 #@   "testflight_job",
 #@   "bump_in_deployments_job",
 #@   "chart_repo_resource",
@@ -59,6 +60,9 @@ groups:
 - name: chain-dl-image
   jobs:
   - build-chain-dl-image
+- name: lnd-sidecar-image
+  jobs:
+  - build-lnd-sidecar-image
 
 jobs:
 #@ for chart in bitcoin_charts:
@@ -91,10 +95,34 @@ jobs:
       outputs:
       - name: image
       params:
-        CONTEXT: chain-dl-image-def/ci/chain-dl-image
+        CONTEXT: chain-dl-image-def/images/chain-dl-image
       run:
         path: build
   - put: chain-dl-image
+    params:
+      image: image/image.tar
+
+- name: build-lnd-sidecar-image
+  serial: true
+  plan:
+  - {get: lnd-sidecar-image-def, trigger: true}
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: lnd-sidecar-image-def
+      outputs:
+      - name: image
+      params:
+        CONTEXT: lnd-sidecar-image-def/images/lnd-sidecar-image
+      run:
+        path: build
+  - put: lnd-sidecar-image
     params:
       image: image/image.tar
 
@@ -147,7 +175,23 @@ resources:
 - name: chain-dl-image-def
   type: git
   source:
-    paths: [ci/chain-dl-image/Dockerfile]
+    paths: [images/chain-dl/Dockerfile]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: lnd-sidecar-image
+  type: registry-image
+  source:
+    tag: latest
+    username: #@ data.values.docker_registry_user
+    password: #@ data.values.docker_registry_password
+    repository: #@ lnd_sidecar_image()
+
+- name: lnd-sidecar-image-def
+  type: git
+  source:
+    paths: [images/lnd-sidecar/Dockerfile]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
