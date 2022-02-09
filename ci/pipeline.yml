@@ -95,7 +95,7 @@ jobs:
       outputs:
       - name: image
       params:
-        CONTEXT: chain-dl-image-def/images/chain-dl-image
+        CONTEXT: chain-dl-image-def/images/chain-dl
       run:
         path: build
   - put: chain-dl-image
@@ -119,7 +119,7 @@ jobs:
       outputs:
       - name: image
       params:
-        CONTEXT: lnd-sidecar-image-def/images/lnd-sidecar-image
+        CONTEXT: lnd-sidecar-image-def/images/lnd-sidecar
       run:
         path: build
   - put: lnd-sidecar-image
