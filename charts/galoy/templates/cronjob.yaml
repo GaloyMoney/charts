@@ -5,10 +5,12 @@ metadata:
   name: {{ .name }}
   labels:
     app.kubernetes.io/managed-by: Helm
-    app: {{ .name }}
 spec:
   schedule: {{ .schedule }}
   jobTemplate:
+    metadata:
+      labels:
+        allow-to-lnd: "true"
     spec:
       activeDeadlineSeconds: 7201
       template:

@@ -32,6 +32,7 @@ spec:
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ .Chart.Name }}
+        allow-to-bitcoind: "true"
         {{- end }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}

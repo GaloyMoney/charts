@@ -23,6 +23,9 @@ spec:
         app: {{ .name }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{.name}}
+        {{- with .podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     {{- with .podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
