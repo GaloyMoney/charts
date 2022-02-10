@@ -20,9 +20,3 @@ resource "null_resource" "bitcoind_block_generator" {
 
   depends_on = [helm_release.bitcoind]
 }
-
-resource "helm_release" "networking" {
-  name       = "networking"
-  chart      = "${path.module}/../../charts/networking"
-  namespace  = kubernetes_namespace.bitcoin.metadata[0].name
-}
