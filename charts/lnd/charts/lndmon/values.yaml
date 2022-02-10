@@ -84,6 +84,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-podLabels:
-  allow-to-lnd: "true"
