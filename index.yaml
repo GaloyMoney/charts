@@ -3,6 +3,16 @@ entries:
   bitcoind:
     - apiVersion: v2
       appVersion: 0.21.0
+      created: "2022-02-10T13:16:25.08644269Z"
+      description: A Helm chart for Kubernetes
+      digest: e6a9dacee51de7de83e4f8f2c5d8a2ced09278f4166e0c2421f5412bb0e9a799
+      name: bitcoind
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/bitcoind-v0.1.2/bitcoind-0.1.2.tgz
+      version: 0.1.2
+    - apiVersion: v2
+      appVersion: 0.21.0
       created: "2022-01-27T10:02:00.057297589Z"
       description: A Helm chart for Kubernetes
       digest: 2fc102867c4d90a93c72ad29698f654b7f4e93a3aa9655167b0566b9da27d7d2
@@ -848,4 +858,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-02-10T13:15:28.222745334Z"
+generated: "2022-02-10T13:16:25.08645984Z"
