@@ -333,6 +333,21 @@ entries:
   dealer:
     - apiVersion: v2
       appVersion: 0.1.0
+      created: "2022-02-10T09:40:31.76065605Z"
+      dependencies:
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 10.13.8
+      description: A Helm chart for Kubernetes
+      digest: e683d7b1c0e295563a64c24e717ee54f0aa5d1b7f5df6a88e1087719fadbfe34
+      name: dealer
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/dealer-v0.1.2/dealer-0.1.2.tgz
+      version: 0.1.2
+    - apiVersion: v2
+      appVersion: 0.1.0
       created: "2022-01-31T13:33:29.808069975Z"
       dependencies:
         - condition: postgresql.enabled
@@ -748,4 +763,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-02-10T09:39:19.527044647Z"
+generated: "2022-02-10T09:40:31.760672886Z"
