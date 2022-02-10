@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         allow-to-lnd: "true"
+        allow-to-bitcoind: "true"
     spec:
       activeDeadlineSeconds: 7201
       template:
