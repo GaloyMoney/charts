@@ -12,7 +12,6 @@ resource "kubernetes_secret" "bitcoind" {
 resource "helm_release" "bitcoind" {
   name       = "bitcoind"
   chart      = "${path.module}/../../charts/bitcoind"
-  repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.bitcoin.metadata[0].name
 
   values = [

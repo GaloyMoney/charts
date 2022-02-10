@@ -1,7 +1,6 @@
 resource "helm_release" "lnd" {
   name       = "lnd1"
   chart      = "${path.module}/../../charts/lnd"
-  repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.bitcoin.metadata[0].name
 
   dependency_update = true

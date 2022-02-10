@@ -23,6 +23,8 @@ spec:
         app: {{ .name }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{.name}}
+        allow-to-lnd: "true"
+        allow-to-bitcoind: "true"
     {{- with .podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
