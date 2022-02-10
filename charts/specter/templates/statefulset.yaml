@@ -17,7 +17,7 @@ spec:
     {{- end }}
       labels:
         {{- include "specter.selectorLabels" . | nindent 8 }}
-        network/allow-bitcoind: "true"
+        allow-to-bitcoind: "true"
         network/allow-nginx-ingress: "true"
         network/allow-dns: "true"
     spec:
