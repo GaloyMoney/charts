@@ -1,7 +1,7 @@
 image:
   repository: us.gcr.io/galoy-org/web-wallet
-  digest: "sha256:ab4f308adba7241ea4ab71bc520b7e4fa404ba86fc65f77bb9d37d0ad19b63fc"
-  git_ref: "c9df056" # Not used by helm
+  digest: "sha256:7840bfce6ad97b6dfd9d4227bca203a839111b446a8c2a47bf5e7b8738848e33"
+  git_ref: "96203c5" # Not used by helm
 ingress:
   enabled: false
 service:
