@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "authbackend.fullname" . }}
+  labels:
+    app: {{ template "authbackend.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "authbackend.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "authbackend.fullname" . }}
+        release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: web-wallet
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: SESSION_KEYS
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "authbackend.fullname" . }}
+              key: session-keys
+        - name: HOST
+          value: {{ .Values.host }}
+        - name: PORT
+          value: "3000"
+        - name: SUPPORT_EMAIL
+          value: {{ .Values.supportEmail }}
+        - name: GRAPHQL_URI
+          value: {{ .Values.graphqlUri }}
+        - name: GRAPHQL_SUBSCRIPTION_URI
+          value: {{ .Values.graphqlSubscriptionUri }}
+        - name: AUTH_ENDPOINT
+          value: {{ .Values.authEndpoint }}
