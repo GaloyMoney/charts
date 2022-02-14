@@ -57,11 +57,13 @@ groups:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
-- name: chain-dl-image
+- name: auth
+  jobs:
+  - auth-testflight
+  - bump-auth-in-deployments
+- name: images
   jobs:
   - build-chain-dl-image
-- name: lnd-sidecar-image
-  jobs:
   - build-lnd-sidecar-image
 
 jobs:
@@ -77,6 +79,8 @@ jobs:
 - #@ bump_in_deployments_job("galoy")
 - #@ testflight_job("monitoring")
 - #@ bump_in_deployments_job("monitoring")
+- #@ testflight_job("galoy-auth")
+- #@ bump_in_deployments_job("galoy-auth")
 
 - name: build-chain-dl-image
   serial: true
