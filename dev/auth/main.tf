@@ -1,7 +1,7 @@
 variable "name_prefix" {}
 
 locals {
-  auth_namespace = "${var.name_prefix}-addons"
+  auth_namespace = "${var.name_prefix}-auth"
   
   session_keys = "session_keys"
 }
@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "auth" {
 resource "kubernetes_secret" "auth_backend_secret" {
   metadata {
     name      = "auth-backend"
-    namespace = kubernetes_namespace.addons.metadata[0].name
+    namespace = kubernetes_namespace.auth.metadata[0].name
   }
 
   data = {

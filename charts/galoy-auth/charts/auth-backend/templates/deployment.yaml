@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "authbackend.fullname" . }}
+  name: auth-backend
   labels:
-    app: {{ template "authbackend.fullname" . }}
+    app: auth-backend
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
 spec:
   selector:
     matchLabels:
-      app: {{ template "authbackend.fullname" . }}
+      app: auth-backend
       release: {{ .Release.Name }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: {{ template "authbackend.fullname" . }}
+        app: auth-backend
         release: "{{ .Release.Name }}"
 {{- with .Values.labels }}
 {{ toYaml . | trim | indent 8 }}
 {{- end }}
     spec:
       containers:
-      - name: web-wallet
+      - name: auth-backend
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         ports:
         - containerPort: 3000
@@ -32,7 +32,7 @@ spec:
         - name: SESSION_KEYS
           valueFrom:
             secretKeyRef:
-              name: {{ template "authbackend.fullname" . }}
+              name: auth-backend
               key: session-keys
         - name: HOST
           value: {{ .Values.host }}

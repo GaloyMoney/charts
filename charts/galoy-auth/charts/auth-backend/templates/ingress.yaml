@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "authbackend.fullname" . }}
+  name: auth-backend-ingress
   labels:
-    app: {{ include "authbackend.fullname" . }}
+    app: auth-backend
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
   annotations:
@@ -23,7 +23,7 @@ spec:
             path: "/"
             backend:
               service:
-                name: {{ include "authbackend.fullname" $ }}
+                name: auth-backend
                 port:
                   number: {{ $.Values.service.port }}
     {{- end -}}
