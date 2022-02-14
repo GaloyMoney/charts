@@ -4,8 +4,8 @@
 replicaCount: 1
 image:
   repository: us.gcr.io/galoy-org/price
-  digest: "sha256:53ffa736dab5975a49e0dfdfd5ba51631485924d89121ed4d6168f73ed6527cd"
-  git_ref: "1a75925"
+  digest: "sha256:595bfcdd923400f401e9258907865c3fde1e4adc1a6799a749d0a14fa51daa6c"
+  git_ref: "607832b"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
