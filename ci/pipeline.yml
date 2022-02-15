@@ -68,18 +68,18 @@ groups:
 
 jobs:
 #@ for chart in bitcoin_charts:
-- #@ testflight_job(chart)
+- #@ testflight_job(chart, "bitcoin")
 - #@ bump_in_deployments_job(chart)
 #@ end
 #@ for chart in addons_charts:
-- #@ testflight_job(chart)
+- #@ testflight_job(chart, "addons")
 - #@ bump_in_deployments_job(chart)
 #@ end
-- #@ testflight_job("galoy", galoy_chart_vars())
+- #@ testflight_job("galoy", "galoy", galoy_chart_vars())
 - #@ bump_in_deployments_job("galoy")
-- #@ testflight_job("monitoring")
+- #@ testflight_job("monitoring", "monitoring")
 - #@ bump_in_deployments_job("monitoring")
-- #@ testflight_job("galoy-auth")
+- #@ testflight_job("galoy-auth", "auth")
 - #@ bump_in_deployments_job("galoy-auth")
 
 - name: build-chain-dl-image
