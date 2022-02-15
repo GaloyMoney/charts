@@ -59,8 +59,8 @@ groups:
 #@ end
 - name: auth
   jobs:
-  - auth-testflight
-  - bump-auth-in-deployments
+  - galoy-auth-testflight
+  - bump-galoy-auth-in-deployments
 - name: images
   jobs:
   - build-chain-dl-image
@@ -155,6 +155,7 @@ resources:
 
 - #@ chart_repo_resource("galoy-auth")
 - #@ testflight_tf_resource("galoy-auth")
+- #@ slack_resource("auth")
 
 - name: pipeline-tasks
   type: git
