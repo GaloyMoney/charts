@@ -23,8 +23,8 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    web_wallet_endpoint = "auth-backend.${local.testflight_namespace}.svc.cluster.local"
-    web_wallet_port     = 80
+    galoy_auth_endpoint = "auth-backend.${local.testflight_namespace}.svc.cluster.local"
+    galoy_auth_port     = 80
   }
 }
 
