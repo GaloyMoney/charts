@@ -47,6 +47,12 @@ module "addons" {
   ]
 }
 
+module "auth" {
+  source = "./auth"
+
+  name_prefix = local.name_prefix
+}
+
 provider "kubernetes" {
   experiments {
     manifest_resource = true

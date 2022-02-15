@@ -37,7 +37,7 @@ source:
 #@ addons_charts = ["admin-panel", "dealer", "galoy-pay", "web-wallet"]
 
 #@ def testflight_job(chart, vars = {}):
-#@ deployment = "bitcoin" if chart in bitcoin_charts else "addons" if chart in addons_charts else chart
+#@ deployment = "bitcoin" if chart in bitcoin_charts else "addons" if chart in addons_charts else "auth" if chart == "galoy-auth" else chart
 name: #@ testflight_job_name(chart)
 plan:
 - in_parallel:

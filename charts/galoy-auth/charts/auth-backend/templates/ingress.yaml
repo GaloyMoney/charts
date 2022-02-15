@@ -1,0 +1,40 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth-backend-ingress
+  labels:
+    app: auth-backend
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+spec:
+  rules:
+    {{- if .Values.ingress.rulesOverride }}
+    {{- toYaml .Values.ingress.rulesOverride | nindent 4 }}
+    {{- else }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: auth-backend
+                port:
+                  number: {{ $.Values.service.port }}
+    {{- end -}}
+    {{- end }}
+  tls:
+    {{- range .Values.ingress.hosts }}
+    - hosts:
+      - {{ . }}
+      secretName: {{ printf "%s-tls" . }}
+    {{- end }}
+    {{- if .Values.ingress.extraTls }}
+    {{- toYaml .Values.ingress.extraTls | nindent 4 }}
+    {{- end }}
+{{- end }}
