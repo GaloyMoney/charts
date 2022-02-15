@@ -153,6 +153,9 @@ resources:
 
 - #@ repo_resource("dealer")
 
+- #@ chart_repo_resource("galoy-auth")
+- #@ testflight_tf_resource("galoy-auth")
+
 - name: pipeline-tasks
   type: git
   source:

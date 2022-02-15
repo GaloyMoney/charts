@@ -35,7 +35,7 @@ spec:
               name: auth-backend
               key: session-keys
         - name: HOST
-          value: {{ .Values.host }}
+          value: "0.0.0.0"
         - name: PORT
           value: "3000"
         - name: SUPPORT_EMAIL
