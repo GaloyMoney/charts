@@ -46,3 +46,7 @@ spec:
           value: {{ .Values.graphqlSubscriptionUri }}
         - name: AUTH_ENDPOINT
           value: {{ .Values.authEndpoint }}
+        - name: WALLET_NAME
+          value: {{ .Values.walletName }}
+        - name: SHARE_URI
+          value: {[ .Values.galoyPayEndpoint }}
