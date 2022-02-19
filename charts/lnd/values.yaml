@@ -98,6 +98,7 @@ lndGeneralConfig:
   - tor.active=true
   - tor.v3=true
   - tor.skip-proxy-for-clearnet-targets=true
+  - coin-selection-strategy=random
 
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 
