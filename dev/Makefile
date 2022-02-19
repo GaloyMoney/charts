@@ -4,7 +4,7 @@ create-cluster:
 	k3d cluster create --k3s-arg "--disable=traefik@server:0" --k3s-arg "--disable=servicelb@server:0"
 
 delete-cluster:
-	k3d cluster delete
+	k3d cluster delete && rm terraform.tfstate
 
 init:
 	terraform init
