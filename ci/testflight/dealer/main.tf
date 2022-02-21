@@ -87,7 +87,8 @@ resource "helm_release" "dealer" {
 
   depends_on = [
     kubernetes_secret.postgres_creds,
-    kubernetes_secret.okex5_creds
+    kubernetes_secret.okex5_creds,
+    kubernetes_secret.dealer_creds
   ]
 
   dependency_update = true
