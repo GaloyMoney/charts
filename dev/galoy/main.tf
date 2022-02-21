@@ -3,6 +3,7 @@ variable "name_prefix" {}
 locals {
   galoy_namespace     = "${var.name_prefix}-galoy"
   bitcoin_namespace   = "${var.name_prefix}-bitcoin"
+  addons_namespace    = "${var.name_prefix}-addons"
   bitcoin_secret      = "bitcoind-rpcpassword"
   dev_apollo_key      = "dev_apollo_key"
   dev_apollo_graph_id = "dev_apollo_graph_id"
@@ -85,6 +86,18 @@ resource "kubernetes_secret" "twilio_secret" {
     TWILIO_PHONE_NUMBER = ""
     TWILIO_ACCOUNT_SID  = ""
     TWILIO_AUTH_TOKEN   = ""
+  }
+}
+
+resource "kubernetes_secret" "price_secret" {
+  metadata {
+    name      = "price-secret"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    port = "50055"
+    host = "dealer-price.${local.addons_namespace}.svc.cluster.local"
   }
 }
 
