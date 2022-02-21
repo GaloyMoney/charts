@@ -9,6 +9,9 @@ locals {
   testflight_namespace = var.testflight_namespace
 
   session_keys = "session-keys"
+
+  postgres_database = "auth_db"
+  postgres_password = "postgres"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -43,7 +46,29 @@ resource "helm_release" "galoy_auth" {
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/galoy-auth-testflight-values.yml.tmpl", {
+      postgres_database: local.postgres_database
+      postgres_password: local.postgres_password
+    })
+  ]
 }
+
+resource "helm_release" "postgres" {
+  name = "postgresql"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart = "postgresql"
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/postgres-testflight-values.yml.tmpl", {
+      postgres_database: local.postgres_database
+      postgres_password: local.postgres_password
+    })
+  ]
+}
+
 
 data "google_container_cluster" "primary" {
   project  = local.gcp_project
