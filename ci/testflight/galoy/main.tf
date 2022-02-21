@@ -11,6 +11,7 @@ locals {
 
   smoketest_namespace  = "galoy-staging-smoketest"
   bitcoin_namespace    = "galoy-staging-bitcoin"
+  addons_namespace     = "galoy-staging-addons"
   testflight_namespace = var.testflight_namespace
   smoketest_kubeconfig = var.smoketest_kubeconfig
   backups_sa_creds     = var.testflight_backups_creds
@@ -89,6 +90,18 @@ resource "kubernetes_secret" "twilio_secret" {
     TWILIO_PHONE_NUMBER = ""
     TWILIO_ACCOUNT_SID  = ""
     TWILIO_AUTH_TOKEN   = ""
+  }
+}
+
+resource "kubernetes_secret" "price_secret" {
+  metadata {
+    name      = "price-secret"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    port = "50055"
+    host = "dealer-price.${local.addons_namespace}.svc.cluster.local"
   }
 }
 
