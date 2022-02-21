@@ -60,3 +60,6 @@ price:
     type: NodePort
 
 devDisableMongoBackup: true
+
+dealer_price:
+  host: dealer-price.galoy-dev-addons.svc.cluster.local
