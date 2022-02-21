@@ -214,9 +214,9 @@ spec:
                   key: TWILIO_AUTH_TOKEN
 
             - name: PRICE_SERVER_HOST
-              value: {{ $.Values.price.host }}
+              value: {{ $.Values.dealer_price.host }}
             - name: PRICE_SERVER_PORT
-              value: {{ $.Values.price.port }}
+              value: {{ $.Values.dealer_price.port }}
 
           {{- if .healthz }}
           livenessProbe:
