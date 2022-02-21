@@ -145,3 +145,7 @@ mongodb:
 ## Warning: Setting this to true will disable automatic mongodb backups
 ## It is only intended for use in development environments
 devDisableMongoBackup: false
+
+price:
+  host: dealer-price.namespace.svc.cluster.local
+  port: 50055

@@ -212,6 +212,12 @@ spec:
                 secretKeyRef:
                   name: twilio-secret
                   key: TWILIO_AUTH_TOKEN
+
+            - name: PRICE_SERVER_HOST
+              value: {{ $.Values.price.host }}
+            - name: PRICE_SERVER_PORT
+              value: {{ $.Values.price.port }}
+
           {{- if .healthz }}
           livenessProbe:
             httpGet:
