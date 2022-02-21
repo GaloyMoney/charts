@@ -34,3 +34,6 @@ lnd1:
 
 lnd2:
   dns: lnd2.galoy-staging-bitcoin.svc.cluster.local
+
+dealer_price:
+  host: dealer-price.galoy-staging-addons.svc.cluster.local
