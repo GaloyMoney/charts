@@ -159,6 +159,17 @@ spec:
             - name: REDIS_2_DNS
               value: "galoy-redis-node-2.galoy-redis-headless"
 
+            - name: PRICE_SERVER_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: price-secret
+                  key: port
+            - name: PRICE_SERVER_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: price-secret
+                  key: host
+
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
