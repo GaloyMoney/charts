@@ -9,6 +9,8 @@ dealer:
   exporter:
     path: /metrics
     port: 3333
+  price:
+    port: 50055
   annotations: {}
   # Environments
   network: regtest
