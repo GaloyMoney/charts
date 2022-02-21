@@ -6,6 +6,7 @@ locals {
   gcp_project      = "galoy-staging"
 
   smoketest_namespace  = "galoy-staging-smoketest"
+  galoy_namespace    = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
 
   postgres_password   = "postgres"
@@ -57,6 +58,22 @@ resource "kubernetes_secret" "smoketest" {
     dealer_endpoint = "dealer.${local.testflight_namespace}.svc.cluster.local"
     dealer_port     = 3333
   }
+}
+
+data "kubernetes_secret" "dealer_creds" {
+  metadata {
+    name      = "dealer-creds"
+    namespace = local.galoy_namespace
+  }
+}
+
+resource "kubernetes_secret" "dealer_creds" {
+  metadata {
+    name      = "dealer-creds"
+    namespace = local.testflight_namespace
+  }
+
+  data = data.kubernetes_secret.dealer_creds.data
 }
 
 resource "helm_release" "dealer" {
