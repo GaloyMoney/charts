@@ -55,6 +55,8 @@ resource "helm_release" "galoy_auth" {
   ]
 
   dependency_update = true
+
+  depends_on = [helm_release.postgres]
 }
 
 resource "helm_release" "postgres" {
