@@ -53,6 +53,8 @@ resource "helm_release" "galoy_auth" {
       postgres_password: local.postgres_password
     })
   ]
+
+  dependency_update = true
 }
 
 resource "helm_release" "postgres" {
