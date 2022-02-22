@@ -1,0 +1,9 @@
+dependencies:
+- name: auth-backend
+  repository: ""
+  version: 0.1.0
+- name: kratos
+  repository: https://k8s.ory.sh/helm/charts
+  version: 0.21.8
+digest: sha256:15a425b4e1268962d744affa5a3357d6f9d123f0255f11193dfbb812b306248c
+generated: "2022-02-18T16:28:23.685065486+05:30"
