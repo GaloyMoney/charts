@@ -34,6 +34,34 @@ entries:
   lnd:
     - apiVersion: v2
       appVersion: 0.14.2
+      created: "2022-02-23T08:46:47.739147316Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.4.1
+        - condition: loop.enabled
+          name: loop
+          repository: ""
+          version: x.x.x
+        - condition: lndmon.enabled
+          name: lndmon
+          repository: ""
+          version: x.x.x
+      description: LND helm chart
+      digest: 8ea0549e25eed0843e521baf4283191492fed3e524d8f7cbbbb5e4e57a54f09e
+      keywords:
+        - lnd
+      maintainers:
+        - email: krtk6160@galoy.io
+          name: krtk6160
+        - email: nb@galoy.io
+          name: nicolasburtey
+      name: lnd
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.1.8/lnd-0.1.8.tgz
+      version: 0.1.8
+    - apiVersion: v2
+      appVersion: 0.14.2
       created: "2022-02-11T07:59:19.971518553Z"
       dependencies:
         - name: common
@@ -1136,4 +1164,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-02-22T08:36:54.118573158Z"
+generated: "2022-02-23T08:46:47.739165102Z"
