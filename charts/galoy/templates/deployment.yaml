@@ -183,6 +183,7 @@ spec:
                   name: dropbox-access-token
                   key: token
             {{- end }}
+            {{ if eq .reportToApollo "true" }}
             - name: APOLLO_GRAPH_VARIANT
               value: current
             - name: APOLLO_SCHEMA_REPORTING
@@ -197,6 +198,7 @@ spec:
                 secretKeyRef:
                   name: galoy-apollo-secret
                   key: key
+            {{- end }}
             - name: TWILIO_PHONE_NUMBER
               valueFrom:
                 secretKeyRef:
