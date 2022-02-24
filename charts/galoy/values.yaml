@@ -32,7 +32,7 @@ deployment:
     healthz: true
     targetPort: 4002
     replicaCount: 2
-    reportToApollo: "true"
+    reportToApollo: true
   - name: exporter
     appEntrypoint: "lib/servers/exporter.js"
     healthz: true

@@ -183,7 +183,7 @@ spec:
                   name: dropbox-access-token
                   key: token
             {{- end }}
-            {{ if eq .reportToApollo "true" }}
+            {{ if .reportToApollo }}
             - name: APOLLO_GRAPH_VARIANT
               value: current
             - name: APOLLO_SCHEMA_REPORTING
