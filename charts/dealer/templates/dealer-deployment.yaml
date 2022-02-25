@@ -38,7 +38,7 @@ spec:
         - name: JAEGER_HOST
           value: {{ $.Values.jaegerHost }}
         - name: TRACING_SERVICE_NAME
-          value: {{ $.Values.tracingPrefix }}-{{ .name }}
+          value: "{{ $.Values.tracingPrefix }}-dealer"
         - name: LOG_LEVEL
           value: {{ .Values.dealer.logLevel }}
         - name: ACTIVE_STRATEGY
