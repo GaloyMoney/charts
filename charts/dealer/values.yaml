@@ -1,5 +1,7 @@
 # Default values for dealer.
 # This is a YAML-formatted file.
+jaegerHost: localhost
+tracingPrefix: "galoy"
 dealer:
   replicaCount: 1
   image:
