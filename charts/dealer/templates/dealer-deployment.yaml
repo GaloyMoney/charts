@@ -31,7 +31,7 @@ spec:
         args:
         - "-r"
         - "/app/lib/services/tracing.js"
-        - "/app/lib/servers/graphql/WalletGraphqlServer.js"
+        - "/app/lib/app/scheduler.js"
         env:
         - name: NETWORK
           value: {{ .Values.dealer.network }}
