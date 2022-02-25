@@ -4,8 +4,8 @@ dealer:
   replicaCount: 1
   image:
     repository: us.gcr.io/galoy-org/dealer
-    digest: "sha256:ccb4a7dcb5c57da3b083b46028b79f68625bdf00aec16284db32fae0b87326fc" # Auto updated by Galoy Bot
-    git_ref: "e426e8b" # Not used by helm, auto updated by Galoy Bot
+    digest: "sha256:81dc9756d781fe1036a250b20cd1ae3284f271093f276eecf97c35696eee2780" # Auto updated by Galoy Bot
+    git_ref: "5831203" # Not used by helm, auto updated by Galoy Bot
   exporter:
     path: /metrics
     port: 3333
@@ -32,8 +32,8 @@ fakeGaloyApi:
   name: "fake-galoyapi"
   image:
     repository: us.gcr.io/galoy-org/fake-galoyapi
-    digest: "sha256:7ec01336b957d1230450068540fe3359364d617b95fb3046c94c20cce207e733" # Auto updated by Galoy Bot
-    git_ref: "e426e8b" # Not used by helm, auto updated by Galoy Bot
+    digest: "sha256:9aaf93c9c37c1ee0af0491a5f4db04ee4b1cd919262e5dae8075e0a073d1d9ff" # Auto updated by Galoy Bot
+    git_ref: "5831203" # Not used by helm, auto updated by Galoy Bot
   service:
     type: ClusterIP
     port: 4000
