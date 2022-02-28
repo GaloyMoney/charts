@@ -110,3 +110,6 @@ lndmon:
 
 rbac:
   create: true
+
+autoGenerateSeed:
+  enabled: false
