@@ -39,3 +39,6 @@ serviceAccount:
   create: true
 
 walletPassword: lndtestflight
+
+autoGenerateSeed:
+  enabled: true
