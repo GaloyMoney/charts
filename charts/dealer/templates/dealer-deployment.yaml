@@ -30,7 +30,7 @@ spec:
         image: "{{ .Values.dealer.image.repository }}@{{ .Values.dealer.image.digest }}"
         args:
         - "-r"
-        - "/app/lib/services/tracing.js"
+        - "/app/dealer/lib/services/tracing.js"
         - "/app/dealer/lib/app/scheduler.js"
         env:
         - name: NETWORK
