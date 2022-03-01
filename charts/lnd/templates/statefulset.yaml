@@ -114,7 +114,7 @@ spec:
             EOF
             exec tor -f ~/torrc
         - name: export-secrets
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
           command: ['/bin/sh']
           args:
           - '-c'

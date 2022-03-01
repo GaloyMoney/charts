@@ -9,6 +9,10 @@ image:
   tag: v0.14.2-beta
   pullPolicy: IfNotPresent
 
+sidecarImage:
+  repository: us.gcr.io/galoy-org/lnd-sidecar
+  digest: "sha256:827ed2476c7a06fb8c629320f52d9196a688e914e6ab6fd237367857fc26b30b"
+
 kubemonkey:
   enabled: false
 
