@@ -177,7 +177,7 @@ jobs:
         BRANCH: #@ data.values.git_branch
         BOT_BRANCH: #@ data.values.git_lnd_sidecar_bot_branch
       run:
-        path: pipeline-tasks/ci/tasks/open-charts-pr.sh
+        path: pipeline-tasks/ci/tasks/open-lnd-sidecar-bump-pr.sh
 
 resources:
 #@ for chart in bitcoin_charts:
