@@ -114,14 +114,14 @@ spec:
             EOF
             exec tor -f ~/torrc
         - name: export-secrets
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
           command: ['/bin/sh']
           args:
           - '-c'
           - |
             lncli -n=$NETWORK getinfo
             while [[ $? != 0 ]]; do sleep 1; lncli -n=$NETWORK getinfo; done
-            home/alpine/exportSecrets.sh
+            /home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
           env:

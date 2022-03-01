@@ -13,6 +13,7 @@
 #@   "slack_resource",
 #@   "bitcoin_charts",
 #@   "addons_charts",
+#@   "task_image_config",
 #@   "repo_resource")
 
 #@ def galoy_chart_vars():
@@ -24,7 +25,7 @@ smoketest_kubeconfig: #@ data.values.staging_smoketest_kubeconfig
 
 groups:
 - name: galoy
-  jobs: 
+  jobs:
   - galoy-testflight
   - bump-galoy-in-deployments
 - name: monitoring
@@ -32,13 +33,13 @@ groups:
   - monitoring-testflight
   - bump-monitoring-in-deployments
 - name: bitcoin
-  jobs: 
+  jobs:
 #@ for chart in bitcoin_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
 - name: addons
-  jobs: 
+  jobs:
 #@ for chart in addons_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
@@ -65,6 +66,7 @@ groups:
   jobs:
   - build-chain-dl-image
   - build-lnd-sidecar-image
+  - bump-lnd-sidecar-image-in-chart
 
 jobs:
 #@ for chart in bitcoin_charts:
@@ -130,6 +132,53 @@ jobs:
     params:
       image: image/image.tar
 
+- name: bump-lnd-sidecar-image-in-chart
+  plan:
+  - in_parallel:
+    - get: lnd-sidecar-image
+      trigger: true
+      passed: [build-lnd-sidecar-image]
+      params: { skip_download: true }
+    - get: lnd-sidecar-image-def
+      trigger: true
+      passed: [build-lnd-sidecar-image]
+    - get: charts-repo
+      params: { skip_download: true }
+    - get: pipeline-tasks
+  - task: bump-image-digest-in-values
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: lnd-sidecar-image
+      - name: lnd-sidecar-image-def
+      - name: pipeline-tasks
+      - name: charts-repo
+      outputs:
+      - name: charts-repo
+      params:
+        BRANCH: #@ data.values.git_branch
+      run:
+        path: pipeline-tasks/ci/tasks/bump-lnd-sidecar-image-digest.sh
+  - put: lnd-sidecar-bot-branch
+    params:
+      repository: charts-repo
+      force: true
+  - task: open-charts-pr
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: lnd-sidecar-image
+      - name: charts-repo
+      params:
+        GH_TOKEN: #@ data.values.github_token
+        BRANCH: #@ data.values.git_branch
+        BOT_BRANCH: #@ data.values.git_lnd_sidecar_bot_branch
+      run:
+        path: pipeline-tasks/ci/tasks/open-charts-pr.sh
+
 resources:
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
@@ -156,6 +205,13 @@ resources:
 - #@ chart_repo_resource("galoy-auth")
 - #@ testflight_tf_resource("galoy-auth")
 - #@ slack_resource("auth")
+
+- name: charts-repo
+  type: git
+  source:
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
 
 - name: pipeline-tasks
   type: git
@@ -202,6 +258,13 @@ resources:
     paths: [images/lnd-sidecar/Dockerfile]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: lnd-sidecar-bot-branch
+  type: git
+  source:
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_lnd_sidecar_bot_branch
     private_key: #@ data.values.github_private_key
 
 resource_types:
