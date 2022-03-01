@@ -3,39 +3,30 @@
 # Declare variables to be passed into your templates.
 global:
   network: mainnet
-
 image:
   repository: lightninglabs/lnd
   tag: v0.14.2-beta
   pullPolicy: IfNotPresent
-
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
   digest: "sha256:827ed2476c7a06fb8c629320f52d9196a688e914e6ab6fd237367857fc26b30b"
-  git_ref: dummy
-
+  git_ref: 31c63e3
 kubemonkey:
   enabled: false
-
 configmap:
   customValues: []
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
-
 podAnnotations:
   prometheus.io/path: /metrics
   prometheus.io/port: "9092"
   prometheus.io/scrape: "true"
-
 terminationGracePeriodSeconds: 600
-
 resources:
   requests:
     cpu: 100m
     memory: 128Mi
-
 service:
   # On google cloud, static ip can be created using `gcloud compute addresses create`
   staticIP: ""
@@ -44,7 +35,6 @@ service:
     rpc: 10009
     p2p: 9735
     rest: 8080
-
 persistence:
   enabled: true
   ## database data Persistent Volume Storage Class
@@ -57,7 +47,6 @@ persistence:
   # storageClass: "-"
   accessMode: ReadWriteOnce
   size: 10Gi
-
 affinity:
   podAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
@@ -70,12 +59,9 @@ affinity:
                 values:
                   - bitcoind
           topologyKey: kubernetes.io/hostname
-
 walletPassword: ""
-
 secrets:
   create: true
-
 lndGeneralConfig:
   - restlisten=0.0.0.0:8080
   - rpclisten=0.0.0.0:10009
@@ -104,17 +90,12 @@ lndGeneralConfig:
   - tor.v3=true
   - tor.skip-proxy-for-clearnet-targets=true
   - coin-selection-strategy=random
-
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
-
 loop:
   enabled: true
-
 lndmon:
   enabled: true
-
 rbac:
   create: true
-
 autoGenerateSeed:
   enabled: false
