@@ -121,7 +121,7 @@ spec:
           - |
             lncli -n=$NETWORK getinfo
             while [[ $? != 0 ]]; do sleep 1; lncli -n=$NETWORK getinfo; done
-            home/alpine/exportSecrets.sh
+            /home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
           env:
