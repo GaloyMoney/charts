@@ -23,7 +23,11 @@ spec:
     spec:
       containers:
       - name: web-wallet
+      {{- if eq .Values.useMobileLayout "true" }}
+        image: "{{ .Values.mobileLayoutImage.repository }}@{{ .Values.mobileLayoutImage.digest }}"
+      {{- else }}
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+      {{- end }}
         ports:
         - containerPort: 3000
         env:
