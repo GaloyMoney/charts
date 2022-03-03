@@ -30,11 +30,11 @@ resource "kubernetes_secret" "smoketest" {
 
 resource "kubernetes_secret" "web_wallet" {
   metadata {
-    name = "web-wallet"
+    name      = "web-wallet"
     namespace = local.testflight_namespace
   }
   data = {
-    "session-keys": local.session_keys
+    "session-keys" : local.session_keys
   }
 }
 

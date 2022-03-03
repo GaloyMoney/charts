@@ -33,11 +33,11 @@ resource "kubernetes_secret" "smoketest" {
 
 resource "kubernetes_secret" "auth_backend" {
   metadata {
-    name = "auth-backend"
+    name      = "auth-backend"
     namespace = local.testflight_namespace
   }
   data = {
-    "session-keys": local.session_keys
+    "session-keys" : local.session_keys
   }
 }
 
@@ -49,8 +49,8 @@ resource "helm_release" "galoy_auth" {
 
   values = [
     templatefile("${path.module}/galoy-auth-testflight-values.yml.tmpl", {
-      postgres_database: local.postgres_database
-      postgres_password: local.postgres_password
+      postgres_database : local.postgres_database
+      postgres_password : local.postgres_password
     })
   ]
 
@@ -60,15 +60,15 @@ resource "helm_release" "galoy_auth" {
 }
 
 resource "helm_release" "postgres" {
-  name = "postgresql"
+  name       = "postgresql"
   repository = "https://charts.bitnami.com/bitnami"
-  chart = "postgresql"
+  chart      = "postgresql"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
     templatefile("${path.module}/postgres-testflight-values.yml.tmpl", {
-      postgres_database: local.postgres_database
-      postgres_password: local.postgres_password
+      postgres_database : local.postgres_database
+      postgres_password : local.postgres_password
     })
   ]
 }

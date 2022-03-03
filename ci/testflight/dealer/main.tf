@@ -6,7 +6,7 @@ locals {
   gcp_project      = "galoy-staging"
 
   smoketest_namespace  = "galoy-staging-smoketest"
-  galoy_namespace    = "galoy-staging-galoy"
+  galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
 
   postgres_password   = "postgres"
@@ -77,9 +77,9 @@ resource "kubernetes_secret" "dealer_creds" {
 }
 
 resource "helm_release" "dealer" {
-  name       = "dealer"
-  chart      = "${path.module}/chart"
-  namespace  = kubernetes_namespace.testflight.metadata[0].name
+  name      = "dealer"
+  chart     = "${path.module}/chart"
+  namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
     file("${path.module}/testflight-values.yml")
