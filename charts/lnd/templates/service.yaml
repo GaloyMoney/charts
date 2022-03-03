@@ -5,15 +5,10 @@ metadata:
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
-  {{- if and (eq .Values.service.type "LoadBalancer") (.Values.service.staticIP) }}
-  loadBalancerIP: {{ .Values.service.staticIP }}
-  {{- end }}
+  type: ClusterIp
   ports:
     - name: rpc
       port: {{ .Values.service.ports.rpc }}
-    - name: p2p
-      port: {{ .Values.service.ports.p2p }}
     - name: rest
       port: {{ .Values.service.ports.rest }}
   selector:
