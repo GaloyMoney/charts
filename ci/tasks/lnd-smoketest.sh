@@ -5,7 +5,7 @@ set -eu
 source smoketest-settings/helpers.sh
 
 lndmon_host=`setting "lndmon_endpoint"`
-lnd_host=`setting "lnd_endpoint"`
+lnd_host=`setting "lnd_p2p_endpoint"`
 
 set +e
 for i in {1..60}; do
