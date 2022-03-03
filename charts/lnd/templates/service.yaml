@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
 spec:
-  type: ClusterIp
+  type: ClusterIP
   ports:
     - name: rpc
       port: {{ .Values.service.ports.rpc }}
