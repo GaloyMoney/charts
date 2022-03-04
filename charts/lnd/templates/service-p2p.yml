@@ -5,12 +5,12 @@ metadata:
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
-  {{- if and (eq .Values.service.type "LoadBalancer") (.Values.service.staticIP) }}
-  loadBalancerIP: {{ .Values.service.staticIP }}
+  type: {{ .Values.p2pService.type }}
+  {{- if and (eq .Values.p2pService.type "LoadBalancer") (.Values.p2pService.staticIP) }}
+  loadBalancerIP: {{ .Values.p2pService.staticIP }}
   {{- end }}
   ports:
     - name: p2p
-      port: {{ .Values.service.ports.p2p }}
+      port: {{ .Values.p2pService.port }}
   selector:
     {{- include "lnd.selectorLabels" . | nindent 4 }}
