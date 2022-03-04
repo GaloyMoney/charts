@@ -24,6 +24,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     web_wallet_endpoint = "web-wallet.${local.testflight_namespace}.svc.cluster.local"
+    web_wallet_mobile_endpoint = "web-wallet-mobile.${local.testflight_namespace}.svc.cluster.local"
     web_wallet_port     = 80
   }
 }
@@ -43,6 +44,18 @@ resource "helm_release" "web_wallet" {
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
+}
+
+resource "helm_release" "web_wallet" {
+  name       = "web-wallet-mobile"
+  chart      = "${path.module}/chart"
+  repository = "https://galoymoney.github.io/charts/"
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  set {
+    name  = "useMobileLayout"
+    value = "true"
+  }
 }
 
 data "google_container_cluster" "primary" {
