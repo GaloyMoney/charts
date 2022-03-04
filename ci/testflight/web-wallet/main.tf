@@ -46,7 +46,7 @@ resource "helm_release" "web_wallet" {
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 }
 
-resource "helm_release" "web_wallet" {
+resource "helm_release" "web_wallet_mobile" {
   name       = "web-wallet-mobile"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
