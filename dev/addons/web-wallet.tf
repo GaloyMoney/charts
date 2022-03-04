@@ -28,8 +28,7 @@ resource "helm_release" "web_wallet_mobile_layout" {
 
   depends_on = [kubernetes_secret.web_wallet_secret]
 
-  set {
-    name  = "useMobileLayout"
-    value = "true"
-  }
+  values = [
+    file("${path.module}/web-wallet-mobile-values.yml")
+  ]
 }

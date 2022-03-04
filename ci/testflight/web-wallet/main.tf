@@ -52,10 +52,9 @@ resource "helm_release" "web_wallet" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
-  set {
-    name  = "useMobileLayout"
-    value = "true"
-  }
+  values = [
+    file("${path.module}/web-wallet-mobile-testflight-values.yml")
+  ]
 }
 
 data "google_container_cluster" "primary" {
