@@ -4,7 +4,7 @@ global:
 galoy:
   test_accounts:
   - phone: "+59981730222"
-    code: 111111
+    code: "111111"
     role: "bankowner"
     username: "bankowner"
   apollo:
