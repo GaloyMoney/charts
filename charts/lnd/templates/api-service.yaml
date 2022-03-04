@@ -4,8 +4,15 @@ metadata:
   name: {{ include "lnd.fullname" . }}
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
+  {{- with .Values.apiService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.apiService.type }}
+  {{- if and (eq .Values.apiService.type "LoadBalancer") (.Values.apiService.staticIP) }}
+  loadBalancerIP: {{ .Values.apiService.staticIP }}
+  {{- end }}
   ports:
     - name: rpc
       port: {{ .Values.service.ports.rpc }}

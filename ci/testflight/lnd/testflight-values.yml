@@ -1,11 +1,14 @@
 global:
   network: testnet
 
-service:
+p2pService:
+  type: ClusterIP
+  port: 9735
+
+apiService:
   type: ClusterIP
   ports:
     rpc: 10009
-    p2p: 9735
     rest: 8080
 
 terminationGracePeriodSeconds: 0
