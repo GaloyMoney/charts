@@ -15,8 +15,8 @@ spec:
   {{- end }}
   ports:
     - name: rpc
-      port: {{ .Values.service.ports.rpc }}
+      port: {{ .Values.apiService.ports.rpc }}
     - name: rest
-      port: {{ .Values.service.ports.rest }}
+      port: {{ .Values.apiService.ports.rest }}
   selector:
     {{- include "lnd.selectorLabels" . | nindent 4 }}
