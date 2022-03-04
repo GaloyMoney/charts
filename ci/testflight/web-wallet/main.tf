@@ -46,6 +46,16 @@ resource "helm_release" "web_wallet" {
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 }
 
+resource "kubernetes_secret" "web_wallet_mobile" {
+  metadata {
+    name      = "web-wallet-mobile"
+    namespace = local.testflight_namespace
+  }
+  data = {
+    "session-keys" : local.session_keys
+  }
+}
+
 resource "helm_release" "web_wallet_mobile" {
   name       = "web-wallet-mobile"
   chart      = "${path.module}/chart"
