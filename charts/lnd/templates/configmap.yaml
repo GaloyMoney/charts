@@ -17,9 +17,10 @@ data:
     {{ . }}
   {{- end }}
     tlsextradomain={{ include "lnd.fullname" . }}
-  {{- if .Values.service.staticIP }}
-    tlsextraip={{ .Values.service.staticIP }}
-  {{- if .Values.configmap.broadcastIP }}
-    externalip={{ .Values.service.staticIP }}
+  {{- if .Values.apiService.staticIP }}
+    tlsextraip={{ .Values.apiService.staticIP }}
   {{- end}}
+  {{- if .Values.p2pService.staticIP }}
+    tlsextraip={{ .Values.p2pService.staticIP }}
+    externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
