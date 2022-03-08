@@ -14,7 +14,7 @@ for i in {1..15}; do
   curl ${host}:${port}
   status=$?
   curl ${web_wallet_mobile_host}:${port}
-  if [[ status == 0 ]] && [[ $? == 0 ]]; then success="true"; break; fi;
+  if [[ $status == 0 ]] && [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
 set -e
