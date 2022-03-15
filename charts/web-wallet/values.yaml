@@ -1,10 +1,10 @@
 image:
   repository: us.gcr.io/galoy-org/web-wallet
-  digest: "sha256:3298f7e784530d1ef96e4b2d7c203725631a15b9cd975c64018ac1072b20bdd8"
-  git_ref: "bad8a92" # Not used by helm
+  digest: "sha256:438220a9a01f0ce2ece49ae905bb073a5da43eef36cdbbeb5dfde6e9019d30c7"
+  git_ref: "ec5dc40" # Not used by helm
 mobileLayoutImage:
   repository: us.gcr.io/galoy-org/web-wallet-mobile-layout
-  digest: "sha256:666d01990e26b8ae2d0d60243ba9c6928a3e32b8c116155fd4db8376fb7dd457"
+  digest: "sha256:40e4edbd98cb3d58bda687265fbf0230c6c80745e69778db15218c287ee0e18f"
 useMobileLayout: false
 ingress:
   enabled: false
