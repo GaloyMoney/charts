@@ -11,12 +11,9 @@ metadata:
     {{ if .Values.apiIngress.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.apiIngress.clusterIssuer }}
     {{ end }}
-    {{ if .Values.apiIngress.disableRateLimit }}
-    {{ else }}
     nginx.ingress.kubernetes.io/limit-rpm: "60"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
     nginx.ingress.kubernetes.io/limit-connections: "40"
-    {{ end }}
 spec:
   {{ if .Values.apiIngress.clusterIssuer }}
   tls:
