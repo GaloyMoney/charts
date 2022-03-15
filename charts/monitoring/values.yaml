@@ -174,7 +174,7 @@ prometheus:
         - job_name: 'kubernetes-pods'
 
           scrape_interval: 10m
-          scrape_timeout: 45s
+          scrape_timeout: 120s
 
           kubernetes_sd_configs:
             - role: pod
