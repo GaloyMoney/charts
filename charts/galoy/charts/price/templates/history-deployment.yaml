@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "priceHistory.fullname" . }}
+  labels:
+    {{- include "priceHistory.labels" . | nindent 4 }}
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: priceHistory
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+spec:
+  selector:
+    matchLabels:
+      {{- include "priceHistory.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "priceHistory.selectorLabels" . | nindent 8 }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: priceHistory
+    spec:
+      containers:
+        - name: history
+          image: "{{ .Values.history.image.repository }}@{{ .Values.history.image.digest }}"
+          ports:
+            - name: grpc
+              containerPort: {{ .Values.history.service.grpc }}
+              protocol: TCP
+            - name: prometheus
+              containerPort: {{ .Values.history.service.prometheus }}
+              protocol: TCP
+          env:
+          - name: DB_HOST
+            value: postgresql
+          - name: DB_PWD
+            valueFrom:
+              secretKeyRef:
+                name: price-history-postgres-creds
+                key: postgres-password
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: price-history-postgres-creds
+                key: postgres-username
+          - name: DB_DB
+            valueFrom:
+              secretKeyRef:
+                name: price-history-postgres-creds
+                key: postgres-database
+          livenessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:50052"]
+            initialDelaySeconds: 45
+            timeoutSeconds: 2
+          readinessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:50052"]
+            timeoutSeconds: 2
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

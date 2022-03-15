@@ -23,6 +23,10 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "priceHistory.fullname" -}}
+{{- printf "%s-%s" .Release.Name "price-history" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -42,11 +46,25 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
+{{- define "priceHistory.labels" -}}
+helm.sh/chart: {{ include "price.chart" . }}
+{{ include "priceHistory.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
 {{- define "price.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "price.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "priceHistory.selectorLabels" -}}
+app.kubernetes.io/name: price-history
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

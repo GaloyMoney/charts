@@ -6,6 +6,10 @@ locals {
   bitcoin_secret      = "bitcoind-rpcpassword"
   dev_apollo_key      = "dev_apollo_key"
   dev_apollo_graph_id = "dev_apollo_graph_id"
+
+  postgres_database = "price-history"
+  postgres_password = "password"
+  postgres_username = "postgres"
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -198,4 +202,31 @@ resource "helm_release" "galoy" {
   ]
 
   dependency_update = true
+}
+
+resource "kubernetes_secret" "price_history_postgres_creds" {
+  metadata {
+    name      = "price-history-postgres-creds"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    postgres-username = local.postgres_username
+    postgres-password = local.postgres_password
+    postgres-database = local.postgres_database
+  }
+}
+
+resource "helm_release" "postgres" {
+  name       = "postgresql"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "postgresql"
+  namespace = kubernetes_namespace.galoy.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/postgres-values.yml.tmpl", {
+      postgres_database : local.postgres_database
+      postgres_password : local.postgres_password
+    })
+  ]
 }
