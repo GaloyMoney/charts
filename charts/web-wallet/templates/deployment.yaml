@@ -60,5 +60,5 @@ spec:
           value: {{ .Values.kratos.api_url }}
         - name: KRATOS_BROWSER_URL
           value: {{ .Values.kratos.browser_url }}
-        - name: {{ KRATOS_FEATURE_ENABLED }}
+        - name: KRATOS_FEATURE_FLAG
           value: {{ .Values.kratos.enabled }}
