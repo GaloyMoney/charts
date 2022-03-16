@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
 spec:
-  schedule: "0 * * * *"
+  schedule: "2 * * * *"
   jobTemplate:
     spec:
       activeDeadlineSeconds: 60
