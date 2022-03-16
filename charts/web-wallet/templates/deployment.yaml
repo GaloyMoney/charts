@@ -56,3 +56,9 @@ spec:
           value: default
         - name: SHARE_URI
           value: {{ .Values.galoyPayEndpoint }}
+        - name: KRATOS_API_URL
+          value: {{ .Values.kratos.api_url }}
+        - name: KRATOS_BROWSER_URL
+          value: {{ .Values.kratos.browser_url }}
+        - name: {{ KRATOS_FEATURE_ENABLED }}
+          value: {{ .Values.kratos.enabled }}

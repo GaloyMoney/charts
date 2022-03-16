@@ -26,3 +26,8 @@ secrets:
   create: false
   ## cookieSession keys
   sessionKeys: "session-keys"
+
+kratos:
+  enabled: false
+  browser_url: http://localhost:4433
+  api_url: http://localhost:4433
