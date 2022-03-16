@@ -61,6 +61,8 @@ spec:
           value: {{ .Values.kratos.api_url }}
         - name: KRATOS_BROWSER_URL
           value: {{ .Values.kratos.browser_url }}
+        - name: KRATOS_AUTH_ENDPOINT
+          value: {{ .Values.kratos.auth_endpoint }}
         - name: KRATOS_FEATURE_FLAG
           value: "true"
         {{- end }}

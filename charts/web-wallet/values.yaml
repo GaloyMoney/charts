@@ -31,3 +31,4 @@ kratos:
   enabled: false
   browser_url: http://localhost:4433
   api_url: http://localhost:4433
+  auth_endpoint: http://localhost:4001/auth/browser
