@@ -63,4 +63,4 @@ spec:
           value: {{ .Values.kratos.browser_url }}
         - name: KRATOS_FEATURE_FLAG
           value: "true"
-        {{ - end }}
+        {{- end }}
