@@ -48,6 +48,9 @@ spec:
               secretKeyRef:
                 name: price-history-postgres-creds
                 key: postgres-database
+          volumeMounts:
+            - name: custom-yaml
+              mountPath: "/var/yaml/"
           livenessProbe:
             exec:
               command: ["/bin/grpc_health_probe", "-addr=:50052"]
@@ -59,3 +62,7 @@ spec:
             timeoutSeconds: 2
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: custom-yaml
+        secret:
+          secretName: {{ include "priceHistory.fullname" . }}-config

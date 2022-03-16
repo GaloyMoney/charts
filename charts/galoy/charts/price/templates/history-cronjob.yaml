@@ -34,4 +34,11 @@ spec:
                 secretKeyRef:
                   name: price-history-postgres-creds
                   key: postgres-database
+            volumeMounts:
+            - name: custom-yaml
+              mountPath: "/var/yaml/"
+          volumes:
+          - name: custom-yaml
+            secret:
+              secretName: {{ include "priceHistory.fullname" . }}-config
           restartPolicy: OnFailure
