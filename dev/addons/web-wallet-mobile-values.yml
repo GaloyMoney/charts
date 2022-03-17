@@ -1,1 +1,2 @@
-useMobileLayout: false
+webWallet:
+  useMobileLayout: false

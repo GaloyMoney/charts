@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: web-wallet
-      {{- if eq .Values.useMobileLayout true }}
+      {{- if eq .Values.webWallet.useMobileLayout true }}
         image: "{{ .Values.mobileLayoutImage.repository }}@{{ .Values.mobileLayoutImage.digest }}"
       {{- else }}
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
@@ -42,27 +42,29 @@ spec:
           value: 0.0.0.0
         - name: PORT
           value: "3000"
+        - name: NETWORK
+          value: {{ .Values.webWallet.bitcoinNetwork }}
         - name: SUPPORT_EMAIL
-          value: {{ .Values.supportEmail }}
+          value: {{ .Values.webWallet.supportEmail }}
         - name: GRAPHQL_URI
-          value: {{ .Values.graphqlUri }}
+          value: {{ .Values.webWallet.graphqlUri }}
         - name: GRAPHQL_SUBSCRIPTION_URI
-          value: {{ .Values.graphqlSubscriptionUri }}
+          value: {{ .Values.webWallet.graphqlSubscriptionUri }}
         - name: AUTH_ENDPOINT
-          value: {{ .Values.authEndpoint }}
+          value: {{ .Values.webWallet.authEndpoint }}
         - name: WALLET_NAME
-          value: {{ .Values.walletName }}
+          value: {{ .Values.webWallet.walletName }}
         - name: WALLET_THEME
           value: default
         - name: SHARE_URI
-          value: {{ .Values.galoyPayEndpoint }}
-        {{- if eq .Values.kratos.enabled true }}
+          value: {{ .Values.webWallet.galoyPayEndpoint }}
+        {{- if eq .Values.webWallet.kratos.enabled true }}
         - name: KRATOS_API_URL
-          value: {{ .Values.kratos.api_url }}
+          value: {{ .Values.webWallet.kratos.api_url }}
         - name: KRATOS_BROWSER_URL
-          value: {{ .Values.kratos.browser_url }}
+          value: {{ .Values.webWallet.kratos.browser_url }}
         - name: KRATOS_AUTH_ENDPOINT
-          value: {{ .Values.kratos.auth_endpoint }}
+          value: {{ .Values.webWallet.kratos.auth_endpoint }}
         - name: KRATOS_FEATURE_FLAG
           value: "true"
         {{- end }}
