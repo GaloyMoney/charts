@@ -1,1 +1,2 @@
-useMobileLayout: true
+mobileLayout:
+  enabled: true

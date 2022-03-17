@@ -2,7 +2,8 @@ image:
   repository: us.gcr.io/galoy-org/web-wallet
   digest: "sha256:438220a9a01f0ce2ece49ae905bb073a5da43eef36cdbbeb5dfde6e9019d30c7"
   git_ref: "ec5dc40" # Not used by helm
-mobileLayoutImage:
+mobileLayout:
+  enabled: false
   repository: us.gcr.io/galoy-org/web-wallet-mobile-layout
   digest: "sha256:40e4edbd98cb3d58bda687265fbf0230c6c80745e69778db15218c287ee0e18f"
 ingress:
@@ -12,7 +13,6 @@ service:
   type: ClusterIP
 
 webWallet:
-  useMobileLayout: false
   bitcoinNetwork: regtest
   authEndpoint: api/login
   graphqlUri: http://localhost:4002/graphql
