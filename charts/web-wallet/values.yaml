@@ -4,8 +4,9 @@ image:
   git_ref: "ec5dc40" # Not used by helm
 mobileLayout:
   enabled: false
-  repository: us.gcr.io/galoy-org/web-wallet-mobile-layout
-  digest: "sha256:40e4edbd98cb3d58bda687265fbf0230c6c80745e69778db15218c287ee0e18f"
+  image:
+    repository: us.gcr.io/galoy-org/web-wallet-mobile-layout
+    digest: "sha256:40e4edbd98cb3d58bda687265fbf0230c6c80745e69778db15218c287ee0e18f"
 ingress:
   enabled: false
 service:

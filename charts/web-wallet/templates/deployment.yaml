@@ -24,7 +24,7 @@ spec:
       containers:
       - name: web-wallet
       {{- if eq .Values.mobileLayout.enabled true }}
-        image: "{{ .Values.mobileLayout.repository }}@{{ .Values.mobileLayout.digest }}"
+        image: "{{ .Values.mobileLayout.image.repository }}@{{ .Values.mobileLayout.image.digest }}"
       {{- else }}
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
       {{- end }}
