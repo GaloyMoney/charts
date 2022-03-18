@@ -1,18 +1,17 @@
 image:
   repository: us.gcr.io/galoy-org/web-wallet
-  digest: "sha256:438220a9a01f0ce2ece49ae905bb073a5da43eef36cdbbeb5dfde6e9019d30c7"
-  git_ref: "ec5dc40" # Not used by helm
+  digest: "sha256:4a9c2dc768c626db6ba739498a0a98c069d974b55947a362274f3ff158d379d4"
+  git_ref: "b532991" # Not used by helm
 mobileLayout:
   enabled: false
   image:
     repository: us.gcr.io/galoy-org/web-wallet-mobile-layout
-    digest: "sha256:40e4edbd98cb3d58bda687265fbf0230c6c80745e69778db15218c287ee0e18f"
+    digest: "sha256:4a9c2dc768c626db6ba739498a0a98c069d974b55947a362274f3ff158d379d4"
 ingress:
   enabled: false
 service:
   port: 80
   type: ClusterIP
-
 webWallet:
   bitcoinNetwork: regtest
   authEndpoint: api/login
@@ -21,7 +20,6 @@ webWallet:
   supportEmail: support@galoy.io
   walletName: galoy
   galoyPayEndpoint: http://localhost:4000
-
   kratos:
     enabled: false
     browser_url: http://localhost:4433
