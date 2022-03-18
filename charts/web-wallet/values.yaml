@@ -13,6 +13,8 @@ service:
   port: 80
   type: ClusterIP
 webWallet:
+  jaegerHost: localhost
+  tracingPrefix: "galoy"
   bitcoinNetwork: regtest
   authEndpoint: api/login
   graphqlUri: http://localhost:4002/graphql
