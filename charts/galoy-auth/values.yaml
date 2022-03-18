@@ -6,9 +6,6 @@ kratos:
         default_schema_url: file:///etc/config/identity.schema.json
       selfservice:
         default_browser_return_url: http://localhost:3000/
-      courier:
-        smtp:
-          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
       dsn: memory
       secrets:
         default:
