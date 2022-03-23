@@ -64,11 +64,11 @@ spec:
           value: {{ .Values.webWallet.galoyPayEndpoint }}
         {{- if eq .Values.webWallet.kratos.enabled true }}
         - name: KRATOS_API_URL
-          value: {{ .Values.webWallet.kratos.api_url }}
+          value: {{ .Values.webWallet.kratos.apiUrl }}
         - name: KRATOS_BROWSER_URL
-          value: {{ .Values.webWallet.kratos.browser_url }}
-        - name: KRATOS_AUTH_ENDPOINT
-          value: {{ .Values.webWallet.kratos.auth_endpoint }}
+          value: {{ .Values.webWallet.kratos.browserUrl }}
+        - name: GALOY_AUTH_ENDPOINT
+          value: {{ .Values.webWallet.galoyAuthEndpoint }}
         - name: KRATOS_FEATURE_FLAG
           value: "true"
         {{- end }}
