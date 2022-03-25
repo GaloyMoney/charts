@@ -8,8 +8,8 @@ locals {
   dev_apollo_graph_id = "dev_apollo_graph_id"
 
   postgres_database = "price-history"
-  postgres_password = "password"
-  postgres_username = "postgres"
+  postgres_username = "price-history"
+  postgres_password = "price-history"
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -198,7 +198,8 @@ resource "helm_release" "galoy" {
     kubernetes_secret.lnd1_credentials,
     kubernetes_secret.lnd1_pubkey,
     kubernetes_secret.lnd2_credentials,
-    kubernetes_secret.lnd2_pubkey
+    kubernetes_secret.lnd2_pubkey,
+    kubernetes_secret.price_history_postgres_creds
   ]
 
   dependency_update = true
@@ -211,22 +212,9 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   }
 
   data = {
-    postgres-username = local.postgres_username
+    username          = local.postgres_username
+    password          = local.postgres_password
     postgres-password = local.postgres_password
-    postgres-database = local.postgres_database
+    database          = local.postgres_database
   }
-}
-
-resource "helm_release" "postgres" {
-  name       = "postgresql"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "postgresql"
-  namespace = kubernetes_namespace.galoy.metadata[0].name
-
-  values = [
-    templatefile("${path.module}/postgres-values.yml.tmpl", {
-      postgres_database : local.postgres_database
-      postgres_password : local.postgres_password
-    })
-  ]
 }

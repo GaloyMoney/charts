@@ -14,17 +14,17 @@ resource "kubernetes_secret" "web_wallet_secret" {
 }
 
 resource "helm_release" "web_wallet" {
-  name       = "web-wallet"
-  chart      = "${path.module}/../../charts/web-wallet"
-  namespace  = kubernetes_namespace.addons.metadata[0].name
+  name      = "web-wallet"
+  chart     = "${path.module}/../../charts/web-wallet"
+  namespace = kubernetes_namespace.addons.metadata[0].name
 
   depends_on = [kubernetes_secret.web_wallet_secret]
 }
 
 resource "helm_release" "web_wallet_mobile_layout" {
-  name       = "web-wallet"
-  chart      = "${path.module}/../../charts/web-wallet"
-  namespace  = kubernetes_namespace.addons.metadata[0].name
+  name      = "web-wallet"
+  chart     = "${path.module}/../../charts/web-wallet"
+  namespace = kubernetes_namespace.addons.metadata[0].name
 
   depends_on = [kubernetes_secret.web_wallet_secret]
 

@@ -14,7 +14,7 @@ resource "kubernetes_namespace" "bitcoin" {
 resource "null_resource" "bitcoind_block_generator" {
 
   provisioner "local-exec" {
-    command = "./bitcoin/generateBlock.sh"
+    command     = "./bitcoin/generateBlock.sh"
     interpreter = ["sh"]
   }
 

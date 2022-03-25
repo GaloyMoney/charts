@@ -32,22 +32,22 @@ spec:
               protocol: TCP
           env:
           - name: DB_HOST
-            value: postgresql
+            value: {{ .Values.history.postgresqlHost }}
           - name: DB_PWD
             valueFrom:
               secretKeyRef:
                 name: price-history-postgres-creds
-                key: postgres-password
+                key: password
           - name: DB_USER
             valueFrom:
               secretKeyRef:
                 name: price-history-postgres-creds
-                key: postgres-username
+                key: username
           - name: DB_DB
             valueFrom:
               secretKeyRef:
                 name: price-history-postgres-creds
-                key: postgres-database
+                key: database
           volumeMounts:
             - name: custom-yaml
               mountPath: "/var/yaml/"

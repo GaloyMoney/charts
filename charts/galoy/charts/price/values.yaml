@@ -74,6 +74,7 @@ tolerations: []
 affinity: {}
 
 history:
+  valuesOverride: {}
   secrets:
     create: false
   image:
@@ -86,3 +87,10 @@ history:
   migrateImage:
     repository: us.gcr.io/galoy-org/price-history-migrate
     digest: sha256:7ad56e19620fadd1e4c5cf564b9cfe8c448fe2beac556660ae2bf052bc0a2b18
+  postgresqlHost: price-history-postgresql
+
+postgresql:
+  enabled: true
+  auth:
+    username: price-history
+    database: price-history

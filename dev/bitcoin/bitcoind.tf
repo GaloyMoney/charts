@@ -10,9 +10,9 @@ resource "kubernetes_secret" "bitcoind" {
 }
 
 resource "helm_release" "bitcoind" {
-  name       = "bitcoind"
-  chart      = "${path.module}/../../charts/bitcoind"
-  namespace  = kubernetes_namespace.bitcoin.metadata[0].name
+  name      = "bitcoind"
+  chart     = "${path.module}/../../charts/bitcoind"
+  namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
   values = [
     file("${path.module}/bitcoind-values.yml")

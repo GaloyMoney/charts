@@ -11,9 +11,9 @@ resource "kubernetes_namespace" "monitoring" {
 }
 
 resource "helm_release" "monitoring" {
-  name       = "monitoring"
-  chart      = "${path.module}/../../charts/monitoring"
-  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+  name      = "monitoring"
+  chart     = "${path.module}/../../charts/monitoring"
+  namespace = kubernetes_namespace.monitoring.metadata[0].name
 
   values = [
     file("${path.module}/monitoring-values.yml")
