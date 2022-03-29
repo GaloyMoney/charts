@@ -59,8 +59,6 @@ price:
   postgresql:
     auth:
       enablePostgresUser: false
-  history:
-    postgresqlHost: galoy-postgresql
   service:
     type: NodePort
 

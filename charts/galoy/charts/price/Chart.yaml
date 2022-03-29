@@ -27,7 +27,7 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.1.9
-  condition: history.postgresql.enabled
+  condition: postgresql.enabled
 - name: common
   version: 1.8.0
   repository: https://charts.bitnami.com/bitnami
