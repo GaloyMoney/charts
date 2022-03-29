@@ -72,3 +72,24 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+history:
+  valuesOverride: {}
+  image:
+    repository: us.gcr.io/galoy-org/price-history
+    digest: "sha256:93c49a22bf13f831cbb97a627852dc72849b3cd1358c780eba09e7aa1f9921e8"
+  service:
+    type: ClusterIP
+    prometheus: 9464
+    grpc: 50052
+  migrateImage:
+    repository: us.gcr.io/galoy-org/price-history-migrate
+    digest: sha256:7ad56e19620fadd1e4c5cf564b9cfe8c448fe2beac556660ae2bf052bc0a2b18
+  postgresqlHost: price-history-postgresql
+
+postgresql:
+  enabled: true
+  auth:
+    username: price-history
+    database: price-history
+    existingSecret: galoy-price-history-postgres-creds

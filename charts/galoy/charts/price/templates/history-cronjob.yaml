@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "price.fullname" . }}-history-cronjob
+  labels:
+    app.kubernetes.io/managed-by: Helm
+spec:
+  schedule: "2 * * * *"
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 60
+      template:
+        spec:
+          containers:
+          - name: update-price
+            image: "{{ .Values.history.image.repository }}@{{ .Values.history.image.digest }}"
+            args:
+            - "servers/history/cron.js"
+            env:
+            - name: DB_HOST
+              value: postgresql
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "price.fullname" . }}-history-postgres-creds
+                  key: password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "price.fullname" . }}-history-postgres-creds
+                  key: username
+            - name: DB_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "price.fullname" . }}-history-postgres-creds
+                  key: database
+            volumeMounts:
+            - name: custom-yaml
+              mountPath: "/var/yaml/"
+          volumes:
+          - name: custom-yaml
+            secret:
+              secretName: {{ include "price.fullname" . }}-history-config
+          restartPolicy: OnFailure

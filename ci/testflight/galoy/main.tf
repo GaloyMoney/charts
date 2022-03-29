@@ -14,6 +14,10 @@ locals {
   testflight_namespace = var.testflight_namespace
   smoketest_kubeconfig = var.smoketest_kubeconfig
   backups_sa_creds     = var.testflight_backups_creds
+
+  postgres_database = "price-history"
+  postgres_username = "price-history"
+  postgres_password = "price-history"
 }
 
 data "kubernetes_secret" "network" {
@@ -201,6 +205,19 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
+resource "kubernetes_secret" "price_history_postgres_creds" {
+  metadata {
+    name      = "galoy-price-history-postgres-creds"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    username          = local.postgres_username
+    password          = local.postgres_password
+    database          = local.postgres_database
+  }
+}
+
 resource "helm_release" "galoy" {
   name       = "galoy"
   chart      = "${path.module}/chart"
@@ -216,7 +233,8 @@ resource "helm_release" "galoy" {
     kubernetes_secret.lnd1_credentials,
     kubernetes_secret.lnd1_pubkey,
     kubernetes_secret.lnd2_credentials,
-    kubernetes_secret.lnd2_pubkey
+    kubernetes_secret.lnd2_pubkey,
+    kubernetes_secret.price_history_postgres_creds
   ]
 
   dependency_update = true

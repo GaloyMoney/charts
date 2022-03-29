@@ -6,6 +6,10 @@ locals {
   bitcoin_secret      = "bitcoind-rpcpassword"
   dev_apollo_key      = "dev_apollo_key"
   dev_apollo_graph_id = "dev_apollo_graph_id"
+
+  postgres_database = "price-history"
+  postgres_username = "price-history"
+  postgres_password = "price-history"
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -194,8 +198,22 @@ resource "helm_release" "galoy" {
     kubernetes_secret.lnd1_credentials,
     kubernetes_secret.lnd1_pubkey,
     kubernetes_secret.lnd2_credentials,
-    kubernetes_secret.lnd2_pubkey
+    kubernetes_secret.lnd2_pubkey,
+    kubernetes_secret.price_history_postgres_creds
   ]
 
   dependency_update = true
+}
+
+resource "kubernetes_secret" "price_history_postgres_creds" {
+  metadata {
+    name      = "galoy-price-history-postgres-creds"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    username          = local.postgres_username
+    password          = local.postgres_password
+    database          = local.postgres_database
+  }
 }

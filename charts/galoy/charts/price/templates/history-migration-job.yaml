@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "price.fullname" . }}-history-postgres-migrate
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: "{{ .Values.history.migrateImage.repository }}@{{ .Values.history.migrateImage.digest }}"
+        env:
+        - name: DB_HOST
+          value: {{ .Values.history.postgresqlHost }}
+        - name: DB_PWD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "price.fullname" . }}-history-postgres-creds
+              key: password
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "price.fullname" . }}-history-postgres-creds
+              key: username
+        - name: DB_DB
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "price.fullname" . }}-history-postgres-creds
+              key: database
+      restartPolicy: Never
