@@ -149,3 +149,6 @@ devDisableMongoBackup: false
 dealer_price:
   host: dealer-price.namespace.svc.cluster.local
   port: 50055
+price:
+  history:
+    postgresqlHost: galoy-postgresql

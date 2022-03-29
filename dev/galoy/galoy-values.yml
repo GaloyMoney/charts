@@ -56,9 +56,6 @@ cron: []
 twilio: false
 
 price:
-  postgresql:
-   auth:
-    existingSecret: price-history-postgres-creds
   history:
     postgresqlHost: galoy-postgresql
   service:

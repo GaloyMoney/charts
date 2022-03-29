@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "priceHistory.fullname" . }}
+  name: {{ include "price.fullname" . }}-history
   labels:
     {{- include "priceHistory.labels" . | nindent 4 }}
     kube-monkey/enabled: enabled
@@ -36,17 +36,17 @@ spec:
           - name: DB_PWD
             valueFrom:
               secretKeyRef:
-                name: price-history-postgres-creds
+                name: {{ include "price.fullname" . }}-history-postgres-creds
                 key: password
           - name: DB_USER
             valueFrom:
               secretKeyRef:
-                name: price-history-postgres-creds
+                name: {{ include "price.fullname" . }}-history-postgres-creds
                 key: username
           - name: DB_DB
             valueFrom:
               secretKeyRef:
-                name: price-history-postgres-creds
+                name: {{ include "price.fullname" . }}-history-postgres-creds
                 key: database
           volumeMounts:
             - name: custom-yaml
@@ -65,4 +65,4 @@ spec:
       volumes:
       - name: custom-yaml
         secret:
-          secretName: {{ include "priceHistory.fullname" . }}-config
+          secretName: {{ include "price.fullname" . }}-history-config

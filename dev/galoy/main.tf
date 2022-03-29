@@ -207,7 +207,7 @@ resource "helm_release" "galoy" {
 
 resource "kubernetes_secret" "price_history_postgres_creds" {
   metadata {
-    name      = "price-history-postgres-creds"
+    name      = "galoy-price-history-postgres-creds"
     namespace = kubernetes_namespace.galoy.metadata[0].name
   }
 

@@ -75,8 +75,6 @@ affinity: {}
 
 history:
   valuesOverride: {}
-  secrets:
-    create: false
   image:
     repository: us.gcr.io/galoy-org/price-history
     digest: "sha256:93c49a22bf13f831cbb97a627852dc72849b3cd1358c780eba09e7aa1f9921e8"
@@ -94,3 +92,4 @@ postgresql:
   auth:
     username: price-history
     database: price-history
+    existingSecret: galoy-price-history-postgres-creds
