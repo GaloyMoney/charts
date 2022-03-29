@@ -214,7 +214,6 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   data = {
     username          = local.postgres_username
     password          = local.postgres_password
-    postgres-password = local.postgres_password
     database          = local.postgres_database
   }
 }
