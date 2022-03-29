@@ -90,6 +90,7 @@ history:
 postgresql:
   enabled: true
   auth:
+    enablePostgresUser: false
     username: price-history
     database: price-history
     existingSecret: galoy-price-history-postgres-creds
