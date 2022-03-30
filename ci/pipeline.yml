@@ -58,6 +58,7 @@ groups:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
+  - update-helm-deps
 - name: auth
   jobs:
   - galoy-auth-testflight
@@ -179,21 +180,22 @@ jobs:
       run:
         path: pipeline-tasks/ci/tasks/open-lnd-sidecar-bump-pr.sh
 
-  - name: update-helm-deps
-    plan:
-    - in_parallel:
-      - get: 1d
-        trigger: true
-      - get: charts-repo
-    - task: update-helm-deps
-      config:
-        platform: linux
-        image_resource: #@ task_image_config()
-        inputs:
-        - name: pipeline-tasks
-        - name: charts-repo
-        run:
-          path: pipeline-tasks/ci/tasks/update-helm-deps.sh
+- name: update-helm-deps
+  plan:
+  - in_parallel:
+    - get: one-day
+      trigger: true
+    - get: charts-repo
+    - get: pipeline-tasks
+  - task: update-helm-deps
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: charts-repo
+      run:
+        path: pipeline-tasks/ci/tasks/update-helm-deps.sh
 
 resources:
 #@ for chart in bitcoin_charts:
@@ -234,7 +236,7 @@ resources:
   source:
     paths: [ci/tasks/*, ci/testflight/*, Makefile]
     uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
+    branch: update-helm-deps
     private_key: #@ data.values.github_private_key
 
 - name: galoy-deployments
@@ -283,10 +285,10 @@ resources:
     branch: #@ data.values.git_lnd_sidecar_bot_branch
     private_key: #@ data.values.github_private_key
 
-- name: 1d
+- name: one-day
   type: time
   source:
-    interval: 1d
+    interval: 24h
 
 resource_types:
 - name: terraform
