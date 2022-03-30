@@ -179,6 +179,22 @@ jobs:
       run:
         path: pipeline-tasks/ci/tasks/open-lnd-sidecar-bump-pr.sh
 
+  - name: update-helm-deps
+    plan:
+    - in_parallel:
+      - get: 1d
+        trigger: true
+      - get: charts-repo
+    - task: update-helm-deps
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+        - name: pipeline-tasks
+        - name: charts-repo
+        run:
+          path: pipeline-tasks/ci/tasks/update-helm-deps.sh
+
 resources:
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
@@ -266,6 +282,11 @@ resources:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_lnd_sidecar_bot_branch
     private_key: #@ data.values.github_private_key
+
+- name: 1d
+  type: time
+  source:
+    interval: 1d
 
 resource_types:
 - name: terraform
