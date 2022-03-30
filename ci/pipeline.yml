@@ -194,8 +194,27 @@ jobs:
       inputs:
       - name: pipeline-tasks
       - name: charts-repo
+      outputs:
+      - name: charts-repo
       run:
         path: pipeline-tasks/ci/tasks/update-helm-deps.sh
+  - put: update-helm-deps-bot-branch
+    params:
+      repository: charts-repo
+      force: true
+  - task: open-bump-pr
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      params:
+        GH_TOKEN: #@ data.values.github_token
+        BRANCH: #@ data.values.git_branch
+        BOT_BRANCH: #@ data.values.git_update_helm_deps_bot_branch
+      inputs:
+      - name: pipeline-tasks
+      - name: charts-repo
+      run:
+        path: pipeline-tasks/ci/tasks/open-update-helm-deps-pr.sh
 
 resources:
 #@ for chart in bitcoin_charts:
@@ -283,6 +302,13 @@ resources:
   source:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_lnd_sidecar_bot_branch
+    private_key: #@ data.values.github_private_key
+
+- name: update-helm-deps-bot-branch
+  type: git
+  source:
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_update_helm_deps_bot_branch
     private_key: #@ data.values.github_private_key
 
 - name: one-day
