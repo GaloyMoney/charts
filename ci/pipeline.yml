@@ -255,7 +255,7 @@ resources:
   source:
     paths: [ci/tasks/*, ci/testflight/*, Makefile]
     uri: #@ data.values.git_uri
-    branch: update-helm-deps
+    branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
 - name: galoy-deployments
