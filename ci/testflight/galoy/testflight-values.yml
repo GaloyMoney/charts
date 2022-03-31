@@ -40,5 +40,6 @@ dealer_price:
 
 price:
   postgresql:
-    persistence:
-      enabled: false
+    primary:
+      persistence:
+        enabled: false
