@@ -56,9 +56,6 @@ cron: []
 twilio: false
 
 price:
-  postgresql:
-    auth:
-      enablePostgresUser: false
   service:
     type: NodePort
 
