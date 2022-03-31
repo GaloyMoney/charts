@@ -14,10 +14,10 @@ engine: gotpl
 dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
-    version: 1.4.1
+    version: 1.13.0
   - name: loop
-    version: x.x.x
+    version: ""
     condition: loop.enabled
   - name: lndmon
-    version: x.x.x
+    version: ""
     condition: lndmon.enabled
