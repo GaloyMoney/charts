@@ -53,10 +53,10 @@ DEPS_DIR=$(mktemp -d -t deps.XXXXXX)
 
 for d in */ ; do
   pushd $d > /dev/null
-  DEPS=$(helm dependency list | tail -n +2 | grep -v WARNING | xargs -n 4)
   TMPFILE=$(mktemp /tmp/helm-update.XXXXXXX) || exit 1
 
-  echo $DEPS | xargs -n 4 | awk '{ print $1,$3 }' > $TMPFILE
+  helm dependency list | grep -v WARNING | tail -n +2 | awk '{ print $1, $3 }'> $TMPFILE
+
   if [[ $(cat $TMPFILE | grep \\.) == "" ]]; then
     popd > /dev/null
     continue
