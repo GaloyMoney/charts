@@ -18,7 +18,6 @@ if [[ -z $(git config --global user.name) ]]; then
 fi
 
 cd $(git rev-parse --show-toplevel)
-git merge --no-edit ${BRANCH}
 git add -A
 git status
 
