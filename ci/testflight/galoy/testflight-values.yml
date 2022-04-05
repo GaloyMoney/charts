@@ -38,6 +38,11 @@ lnd2:
 dealer_price:
   host: dealer-price.galoy-staging-addons.svc.cluster.local
 
+postgresql:
+  primary:
+    persistence:
+      enabled: false
+
 price:
   postgresql:
     primary:
