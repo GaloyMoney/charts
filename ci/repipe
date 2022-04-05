@@ -123,6 +123,7 @@ EOF
       outputs:
       - name: helm-${dep}-resource
         path: helm-resource
+      - name: charts-repo
       params:
         DEP: ${dep}
         DIR: ${dir}
@@ -131,6 +132,7 @@ EOF
   - put: update-helm-${dep}-${dir}-bot-branch
     params:
       repository: charts-repo
+      branch: helm-${dep}-${dir}-bot-branch
       force: true
   - task: open-bump-pr
     config:
