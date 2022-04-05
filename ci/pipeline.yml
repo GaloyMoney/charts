@@ -284,3 +284,9 @@ resource_types:
   type: docker-image
   source:
     repository: cfcommunity/slack-notification-resource
+
+- name: helm
+  type: docker-image
+  source:
+    repository: #@ data.values.docker_registry + "/helm-resource"
+    tag: edge
