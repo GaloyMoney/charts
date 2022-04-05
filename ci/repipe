@@ -69,7 +69,7 @@ for d in */ ; do
 
     if [[ $(echo $repo | grep http) == "" ]]; then continue; fi
 
-    foldername=$(echo $DEPS_DIR/$dep-$(echo $repo | sha256sum | head -c 10))
+    foldername=$(echo $DEPS_DIR/$dep-$(echo $repo | shasum -a 256 | head -c 10))
     mkdir -p $foldername
     echo $d >> $foldername/folders
 
@@ -101,7 +101,7 @@ for d in */ ; do
 EOF
 
   while read p; do
-    dir="${p:0:-1}"
+    dir=$(echo $p | rev | cut -c2- | rev)
 
     cat <<EOF >> $CIJOBS
 - name: bump-${dep}-${dir}-chart
