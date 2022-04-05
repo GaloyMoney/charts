@@ -27,10 +27,6 @@ trap "rm -rf ${TMPDIR}" INT TERM QUIT EXIT
 CIJOBS=$(mktemp /tmp/ci-jobs.XXXXXXX) || exit 1
 CIRESOURCES=$(mktemp /tmp/ci-resources.XXXXXXX) || exit 1
 
-cat <<EOF >$CIRESOURCES
-resources:
-EOF
-
 cat <<EOF >$CIJOBS
 #@ load("@ytt:data", "data")
 
@@ -45,9 +41,11 @@ source:
   password: #@ data.values.docker_registry_password
   repository: #@ pipeline_image()
 #@ end
-
-jobs:
 EOF
+cat $CIJOBS > $CIRESOURCES
+
+echo "resources:" >> $CIRESOURCES
+echo "jobs:" >> $CIJOBS
 
 pushd charts > /dev/null
 
@@ -121,11 +119,42 @@ EOF
         path: helm-resource
       - name: charts-repo
       - name: pipeline-tasks
+      outputs:
+      - name: helm-${dep}-resource
+        path: helm-resource
       params:
         DEP: ${dep}
         DIR: ${dir}
       run:
         path: pipeline-tasks/ci/tasks/update-helm-dep.sh
+  - put: update-helm-${dep}-${dir}-bot-branch
+    params:
+      repository: charts-repo
+      force: true
+  - task: open-bump-pr
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      params:
+        GH_TOKEN: #@ data.values.github_token
+        BRANCH: #@ data.values.git_branch
+        BOT_BRANCH: helm-${dep}-${dir}-bot-branch
+        DEP: ${dep}
+        DIR: ${dir}
+      inputs:
+      - name: pipeline-tasks
+      - name: charts-repo
+      run:
+        path: pipeline-tasks/ci/tasks/open-update-helm-deps-pr.sh
+EOF
+
+    cat <<EOF >> $CIRESOURCES
+- name: update-helm-${dep}-${dir}-bot-branch
+  type: git
+  source:
+    uri: #@ data.values.git_uri
+    branch: helm-${dep}-${dir}-bot-branch
+    private_key: #@ data.values.github_private_key
 EOF
   done <folders
 
@@ -139,11 +168,16 @@ ytt -f temp.yml \
   -f ci/values.yml > ${TMPDIR}/update-jobs.yml
 rm temp.yml
 
+cat $CIRESOURCES > temp.yml
+ytt -f temp.yml \
+  -f ci/values.yml > ${TMPDIR}/update-resources.yml
+rm temp.yml
+
 ytt -f ci/pipeline.yml \
   -f ci/pipeline-fragments.lib.yml \
   -f ci/values.yml > ${TMPDIR}/pipeline.yml
 
-UPDATE_RESOURCES=$(cat $CIRESOURCES | yq '.resources' -o=json)
+UPDATE_RESOURCES=$(cat ${TMPDIR}/update-resources.yml | yq '.resources' -o=json)
 yq -i ".resources += $UPDATE_RESOURCES" ${TMPDIR}/pipeline.yml
 
 UPDATE_JOBS=$(cat ${TMPDIR}/update-jobs.yml | yq '.jobs' -o=json)
