@@ -108,6 +108,7 @@ EOF
   plan:
   - in_parallel:
     - get: helm-${dep}-resource
+      trigger: true
     - get: charts-repo
     - get: pipeline-tasks
   - task: update-task
