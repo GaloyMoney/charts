@@ -202,6 +202,8 @@ resource "kubernetes_secret" "smoketest" {
   data = {
     galoy_endpoint = "api.${local.testflight_namespace}.svc.cluster.local"
     galoy_port     = 4002
+    price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
+    price_history_port = 50052
   }
 }
 
