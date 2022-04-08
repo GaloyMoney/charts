@@ -42,6 +42,8 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   kubectl -n ${namespace} delete job "${job_name}"
 fi
 
+# The following health.proto file has been copied from
+# https://github.com/GaloyMoney/price/blob/main/history/src/servers/protos/health.proto
 cat << EOF > health.proto
 syntax = "proto3";
 
