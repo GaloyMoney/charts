@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "price.fullname" . }}-history-postgres-migrate
+  name: {{ include "price.fullname" . }}-history-postgres-migrate-{{ .Release.Revision }}
 spec:
   backoffLimit: 3
   template:
