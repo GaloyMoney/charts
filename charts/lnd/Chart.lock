@@ -1,12 +1,12 @@
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
-  version: 1.13.1
+  version: 1.13.0
 - name: loop
   repository: ""
   version: x.x.x
 - name: lndmon
   repository: ""
   version: x.x.x
-digest: sha256:4521bb716af6c0b976f71e733e7f4ba9e28e19828d2e5c469e654354a7f1abf0
-generated: "2022-04-20T08:34:00.029854922Z"
+digest: sha256:dbccc33a99703dced12d843ed7129a768ec65563c4556bcff54c05f61b99c976
+generated: "2022-04-21T18:29:41.642316286Z"
