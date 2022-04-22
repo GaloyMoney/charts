@@ -75,7 +75,7 @@ cron:
     schedule: "0 14 * * *"
 mongobackup:
   bucketName: galoy-staging-backups
-  mongoToolsVersion: 4.2.9-r0
+  mongoToolsVersion: 4.2.14-r6
 loglevel: debug
 needFirebaseServiceAccount: true
 twilio: true
