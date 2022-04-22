@@ -511,6 +511,20 @@ entries:
   rtl:
     - apiVersion: v2
       appVersion: 0.10.2
+      created: "2022-04-22T10:04:58.553878437Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.13.0
+      description: A Helm chart for Kubernetes
+      digest: 84601244db887551a02a3385aa524155c164f425a710601680c35a61b28a76d2
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.1.2/rtl-0.1.2.tgz
+      version: 0.1.2
+    - apiVersion: v2
+      appVersion: 0.10.2
       created: "2022-04-08T07:02:25.467041169Z"
       dependencies:
         - name: common
@@ -2350,4 +2364,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-04-22T08:41:20.144683621Z"
+generated: "2022-04-22T10:04:58.553944509Z"
