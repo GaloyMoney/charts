@@ -2,13 +2,13 @@
 
 set -eu
 
-export digest=$(cat ./lnd-sidecar-image/digest)
-export ref=$(cat ./lnd-sidecar-image-def/.git/short_ref)
+export digest=$(cat ./image/digest)
+export ref=$(cat ./image-def/.git/short_ref)
 
 pushd charts-repo
 
-yq -i e '.sidecarImage.digest = strenv(digest)' ./charts/lnd/values.yaml
-yq -i e '.sidecarImage.git_ref = strenv(ref)' ./charts/lnd/values.yaml
+yq -i e '.${IMAGE_KEY_PATH}.digest = strenv(digest)' ./charts/${CHART}/values.yaml
+yq -i e '.${IMAGE_KEY_PATH}.git_ref = strenv(ref)' ./charts/${CHART}/values.yaml
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
@@ -22,5 +22,5 @@ fi
   git merge --no-edit ${BRANCH}
   git add -A
   git status
-  git commit -m "chore(deps): bump lnd sidecar image to '${digest}'"
+  git commit -m "chore(deps): bump ${IMAGE} image to '${digest}'"
 )

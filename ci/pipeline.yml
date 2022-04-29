@@ -151,15 +151,20 @@ jobs:
       image_resource: #@ task_image_config()
       inputs:
       - name: lnd-sidecar-image
+        path: image
       - name: lnd-sidecar-image-def
+        path: image-def
       - name: pipeline-tasks
       - name: charts-repo
       outputs:
       - name: charts-repo
       params:
         BRANCH: #@ data.values.git_branch
+        IMAGE_KEY_PATH: sidecarImage
+        IMAGE: lnd-sidecar
+        CHART: lnd
       run:
-        path: pipeline-tasks/ci/tasks/bump-lnd-sidecar-image-digest.sh
+        path: pipeline-tasks/ci/tasks/bump-image-digest.sh
   - put: lnd-sidecar-bot-branch
     params:
       repository: charts-repo
@@ -171,13 +176,17 @@ jobs:
       inputs:
       - name: pipeline-tasks
       - name: lnd-sidecar-image
+        path: image
       - name: charts-repo
       params:
         GH_TOKEN: #@ data.values.github_token
         BRANCH: #@ data.values.git_branch
         BOT_BRANCH: #@ data.values.git_lnd_sidecar_bot_branch
+        IMAGE_KEY_PATH: sidecarImage
+        IMAGE: lnd-sidecar
+        CHART: lnd
       run:
-        path: pipeline-tasks/ci/tasks/open-lnd-sidecar-bump-pr.sh
+        path: pipeline-tasks/ci/tasks/open-image-bump-pr.sh
 
 resources:
 #@ for chart in bitcoin_charts:

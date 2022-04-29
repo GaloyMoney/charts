@@ -2,18 +2,18 @@
 
 set -eu
 
-digest=$(cat ./lnd-sidecar-image/digest)
+digest=$(cat ./image/digest)
 
 pushd charts-repo
 
-ref=$(yq e '.sidecarImage.git_ref' charts/lnd/values.yaml)
+ref=$(yq e '.${IMAGE_KEY_PATH}.git_ref' charts/${CHART}/values.yaml)
 git checkout ${BRANCH}
-old_ref=$(yq e '.sidecarImage.git_ref' charts/lnd/values.yaml)
+old_ref=$(yq e '.${IMAGE_KEY_PATH}.git_ref' charts/${CHART}/values.yaml)
 
 cat <<EOF >> ../body.md
-# Bump lnd sidecar image
+# Bump ${IMAGE} image
 
-The lnd sidecar image will be bumped to digest:
+The ${IMAGE} image will be bumped to digest:
 \`\`\`
 ${digest}
 \`\`\`
@@ -25,9 +25,9 @@ EOF
 
 gh pr close ${BOT_BRANCH} || true
 gh pr create \
-  --title "chore(deps): bump-lnd-sidecar-image-${ref}" \
+  --title "chore(deps): bump-${IMAGE}-image-${ref}" \
   --body-file ../body.md \
   --base ${BRANCH} \
   --head ${BOT_BRANCH} \
   --label galoybot \
-  --label lnd
+  --label ${CHART}
