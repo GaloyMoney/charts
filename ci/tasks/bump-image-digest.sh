@@ -7,8 +7,8 @@ export ref=$(cat ./image-def/.git/short_ref)
 
 pushd charts-repo
 
-yq -i e '.${IMAGE_KEY_PATH}.digest = strenv(digest)' ./charts/${CHART}/values.yaml
-yq -i e '.${IMAGE_KEY_PATH}.git_ref = strenv(ref)' ./charts/${CHART}/values.yaml
+yq -i e ".${IMAGE_KEY_PATH}.digest = strenv(digest)" ./charts/${CHART}/values.yaml
+yq -i e ".${IMAGE_KEY_PATH}.git_ref = strenv(ref)" ./charts/${CHART}/values.yaml
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
