@@ -3,6 +3,7 @@
 #@ load("pipeline-fragments.lib.yml",
 #@   "chain_dl_image",
 #@   "lnd_sidecar_image",
+#@   "mongo_backup_image",
 #@   "testflight_job",
 #@   "bump_in_deployments_job",
 #@   "chart_repo_resource",
@@ -67,6 +68,7 @@ groups:
   - build-chain-dl-image
   - build-lnd-sidecar-image
   - bump-lnd-sidecar-image-in-chart
+  - build-mongo-backup-image
 
 jobs:
 #@ for chart in bitcoin_charts:
@@ -188,6 +190,30 @@ jobs:
       run:
         path: pipeline-tasks/ci/tasks/open-image-bump-pr.sh
 
+- name: build-mongo-backup-image
+  serial: true
+  plan:
+  - {get: mongo-backup-image-def, trigger: true}
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: mongo-backup-image-def
+      outputs:
+      - name: image
+      params:
+        CONTEXT: mongo-backup-image-def/images/mongo-backup
+      run:
+        path: build
+  - put: mongo-backup-image
+    params:
+      image: image/image.tar
+
 resources:
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
@@ -265,6 +291,22 @@ resources:
   type: git
   source:
     paths: [images/lnd-sidecar/Dockerfile]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: mongo-backup-image
+  type: registry-image
+  source:
+    tag: latest
+    username: #@ data.values.docker_registry_user
+    password: #@ data.values.docker_registry_password
+    repository: #@ mongo_backup_image()
+
+- name: mongo-backup-image-def
+  type: git
+  source:
+    paths: [images/mongo-backup/Dockerfile]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
