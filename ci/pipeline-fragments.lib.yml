@@ -12,6 +12,10 @@
 #@   return data.values.docker_registry + "/lnd-sidecar"
 #@ end
 
+#@ def mongo_backup_image():
+#@   return data.values.docker_registry + "/mongo-backup"
+#@ end
+
 #@ def task_image_config():
 type: registry-image
 source:
@@ -58,7 +62,7 @@ plan:
     run:
       path: pipeline-tasks/ci/tasks/prepare-testflight.sh
 - put: #@ "tf-" + chart + "-testflight"
-  tags: 
+  tags:
     - #@ data.values.staging_worker_tag
   params:
     vars_files: [ testflight/tf/terraform.tfvars ]
@@ -66,7 +70,7 @@ plan:
     env_name_file: testflight/env_name
     vars: #@ vars
 - task: get-smoketest-settings
-  tags: 
+  tags:
     - #@ data.values.staging_worker_tag
   config:
     platform: linux
@@ -83,7 +87,7 @@ plan:
     run:
       path: pipeline-tasks/ci/tasks/get-smoketest-settings.sh
 - task: smoketest
-  tags: 
+  tags:
     - #@ data.values.staging_worker_tag
   config:
     platform: linux
@@ -96,7 +100,7 @@ plan:
     run:
       path: #@ "pipeline-tasks/ci/tasks/" + chart + "-smoketest.sh"
 - put: #@ "tf-" + chart + "-testflight"
-  tags: 
+  tags:
     - #@ data.values.staging_worker_tag
   params:
     vars_files: [ testflight/tf/terraform.tfvars ]
