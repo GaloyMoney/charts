@@ -6,9 +6,9 @@ digest=$(cat ./image/digest)
 
 pushd charts-repo
 
-ref=$(yq e '.${IMAGE_KEY_PATH}.git_ref' charts/${CHART}/values.yaml)
+ref=$(yq e ".${IMAGE_KEY_PATH}.git_ref" charts/${CHART}/values.yaml)
 git checkout ${BRANCH}
-old_ref=$(yq e '.${IMAGE_KEY_PATH}.git_ref' charts/${CHART}/values.yaml)
+old_ref=$(yq e ".${IMAGE_KEY_PATH}.git_ref" charts/${CHART}/values.yaml)
 
 cat <<EOF >> ../body.md
 # Bump ${IMAGE} image
