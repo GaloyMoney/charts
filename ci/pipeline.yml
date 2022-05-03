@@ -69,6 +69,7 @@ groups:
   - build-lnd-sidecar-image
   - bump-lnd-sidecar-image-in-chart
   - build-mongo-backup-image
+  - bump-mongo-backup-image-in-chart
 
 jobs:
 #@ for chart in bitcoin_charts:
@@ -214,6 +215,62 @@ jobs:
     params:
       image: image/image.tar
 
+- name: bump-mongo-backup-image-in-chart
+  plan:
+  - in_parallel:
+    - get: mongo-backup-image
+      trigger: true
+      passed: [build-mongo-backup-image]
+      params: { skip_download: true }
+    - get: mongo-backup-image-def
+      trigger: true
+      passed: [build-mongo-backup-image]
+    - get: charts-repo
+      params: { skip_download: true }
+    - get: pipeline-tasks
+  - task: bump-image-digest-in-values
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: mongo-backup-image
+        path: image
+      - name: mongo-backup-image-def
+        path: image-def
+      - name: pipeline-tasks
+      - name: charts-repo
+      outputs:
+      - name: charts-repo
+      params:
+        BRANCH: #@ data.values.git_branch
+        IMAGE_KEY_PATH: mongobackup.image
+        IMAGE: mongo-backup
+        CHART: galoy
+      run:
+        path: pipeline-tasks/ci/tasks/bump-image-digest.sh
+  - put: mongo-backup-bot-branch
+    params:
+      repository: charts-repo
+      force: true
+  - task: open-charts-pr
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: mongo-backup-image
+        path: image
+      - name: charts-repo
+      params:
+        GH_TOKEN: #@ data.values.github_token
+        BRANCH: #@ data.values.git_branch
+        BOT_BRANCH: #@ data.values.git_mongo_backup_bot_branch
+        IMAGE_KEY_PATH: mongobackup.image
+        IMAGE: mongo-backup
+        CHART: galoy
+      run:
+        path: pipeline-tasks/ci/tasks/open-image-bump-pr.sh
+
 resources:
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
@@ -316,6 +373,13 @@ resources:
   source:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_lnd_sidecar_bot_branch
+    private_key: #@ data.values.github_private_key
+
+- name: mongo-backup-bot-branch
+  type: git
+  source:
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_mongo_backup_bot_branch
     private_key: #@ data.values.github_private_key
 
 resource_types:
