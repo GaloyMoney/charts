@@ -140,6 +140,7 @@ plan:
     params:
       CHART: #@ chart
       BRANCH: #@ data.values.deployments_git_branch
+      GITHUB_SSH_KEY: #@ data.values.github_private_key
     run:
       path: pipeline-tasks/ci/tasks/bump-chart.sh
 #@ if chart == "dealer":
