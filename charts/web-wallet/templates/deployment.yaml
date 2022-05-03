@@ -50,17 +50,15 @@ spec:
           value: {{ .Values.webWallet.bitcoinNetwork }}
         - name: SUPPORT_EMAIL
           value: {{ .Values.webWallet.supportEmail }}
-        - name: GRAPHQL_URI
-          value: {{ .Values.webWallet.graphqlUri }}
-        - name: GRAPHQL_SUBSCRIPTION_URI
-          value: {{ .Values.webWallet.graphqlSubscriptionUri }}
+        - name: GRAPHQL_URL
+          value: {{ .Values.webWallet.graphqlUrl }}
+        - name: GRAPHQL_SUBSCRIPTION_URL
+          value: {{ .Values.webWallet.graphqlSubscriptionUrl }}
         - name: AUTH_ENDPOINT
           value: {{ .Values.webWallet.authEndpoint }}
         - name: WALLET_NAME
           value: {{ .Values.webWallet.walletName }}
-        - name: WALLET_THEME
-          value: default
-        - name: SHARE_URI
+        - name: SHARE_URL
           value: {{ .Values.webWallet.galoyPayEndpoint }}
         {{- if eq .Values.webWallet.kratos.enabled true }}
         - name: KRATOS_API_URL
