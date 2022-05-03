@@ -76,6 +76,9 @@ cron:
 mongobackup:
   bucketName: galoy-staging-backups
   mongoToolsVersion: 4.2.14-r6
+  image:
+    digest: sha256:4cfc197ea082ef3dae2d4321a9dfa31ef185f43d578a37a224095b75de656e6a
+    git_ref: 872b70e
 loglevel: debug
 needFirebaseServiceAccount: true
 twilio: true
