@@ -14,7 +14,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: "mongodb-backup"
-            image: gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
+            image: "{{ .Values.mongobackup.image.repository }}@{{ .Values.mongobackup.image.digest }}"
             command: ["/bin/sh","-c", "/var/backup.sh"]
             volumeMounts:
             - name: mongo-backup-configmap
