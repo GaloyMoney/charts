@@ -12,8 +12,6 @@ data:
     {{- end }}
     echo "backup script starts"
     export BUCKET_NAME="{{ .Values.mongobackup.bucketName }}"
-    MONGO_TOOLS_VERSION="{{ .Values.mongobackup.mongoToolsVersion }}"
-    apk add --update --no-cache mongodb-tools=${MONGO_TOOLS_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
     set -e
     LOG_TIME=$(date +%s)
     BACKUP_NAME="$NETWORK-$LOG_TIME.gz"
