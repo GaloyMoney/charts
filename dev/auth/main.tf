@@ -29,4 +29,6 @@ resource "helm_release" "galoy_auth" {
   namespace = kubernetes_namespace.auth.metadata[0].name
 
   depends_on = [kubernetes_secret.auth_backend_secret]
+
+  dependency_update = true
 }
