@@ -24,3 +24,4 @@ data:
     tlsextraip={{ .Values.p2pService.staticIP }}
     externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
+    bitcoin.{{ .Values.global.network }}=true
