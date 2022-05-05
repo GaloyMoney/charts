@@ -1,0 +1,15 @@
+name: Chart Release Smoketest
+on:
+  push: 
+    branches:
+      - ci-chart-release-public-test
+
+jobs:
+  release_test:
+    name: Run Latest Images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start minikube
+        uses: medyagh/setup-minikube@master
+      - run: helm repo add galoy https://galoymoney.github.io/charts
