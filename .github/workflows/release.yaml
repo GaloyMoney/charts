@@ -13,3 +13,13 @@ jobs:
       - name: Start minikube
         uses: medyagh/setup-minikube@master
       - run: helm repo add galoy https://galoymoney.github.io/charts
+      - run: helm install galoy galoy/galoy
+      - run: helm install galoy-pay galoy/galoy-pay
+      - run: helm install bitcoind galoy/bitcoind
+      - run: helm install lnd galoy/lnd
+      - run: helm install dealer galoy/dealer
+      - run: helm install admin-panel galoy/admin-panel
+      - run: helm install monitoring galoy/monitoring
+      - run: helm install rtl galoy/rtl
+      - run: helm install specter galoy/specter
+      - run: helm install web-wallet galoy/web-wallet
