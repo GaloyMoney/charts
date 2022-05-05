@@ -10,6 +10,7 @@ data:
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
   {{- end }}
+    bitcoin.{{ .Values.global.network }}=true
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
   {{- end }}
