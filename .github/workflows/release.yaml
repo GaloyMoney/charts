@@ -22,12 +22,34 @@ jobs:
       - name: LND
         run: |
           helm install lnd galoy/lnd
-          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd --timeout=5m
+          sleep 60
+          kubectl get pods
+          kubectl logs lnd-0 lnd
+          sleep 60
+          kubectl get pods
+          kubectl logs lnd-0 lnd
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd
 
-      # - run: helm install galoy galoy/galoy
-      # - run: helm install galoy-pay galoy/galoy-pay
-      # - run: helm install dealer galoy/dealer
-      # - run: helm install admin-panel galoy/admin-panel
+      - name: Galoy
+        run: |
+          helm install galoy galoy/galoy
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=galoy
+
+      - name: Galoy Pay
+        run: |
+          helm install galoy-pay galoy/galoy-pay
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=galoy-pay
+
+      - name: Dealer
+        run: |
+          helm install dealer galoy/dealer
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=dealer
+
+      - name: Admin Panel
+        run: |
+          helm install admin-panel galoy/admin-panel
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=admin-panel
+
       # - run: helm install monitoring galoy/monitoring
       # - run: helm install rtl galoy/rtl
       # - run: helm install specter galoy/specter
