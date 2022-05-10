@@ -158,6 +158,14 @@ spec:
               mountPath: /tmp/lnd-pass
               subPath: password
             {{- end }}
+          startupProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            failureThreshold: 540
+            periodSeconds: 10
           readinessProbe:
             exec:
               command:
