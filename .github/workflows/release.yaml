@@ -28,7 +28,9 @@ jobs:
           sleep 60
           kubectl get pods
           kubectl logs lnd-0 lnd
-          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd >> /dev/null
+          kubectl get pods
+          kubectl logs lnd-0 lnd
 
       - name: Galoy
         run: |
