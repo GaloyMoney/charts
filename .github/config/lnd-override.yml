@@ -1,4 +1,0 @@
-configmap:
-  customValues:
-    - bitcoin.mainnet=true
-    - minchansize=50000

@@ -21,8 +21,8 @@ jobs:
 
       - name: LND
         run: |
-          helm install -f .github/config/lnd-override.yml lnd galoy/lnd
-          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd
+          helm install lnd galoy/lnd
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd --timeout=5m
 
       # - run: helm install galoy galoy/galoy
       # - run: helm install galoy-pay galoy/galoy-pay
