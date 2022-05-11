@@ -8,7 +8,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: rpc
-      port: {{ .Values.global.service.ports.rpc }}
+      port: {{ template "bitcoind.rpcPort" }}
     - name: p2p
       port: {{ .Values.service.ports.p2p }}
     - name: zmqpubrawtx

@@ -19,6 +19,19 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
+Port of Bitcoind for various networks
+*/}}
+{{- define "bitcoind.rpcPort" -}}
+{{- if eq .Values.global.network "testnet" -}}
+18332
+{{- else if eq .Values.global.network "mainnet" -}}
+8332
+{{- else -}}
+18443
+{{- end }}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "bitcoind.chart" -}}

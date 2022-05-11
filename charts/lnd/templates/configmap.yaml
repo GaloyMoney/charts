@@ -9,6 +9,8 @@ data:
   {{- if ne .Values.global.network "regtest" }}
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
+  {{- else }}
+    noseedbackup=1
   {{- end }}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
@@ -25,3 +27,4 @@ data:
     externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
     bitcoin.{{ .Values.global.network }}=true
+    bitcoind.rpchost=bitcoind:{{ template "bitcoind.rpcPort" . }}
