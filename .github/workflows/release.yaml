@@ -18,19 +18,15 @@ jobs:
         run: |
           helm install bitcoind galoy/bitcoind
           kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=bitcoind
+      
+      - name: Generate 1 Block (hack)
+        run: |
+          kubectl exec bitcoind-0 -c bitcoind -- bitcoin-cli generatetoaddress 1 bcrt1qxcpz7ytf3nwlhjay4n04nuz8jyg3hl4ud02t9t
 
       - name: LND
         run: |
           helm install lnd galoy/lnd
-          sleep 60
-          kubectl get pods
-          kubectl logs lnd-0 lnd
-          sleep 60
-          kubectl get pods
-          kubectl logs lnd-0 lnd
-          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd >> /dev/null
-          kubectl get pods
-          kubectl logs lnd-0 lnd
+          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd --timeout=60s
 
       - name: Galoy
         run: |
