@@ -10,7 +10,7 @@ spec:
     - name: rpc
       port: {{ template "bitcoind.rpcPort" }}
     - name: p2p
-      port: {{ .Values.service.ports.p2p }}
+      port: {{ template "bitcoind.p2pPort" . }}
     - name: zmqpubrawtx
       port: {{ .Values.service.ports.zmqpubrawtx }}
     - name: zmqpubrawblock
