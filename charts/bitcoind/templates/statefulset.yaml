@@ -71,7 +71,7 @@ spec:
             - name: rpc
               containerPort: {{ template "bitcoind.rpcPort" . }}
             - name: p2p
-              containerPort: {{ .Values.service.ports.p2p }}
+              containerPort: {{ template "bitcoind.p2pPort" . }}
             - name: zmqpubrawtx
               containerPort: {{ .Values.service.ports.zmqpubrawtx }}
             - name: zmqpubrawblock

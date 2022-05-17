@@ -1,8 +1,5 @@
 global:
   network: mainnet
-  service:
-    ports:
-      rpc: 8332
 
 secrets:
   create: true

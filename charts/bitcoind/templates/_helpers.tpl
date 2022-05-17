@@ -30,6 +30,15 @@ Port of Bitcoind for various networks
 18443
 {{- end }}
 {{- end }}
+{{- define "bitcoind.p2pPort" -}}
+{{- if eq .Values.global.network "testnet" -}}
+18333
+{{- else if eq .Values.global.network "mainnet" -}}
+8333
+{{- else -}}
+18444
+{{- end }}
+{{- end }}
 
 {{/*
 Create chart name and version as used by the chart label.
