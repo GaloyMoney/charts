@@ -74,12 +74,21 @@ cron:
     appEntrypoint: "lib/servers/daily-balance-notification.js"
     schedule: "0 14 * * *"
 mongobackup:
-  bucketName: galoy-staging-backups
-  mongoToolsVersion: 4.2.14-r6
   image:
     repository: us.gcr.io/galoy-org/mongo-backup
     digest: "sha256:4cfc197ea082ef3dae2d4321a9dfa31ef185f43d578a37a224095b75de656e6a"
     git_ref: 872b70e
+backup:
+  googlecloud:
+    enabled: true
+    bucketName: galoy-staging-backups
+    secretName: gcs-sa-key
+  dropbox:
+    enabled: true
+    secretName: dropbox-access-token
+  nextcloud:
+    enabled: false
+    secretName: nextcloud-credentials
 loglevel: debug
 needFirebaseServiceAccount: true
 twilio: true

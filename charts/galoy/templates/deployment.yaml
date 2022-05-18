@@ -51,8 +51,10 @@ spec:
             readOnly: true
           {{- end}}
           {{- if eq .name "trigger" }}
+          {{- if $.Values.backup.googlecloud.enabled }}
           - name: "service-account"
             mountPath: "/var/secret/cloud.google.com"
+          {{- end }}
           {{- end}}
           - name: "custom-yaml"
             mountPath: "/var/yaml/"
@@ -183,13 +185,34 @@ spec:
               value: "/tmp/firebase-serviceaccount/galoyapp-firebase-serviceaccount.json"
             {{- end }}
             {{- if eq .name "trigger" }}
+            {{- if $.Values.backup.googlecloud.enabled }}
             - name: "GCS_APPLICATION_CREDENTIALS"
               value: "/var/secret/cloud.google.com/gcs-sa-key.json"
+            {{- end }}
+            {{- if $.Values.backup.dropbox.enabled }}
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: dropbox-access-token
+                  name: {{ $.Values.backup.dropbox.secretName }}
                   key: token
+            {{- end }}
+            {{- if $.Values.backup.nextcloud.enabled }}
+            - name: NEXTCLOUD_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.backup.nextcloud.secretName }}
+                  key: host
+            - name: NEXTCLOUD_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.backup.nextcloud.secretName }}
+                  key: user
+            - name: NEXTCLOUD_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.backup.nextcloud.secretName }}
+                  key: password
+            {{- end }}
             {{- end }}
             {{ if .reportToApollo }}
             - name: APOLLO_GRAPH_VARIANT
@@ -257,10 +280,12 @@ spec:
           secretName: galoyapp-firebase-serviceaccount
       {{- end}}
       {{- if eq .name "trigger" }}
+      {{- if $.Values.backup.googlecloud.enabled }}
       - name: "service-account"
         secret:
-          secretName: "gcs-sa-key"
-      {{- end}}
+          secretName: {{ $.Values.backup.googlecloud.secretName}}
+      {{- end }}
+      {{- end }}
       - name: "custom-yaml"
         secret:
           secretName: "galoy-config-map"

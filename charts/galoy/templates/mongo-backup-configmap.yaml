@@ -11,16 +11,37 @@ data:
     exit 0
     {{- end }}
     echo "backup script starts"
-    export BUCKET_NAME="{{ .Values.mongobackup.bucketName }}"
+    if [ -z "${DROPBOX_ACCESS_TOKEN}" ] && [ -z "${GOOGLE_APPLICATION_CREDENTIALS}" ] && ( [ -z "${NEXTCLOUD_USER}" ] || [ -z "${NEXTCLOUD_PASSWORD}" ] || [ -z "${NEXTCLOUD_URL}" ] ); then
+    echo "No environment variables for any backup destination set, aborting backup."
+    exit 1
+    fi
+    export BUCKET_NAME="{{ .Values.backup.googlecloud.bucketName }}"
     set -e
+    if [ -z "${MONGODB_USER}" ]; then echo "MONGODB_USER not set, aborting backup" && exit 1; fi
+    if [ -z "${MONGODB_ADDRESS}" ]; then echo "MONGODB_ADDRESS not set, aborting backup" && exit 1; fi
+    if [ -z "${MONGODB_PORT}" ]; then echo "MONGODB_PORT not set, aborting backup" && exit 1; fi
     LOG_TIME=$(date +%s)
     BACKUP_NAME="$NETWORK-$LOG_TIME.gz"
-    echo "Activating service account"
-    gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
     echo "Backing up mongodb"
     mongodump --host=$MONGODB_ADDRESS --port=$MONGODB_PORT --username=$MONGODB_USER --password=$MONGODB_PASSWORD --gzip --archive=$BACKUP_NAME -d=$MONGODB_DB --readPreference=secondary
+    if [ -z "${DROPBOX_ACCESS_TOKEN}" ]; then
+    echo "$DROPBOX_ACCESS_TOKEN not set, skipping dropbox upload."
+    else
     echo "Uploading backup $BACKUP_NAME to dropbox"
     curl -X POST https://content.dropboxapi.com/2/files/upload --http1.1 --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" --header "Dropbox-API-Arg: {\"path\": \"/mongo/$BACKUP_NAME\"}" --header "Content-Type: application/octet-stream" --data-binary $BACKUP_NAME
+    fi
+    if [ -z "${GOOGLE_APPLICATION_CREDENTIALS}" ] || [ -z "${BUCKET_NAME}" ]; then
+    echo "GOOGLE_APPLICATION_CREDENTIALS or BUCKET_NAME not set, skipping google cloud upload."
+    else
+    echo "Activating service account"
+    gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
     echo "Uploading backup $BACKUP_NAME to gcs"
     gsutil cp $BACKUP_NAME gs://$BUCKET_NAME/mongodb/$BACKUP_NAME 2>&1
+    fi
+    if [ -z "${NEXTCLOUD_USER}" ] || [ -z "${NEXTCLOUD_PASSWORD}" ] || [ -z "${NEXTCLOUD_URL}" ]; then
+    echo "NEXTCLOUD_USER, NEXTCLOUD_PASSWORD or NEXTCLOUD_URL not set, skipping nextcloud upload."
+    else
+    echo "Uploading backup $BACKUP_NAME to nextcloud"
+    curl -u $NEXTCLOUD_USER:$NEXTCLOUD_PASSWORD -T $BACKUP_NAME "$NEXTCLOUD_URL/"
+    fi
     echo "Uploaded backup successfully"

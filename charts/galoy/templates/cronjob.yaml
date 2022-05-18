@@ -31,9 +31,11 @@ spec:
             - "/app/lib/services/tracing.js"
             - {{ .appEntrypoint }}
             volumeMounts:
+            {{- if $.Values.needFirebaseServiceAccount }}
             - name: firebase-serviceaccount
               mountPath: "/tmp/firebase-serviceaccount"
               readOnly: true
+            {{- end }}
             - name: "custom-yaml"
               mountPath: "/var/yaml/"
             env:
@@ -125,18 +127,24 @@ spec:
 
             - name: LOGLEVEL
               value: debug
+            {{- if $.Values.needFirebaseServiceAccount }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/tmp/firebase-serviceaccount/galoyapp-firebase-serviceaccount.json"
+            {{- end }}
+            {{- if $.Values.backup.dropbox.enabled}}
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: dropbox-access-token
+                  name: {{ $.Values.backup.dropbox.secretName }}
                   key: token
+            {{- end }}
           restartPolicy: OnFailure
           volumes:
+          {{- if $.Values.needFirebaseServiceAccount }}
           - name: firebase-serviceaccount
             secret:
               secretName: galoyapp-firebase-serviceaccount
+          {{- end }}
           - name: "custom-yaml"
             secret:
               secretName: "galoy-config-map"
