@@ -7,6 +7,9 @@ repo_ref=$(yq e ".dealer.image.git_ref" charts/dealer/values.yaml )
 popd
 
 pushd galoy-deployments
+cat > github.key <<EOF
+${GITHUB_SSH_KEY}
+EOF
 # Last ref that changed dashboard
 last_ref=$(cat modules/services/addons/vendor/dealer/dashboards/git-ref/ref)
 popd
@@ -26,7 +29,7 @@ popd
 cd galoy-deployments
 
 make bump-vendored-ref DEP=${REPO} REF=${REF}
-make vendir
+GITHUB_SSH_KEY_BASE64=$(base64 -w 0 ./github.key) make vendir
 
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
