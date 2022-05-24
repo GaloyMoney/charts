@@ -8,5 +8,8 @@ dependencies:
 - name: lndmon
   repository: ""
   version: x.x.x
-digest: sha256:dbccc33a99703dced12d843ed7129a768ec65563c4556bcff54c05f61b99c976
-generated: "2022-04-21T18:29:41.642316286Z"
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 11.1.19
+digest: sha256:2d67304a83842f5625fd0e012d6a3e9379d1f1741723c6b288cfd72ac41d7fea
+generated: "2022-05-24T07:07:44.483857727Z"

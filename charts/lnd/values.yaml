@@ -103,3 +103,11 @@ rbac:
   create: true
 autoGenerateSeed:
   enabled: false
+
+postgresql:
+  enabled: true
+  uri: postgres://test:test@lnd-postgresql:5432/lnd
+  auth:
+    username: test
+    password: test
+    database: lnd
