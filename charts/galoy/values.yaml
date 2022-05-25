@@ -13,11 +13,11 @@ ca:
   CAEmail: dev@galoy.io
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:3eaf32a09f40b9c181f1b58b6440f68f26160928f47d17e2575fe53956d80153"
-  git_ref: "eaa7381" # Not used by helm
+  digest: "sha256:3aa13617314b3c6aa8df182c76b1bb4fe64d2b93053feb9e9eb231b8b0ead407"
+  git_ref: "2c69335" # Not used by helm
 mongodbMigrateImage:
   repository: us.gcr.io/galoy-org/galoy-app-migrate
-  digest: "sha256:4884e5a79d5bd71bc3c281f4849e32d6a9c265e1c88990e5545354ef9250025e"
+  digest: "sha256:e630b22ecd4965e31add89fcf9115449b477d938a1414dc929a8f434eebf421a"
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
