@@ -1273,6 +1273,30 @@ entries:
       version: 0.1.0
   galoy:
     - apiVersion: v2
+      appVersion: 0.1.146
+      created: "2022-05-26T08:57:07.281136707Z"
+      dependencies:
+        - name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 16.8.5
+        - name: mongodb
+          repository: https://charts.bitnami.com/bitnami
+          version: 10.25.1
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.13.0
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.1.9
+      description: A Helm chart for galoy servers
+      digest: 2ac87e2df04248e7d3d0ff863960cc5646cf39181e7b4c3223aa06f99b5989ac
+      name: galoy
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-v0.2.74/galoy-0.2.74.tgz
+      version: 0.2.74
+    - apiVersion: v2
       appVersion: 0.1.145
       created: "2022-05-25T16:01:12.269772873Z"
       dependencies:
@@ -3241,4 +3265,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-05-25T16:01:12.269891543Z"
+generated: "2022-05-26T08:57:07.281537124Z"
