@@ -86,7 +86,7 @@ persistence:
   ##
   # storageClass: "-"
   accessMode: ReadWriteOnce
-  size: 500Gi
+  size: 750Gi
 
 autoscaling:
   enabled: false
