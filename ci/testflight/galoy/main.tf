@@ -77,7 +77,7 @@ resource "kubernetes_secret" "mongodb_creds" {
   }
 
   data = {
-    "mongodb-passwords" : ["password"]
+    "mongodb-passwords" : jsonencode(["password"])
     "mongodb-root-password" : "password"
     "mongodb-replica-set-key" : "replica"
   }
