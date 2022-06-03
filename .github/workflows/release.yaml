@@ -16,7 +16,7 @@ jobs:
       
       - name: Bitcoind
         run: |
-          helm install bitcoind galoy/bitcoind
+          helm install bitcoind ./charts/bitcoind --set global.network=regtest --set persistence.enabled=false
           kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=bitcoind
       
       - name: Generate 1 Block (hack)
@@ -25,8 +25,19 @@ jobs:
 
       - name: LND
         run: |
-          helm install lnd galoy/lnd
-          kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd --timeout=60s
+          pushd charts/lnd
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm dependency build
+          helm install lnd .  -f ../../dev/bitcoin/lnd-values.yml
+
+          for i in 1 2 3 4 5 6 7 8 9 10
+          do
+            echo $i
+            kubectl wait pods -n default --for=condition=Ready -l app.kubernetes.io/name=lnd --timeout=30s
+            kubectl get pods
+          done
+
+          popd
 
       - name: Galoy
         run: |
