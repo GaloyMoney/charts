@@ -107,14 +107,14 @@ mongodb:
       if [ "$isMaster" == "true" ]; then
       mongo admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
         use admin;
-        db.grantRolesToUser('root', [ {role: "userAdmin", db: "${MONGODB_DATABASE}"} ]);
+        db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
       EOF
       fi;
   architecture: replicaset
   auth:
     existingSecret: galoy-mongodb
-    username: testGaloy
-    database: galoy
+    usernames: [testGaloy]
+    databases: [galoy]
   labels:
     kube-monkey/enabled: enabled
     kube-monkey/identifier: mongodb
