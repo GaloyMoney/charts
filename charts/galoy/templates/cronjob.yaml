@@ -43,7 +43,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ $.Release.Name }}-mongodb
-                  key: "mongodb-password"
+                  key: "mongodb-passwords"
             - name: JWT_SECRET
               value: "dummy"
             - name: MONGODB_USER
