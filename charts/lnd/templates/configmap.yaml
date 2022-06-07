@@ -10,7 +10,7 @@ data:
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
   {{- else }}
-     noseedbackup=1
+    noseedbackup=1
   {{- end }}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
