@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 global:
-  network: mainnet
+  network: testnet
 image:
   repository: lightninglabs/lnd
   tag: v0.14.3-beta
