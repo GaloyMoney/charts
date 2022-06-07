@@ -69,9 +69,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: rpc
-              containerPort: {{ .Values.global.service.ports.rpc }}
+              containerPort: {{ template "bitcoind.rpcPort" }}
             - name: p2p
-              containerPort: {{ .Values.service.ports.p2p }}
+              containerPort: {{ template "bitcoind.p2pPort" }}
             - name: zmqpubrawtx
               containerPort: {{ .Values.service.ports.zmqpubrawtx }}
             - name: zmqpubrawblock
@@ -122,7 +122,7 @@ spec:
           - name: METRICS_PORT
             value: {{ .Values.service.ports.metrics | quote }}
           - name: BITCOIN_RPC_PORT
-            value: {{ .Values.global.service.ports.rpc | quote }}
+            value: "{{ template "bitcoind.rpcPort" }}"
           ports:
           - name: metrics
             containerPort: {{ .Values.service.ports.metrics }}

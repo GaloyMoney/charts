@@ -72,3 +72,25 @@ Create the name of the service account to use
 {{- randAlpha 24 -}}
 {{- end -}}
 {{- end -}}
+
+{{/* RPC Port of Bitcoind */}}
+{{- define "bitcoind.rpcPort" -}}
+{{- if eq .Values.global.network "testnet" -}}
+18332
+{{- else if eq .Values.global.network "mainnet" -}}
+8332
+{{- else -}}
+18443
+{{- end }}
+{{- end }}
+
+{{/* P2P Port of Bitcoind */}}
+{{- define "bitcoind.p2pPort" -}}
+{{- if eq .Values.global.network "testnet" -}}
+18333
+{{- else if eq .Values.global.network "mainnet" -}}
+8333
+{{- else -}}
+18444
+{{- end }}
+{{- end }}
