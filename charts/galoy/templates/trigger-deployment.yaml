@@ -1,36 +1,35 @@
-{{- range $.Values.deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .name }}
+  name: {{ .Values.trigger.name }}
   labels:
-    app: {{ .name }}
+    app: {{ .Values.trigger.name }}
     app.kubernetes.io/managed-by: Helm
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: {{.name}}
+    kube-monkey/identifier: {{ .Values.trigger.name }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "8"
 spec:
-  replicas: {{ .replicaCount }}
+  replicas: {{ .Values.trigger.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .name }}
+      app: {{ .Values.trigger.name }}
   template:
     metadata:
-      name: {{ .name }}
+      name: {{ .Values.trigger.name }}
       labels:
-        app: {{ .name }}
+        app: {{ .Values.trigger.name }}
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: {{.name}}
+        kube-monkey/identifier: {{ .Values.trigger.name }}
         allow-to-lnd: "true"
         allow-to-bitcoind: "true"
-    {{- with .podAnnotations }}
+    {{- with .Values.trigger.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
-      serviceAccountName: {{ $.Release.Name}}-serviceaccount
+      serviceAccountName: {{ .Release.Name }}-serviceaccount
       initContainers:
       - name: wait-for-mongodb-migrate
         image: "groundnuty/k8s-wait-for:v1.5.1"
@@ -38,19 +37,28 @@ spec:
         - "job-wr"
         - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
       containers:
-        - name: {{ .name }}
-          image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
+        - name: {{ .Values.trigger.name }}
+          image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
           args:
           - "-r"
           - "/app/lib/services/tracing.js"
-          - {{ .appEntrypoint }}
+          - {{ .Values.trigger.appEntrypoint }}
           volumeMounts:
+          {{- if .Values.needFirebaseServiceAccount }}
+          - name: firebase-serviceaccount
+            mountPath: "/tmp/firebase-serviceaccount"
+            readOnly: true
+          {{- end }}
+          {{- if .Values.backup.googlecloud.enabled }}
+          - name: "service-account"
+            mountPath: "/var/secret/cloud.google.com"
+          {{- end }}
           - name: "custom-yaml"
             mountPath: "/var/yaml/"
-          {{- if .targetPort }}
+          {{- if .Values.trigger.targetPort }}
           ports:
             - name: http
-              containerPort: {{ .targetPort }}
+              containerPort: {{ .Values.trigger.targetPort }}
               protocol: TCP
           {{- end }}
           resources:
@@ -59,16 +67,14 @@ spec:
             limits:
               cpu: 1000m
           env:
-            # TODO: refactor with a yaml template
-            # dedupe with cronjob.yaml
             - name: HELMREVISION
-              value: {{ $.Release.Revision | quote}}
+              value: {{ $.Release.Revision | quote }}
             - name: NODE_ENV
               value: production
             - name: JAEGER_HOST
-              value: {{ $.Values.jaegerHost }}
+              value: {{ .Values.jaegerHost }}
             - name: TRACING_SERVICE_NAME
-              value: {{ $.Values.tracingPrefix }}-{{ .name }}
+              value: {{ .Values.tracingPrefix }}-{{ .Values.trigger.name }}
             - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -77,10 +83,9 @@ spec:
             - name: MONGODB_USER
               value: "testGaloy"
             - name: MONGODB_ADDRESS
-              value: {{ $.Values.mongodbaddress }}
-
+              value: {{ .Values.mongodbaddress }}
             - name: LND1_DNS
-              value: {{ $.Values.lnd1.dns }}
+              value: {{ .Values.lnd1.dns }}
             - name: LND1_MACAROON
               valueFrom:
                 secretKeyRef:
@@ -98,7 +103,7 @@ spec:
                   key: pubkey
 
             - name: LND2_DNS
-              value: {{ $.Values.lnd2.dns }}
+              value: {{ .Values.lnd2.dns }}
             - name: LND2_MACAROON
               valueFrom:
                 secretKeyRef:
@@ -116,14 +121,14 @@ spec:
                   key: pubkey
 
             - name: BITCOINDADDR
-              value: {{ $.Values.bitcoind.address }}
+              value: {{ .Values.bitcoind.address }}
             - name: BITCOINDRPCPASS
               valueFrom:
                 secretKeyRef:
                   name: bitcoind-rpcpassword
                   key: password
             - name: BITCOINDPORT
-              value: {{ $.Values.bitcoind.port | quote }}
+              value: {{ .Values.bitcoind.port | quote }}
 
             - name: GEETEST_ID
               valueFrom:
@@ -141,16 +146,8 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  {{- if $.Values.redis.auth.existingSecret }}
-                  name: {{ $.Values.redis.auth.existingSecret }}
-                  {{- else }}
                   name: {{ $.Release.Name }}-redis
-                  {{- end }}
-                  {{- if $.Values.redis.auth.existingSecretPasswordKey }}
-                  key: {{ $.Values.redis.auth.existingSecretPasswordKey }}
-                  {{- else }}
                   key: "redis-password"
-                  {{- end }}
             - name: REDIS_0_DNS
               value: "galoy-redis-node-0.galoy-redis-headless"
             - name: REDIS_1_DNS
@@ -164,12 +161,44 @@ spec:
                   name: jwt-secret
                   key: secret
             - name: NETWORK
-              value: {{ $.Values.global.network }}
-            {{- if $.Values.loglevel}}
+              value: {{ .Values.global.network }}
+            {{- if .Values.loglevel}}
             - name: LOGLEVEL
-              value: {{ $.Values.loglevel }}
-            {{- end}}
-            {{ if .reportToApollo }}
+              value: {{ .Values.loglevel }}
+            {{- end }}
+            {{- if .Values.needFirebaseServiceAccount }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/tmp/firebase-serviceaccount/galoyapp-firebase-serviceaccount.json"
+            {{- end }}
+            {{- if .Values.backup.googlecloud.enabled }}
+            - name: "GCS_APPLICATION_CREDENTIALS"
+              value: "/var/secret/cloud.google.com/gcs-sa-key.json"
+            {{- end }}
+            {{- if .Values.backup.dropbox.enabled }}
+            - name: DROPBOX_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.dropbox.secretName }}
+                  key: token
+            {{- end }}
+            {{- if .Values.backup.nextcloud.enabled }}
+            - name: NEXTCLOUD_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.nextcloud.secretName }}
+                  key: host
+            - name: NEXTCLOUD_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.nextcloud.secretName }}
+                  key: user
+            - name: NEXTCLOUD_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.nextcloud.secretName }}
+                  key: password
+            {{- end }}
+            {{ if .Values.trigger.reportToApollo }}
             - name: APOLLO_GRAPH_VARIANT
               value: current
             - name: APOLLO_SCHEMA_REPORTING
@@ -200,37 +229,44 @@ spec:
                 secretKeyRef:
                   name: twilio-secret
                   key: TWILIO_AUTH_TOKEN
-
             - name: PRICE_SERVER_HOST
-              value: "{{ $.Values.dealer_price.host }}"
+              value: "{{ .Values.dealer_price.host }}"
             - name: PRICE_SERVER_PORT
-              value: "{{ $.Values.dealer_price.port }}"
+              value: "{{ .Values.dealer_price.port }}"
 
             - name: PRICE_HISTORY_HOST
               value: "{{ $.Values.price.history.host }}"
             - name: PRICE_HISTORY_PORT
               value: "{{ $.Values.price.history.port }}"
-          {{- if .healthz }}
+          {{- if .Values.trigger.healthz }}
           livenessProbe:
             httpGet:
               path: /healthz
-              port: {{ .targetPort }}
+              port: {{ .Values.trigger.targetPort }}
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 5
-            timeoutSeconds: {{ .timeoutSeconds | default 1 }}
+            timeoutSeconds: {{ .Values.trigger.timeoutSeconds | default 1 }}
           readinessProbe:
             httpGet:
               path: /healthz
-              port: {{ .targetPort }}
+              port: {{ .Values.trigger.targetPort }}
             initialDelaySeconds: 5
             failureThreshold: 5
             successThreshold: 2
-            timeoutSeconds: {{ .timeoutSeconds | default 1 }}
+            timeoutSeconds: {{ .Values.trigger.timeoutSeconds | default 1 }}
           {{- end }}
       volumes:
+      {{- if .Values.needFirebaseServiceAccount }}
+      - name: firebase-serviceaccount
+        secret:
+          secretName: galoyapp-firebase-serviceaccount
+      {{- end }}
+      {{- if .Values.backup.googlecloud.enabled }}
+      - name: "service-account"
+        secret:
+          secretName: {{ .Values.backup.googlecloud.secretName}}
+      {{- end }}
       - name: "custom-yaml"
         secret:
           secretName: "galoy-config-map"
----
-{{- end }}

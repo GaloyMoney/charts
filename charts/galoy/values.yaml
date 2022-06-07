@@ -42,13 +42,19 @@ deployment:
       prometheus.io/path: /metrics
       prometheus.io/port: "3000"
       prometheus.io/scrape: "true"
-  - name: trigger
-    appEntrypoint: "lib/servers/trigger.js"
-    healthz: true
-    targetPort: 8888
-    replicaCount: 1
-    timeoutSeconds: 30
     # cpu request: 0.001
+trigger:
+  name: trigger
+  appEntrypoint: "lib/servers/trigger.js"
+  healthz: true
+  targetPort: 8888
+  replicaCount: 1
+  timeoutSeconds: 30
+  service:
+    type: ClusterIP
+    targetPort: 8888
+    port: 8888
+
 service:
   - name: graphql
     type: NodePort
@@ -62,10 +68,6 @@ service:
     type: NodePort
     targetPort: 4002
     port: 4002
-  - name: trigger
-    type: ClusterIP
-    targetPort: 8888
-    port: 8888
 cron:
   - name: cronjob
     appEntrypoint: "lib/servers/cron.js"

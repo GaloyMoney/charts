@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.trigger.name }}
+  labels:
+    app: {{ .Values.trigger.name }}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: {{ .Values.trigger.service.type }}
+  ports:
+    - port: {{ .Values.trigger.service.port }}
+      targetPort: {{ .Values.trigger.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Values.trigger.name }}
