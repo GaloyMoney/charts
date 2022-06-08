@@ -105,7 +105,10 @@ autoGenerateSeed:
   enabled: false
 
 postgresql:
+  # Enable LND on Postgresql, postgresql.uri becomes mandatory
   enabled: true
+  # Deploy Postgresql with this chart inside Kubernetes
+  deploy: true
   uri: postgres://test:test@lnd-postgresql:5432/lnd
   auth:
     username: test
