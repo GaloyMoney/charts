@@ -4,12 +4,12 @@ dependencies:
   version: 16.8.5
 - name: mongodb
   repository: https://charts.bitnami.com/bitnami
-  version: 11.1.10
+  version: 12.1.18
 - name: common
   repository: https://charts.bitnami.com/bitnami
   version: 1.13.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.1.9
-digest: sha256:6807020447eafb9c06681e0cc85c69eaa8b81bfd689ba8a5c463c02810048d60
-generated: "2022-06-03T22:20:21.998282+02:00"
+digest: sha256:192384aa04e3e5854382e5107fe31c554c76a9441fa1dcacf1104dbea25edee3
+generated: "2022-06-08T08:43:16.131137298Z"
