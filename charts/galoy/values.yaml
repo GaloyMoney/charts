@@ -156,6 +156,8 @@ dealer_price:
 price:
   history:
     postgresqlHost: galoy-postgresql
+    host: galoy-price-history
+    port: 50052
 postgresql:
   enabled: true
   auth:

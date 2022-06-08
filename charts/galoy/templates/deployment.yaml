@@ -220,6 +220,10 @@ spec:
             - name: PRICE_SERVER_PORT
               value: "{{ $.Values.dealer_price.port }}"
 
+            - name: PRICE_HISTORY_HOST
+              value: "{{ $.Values.price.history.host }}"
+            - name: PRICE_HISTORY_PORT
+              value: "{{ $.Values.price.history.port }}"
           {{- if .healthz }}
           livenessProbe:
             httpGet:
