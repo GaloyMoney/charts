@@ -49,6 +49,11 @@ spec:
           - |
             cat <<EOF > /root/.lnd/lnd.conf
             bitcoind.rpcpass=$(cat /rpcpassword/password)
+          {{- if eq .Values.lnd.db.backend "postgres" }}
+            db.backend=postgres
+            db.postgres.dsn=$(cat /lnd-pg-uri/uri)
+            db.postgres.timeout=0
+          {{- end}}
             $(cat /configmap/lnd.conf)
             EOF
           volumeMounts:
@@ -58,6 +63,10 @@ spec:
               mountPath: /root/.lnd/
             - name: rpcpassword
               mountPath: /rpcpassword
+            {{- if eq .Values.lnd.db.backend "postgres" }}
+            - name: lnd-pg-uri
+              mountPath: /lnd-pg-uri
+            {{- end}}
       containers:
         {{- if and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled }}
         - name: init-wallet
@@ -203,6 +212,11 @@ spec:
         - name: rpcpassword
           secret:
             secretName: {{ .Values.bitcoindRpcPassSecretName }}
+        {{- if eq .Values.lnd.db.backend "postgres" }}
+        - name: lnd-pg-uri
+          secret:
+            secretName: {{ .Values.lnd.db.config.secret }}
+        {{- end}}
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}

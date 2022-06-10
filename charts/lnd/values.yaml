@@ -103,3 +103,16 @@ rbac:
   create: true
 autoGenerateSeed:
   enabled: false
+
+postgresql:
+  enabled: true
+  auth:
+    database: lnd
+    existingSecret: postgres-creds
+
+lnd:
+  db:
+    backend: postgres
+    config:
+      # This secret should contain `uri` as the key
+      secret: postgres-creds
