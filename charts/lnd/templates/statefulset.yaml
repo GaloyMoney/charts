@@ -76,6 +76,7 @@ spec:
           - '-c'
           - |
             set -e
+            lncli -n {{ $.Values.global.network}} state
             if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /root/.lnd/tls.cert; do sleep 1; done
               apk update; apk add expect
