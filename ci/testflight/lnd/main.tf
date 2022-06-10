@@ -61,7 +61,7 @@ resource "kubernetes_secret" "smoketest" {
 resource "kubernetes_secret" "lnd_pg_pass" {
   metadata {
     name      = "postgres-creds"
-    namespace = kubernetes_namespace.bitcoin.metadata[0].name
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
