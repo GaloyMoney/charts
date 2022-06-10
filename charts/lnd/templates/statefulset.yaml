@@ -76,6 +76,9 @@ spec:
           - '-c'
           - |
             set -e
+            if lncli -n {{ $.Values.global.network}} state | grep "WAITING_TO_START" ; then
+              exit 0;
+            fi
             lncli -n {{ $.Values.global.network}} state
             if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /root/.lnd/tls.cert; do sleep 1; done
