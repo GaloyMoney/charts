@@ -25,10 +25,3 @@ data:
     externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
     bitcoin.{{ .Values.global.network }}=true
-
-  {{- if .Values.postgresql.enabled }}
-    [db]
-    db.backend=postgres
-    db.postgres.dsn={{ .Values.postgresql.uri }}
-    db.postgres.timeout=0
-  {{- end}}
