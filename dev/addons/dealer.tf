@@ -5,8 +5,6 @@ locals {
   okex5_secret        = "secret"
   okex5_password      = "pwd"
   okex5_fund_password = "none"
-  phone               = "dealerphone"
-  code                = "dealercode"
 }
 
 resource "kubernetes_secret" "okex5_creds" {
@@ -32,18 +30,6 @@ resource "kubernetes_secret" "postgres_creds" {
   data = {
     "postgresql-password" : local.postgres_password
     "postgresql-db-uri" : local.postgres_db_uri
-  }
-}
-
-resource "kubernetes_secret" "dealer_creds" {
-  metadata {
-    name      = "dealer-creds"
-    namespace = kubernetes_namespace.addons.metadata[0].name
-  }
-
-  data = {
-    "phone" : local.phone
-    "code" : local.code
   }
 }
 
