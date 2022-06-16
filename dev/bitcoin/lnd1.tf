@@ -16,7 +16,7 @@ resource "helm_release" "lnd" {
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
   dependency_update = true
-
+  timeout = 600
   values = [
     file("${path.module}/lnd-values.yml")
   ]
