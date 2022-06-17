@@ -1,5 +1,5 @@
 {{ if .Values.apiIngress }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.apiIngress.name }}
@@ -26,7 +26,10 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: api
-          servicePort: 4002
+          service:
+            name: api
+            port:
+              number: 4002
 {{ end }}

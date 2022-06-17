@@ -1,5 +1,5 @@
 {{ if .Values.adminIngress }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.adminIngress.name }}
@@ -22,7 +22,10 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: graphql-admin
-          servicePort: 4001
+          service:
+            name: graphql-admin
+            port:
+              number: 4001
 {{ end }}
