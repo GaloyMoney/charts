@@ -86,7 +86,7 @@ lndGeneralConfig:
   - maxchansize=500000000
   - bitcoin.timelockdelta=60
   - default-remote-max-htlcs=50
-  - debuglevel=warn
+  - debuglevel=info
   - prometheus.enable=1
   - gc-canceled-invoices-on-the-fly=true
   - gc-canceled-invoices-on-startup=true
