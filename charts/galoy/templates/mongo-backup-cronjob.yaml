@@ -44,7 +44,7 @@ spec:
                   name: dropbox-access-token
                   key: token
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: "/var/secret/cloud.google.com/galoyapp-31518a00082f.json"
+              value: "/var/secret/cloud.google.com/gcs-sa-key.json"
           volumes:
           - name: mongo-backup-configmap
             configMap:
