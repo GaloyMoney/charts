@@ -43,7 +43,7 @@ resource "kubernetes_secret" "gcs_sa_key" {
   }
 
   data = {
-    "galoyapp-31518a00082f.json" : local.backups_sa_creds
+    "gcs-sa-key.json" : local.backups_sa_creds
   }
 }
 
