@@ -3,10 +3,39 @@ global:
 
 galoy:
   test_accounts:
-  - phone: "+59981730222"
-    code: "111111"
-    role: "bankowner"
-    username: "bankowner"
+    - ref: A
+      phone: "+59981730222"
+      code: "111111"
+      needUsdWallet: true
+      role: bankowner
+      username: bankowner
+    - ref: B
+      phone: "+16505554322"
+      code: "321432"
+      phoneMetadataCarrierType: mobile
+      needUsdWallet: true
+    - ref: C
+      phone: "+16505554323"
+      code: "321321"
+      title: business
+    - ref: D
+      phone: "+16505554324"
+      code: "321321"
+      needUsdWallet: true
+    - ref: E
+      phone: "+16505554332"
+      code: "321321"
+    - ref: F
+      phone: "+16505554333"
+      code: "321321"
+    - ref: G
+      phone: "+16505554335"
+      code: "321321"
+      username: user15
+    - ref: H
+      phone: "+19876543210"
+      code: "321321"
+      username: tester
   apollo:
     playground: true
 
