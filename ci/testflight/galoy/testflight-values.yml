@@ -33,17 +33,6 @@ galoy:
       phone: "+59981730223" # dealer
       code: "824199"
       role: dealer
-    - ref: F
-      phone: "+16505554333"
-      code: "321321"
-    - ref: G
-      phone: "+16505554335"
-      code: "321321"
-      username: user15
-    - ref: H
-      phone: "+19876543210"
-      code: "321321"
-      username: tester
   funder: "GaloyFunder"
   name: "Galoy Wallet"
 
