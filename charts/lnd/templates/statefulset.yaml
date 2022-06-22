@@ -53,7 +53,7 @@ spec:
             db.backend=postgres
             db.postgres.dsn=$(cat /lnd-pg-uri/uri)
             db.postgres.timeout=0
-            db.postgres.maxconnections=25
+            db.postgres.maxconnections=10
           {{- end}}
             $(cat /configmap/lnd.conf)
             EOF
