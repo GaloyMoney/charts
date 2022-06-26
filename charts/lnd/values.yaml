@@ -9,8 +9,8 @@ image:
   pullPolicy: IfNotPresent
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
-  digest: "sha256:8e242e3c85344e14e0f24c374aa2d365a6829b29d473e2f7814e2c5c669a8d32"
-  git_ref: fa36326
+  digest: "sha256:6da00b05b8e56da6cce315b5043f49c0ae54de5a0004bac63ab721a3790587ab"
+  git_ref: dc770ca
 kubemonkey:
   enabled: false
 configmap:
@@ -103,13 +103,11 @@ rbac:
   create: true
 autoGenerateSeed:
   enabled: false
-
 postgresql:
   enabled: true
   auth:
     database: lnd
     existingSecret: postgres-creds
-
 lnd:
   db:
     backend: postgres
