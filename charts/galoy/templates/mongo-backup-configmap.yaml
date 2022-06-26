@@ -22,5 +22,5 @@ data:
     echo "Uploading backup $BACKUP_NAME to dropbox"
     curl -X POST https://content.dropboxapi.com/2/files/upload --http1.1 --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" --header "Dropbox-API-Arg: {\"path\": \"/mongo/$BACKUP_NAME\"}" --header "Content-Type: application/octet-stream" --data-binary $BACKUP_NAME
     echo "Uploading backup $BACKUP_NAME to gcs"
-    gsutil cp $BACKUP_NAME gs://$BUCKET_NAME/$BACKUP_NAME 2>&1
+    gsutil cp $BACKUP_NAME gs://$BUCKET_NAME/mongodb/$BACKUP_NAME 2>&1
     echo "Uploaded backup successfully"
