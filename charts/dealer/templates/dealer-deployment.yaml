@@ -90,4 +90,4 @@ spec:
       volumes:
       - name: "custom-yaml"
         secret:
-          secretName: "galoy-config-map"
+          secretName: "dealer-config-map"
