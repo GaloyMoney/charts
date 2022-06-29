@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: galoy-config-map
+  name: dealer-config-map
   labels:
     app: galoy
     app.kubernetes.io/managed-by: Helm
