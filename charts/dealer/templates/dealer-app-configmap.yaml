@@ -7,4 +7,4 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 stringData:
   custom.yaml: |-
-    {{- include "common.tplvalues.render" (dict "value" .Values.galoy "context" $) | nindent 4 }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.dealer "context" $) | nindent 4 }}
