@@ -32,6 +32,9 @@ spec:
         - "-r"
         - "/app/dealer/lib/services/tracing.js"
         - "/app/dealer/lib/app/start.js"
+        volumeMounts:
+        - name: "custom-yaml"
+          mountPath: "/var/yaml/"
         env:
         - name: NETWORK
           value: {{ .Values.dealer.network }}
@@ -84,3 +87,7 @@ spec:
             secretKeyRef:
               name: dealer-creds
               key: code
+      volumes:
+      - name: "custom-yaml"
+        secret:
+          secretName: "galoy-config-map"
