@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: dealer-config-map
   labels:
-    app: galoy
+    app: dealer
     app.kubernetes.io/managed-by: Helm
 stringData:
   custom.yaml: |-
