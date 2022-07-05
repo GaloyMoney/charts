@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: thesisrobot/loop
-  tag: v0.11.1-beta
+  repository: lightninglabs/loopserver
+  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
