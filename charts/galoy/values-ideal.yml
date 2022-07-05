@@ -1,0 +1,91 @@
+galoy:
+  # Name of the Galoy Instance
+  # TODO: Usage, where does it get shown?
+  # Example:
+  name: "Galoy Wallet"
+
+  # Apollo-GraphQL Configuration
+  # TODO: Acutally use these values
+  apollo:
+    # Turns on/off GraphQL Playground
+    playground: false
+
+    # Turns on/off GraphQL Introspection
+    # If playground is enabled, but introspection is disabled,
+    # the playground might not work properly as expected
+    introspection: true
+  
+  # Galoy database backup configuration
+  # This is a custom backup configuration, which means data lying in
+  # Mongodb and LND can be backed up by custom scripts present in the
+  # galoy codebase itself.
+  backups:
+    mongodb:
+      enabled: false
+    dropbox:
+      enabled: false
+
+# --------------- BELOW NOT REFACTORED ---------------
+
+mongodb:
+  initdbScripts:
+    grant_user_admin_role.sh: |
+      isMaster=$(mongo admin -u root -p "$MONGODB_ROOT_PASSWORD" --eval "rs.isMaster().ismaster" | tail -1 | tr -d '\n')
+      if [ "$isMaster" == "true" ]; then
+      mongo admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
+        use admin;
+        db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
+      EOF
+      fi;
+  architecture: replicaset
+  auth:
+    existingSecret: galoy-mongodb
+    usernames: [testGaloy]
+    databases: [galoy]
+  labels:
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: mongodb
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+  podLabels:
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: mongodb
+  replicaCount: 3
+  persistence:
+    enabled: true
+  arbiter:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  customReadinessProbe:
+    exec:
+      command:
+        - mongo
+        - --disableImplicitSessions
+        - --eval
+        - "db.adminCommand('ping')"
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  ## Prometheus Exporter / Metrics
+  ## TODO: Could be useful for having mongo metrics
+  metrics:
+    enabled: true
+
+price:
+  history:
+    postgresqlHost: galoy-postgresql
+    host: galoy-price-history
+    port: 50052
+
+# Postgresql backend for Price History
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: price-history
+    database: price-history
+    existingSecret: galoy-price-history-postgres-creds
