@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: lightninglabs/loopserver
-  tag: latest
+  repository: lightninglabs/loop
+  tag: v0.19.1-beta
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
