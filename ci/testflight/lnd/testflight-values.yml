@@ -32,7 +32,7 @@ resources:
 
 loop:
   args: "--network=testnet"
-  enabled: false
+  enabled: true
 
 rbac:
   create: true
