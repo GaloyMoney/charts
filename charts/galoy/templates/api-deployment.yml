@@ -1,36 +1,34 @@
-{{- range $.Values.deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .name }}
+  name: {{ template "galoy.api.fullname" . }}
   labels:
-    app: {{ .name }}
-    app.kubernetes.io/managed-by: Helm
+    app: {{ template "galoy.api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: {{.name}}
+    kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "8"
+    app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: {{ .replicaCount }}
+  replicas: {{ .Values.galoy.api.replicas }}
   selector:
     matchLabels:
-      app: {{ .name }}
+      app: {{ template "galoy.api.fullname" . }}
+      release: "{{ .Release.Name }}"
   template:
     metadata:
-      name: {{ .name }}
+      name: api
       labels:
-        app: {{ .name }}
+        app: {{ template "galoy.api.fullname" . }}
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: {{.name}}
+        kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
         allow-to-lnd: "true"
         allow-to-bitcoind: "true"
-    {{- with .podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
     spec:
-      serviceAccountName: {{ $.Release.Name}}-serviceaccount
+      serviceAccountName: {{ template "galoy.serviceAccountName" . }}
       initContainers:
       - name: wait-for-mongodb-migrate
         image: "groundnuty/k8s-wait-for:v1.5.1"
@@ -38,30 +36,24 @@ spec:
         - "job-wr"
         - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
       containers:
-        - name: {{ .name }}
+        - name: api
           image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
           args:
           - "-r"
           - "/app/lib/services/tracing.js"
           - {{ .appEntrypoint }}
           volumeMounts:
+          - name: "custom-yaml"
+            mountPath: "/var/yaml/"
           {{- if $.Values.needFirebaseServiceAccount }}
           - name: firebase-serviceaccount
             mountPath: "/tmp/firebase-serviceaccount"
             readOnly: true
           {{- end}}
-          {{- if eq .name "trigger" }}
-          - name: "service-account"
-            mountPath: "/var/secret/cloud.google.com"
-          {{- end}}
-          - name: "custom-yaml"
-            mountPath: "/var/yaml/"
-          {{- if .targetPort }}
           ports:
             - name: http
-              containerPort: {{ .targetPort }}
+              containerPort: 4002
               protocol: TCP
-          {{- end }}
           resources:
             requests:
               cpu: 100m
@@ -77,7 +69,7 @@ spec:
             - name: JAEGER_HOST
               value: {{ $.Values.jaegerHost }}
             - name: TRACING_SERVICE_NAME
-              value: {{ $.Values.tracingPrefix }}-{{ .name }}
+              value: {{ $.Values.tracingPrefix }}-api
             - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -256,5 +248,3 @@ spec:
       - name: "custom-yaml"
         secret:
           secretName: "galoy-config-map"
----
-{{- end }}
