@@ -1,0 +1,3 @@
+{{ if or (not (eq (len .Values.mongodb.auth.databases) 1)) (not (eq (len .Values.mongodb.auth.usernames) 1)) }}
+{{- required "There should be only one username/database for Galoy" "" -}}
+{{ end }}
