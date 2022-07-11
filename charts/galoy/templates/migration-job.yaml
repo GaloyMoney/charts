@@ -33,13 +33,5 @@ spec:
       - name: mongodb-migrate
         image: "{{ $.Values.galoy.images.mongodbMigrate.repository }}@{{ $.Values.galoy.images.mongodbMigrate.digest }}"
         env:
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ $.Release.Name }}-mongodb
-              key: "mongodb-password"
-        - name: MONGODB_USER
-          value: "testGaloy"
-        - name: MONGODB_ADDRESS
-          value: {{ $.Values.mongodbaddress }}
+{{ include "galoy.mongodb.env" . | indent 8 }}
       restartPolicy: Never

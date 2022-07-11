@@ -143,6 +143,14 @@ mongodb:
     ## There should be one and only one database in the array here.
     ##
     databases: [ galoy ]
+  
+  ## Replicaset for no-downtime
+  ##
+  architecture: replicaset
+
+  ## Replicas for MongoDB
+  ##
+  replicaCount: 3
 
 ## For managing secrets using Helm
 ##

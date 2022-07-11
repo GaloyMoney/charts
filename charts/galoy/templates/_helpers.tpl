@@ -32,3 +32,21 @@ Pre-Migration Job name
 {{- define "galoy.pre-migration.jobname" -}}
 {{- printf "%s-pre-mongodb-migrate-%s" .Release.Name .Release.Revision -}}
 {{- end -}}
+
+{{/*
+Return Galoy environment variables for MongoDB configuration
+*/}}
+{{- define "galoy.mongodb.env" -}}
+- name: MONGODB_ADDRESS
+  value: {{ range until (.Values.mongodb.replicaCount | int) }}
+  {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
+  {{- if lt . (sub $.Values.mongodb.replicaCount 1 | int) -}},{{- end -}}
+  {{ end }}
+- name: MONGODB_USER
+  value: {{ index .Values.mongodb.auth.usernames 0 }}
+- name: MONGODB_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.mongodb.auth.existingSecret }}
+      key: mongodb-password
+{{- end -}}
