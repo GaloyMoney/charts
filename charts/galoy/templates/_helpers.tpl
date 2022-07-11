@@ -18,3 +18,17 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Migration Job name
+*/}}
+{{- define "galoy.migration.jobname" -}}
+{{- printf "%s-mongodb-migrate-%s" .Release.Name .Release.Revision -}}
+{{- end -}}
+
+{{/*
+Pre-Migration Job name
+*/}}
+{{- define "galoy.pre-migration.jobname" -}}
+{{- printf "%s-pre-mongodb-migrate-%s" .Release.Name .Release.Revision -}}
+{{- end -}}

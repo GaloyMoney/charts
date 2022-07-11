@@ -28,13 +28,13 @@ spec:
         allow-to-lnd: "true"
         allow-to-bitcoind: "true"
     spec:
-      serviceAccountName: {{ template "galoy.serviceAccountName" . }}
+      serviceAccountName: {{ template "galoy.name" . }}
       initContainers:
       - name: wait-for-mongodb-migrate
         image: "groundnuty/k8s-wait-for:v1.5.1"
         args:
-        - "job-wr"
-        - "{{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}"
+        - job-wr
+        - {{ template "galoy.migration.jobname" . }}
       containers:
         - name: api
           image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
