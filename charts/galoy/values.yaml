@@ -130,6 +130,62 @@ galoy:
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
 
+  ## Configuration values for establishing connection to LND-1
+  ##
+  lnd1:
+    ## DNS for LND1
+    ##
+    dns: lnd1.default.svc.cluster.local
+
+    ## Credentials to access LND RPC
+    ##
+    credentialsExistingSecret:
+      ## Secret Name
+      name: lnd1-credentials
+
+      ## Macaroon Key
+      macaroon_key: admin_macaroon_base64
+
+      ## TLS Key
+      tls_key: tls_base64
+
+    ## Pubkey to verify LND RPC
+    ##
+    pubkeyExistingSecret:
+      ## Secret Name
+      name: lnd1-pubkey
+
+      ## Secret Key
+      key: pubkey
+  
+   ## Configuration values for establishing connection to LND-2
+  ##
+  lnd2:
+    ## DNS for LND2
+    ##
+    dns: lnd2.default.svc.cluster.local
+
+    ## Credentials to access LND RPC
+    ##
+    credentialsExistingSecret:
+      ## Secret Name
+      name: lnd2-credentials
+
+      ## Macaroon Key
+      macaroon_key: admin_macaroon_base64
+
+      ## TLS Key
+      tls_key: tls_base64
+
+    ## Pubkey to verify LND RPC
+    ##
+    pubkeyExistingSecret:
+      ## Secret Name
+      name: lnd2-pubkey
+
+      ## Secret Key
+      key: pubkey
+
 
 ## Configuration values for the mongodb dependency.
 ## Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
@@ -182,3 +238,10 @@ secrets:
   mongodbRootPassword:
   mongodbMetricsPassword:
   mongodbReplicaSetKey:
+
+## Tracing details
+##
+tracing:
+  ## Jaeger Tracing Host
+  ##
+  jaegerHost: localhost

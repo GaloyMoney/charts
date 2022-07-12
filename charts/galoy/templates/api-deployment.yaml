@@ -1,5 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: {{ template "galoy.api.fullname" . }}
   labels:
@@ -12,13 +13,16 @@ metadata:
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "8"
     app.kubernetes.io/managed-by: Helm
+
 spec:
+
   replicas: {{ .Values.galoy.api.replicas }}
   selector:
     matchLabels:
       app: {{ template "galoy.api.fullname" . }}
       release: "{{ .Release.Name }}"
   template:
+
     metadata:
       name: api
       labels:
@@ -27,14 +31,17 @@ spec:
         kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
         allow-to-lnd: "true"
         allow-to-bitcoind: "true"
+
     spec:
       serviceAccountName: {{ template "galoy.name" . }}
+
       initContainers:
       - name: wait-for-mongodb-migrate
         image: "groundnuty/k8s-wait-for:v1.5.1"
         args:
         - job-wr
         - {{ template "galoy.migration.jobname" . }}
+
       containers:
       - name: api
         image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
@@ -42,21 +49,72 @@ spec:
         - "-r"
         - "/app/lib/services/tracing.js"
         - "lib/servers/graphql-main-server.js"
+
         resources:
           requests:
             cpu: 100m
           limits:
             cpu: 1000m
+
         ports:
         - name: http
           containerPort: 4002
           protocol: TCP
+
         env:
+        - name: HELMREVISION
+          value: {{ .Release.Revision | quote}}
+        - name: NODE_ENV
+          value: "production"
+        
+        - name: JAEGER_HOST
+          value: {{ .Values.tracing.jaegerHost | quote }}
+        - name: TRACING_SERVICE_NAME
+          value: {{ template "galoy.api.fullname" | quote }}
+
+        - name: LND1_DNS
+          value: {{ .Values.galoy.lnd1.dns | quote }}
+        - name: LND1_MACAROON
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
+              key: {{ .Values.galoy.lnd1.credentialsExistingSecret.macaroon_key }}
+        - name: LND1_TLS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
+              key: {{ .Values.galoy.lnd1.credentialsExistingSecret.tls_key }}
+        - name: LND1_PUBKEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.lnd1.pubkeyExistingSecret.name }}
+              key: {{ .Values.galoy.lnd1.pubkeyExistingSecret.key }}
+
+        - name: LND2_DNS
+          value: {{ .Values.galoy.lnd2.dns | quote }}
+        - name: LND2_MACAROON
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
+              key: {{ .Values.galoy.lnd2.credentialsExistingSecret.macaroon_key }}
+        - name: LND2_TLS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
+              key: {{ .Values.galoy.lnd2.credentialsExistingSecret.tls_key }}
+        - name: LND2_PUBKEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.lnd2.pubkeyExistingSecret.name }}
+              key: {{ .Values.galoy.lnd2.pubkeyExistingSecret.key }}
+
 {{ include "galoy.mongodb.env" . | indent 8 }}
+
         {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-notifications-service-account/service-account.json"
         {{- end -}}
+
         volumeMounts:
         {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
         - name: firebase-notifications-service-account
@@ -76,7 +134,3 @@ spec:
 # ----------------------------------------------------------------
 # NOTES FOR SELF:
 # TODO: Custom YAML injection
-# Why env:
-# - name: HELMREVISION
-#   value: {{ $.Release.Revision | quote}}
-# 
