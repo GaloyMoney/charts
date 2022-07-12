@@ -130,7 +130,20 @@ galoy:
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
 
+    ## Geetest Configuration
+    ##
+    geetestExistingSecret:
+      # Secret Name
+      name: geetest-key
+
+      # Geetest ID Secret Key
+      id_key: id
+
+      # Geetest Key Secret Key
+      secret_key: key
+
   ## Configuration values for establishing connection to LND-1
+  ## TODO: This should be injected as ConfigMap from LND Chart
   ##
   lnd1:
     ## DNS for LND1
@@ -158,7 +171,8 @@ galoy:
       ## Secret Key
       key: pubkey
   
-   ## Configuration values for establishing connection to LND-2
+  ## Configuration values for establishing connection to LND-2
+  ## TODO: This should be injected as ConfigMap from LND Chart
   ##
   lnd2:
     ## DNS for LND2
@@ -185,6 +199,25 @@ galoy:
 
       ## Secret Key
       key: pubkey
+  
+  ## Configuration values for establishing connection to BITCOIND
+  ## TODO: This should be injected as ConfigMap from Bitcoin Chart
+  ##
+  bitcoind:
+    ## DNS for bitcoind
+    dns: bitcoind.default.svc.cluster.local
+
+    ## Port on which bitcoind is running
+    port: 8332
+
+    ## RPC Password Secret
+    ##
+    rpcPasswordExistingSecret:
+      ## Secret Name
+      name: bitcoind-rpcpassword
+
+      ## Secret Key
+      key: password
 
 
 ## Configuration values for the mongodb dependency.
@@ -223,6 +256,38 @@ mongodb:
   ## Replicas for MongoDB
   ##
   replicaCount: 3
+
+## Configuration values for the redis dependency.
+## Ref: https://artifacthub.io/packages/helm/bitnami/redis/
+##
+## This is a necessary component and without the cache, the chart will not work.
+## Therefore it doesn't have any enable/disable flag.
+##
+redis:
+  ## Redis replica config params
+  replica:
+    # Number of Redis to deploy
+    replicaCount: 3
+
+  ## Redis master config params
+  master:
+    persistence:
+      enabled: true
+
+  ## Redis auth config params
+  auth:
+    password: password
+
+  ## Use sentinel on Redis pods
+  sentinel:
+    enabled: true
+
+    ## Master set name
+    masterSet: mymaster
+  
+  ## Sidecar prometheus exporter
+  metrics:
+    enabled: true
 
 ## For managing secrets using Helm
 ##

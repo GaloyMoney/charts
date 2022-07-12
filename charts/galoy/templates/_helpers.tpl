@@ -50,3 +50,95 @@ Return Galoy environment variables for MongoDB configuration
       name: {{ .Values.mongodb.auth.existingSecret }}
       key: mongodb-password
 {{- end -}}
+
+{{/*
+Return Galoy environment variables for BitcoinD configuration
+*/}}
+{{- define "galoy.bitcoind.env" -}}
+- name: BITCOINDADDR
+  value: {{ .Values.galoy.bitcoind.dns | quote }}
+- name: BITCOINDPORT
+  value: {{ .Values.galoy.bitcoind.port | quote }}
+- name: BITCOINDRPCPASS
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.bitcoind.rpcPasswordExistingSecret.name }}
+      key: {{ .Values.galoy.bitcoind.rpcPasswordExistingSecret.key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for LND 1 configuration
+*/}}
+{{- define "galoy.lnd1.env" -}}
+- name: LND1_DNS
+  value: {{ .Values.galoy.lnd1.dns | quote }}
+- name: LND1_MACAROON
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
+      key: {{ .Values.galoy.lnd1.credentialsExistingSecret.macaroon_key }}
+- name: LND1_TLS
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
+      key: {{ .Values.galoy.lnd1.credentialsExistingSecret.tls_key }}
+- name: LND1_PUBKEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.lnd1.pubkeyExistingSecret.name }}
+      key: {{ .Values.galoy.lnd1.pubkeyExistingSecret.key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for LND 2 configuration
+*/}}
+{{- define "galoy.lnd2.env" -}}
+- name: LND2_DNS
+  value: {{ .Values.galoy.lnd2.dns | quote }}
+- name: LND2_MACAROON
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
+      key: {{ .Values.galoy.lnd2.credentialsExistingSecret.macaroon_key }}
+- name: LND2_TLS
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
+      key: {{ .Values.galoy.lnd2.credentialsExistingSecret.tls_key }}
+- name: LND2_PUBKEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.lnd2.pubkeyExistingSecret.name }}
+      key: {{ .Values.galoy.lnd2.pubkeyExistingSecret.key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for Geetest configuration
+*/}}
+{{- define "galoy.geetest.env" -}}
+- name: GEETEST_ID
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.geetestExistingSecret.name }}
+      key: {{ .Values.galoy.api.geetestExistingSecret.id_key }}
+- name: GEETEST_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.geetestExistingSecret.name }}
+      key: {{ .Values.galoy.api.geetestExistingSecret.secret_key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for Redis configuration
+*/}}
+{{- define "galoy.redis.env" -}}
+- name: REDIS_MASTER_NAME
+  value: {{ .Values.redis.sentinel.masterSet }}
+- name: REDIS_PASSWORD
+  value: {{ .Values.redis.auth.password }}
+{{ range until (.Values.redis.replica.replicaCount | int) }}
+- name: {{ printf "REDIS_%d_DNS" . }}
+  value: {{ printf "galoy-redis-node-%d.galoy-redis-headless" . | quote }}
+{{ end }}
+{{- end -}}
+

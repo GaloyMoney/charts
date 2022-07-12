@@ -7,12 +7,13 @@ metadata:
     app: {{ template "galoy.api.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+
     kube-monkey/enabled: enabled
     kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "8"
-    app.kubernetes.io/managed-by: Helm
 
 spec:
 
@@ -70,45 +71,14 @@ spec:
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
         - name: TRACING_SERVICE_NAME
-          value: {{ template "galoy.api.fullname" | quote }}
-
-        - name: LND1_DNS
-          value: {{ .Values.galoy.lnd1.dns | quote }}
-        - name: LND1_MACAROON
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
-              key: {{ .Values.galoy.lnd1.credentialsExistingSecret.macaroon_key }}
-        - name: LND1_TLS
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
-              key: {{ .Values.galoy.lnd1.credentialsExistingSecret.tls_key }}
-        - name: LND1_PUBKEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.lnd1.pubkeyExistingSecret.name }}
-              key: {{ .Values.galoy.lnd1.pubkeyExistingSecret.key }}
-
-        - name: LND2_DNS
-          value: {{ .Values.galoy.lnd2.dns | quote }}
-        - name: LND2_MACAROON
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
-              key: {{ .Values.galoy.lnd2.credentialsExistingSecret.macaroon_key }}
-        - name: LND2_TLS
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
-              key: {{ .Values.galoy.lnd2.credentialsExistingSecret.tls_key }}
-        - name: LND2_PUBKEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.lnd2.pubkeyExistingSecret.name }}
-              key: {{ .Values.galoy.lnd2.pubkeyExistingSecret.key }}
+          value: {{ template "galoy.api.fullname" . }}
 
 {{ include "galoy.mongodb.env" . | indent 8 }}
+{{ include "galoy.bitcoind.env" . | indent 8 }}
+{{ include "galoy.lnd1.env" . | indent 8 }}
+{{ include "galoy.lnd2.env" . | indent 8 }}
+{{ include "galoy.geetest.env" . | indent 8 }}
+{{ include "galoy.redis.env" . | indent 8 }}
 
         {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
         - name: GOOGLE_APPLICATION_CREDENTIALS
