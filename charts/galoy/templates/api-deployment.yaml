@@ -35,3 +35,48 @@ spec:
         args:
         - job-wr
         - {{ template "galoy.migration.jobname" . }}
+      containers:
+      - name: api
+        image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
+        args: 
+        - "-r"
+        - "/app/lib/services/tracing.js"
+        - "lib/servers/graphql-main-server.js"
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 1000m
+        ports:
+        - name: http
+          containerPort: 4002
+          protocol: TCP
+        env:
+{{ include "galoy.mongodb.env" . | indent 8 }}
+        {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/tmp/firebase-notifications-service-account/service-account.json"
+        {{- end -}}
+        volumeMounts:
+        {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
+        - name: firebase-notifications-service-account
+          mountPath: /tmp
+          readOnly: true
+        {{- end -}}
+      volumes:
+      {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
+      - name: firebase-notifications-service-account
+        secret:
+          secretName: {{ .Values.galoy.api.firebaseNotifications.existingSecret.name }}
+          items:
+          - key: {{ .Values.galoy.api.firebaseNotifications.existingSecret.key }}
+            path: service-account.json
+      {{- end -}}
+
+# ----------------------------------------------------------------
+# NOTES FOR SELF:
+# TODO: Custom YAML injection
+# Why env:
+# - name: HELMREVISION
+#   value: {{ $.Release.Revision | quote}}
+# 

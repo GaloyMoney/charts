@@ -114,6 +114,22 @@ galoy:
     ##
     replicas: 1
 
+    ## Firebase Notifications Configuration
+    ## It would need a Firebase Service Account to send out notifications
+    ##
+    firebaseNotifications:
+      # Enable/disable notifications on the app
+      enabled: false
+
+      # Firebase Notifications Service Account must be injected via a secret
+      existingSecret:
+
+        ## Secret Name of the Service Account JSON
+        name: galoyapp-firebase-serviceaccount
+
+        # Secret Key
+        key: galoyapp-firebase-serviceaccount.json
+
 
 ## Configuration values for the mongodb dependency.
 ## Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/

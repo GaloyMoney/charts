@@ -31,7 +31,7 @@ spec:
           kubectl delete job "${job_name}"
       containers:
       - name: mongodb-migrate
-        image: "{{ $.Values.galoy.images.mongodbMigrate.repository }}@{{ $.Values.galoy.images.mongodbMigrate.digest }}"
+        image: "{{ .Values.galoy.images.mongodbMigrate.repository }}@{{ .Values.galoy.images.mongodbMigrate.digest }}"
         env:
 {{ include "galoy.mongodb.env" . | indent 8 }}
       restartPolicy: Never

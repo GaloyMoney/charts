@@ -38,12 +38,12 @@ Return Galoy environment variables for MongoDB configuration
 */}}
 {{- define "galoy.mongodb.env" -}}
 - name: MONGODB_ADDRESS
-  value: {{ range until (.Values.mongodb.replicaCount | int) }}
+  value: "{{ range until (.Values.mongodb.replicaCount | int) }}
   {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
   {{- if lt . (sub $.Values.mongodb.replicaCount 1 | int) -}},{{- end -}}
-  {{ end }}
+  {{ end }}"
 - name: MONGODB_USER
-  value: {{ index .Values.mongodb.auth.usernames 0 }}
+  value: {{ index .Values.mongodb.auth.usernames 0 | quote }}
 - name: MONGODB_PASSWORD
   valueFrom:
     secretKeyRef:
