@@ -16,6 +16,10 @@ galoy:
   ##
   name: "Galoy Wallet"
 
+  ## Bitcoin Network to run this Galoy instance on
+  ##
+  network: mainnet
+
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
@@ -141,6 +145,15 @@ galoy:
 
       # Geetest Key Secret Key
       secret_key: key
+
+    ## JsonWebToken Secret
+    ##
+    jwtSecretExistingSecret:
+      # Secret Name
+      name: jwt-secret
+
+      # Secret Key
+      key: secret
 
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart

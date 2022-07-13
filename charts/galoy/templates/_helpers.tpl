@@ -52,6 +52,14 @@ Return Galoy environment variables for MongoDB configuration
 {{- end -}}
 
 {{/*
+Return Galoy environment variables for network
+*/}}
+{{- define "galoy.network.env" -}}
+- name: NETWORK
+  value: {{ .Values.galoy.network }}
+{{- end -}}
+
+{{/*
 Return Galoy environment variables for BitcoinD configuration
 */}}
 {{- define "galoy.bitcoind.env" -}}
@@ -142,3 +150,13 @@ Return Galoy environment variables for Redis configuration
 {{ end }}
 {{- end -}}
 
+{{/*
+Return Galoy environment variables for JWT Secret
+*/}}
+{{- define "galoy.jwt.env" -}}
+- name: JWT_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.jwtSecretExistingSecret.name }}
+      key: {{ .Values.galoy.api.jwtSecretExistingSecret.key }}
+{{- end -}}
