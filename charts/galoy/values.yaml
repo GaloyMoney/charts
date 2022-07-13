@@ -118,6 +118,10 @@ galoy:
     ##
     replicas: 1
 
+    ## Log Level
+    ##
+    logLevel: debug
+
     ## Firebase Notifications Configuration
     ## It would need a Firebase Service Account to send out notifications
     ##
@@ -154,6 +158,26 @@ galoy:
 
       # Secret Key
       key: secret
+
+    ## Apollo Configuration for Apollo Studio
+    ##
+    apollo:
+      # Associate data at Apollo with this variant
+      graphVariant: current
+
+      # Report the GraphQL schema to Apollo
+      schemaReporting: true
+
+      # Graph ID and Key Secret
+      existingSecret:
+        # Secret Name
+        name: galoy-apollo-secret
+
+        # Apollo Graph ID key
+        id_key: id
+
+        # Apollo Key key
+        key_key: key
 
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart

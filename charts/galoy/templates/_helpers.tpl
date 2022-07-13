@@ -141,9 +141,9 @@ Return Galoy environment variables for Redis configuration
 */}}
 {{- define "galoy.redis.env" -}}
 - name: REDIS_MASTER_NAME
-  value: {{ .Values.redis.sentinel.masterSet }}
+  value: {{ .Values.redis.sentinel.masterSet | quote }}
 - name: REDIS_PASSWORD
-  value: {{ .Values.redis.auth.password }}
+  value: {{ .Values.redis.auth.password | quote }}
 {{ range until (.Values.redis.replica.replicaCount | int) }}
 - name: {{ printf "REDIS_%d_DNS" . }}
   value: {{ printf "galoy-redis-node-%d.galoy-redis-headless" . | quote }}
@@ -159,4 +159,24 @@ Return Galoy environment variables for JWT Secret
     secretKeyRef:
       name: {{ .Values.galoy.api.jwtSecretExistingSecret.name }}
       key: {{ .Values.galoy.api.jwtSecretExistingSecret.key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for Reporting to Apollo
+*/}}
+{{- define "galoy.apollo.env" -}}
+- name: APOLLO_GRAPH_VARIANT
+  value: {{ .Values.galoy.api.apollo.graphVariant | quote }}
+- name: APOLLO_SCHEMA_REPORTING
+  value: {{ .Values.galoy.api.apollo.schemaReporting | quote }}
+- name: APOLLO_GRAPH_ID
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.apollo.existingSecret.name }}
+      key: {{ .Values.galoy.api.apollo.existingSecret.id_key }}
+- name: APOLLO_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.apollo.existingSecret.name }}
+      key: {{ .Values.galoy.api.apollo.existingSecret.key_key }}
 {{- end -}}
