@@ -1,0 +1,10 @@
+lnds:
+  - url: lnd1
+    secretname: lnd1-credentials
+    dark: true
+    themeColor: BLUE
+  - url: lnd2
+    secretname: lnd2-credentials
+    dark: false
+    themeColor: BLUE
+
