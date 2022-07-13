@@ -179,6 +179,21 @@ galoy:
         # Apollo Key key
         key_key: key
 
+    ## Twilio Configuration
+    ##
+    twilioExistingSecret:
+      # Secret Name
+      name: twilio-secret
+
+      # Phone Number Secret Key
+      phone_number_key: TWILIO_PHONE_NUMBER
+
+      # Phone Number Secret Key
+      account_sid_key: TWILIO_ACCOUNT_SID
+
+      # Phone Number Secret Key
+      auth_token_key: TWILIO_AUTH_TOKEN
+
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
   ##

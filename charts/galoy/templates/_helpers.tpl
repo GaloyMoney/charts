@@ -180,3 +180,24 @@ Return Galoy environment variables for Reporting to Apollo
       name: {{ .Values.galoy.api.apollo.existingSecret.name }}
       key: {{ .Values.galoy.api.apollo.existingSecret.key_key }}
 {{- end -}}
+
+{{/*
+Return Galoy environment variables for Twilio
+*/}}
+{{- define "galoy.twilio.env" -}}
+- name: TWILIO_PHONE_NUMBER
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.twilioExistingSecret.name }}
+      key: {{ .Values.galoy.api.twilioExistingSecret.phone_number_key }}
+- name: TWILIO_ACCOUNT_SID
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.twilioExistingSecret.name }}
+      key: {{ .Values.galoy.api.twilioExistingSecret.account_sid_key }}
+- name: TWILIO_AUTH_TOKEN
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.api.twilioExistingSecret.name }}
+      key: {{ .Values.galoy.api.twilioExistingSecret.auth_token_key }}
+{{- end -}}
