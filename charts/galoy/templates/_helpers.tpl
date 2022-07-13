@@ -201,3 +201,23 @@ Return Galoy environment variables for Twilio
       name: {{ .Values.galoy.api.twilioExistingSecret.name }}
       key: {{ .Values.galoy.api.twilioExistingSecret.auth_token_key }}
 {{- end -}}
+
+{{/*
+Return Galoy environment variables for price service
+*/}}
+{{- define "galoy.price.env" -}}
+- name: PRICE_HISTORY_HOST
+  value: {{ .Values.price.host | quote }}
+- name: PRICE_HISTORY_PORT
+  value: {{ .Values.price.port | quote }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for dealer service
+*/}}
+{{- define "galoy.dealer.env" -}}
+- name: PRICE_SERVER_HOST
+  value: {{ .Values.galoy.dealer.host | quote }}
+- name: PRICE_SERVER_PORT
+  value: {{ .Values.galoy.dealer.port | quote }}
+{{- end -}}

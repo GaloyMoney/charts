@@ -61,7 +61,7 @@ spec:
 
         ports:
         - name: http
-          containerPort: 4002
+          containerPort: {{ .Values.galoy.api.port }}
           protocol: TCP
 
         env:
@@ -93,9 +93,33 @@ spec:
 {{ include "galoy.apollo.env" . | indent 8 }}
 {{ include "galoy.twilio.env" . | indent 8 }}
 
+{{/* Services */}}
+{{ include "galoy.price.env" . | indent 8 }}
+{{ include "galoy.dealer.env" . | indent 8 }}
+
         {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-notifications-service-account/service-account.json"
+        {{- end -}}
+
+        {{- if .Values.galoy.api.probes.enabled -}}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.galoy.api.port }}
+          initialDelaySeconds: {{ .Values.galoy.api.probes.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.galoy.api.probes.liveness.periodSeconds }}
+          failureThreshold: {{ .Values.galoy.api.probes.liveness.failureThreshold }}
+          timeoutSeconds: {{ .Values.galoy.api.probes.liveness.timeoutSeconds }}
+
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.galoy.api.port }}
+          initialDelaySeconds: {{ .Values.galoy.api.probes.readiness.initialDelaySeconds }}
+          failureThreshold: {{ .Values.galoy.api.probes.readiness.failureThreshold }}
+          successThreshold: {{ .Values.galoy.api.probes.readiness.successThreshold }}
+          timeoutSeconds: {{ .Values.galoy.api.probes.readiness.timeoutSeconds }}
         {{- end -}}
 
         volumeMounts:
