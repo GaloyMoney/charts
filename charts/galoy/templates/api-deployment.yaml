@@ -97,12 +97,12 @@ spec:
 {{ include "galoy.price.env" . | indent 8 }}
 {{ include "galoy.dealer.env" . | indent 8 }}
 
-        {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
+        {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-notifications-service-account/service-account.json"
-        {{- end -}}
+        {{ end }}
 
-        {{- if .Values.galoy.api.probes.enabled -}}
+        {{ if .Values.galoy.api.probes.enabled }}
         livenessProbe:
           httpGet:
             path: /healthz
@@ -120,23 +120,23 @@ spec:
           failureThreshold: {{ .Values.galoy.api.probes.readiness.failureThreshold }}
           successThreshold: {{ .Values.galoy.api.probes.readiness.successThreshold }}
           timeoutSeconds: {{ .Values.galoy.api.probes.readiness.timeoutSeconds }}
-        {{- end -}}
+        {{ end }}
 
         volumeMounts:
-        {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
+        {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: firebase-notifications-service-account
           mountPath: /tmp
           readOnly: true
-        {{- end -}}
+        {{ end }}
       volumes:
-      {{- if .Values.galoy.api.firebaseNotifications.enabled -}}
+      {{ if .Values.galoy.api.firebaseNotifications.enabled }}
       - name: firebase-notifications-service-account
         secret:
           secretName: {{ .Values.galoy.api.firebaseNotifications.existingSecret.name }}
           items:
           - key: {{ .Values.galoy.api.firebaseNotifications.existingSecret.key }}
             path: service-account.json
-      {{- end -}}
+      {{ end }}
 
 # ----------------------------------------------------------------
 # NOTES FOR SELF:

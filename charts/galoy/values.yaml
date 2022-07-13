@@ -11,11 +11,6 @@ nameOverride:
 fullnameOverride:
 
 galoy:
-  ## Name of the Galoy Instance
-  ## TODO: Usage, where does it get shown
-  ##
-  name: "Galoy Wallet"
-
   ## Bitcoin Network to run this Galoy instance on
   ##
   network: mainnet
@@ -297,6 +292,23 @@ galoy:
 
       ## Secret Key
       key: password
+  
+  ## Dealer Service Connection details
+  ##
+  dealer:
+    ## Dealer Service Host
+    host: dealer-price.default.svc.cluster.local
+
+    ## Dealer Service Port
+    port: 50055
+
+## Configuration values for Galoy Price subchart
+price:
+  ## Price History Host
+  host: galoy-price.default.svc.cluster.local
+
+  ## Price History Port
+  port: 50052
 
 
 ## Configuration values for the mongodb dependency.
