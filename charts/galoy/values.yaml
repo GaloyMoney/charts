@@ -381,6 +381,7 @@ redis:
     enabled: true
 
 ## For managing secrets using Helm
+## Set the values if you'd want to make it configurable
 ##
 secrets:
 
@@ -394,6 +395,35 @@ secrets:
   mongodbRootPassword:
   mongodbMetricsPassword:
   mongodbReplicaSetKey:
+
+  ## Secrets for Geetest
+  geetestId:
+  geetestSecretKey:
+
+  ## Secret for JWT
+  jwtSecret:
+
+  ## Secret for Apollo
+  apolloId:
+  apolloKey:
+
+  ## Secret for Twilio
+  twilioPhoneNumber:
+  twilioAccountSid:
+  twilioAuthToken:
+
+  ## Secrets for BitcoinD
+  bitcoindRpcPassword:
+
+  ## Secrets for LND1
+  lnd1Macaroon:
+  lnd1Tls:
+  lnd1PubKey:
+
+  ## Secrets for LND2
+  lnd2Macaroon:
+  lnd2Tls:
+  lnd2PubKey:
 
 ## Tracing details
 ##
