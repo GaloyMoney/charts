@@ -15,6 +15,13 @@ galoy:
   ##
   network: mainnet
 
+  ## Application Custom Config
+  ## Ref: https://github.com/GaloyMoney/galoy/blob/main/default.yaml
+  ##
+  config:
+    ## Default Galoy Wallet Name
+    name: Galoy Wallet
+
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:

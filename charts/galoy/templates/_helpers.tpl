@@ -23,14 +23,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Migration Job name
 */}}
 {{- define "galoy.migration.jobname" -}}
-{{- printf "%s-mongodb-migrate-%s" .Release.Name .Release.Revision -}}
+{{- printf "%s-mongodb-migrate-%d" .Release.Name .Release.Revision -}}
 {{- end -}}
 
 {{/*
 Pre-Migration Job name
 */}}
 {{- define "galoy.pre-migration.jobname" -}}
-{{- printf "%s-pre-mongodb-migrate-%s" .Release.Name .Release.Revision -}}
+{{- printf "%s-pre-mongodb-migrate-%d" .Release.Name .Release.Revision -}}
 {{- end -}}
 
 {{/*

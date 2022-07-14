@@ -1,33 +1,29 @@
-global:
-  network: regtest
-
 galoy:
-  test_accounts:
-    - ref: A
-      phone: "+59981730222"
-      code: "111111"
-      needUsdWallet: true
-      role: bankowner
-      username: bankowner
-  apollo:
-    playground: true
+  network: regtest
+  
+  config:
+    test_accounts:
+      - ref: A
+        phone: "+59981730222"
+        code: "111111"
+        needUsdWallet: true
+        role: bankowner
+        username: bankowner
+    apollo:
+      playground: true
+  
+  bitcoind:
+    dns: bitcoind.galoy-dev-bitcoin.svc.cluster.local
+    port: 18443
+  
+  lnd1:
+    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
 
-apiIngress:
-  name: api-ingress
-  host: localhost
-
-bitcoind:
-  port: 18332
-
-needFirebaseServiceAccount: false
-
-lnd1:
-  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-lnd2:
-  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-jwtSecret: "my_non_secured_secret"
+  lnd2:
+    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
+  
+  dealer:
+    host: dealer-price.galoy-dev-addons.svc.cluster.local
 
 mongodb:
   architecture: standalone
@@ -51,17 +47,9 @@ redis:
   metrics:
     enabled: false
 
-mongodbaddress: "galoy-mongodb"
-
-cron: []
-
-twilio: false
-
 price:
   service:
     type: NodePort
 
-devDisableMongoBackup: true
-
-dealer_price:
-  host: dealer-price.galoy-dev-addons.svc.cluster.local
+secrets:
+  create: false

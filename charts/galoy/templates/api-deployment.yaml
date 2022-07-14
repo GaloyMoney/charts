@@ -22,12 +22,11 @@ spec:
   selector:
     matchLabels:
       app: {{ template "galoy.api.fullname" . }}
-      release: "{{ .Release.Name }}"
   
   template:
 
     metadata:
-      name: api
+      name: {{ template "galoy.api.fullname" . }}
       labels:
         app: {{ template "galoy.api.fullname" . }}
         kube-monkey/enabled: enabled
