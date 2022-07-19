@@ -398,39 +398,39 @@ secrets:
   create: true
 
   ## Secrets for DB access
-  mongodbPassword:
-  mongodbRootPassword:
-  mongodbMetricsPassword:
-  mongodbReplicaSetKey:
+  mongodbPassword: password
+  mongodbRootPassword: password
+  mongodbMetricsPassword: password
+  mongodbReplicaSetKey: password
 
   ## Secrets for Geetest
-  geetestId:
-  geetestSecretKey:
+  geetestId: id
+  geetestSecretKey: key
 
   ## Secret for JWT
-  jwtSecret:
+  jwtSecret: CHANGE-ME-PLS
 
   ## Secret for Apollo
-  apolloId:
-  apolloKey:
+  apolloId: id
+  apolloKey: key
 
   ## Secret for Twilio
-  twilioPhoneNumber:
-  twilioAccountSid:
-  twilioAuthToken:
+  twilioPhoneNumber: 99999999
+  twilioAccountSid: sid
+  twilioAuthToken: token
 
   ## Secrets for BitcoinD
-  bitcoindRpcPassword:
+  bitcoindRpcPassword: password
 
   ## Secrets for LND1
-  lnd1Macaroon:
-  lnd1Tls:
-  lnd1PubKey:
+  lnd1Macaroon: macaroon
+  lnd1Tls: tls
+  lnd1PubKey: key
 
   ## Secrets for LND2
-  lnd2Macaroon:
-  lnd2Tls:
-  lnd2PubKey:
+  lnd2Macaroon: macaroon
+  lnd2Tls: tls
+  lnd2PubKey: key
 
 ## Tracing details
 ##

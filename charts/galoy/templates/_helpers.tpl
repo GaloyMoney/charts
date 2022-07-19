@@ -48,7 +48,7 @@ Return Galoy environment variables for MongoDB configuration
   valueFrom:
     secretKeyRef:
       name: {{ .Values.mongodb.auth.existingSecret }}
-      key: mongodb-password
+      key: mongodb-passwords
 {{- end -}}
 
 {{/*

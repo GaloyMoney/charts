@@ -6,6 +6,7 @@ spec:
   backoffLimit: 1
   template:
     spec:
+      {{ if or .Values.galoy.backups.gcs.enabled .Values.galoy.backups.dropbox.enabled }}
       serviceAccountName: {{ template "galoy.name" . }}
       initContainers:
       - name: trigger-mongodb-backup
@@ -29,6 +30,7 @@ spec:
             echo "Backup succeeded!"
           fi
           kubectl delete job "${job_name}"
+      {{ end }}
       containers:
       - name: mongodb-migrate
         image: "{{ .Values.galoy.images.mongodbMigrate.repository }}@{{ .Values.galoy.images.mongodbMigrate.digest }}"
