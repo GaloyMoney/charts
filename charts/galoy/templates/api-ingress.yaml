@@ -1,0 +1,35 @@
+{{ if .Values.apiIngress }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.apiIngress.name }}
+  labels:
+    app: {{ .Values.apiIngress.name }}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    {{ if .Values.apiIngress.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.apiIngress.clusterIssuer }}
+    {{ end }}
+    nginx.ingress.kubernetes.io/limit-rpm: "60"
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
+    nginx.ingress.kubernetes.io/limit-connections: "40"
+spec:
+  {{ if .Values.apiIngress.clusterIssuer }}
+  tls:
+  - hosts:
+    - {{.Values.apiIngress.host}}
+    secretName: {{.Values.apiIngress.name}}-tls
+  {{ end }}
+  rules:
+  - host: {{.Values.apiIngress.host}}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: api
+            port:
+              number: 4002
+{{ end }}

@@ -37,11 +37,16 @@ Pre-Migration Job name
 Return Galoy environment variables for MongoDB configuration
 */}}
 {{- define "galoy.mongodb.env" -}}
+{{ if eq .Values.mongodb.architecture "replicaset" }}
 - name: MONGODB_ADDRESS
   value: "{{ range until (.Values.mongodb.replicaCount | int) }}
   {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
   {{- if lt . (sub $.Values.mongodb.replicaCount 1 | int) -}},{{- end -}}
   {{ end }}"
+{{ else if eq .Values.mongodb.architecture "standalone" }}
+- name: MONGODB_ADDRESS
+  value: "galoy-mongodb"
+{{ end }}
 - name: MONGODB_USER
   value: {{ index .Values.mongodb.auth.usernames 0 | quote }}
 - name: MONGODB_PASSWORD
@@ -220,4 +225,23 @@ Return Galoy environment variables for dealer service
   value: {{ .Values.galoy.dealer.host | quote }}
 - name: PRICE_SERVER_PORT
   value: {{ .Values.galoy.dealer.port | quote }}
+{{- end -}}
+
+{{/* --------------------- FROM PREVIOUS -------------------------- */}}
+
+{{- define "galoy.jwtSecret" -}}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace "jwt-secret") -}}
+{{- if $secret -}}
+{{/*
+   Reusing current password since secret exists
+*/}}
+{{- $secret.data.secret -}}
+{{- else if .Values.jwtSecret -}}
+{{ .Values.jwtSecret | b64enc }}
+{{- else -}}
+{{/*
+    Generate new password
+*/}}
+{{- (randAlpha 24) | b64enc -}}
+{{- end -}}
 {{- end -}}
