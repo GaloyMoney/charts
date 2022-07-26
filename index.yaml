@@ -779,6 +779,26 @@ entries:
   monitoring:
     - apiVersion: v2
       appVersion: 0.1.0
+      created: "2022-07-26T19:01:45.728995358Z"
+      dependencies:
+        - name: grafana
+          repository: https://grafana.github.io/helm-charts
+          version: 6.32.7
+        - name: prometheus
+          repository: https://prometheus-community.github.io/helm-charts
+          version: 14.11.0
+        - name: prometheus-blackbox-exporter
+          repository: https://prometheus-community.github.io/helm-charts
+          version: 5.6.0
+      description: A Helm chart for Kubernetes
+      digest: 7204bea7cf1613ba61e3ef8feaa0a05886c393f537251a62fb73e554826a4bc7
+      name: monitoring
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/monitoring-v0.1.9/monitoring-0.1.9.tgz
+      version: 0.1.9
+    - apiVersion: v2
+      appVersion: 0.1.0
       created: "2022-05-12T18:02:28.663686902Z"
       dependencies:
         - name: grafana
@@ -4304,4 +4324,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-07-26T18:55:07.159163928Z"
+generated: "2022-07-26T19:01:45.729358227Z"
