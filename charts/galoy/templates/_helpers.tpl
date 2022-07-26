@@ -43,10 +43,6 @@ Return Galoy environment variables for MongoDB configuration
   {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
   {{- if lt . (sub $.Values.mongodb.replicaCount 1 | int) -}},{{- end -}}
   {{ end }}"
-{{ else if eq .Values.mongodb.architecture "standalone" }}
-- name: MONGODB_ADDRESS
-  value: "galoy-mongodb"
-{{ end }}
 - name: MONGODB_USER
   value: {{ index .Values.mongodb.auth.usernames 0 | quote }}
 - name: MONGODB_PASSWORD
@@ -54,14 +50,17 @@ Return Galoy environment variables for MongoDB configuration
     secretKeyRef:
       name: {{ .Values.mongodb.auth.existingSecret }}
       key: mongodb-passwords
-{{- end -}}
-
-{{/*
-Return Galoy environment variables for network
-*/}}
-{{- define "galoy.network.env" -}}
-- name: NETWORK
-  value: {{ .Values.galoy.network }}
+{{ else if eq .Values.mongodb.architecture "standalone" }}
+- name: MONGODB_ADDRESS
+  value: "galoy-mongodb"
+- name: MONGODB_USER
+  value: {{ index .Values.mongodb.auth.usernames 0 | quote }}
+- name: MONGODB_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.mongodb.auth.existingSecret }}
+      key: mongodb-passwords
+{{ end }}
 {{- end -}}
 
 {{/*
@@ -126,22 +125,6 @@ Return Galoy environment variables for LND 2 configuration
 {{- end -}}
 
 {{/*
-Return Galoy environment variables for Geetest configuration
-*/}}
-{{- define "galoy.geetest.env" -}}
-- name: GEETEST_ID
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.api.geetestExistingSecret.name }}
-      key: {{ .Values.galoy.api.geetestExistingSecret.id_key }}
-- name: GEETEST_KEY
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.api.geetestExistingSecret.name }}
-      key: {{ .Values.galoy.api.geetestExistingSecret.secret_key }}
-{{- end -}}
-
-{{/*
 Return Galoy environment variables for Redis configuration
 */}}
 {{- define "galoy.redis.env" -}}
@@ -153,17 +136,6 @@ Return Galoy environment variables for Redis configuration
 - name: {{ printf "REDIS_%d_DNS" . }}
   value: {{ printf "galoy-redis-node-%d.galoy-redis-headless" . | quote }}
 {{ end }}
-{{- end -}}
-
-{{/*
-Return Galoy environment variables for JWT Secret
-*/}}
-{{- define "galoy.jwt.env" -}}
-- name: JWT_SECRET
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.api.jwtSecretExistingSecret.name }}
-      key: {{ .Values.galoy.api.jwtSecretExistingSecret.key }}
 {{- end -}}
 
 {{/*
@@ -206,28 +178,6 @@ Return Galoy environment variables for Twilio
       name: {{ .Values.galoy.api.twilioExistingSecret.name }}
       key: {{ .Values.galoy.api.twilioExistingSecret.auth_token_key }}
 {{- end -}}
-
-{{/*
-Return Galoy environment variables for price service
-*/}}
-{{- define "galoy.price.env" -}}
-- name: PRICE_HISTORY_HOST
-  value: {{ .Values.price.host | quote }}
-- name: PRICE_HISTORY_PORT
-  value: {{ .Values.price.port | quote }}
-{{- end -}}
-
-{{/*
-Return Galoy environment variables for dealer service
-*/}}
-{{- define "galoy.dealer.env" -}}
-- name: PRICE_SERVER_HOST
-  value: {{ .Values.galoy.dealer.host | quote }}
-- name: PRICE_SERVER_PORT
-  value: {{ .Values.galoy.dealer.port | quote }}
-{{- end -}}
-
-{{/* --------------------- FROM PREVIOUS -------------------------- */}}
 
 {{- define "galoy.jwtSecret" -}}
 {{- $secret := (lookup "v1" "Secret" .Release.Namespace "jwt-secret") -}}

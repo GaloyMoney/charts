@@ -70,6 +70,9 @@ spec:
           value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.api.logLevel }}
+
+        - name: NETWORK
+          value: {{ .Values.galoy.network }}
         
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
@@ -81,20 +84,54 @@ spec:
 {{ include "galoy.redis.env" . | indent 8 }}
 
 {{/* Bitcoin/LND */}}
-{{ include "galoy.network.env" . | indent 8 }}
 {{ include "galoy.bitcoind.env" . | indent 8 }}
 {{ include "galoy.lnd1.env" . | indent 8 }}
 {{ include "galoy.lnd2.env" . | indent 8 }}
 
 {{/* API Specifics */}}
-{{ include "galoy.geetest.env" . | indent 8 }}
-{{ include "galoy.jwt.env" . | indent 8 }}
-{{ include "galoy.apollo.env" . | indent 8 }}
 {{ include "galoy.twilio.env" . | indent 8 }}
 
-{{/* Services */}}
-{{ include "galoy.price.env" . | indent 8 }}
-{{ include "galoy.dealer.env" . | indent 8 }}
+        - name: GEETEST_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.geetestExistingSecret.name }}
+              key: {{ .Values.galoy.api.geetestExistingSecret.id_key }}
+        - name: GEETEST_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.geetestExistingSecret.name }}
+              key: {{ .Values.galoy.api.geetestExistingSecret.secret_key }}
+
+        - name: APOLLO_GRAPH_VARIANT
+          value: {{ .Values.galoy.api.apollo.graphVariant | quote }}
+        - name: APOLLO_SCHEMA_REPORTING
+          value: {{ .Values.galoy.api.apollo.schemaReporting | quote }}
+        - name: APOLLO_GRAPH_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.apollo.existingSecret.name }}
+              key: {{ .Values.galoy.api.apollo.existingSecret.id_key }}
+        - name: APOLLO_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.apollo.existingSecret.name }}
+              key: {{ .Values.galoy.api.apollo.existingSecret.key_key }}
+
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.jwtSecretExistingSecret.name }}
+              key: {{ .Values.galoy.api.jwtSecretExistingSecret.key }}
+
+        - name: PRICE_HISTORY_HOST
+          value: {{ .Values.price.host | quote }}
+        - name: PRICE_HISTORY_PORT
+          value: {{ .Values.price.port | quote }}
+
+        - name: PRICE_SERVER_HOST
+          value: {{ .Values.galoy.dealer.host | quote }}
+        - name: PRICE_SERVER_PORT
+          value: {{ .Values.galoy.dealer.port | quote }}
 
         {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
