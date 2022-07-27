@@ -131,7 +131,7 @@ spec:
               secretName: galoyapp-firebase-serviceaccount
           - name: "custom-yaml"
             secret:
-              secretName: "galoy-config-map"
+              secretName: "galoy-config"
       
 ---
 {{- end }}

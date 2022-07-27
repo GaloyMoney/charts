@@ -1,20 +1,21 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ $.Release.Name }}-mongodb-migrate-{{ $.Release.Revision }}
+  name: {{ template "galoy.migration.jobname" . }}
 spec:
   backoffLimit: 1
   template:
     spec:
-      serviceAccountName: {{ $.Release.Name}}-serviceaccount
+      {{ if or .Values.galoy.backups.gcs.enabled .Values.galoy.backups.dropbox.enabled }}
+      serviceAccountName: {{ template "galoy.name" . }}
       initContainers:
-      - name: "trigger-mongodb-backup"
+      - name: trigger-mongodb-backup
         image: "groundnuty/k8s-wait-for:v1.5.1"
         command:
         - "/bin/sh"
         - "-c"
         - |
-          job_name="{{ $.Release.Name }}-pre-migration-backup-{{ $.Release.Revision }}"
+          job_name="{{ template "galoy.pre-migration.jobname" . }}"
           echo "Executing ${job_name}"
           kubectl delete job "${job_name}" || true
           kubectl create job --from=cronjob/mongo-backup "${job_name}"
@@ -29,17 +30,10 @@ spec:
             echo "Backup succeeded!"
           fi
           kubectl delete job "${job_name}"
+      {{ end }}
       containers:
       - name: mongodb-migrate
-        image: "{{ $.Values.mongodbMigrateImage.repository }}@{{ $.Values.mongodbMigrateImage.digest }}"
+        image: "{{ .Values.galoy.images.mongodbMigrate.repository }}@{{ .Values.galoy.images.mongodbMigrate.digest }}"
         env:
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ $.Release.Name }}-mongodb
-              key: "mongodb-password"
-        - name: MONGODB_USER
-          value: "testGaloy"
-        - name: MONGODB_ADDRESS
-          value: {{ $.Values.mongodbaddress }}
+{{ include "galoy.mongodb.env" . | indent 8 }}
       restartPolicy: Never
