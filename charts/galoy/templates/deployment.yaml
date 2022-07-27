@@ -30,7 +30,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
-      serviceAccountName: {{ template "galoy.name" $ }}
+      serviceAccountName: {{ $.Release.Name}}-serviceaccount
       initContainers:
       - name: wait-for-mongodb-migrate
         image: "groundnuty/k8s-wait-for:v1.5.1"
@@ -255,6 +255,6 @@ spec:
       {{- end}}
       - name: "custom-yaml"
         secret:
-          secretName: "galoy-config"
+          secretName: "galoy-config-map"
 ---
 {{- end }}
