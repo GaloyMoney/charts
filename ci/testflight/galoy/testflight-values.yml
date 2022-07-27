@@ -80,3 +80,6 @@ price:
     primary:
       persistence:
         enabled: false
+
+secrets:
+  create: false
