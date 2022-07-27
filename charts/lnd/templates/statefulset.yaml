@@ -7,7 +7,7 @@ metadata:
     {{- include "lnd.labels" . | nindent 4 }}
     {{- if .Values.kubemonkey.enabled }}
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: {{ .Chart.Name }}
+    kube-monkey/identifier: {{ .Release.Name }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "2"
@@ -32,7 +32,7 @@ spec:
         allow-to-bitcoind: "true"
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: {{ .Chart.Name }}
+        kube-monkey/identifier: {{ .Release.Name }}
         {{- end }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}

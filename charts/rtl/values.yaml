@@ -32,9 +32,11 @@ service:
   port: 3000
   type: ClusterIP
 
-# FIXME: Intake an array of lnds and secret names
-lnd1Url: lnd1
-lnd1SecretName: lnd1-credentials
+lnds:
+  - url: lnd1
+    secretName: lnd1-credentials
+    dark: true
+    themeColor: YELLOW
 
 resources: {}
 
