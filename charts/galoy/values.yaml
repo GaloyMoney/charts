@@ -494,7 +494,7 @@ service:
     type: NodePort
     targetPort: 4001
     port: 4001
-  - name: api
+  - name: galoy-api
     type: NodePort
     targetPort: 4002
     port: 4002
