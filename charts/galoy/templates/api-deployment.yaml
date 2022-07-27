@@ -164,6 +164,9 @@ spec:
           mountPath: /tmp
           readOnly: true
         {{ end }}
+
+        - name: custom-yaml
+          mountPath: "/var/yaml/"
       volumes:
       {{ if .Values.galoy.api.firebaseNotifications.enabled }}
       - name: firebase-notifications-service-account
@@ -174,6 +177,6 @@ spec:
             path: service-account.json
       {{ end }}
 
-# ----------------------------------------------------------------
-# NOTES FOR SELF:
-# TODO: Custom YAML injection
+      - name: custom-yaml
+        secret:
+          secretName: "galoy-config"
