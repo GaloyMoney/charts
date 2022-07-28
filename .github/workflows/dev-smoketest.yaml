@@ -10,8 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: nolar/setup-k3d-k3s@v1
+        with:
+          k3d-name: test
       - name: Run the Charts in Dev Mode
         run: |
           pushd dev
+          source ./envrc
           make all
 
