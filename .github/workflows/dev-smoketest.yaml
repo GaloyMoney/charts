@@ -15,6 +15,6 @@ jobs:
       - name: Run the Charts in Dev Mode
         run: |
           pushd dev
-          source ./envrc
+          source ./.envrc
           make all
 
