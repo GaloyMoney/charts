@@ -189,6 +189,7 @@ resource "helm_release" "galoy" {
   name      = "galoy"
   chart     = "${path.module}/../../charts/galoy"
   namespace = kubernetes_namespace.galoy.metadata[0].name
+  timeout   = 600
 
   values = [
     file("${path.module}/galoy-values.yml")

@@ -1,0 +1,30 @@
+name: dev-smoketest
+concurrency: dev-smoketest
+on:
+  push:
+    branches:
+      - ci-testflight-github-action
+jobs:
+  smoketest:
+    name: Hit smoketests against Charts in Dev Setup
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: AbsaOSS/k3d-action@v2
+        name: "Create Single Cluster"
+        with:
+          cluster-name: "k3s-default"
+          args: >-
+            --k3s-arg --disable=traefik@server:0
+            --k3s-arg --disable=servicelb@server:0
+      - name: Run the Charts in Dev Mode
+        run: |
+          pushd dev
+          source ./.envrc
+          make init
+          make deploy-services
+          make deploy
+      - name: Delete K3D Cluster
+        if: always()
+        run: |
+          k3d cluster delete --all
