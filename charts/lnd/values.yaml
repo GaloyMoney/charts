@@ -80,7 +80,6 @@ lndGeneralConfig:
   - tlsextradomain=lnd
   - accept-keysend=1
   - allow-circular-route=1
-  - sync-freelist=1
   - stagger-initial-reconnect=1
   - protocol.wumbo-channels=1
   - maxchansize=500000000
