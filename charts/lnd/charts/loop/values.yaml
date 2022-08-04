@@ -7,11 +7,6 @@ image:
   tag: v0.19.1-beta
   pullPolicy: IfNotPresent
 
-loop:
-  ports:
-    rest: 8081
-    grpc: 11010
-
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
