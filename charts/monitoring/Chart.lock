@@ -1,12 +1,12 @@
 dependencies:
 - name: grafana
   repository: https://grafana.github.io/helm-charts
-  version: 6.32.7
+  version: 6.32.11
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 14.11.0
 - name: prometheus-blackbox-exporter
   repository: https://prometheus-community.github.io/helm-charts
   version: 5.6.0
-digest: sha256:19b40d969dfb4f24516aa96103929b6fd2fb24a2ca14c3c9a05755ac23744c15
-generated: "2022-07-22T14:47:20.900326916Z"
+digest: sha256:8b13ba2c8d33a22c1b0b5b61ec4f38910da1c020489c6f2bb4aa17b3b319ccc5
+generated: "2022-08-04T10:45:21.882871913Z"
