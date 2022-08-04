@@ -112,9 +112,6 @@ spec:
       - name: lnd-macaroons
         secret:
           secretName: {{.Release.Name}}-credentials
-      - name: lnd-storage
-        secret:
-          secretName: {{.Release.Name}}-credentials
       - name: export-secrets
         configMap:
           name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
