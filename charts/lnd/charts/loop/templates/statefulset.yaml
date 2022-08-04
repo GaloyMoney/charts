@@ -113,9 +113,9 @@ spec:
         secret:
           secretName: {{.Release.Name}}-credentials
       - name: export-secrets
-          configMap:
-            name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
-            defaultMode: 0777
+        configMap:
+          name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
+          defaultMode: 0777
       - name: loop-storage
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
