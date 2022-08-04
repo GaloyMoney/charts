@@ -7,6 +7,11 @@ image:
   tag: v0.19.1-beta
   pullPolicy: IfNotPresent
 
+sidecarImage:
+  repository: us.gcr.io/galoy-org/lnd-sidecar
+  digest: "sha256:8527329943a4014cc85855915ba288221db39c2fe406db7f09bc62b210498a4d"
+  git_ref: dc770ca
+
 loop:
   ports:
     rest: 8081
