@@ -35,15 +35,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          command: [
-            "/bin/sh",
-            "-c",
-            "loopd",
-            "--lnd.host={{ .Release.Name }}:10009",
-            "--network {{.Values.global.network}}",
-            "--restlisten=0.0.0.0:{{.Values.loop.ports.rest}}",
-            "--rpclisten=0.0.0.0:{{.Values.loop.ports.grpc}}"
-          ]
+          command: ["/bin/sh","-c", "loopd --lnd.host={{ .Release.Name }}:10009 --network {{.Values.global.network}}"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -77,31 +69,6 @@ spec:
               mountPath: "/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/"
             - name: loop-storage
               mountPath: /root/.loop
-        - name: export-secrets
-          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
-          command: ['/bin/sh']
-          args:
-          - '-c'
-          - |
-            loop -n $NETWORK terms
-            while [[ $? != 0 ]]; do sleep 1; loop -n $NETWORK terms; done
-            /home/alpine/exportSecrets.sh
-            trap "echo shutting down; exit 0" SIGKILL SIGTERM
-            while true; do sleep 1; done
-          env:
-          - name: NETWORK
-            valueFrom:
-              secretKeyRef:
-                name: network
-                key: network
-          volumeMounts:
-          - name: export-secrets
-            mountPath: /home/alpine/exportSecrets.sh
-            subPath: exportSecrets.sh
-          - name: lnd-storage
-            mountPath: /root/.lnd
-          - name: loop-storage
-            mountPath: /root/.loop
       volumes:
       - name: lnd-tls
         secret:
@@ -112,10 +79,6 @@ spec:
       - name: lnd-macaroons
         secret:
           secretName: {{.Release.Name}}-credentials
-      - name: export-secrets
-          configMap:
-            name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
-            defaultMode: 0777
       - name: loop-storage
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
