@@ -36,7 +36,8 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           command: [
-            "/bin/sh -c",
+            "/bin/sh",
+            "-c",
             "loopd",
             "--lnd.host={{ .Release.Name }}:10009",
             "--network {{.Values.global.network}}",
