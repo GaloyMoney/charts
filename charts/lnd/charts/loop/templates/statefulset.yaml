@@ -98,8 +98,6 @@ spec:
           - name: export-secrets
             mountPath: /home/alpine/exportSecrets.sh
             subPath: exportSecrets.sh
-          - name: lnd-storage
-            mountPath: /root/.lnd
           - name: loop-storage
             mountPath: /root/.loop
       volumes:
@@ -110,9 +108,6 @@ spec:
           - key: tls.cert
             path: "tls.cert"
       - name: lnd-macaroons
-        secret:
-          secretName: {{.Release.Name}}-credentials
-      - name: lnd-storage
         secret:
           secretName: {{.Release.Name}}-credentials
       - name: export-secrets
