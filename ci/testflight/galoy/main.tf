@@ -221,6 +221,22 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   }
 }
 
+resource "random_password" "redis" {
+  length  = 20
+  special = false
+}
+
+resource "kubernetes_secret" "redis_password" {
+  metadata {
+    name      = "galoy-redis"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    "redis-password" : random_password.redis.result
+  }
+}
+
 resource "helm_release" "galoy" {
   name       = "galoy"
   chart      = "${path.module}/chart"
