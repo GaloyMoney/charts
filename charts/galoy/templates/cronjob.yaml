@@ -104,8 +104,16 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  {{- if $.Values.redis.auth.existingSecret }}
+                  name: {{ $.Values.redis.auth.existingSecret }}
+                  {{- else }}
                   name: {{ $.Release.Name }}-redis
+                  {{- end }}
+                  {{- if $.Values.redis.auth.existingSecretPasswordKey }}
+                  key: {{ $.Values.redis.auth.existingSecretPasswordKey }}
+                  {{- else }}
                   key: "redis-password"
+                  {{- end }}
             - name: REDIS_MASTER_NAME
               value: "mymaster"
             - name: REDIS_0_DNS
