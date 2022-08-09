@@ -45,7 +45,7 @@ resource "kubernetes_secret" "redis_password" {
 resource "helm_release" "stablesats" {
   name      = "stablesats"
   chart     = "${path.module}/chart"
-  namespace = kubernetes_namespace.stablesats.metadata[0].name
+  namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
     file("${path.module}/testflight-values.yml")
