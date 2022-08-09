@@ -1,0 +1,17 @@
+stablesats:
+  image:
+    repository: us.gcr.io/galoy-org/stablesats-rs
+    digest: "sha256:9ae3495f52c8c5b35d767ba11cf67a96b532f62b1119a134fe5bfbf9f7c2fadd"
+  priceServer:
+    port: 3325
+
+redis:
+  master:
+    persistence:
+      enabled: true
+  auth:
+    password: password
+  sentinel:
+    enabled: true
+  metrics:
+    enabled: true
