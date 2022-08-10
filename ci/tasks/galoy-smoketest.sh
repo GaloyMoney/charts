@@ -24,11 +24,14 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   kubectl -n ${namespace} delete job "${job_name}" || true
   echo "Executing cronjob"
   kubectl -n ${namespace} create job --from=cronjob/cronjob "${job_name}"
-  for i in {1..10}; do
+  for i in {1..150}; do
     kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
     if [[ $? -eq 0 ]]; then
       echo "Cronjob execution completed"
       break
+    fi
+    if [[ $i -gt 30 ]]; then
+      echo "If cronjob is taking too long, consider closing channels with offline nodes"
     fi
     sleep 2
   done
