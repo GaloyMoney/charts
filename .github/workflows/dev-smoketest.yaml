@@ -31,6 +31,13 @@ jobs:
       #       CHART=bitcoind ./dev-smoketest-settings.sh && \
       #       ./bitcoind-smoketest.sh regtest && \
       #       rm -rf smoketest-settings"
+      - name: LND Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=lnd ./dev-smoketest-settings.sh && \
+            ./lnd-smoketest.sh && \
+            rm -rf smoketest-settings"
       - name: Galoy Smoketest
         run: |
           pushd dev && source ./.envrc
