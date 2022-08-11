@@ -73,13 +73,6 @@ jobs:
             CHART=galoy-pay ./dev-smoketest-settings.sh && \
             ./galoy-pay-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Dealer Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=dealer ./dev-smoketest-settings.sh && \
-            ./dealer-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: Web Wallet Smoketest
         run: |
           pushd dev && source ./.envrc
@@ -87,7 +80,17 @@ jobs:
             CHART=web-wallet ./dev-smoketest-settings.sh && \
             ./web-wallet-smoketest.sh && \
             rm -rf smoketest-settings"
+      - name: Dealer Smoketest
+        run: |
+          echo "Dealer takes about 2 minutes to startup, waiting..."
+          sleep 2m
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=dealer ./dev-smoketest-settings.sh && \
+            ./dealer-smoketest.sh && \
+            rm -rf smoketest-settings"
       - name: Clean Up
         if: always()
         run: |
           sudo rm -rf ci/tasks/smoketest-settings
+          k3d cluster delete --all
