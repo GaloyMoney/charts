@@ -43,6 +43,11 @@ resource "kubernetes_pod" "smoketest" {
   metadata {
     name      = "smoketest"
     namespace = local.smoketest_namespace
+
+    labels = {
+      "allow-to-bitcoind" : "true",
+      "allow-to-lnd" : "true"
+    }
   }
 
   spec {

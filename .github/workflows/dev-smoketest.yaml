@@ -24,13 +24,13 @@ jobs:
           make init
           make deploy-services
           make deploy
-      # - name: Bitcoin Smoketest
-      #   run: |
-      #     pushd dev && source ./.envrc
-      #     kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-      #       CHART=bitcoind ./dev-smoketest-settings.sh && \
-      #       ./bitcoind-smoketest.sh regtest && \
-      #       rm -rf smoketest-settings"
+      - name: Bitcoin Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=bitcoind ./dev-smoketest-settings.sh && \
+            ./bitcoind-smoketest.sh regtest && \
+            rm -rf smoketest-settings"
       - name: LND Smoketest
         run: |
           pushd dev && source ./.envrc
