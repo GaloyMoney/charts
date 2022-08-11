@@ -45,7 +45,36 @@ jobs:
             CHART=galoy ./dev-smoketest-settings.sh && \
             ./galoy-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Delete K3D Cluster
+      - name: Admin Panel Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=admin-panel ./dev-smoketest-settings.sh && \
+            ./admin-panel-smoketest.sh && \
+            rm -rf smoketest-settings"
+      - name: Galoy Pay Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=galoy-pay ./dev-smoketest-settings.sh && \
+            ./galoy-pay-smoketest.sh && \
+            rm -rf smoketest-settings"
+      - name: Dealer Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=dealer ./dev-smoketest-settings.sh && \
+            ./dealer-smoketest.sh && \
+            rm -rf smoketest-settings"
+      - name: Web Wallet Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=web-wallet ./dev-smoketest-settings.sh && \
+            ./web-wallet-smoketest.sh && \
+            rm -rf smoketest-settings"
+      - name: Clean Up
         if: always()
         run: |
+          sudo rm -rf charts/ci/tasks/smoketest-settings
           k3d cluster delete --all

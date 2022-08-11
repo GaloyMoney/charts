@@ -1,7 +1,8 @@
 variable "name_prefix" {}
 
 locals {
-  addons_namespace = "${var.name_prefix}-addons"
+  smoketest_namespace = "${var.name_prefix}-smoketest"
+  addons_namespace    = "${var.name_prefix}-addons"
 }
 
 resource "kubernetes_namespace" "addons" {

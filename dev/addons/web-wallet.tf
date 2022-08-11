@@ -43,3 +43,15 @@ resource "helm_release" "web_wallet_mobile" {
     file("${path.module}/web-wallet-mobile-values.yml")
   ]
 }
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name      = "web-wallet-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    web_wallet_endpoint        = "web-wallet.${local.addons_namespace}.svc.cluster.local"
+    web_wallet_mobile_endpoint = "web-wallet-mobile.${local.addons_namespace}.svc.cluster.local"
+    web_wallet_port            = 80
+  }
+}

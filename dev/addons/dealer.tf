@@ -65,3 +65,14 @@ resource "helm_release" "dealer" {
 
   dependency_update = true
 }
+
+resource "kubernetes_secret" "dealer_smoketest" {
+  metadata {
+    name      = "dealer-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    dealer_endpoint = "dealer.${local.addons_namespace}.svc.cluster.local"
+    dealer_port     = 3333
+  }
+}
