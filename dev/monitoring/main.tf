@@ -1,6 +1,7 @@
 variable "name_prefix" {}
 
 locals {
+  smoketest_namespace  = "${var.name_prefix}-smoketest"
   monitoring_namespace = "${var.name_prefix}-monitoring"
 }
 
@@ -20,4 +21,14 @@ resource "helm_release" "monitoring" {
   ]
 
   dependency_update = true
+}
+
+resource "kubernetes_secret" "monitoring_smoketest" {
+  metadata {
+    name      = "monitoring-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    grafana_host = "monitoring-grafana.${local.monitoring_namespace}.svc.cluster.local"
+  }
 }

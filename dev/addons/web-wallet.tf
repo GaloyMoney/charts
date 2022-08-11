@@ -44,7 +44,7 @@ resource "helm_release" "web_wallet_mobile" {
   ]
 }
 
-resource "kubernetes_secret" "smoketest" {
+resource "kubernetes_secret" "web_wallet_smoketest" {
   metadata {
     name      = "web-wallet-smoketest"
     namespace = local.smoketest_namespace
