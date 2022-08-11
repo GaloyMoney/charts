@@ -7,7 +7,7 @@ on:
 jobs:
   smoketest:
     name: Hit smoketests against Charts in Dev Setup
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: AbsaOSS/k3d-action@v2
@@ -15,15 +15,22 @@ jobs:
         with:
           cluster-name: "k3s-default"
           args: >-
+            -v "$(pwd):/charts"
             --k3s-arg --disable=traefik@server:0
             --k3s-arg --disable=servicelb@server:0
       - name: Run the Charts in Dev Mode
         run: |
-          pushd dev
-          source ./.envrc
+          pushd dev && source ./.envrc
           make init
           make deploy-services
           make deploy
+      - name: Bitcoin Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=bitcoind ./dev-smoketest-settings.sh && \
+            ./bitcoind-smoketest.sh regtest && \
+            rm -rf smoketest-settings"
       - name: Delete K3D Cluster
         if: always()
         run: |

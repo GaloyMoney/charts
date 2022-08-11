@@ -53,6 +53,12 @@ module "auth" {
   name_prefix = local.name_prefix
 }
 
+module "smoketest" {
+  source = "./smoketest"
+
+  name_prefix = local.name_prefix
+}
+
 provider "kubernetes" {
   experiments {
     manifest_resource = true
