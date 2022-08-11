@@ -90,4 +90,4 @@ jobs:
       - name: Clean Up
         if: always()
         run: |
-          sudo rm -rf charts/ci/tasks/smoketest-settings
+          sudo rm -rf ci/tasks/smoketest-settings
