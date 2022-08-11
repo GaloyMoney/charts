@@ -91,4 +91,3 @@ jobs:
         if: always()
         run: |
           sudo rm -rf charts/ci/tasks/smoketest-settings
-          k3d cluster delete --all
