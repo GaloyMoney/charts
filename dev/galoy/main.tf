@@ -1,6 +1,7 @@
 variable "name_prefix" {}
 
 locals {
+  smoketest_namespace = "${var.name_prefix}-smoketest"
   galoy_namespace     = "${var.name_prefix}-galoy"
   bitcoin_namespace   = "${var.name_prefix}-bitcoin"
   bitcoin_secret      = "bitcoind-rpcpassword"
@@ -189,7 +190,6 @@ resource "helm_release" "galoy" {
   name      = "galoy"
   chart     = "${path.module}/../../charts/galoy"
   namespace = kubernetes_namespace.galoy.metadata[0].name
-  timeout   = 600
 
   values = [
     file("${path.module}/galoy-values.yml")
@@ -214,8 +214,21 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   }
 
   data = {
-    username          = local.postgres_username
-    password          = local.postgres_password
-    database          = local.postgres_database
+    username = local.postgres_username
+    password = local.postgres_password
+    database = local.postgres_database
+  }
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name      = "galoy-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    galoy_endpoint         = "api.${local.galoy_namespace}.svc.cluster.local"
+    galoy_port             = 4002
+    price_history_endpoint = "galoy-price-history.${local.galoy_namespace}.svc.cluster.local"
+    price_history_port     = 50052
   }
 }
