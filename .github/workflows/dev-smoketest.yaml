@@ -1,9 +1,9 @@
 name: dev-smoketest
 concurrency: dev-smoketest
 on:
-  push:
-    branches:
-      - ci-testflight-github-action
+  pull_request:
+    branches: [main]
+
 jobs:
   smoketest:
     name: Hit smoketests against Charts in Dev Setup
