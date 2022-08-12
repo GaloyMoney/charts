@@ -1,6 +1,7 @@
 variable "name_prefix" {}
 
 locals {
+  smoketest_namespace  = "${var.name_prefix}-smoketest"
   bitcoin_namespace    = "${var.name_prefix}-bitcoin"
   bitcoind_rpcpassword = "rpcpassword"
 }
@@ -19,4 +20,29 @@ resource "null_resource" "bitcoind_block_generator" {
   }
 
   depends_on = [helm_release.bitcoind]
+}
+
+resource "kubernetes_secret" "bitcoind_smoketest" {
+  metadata {
+    name      = "bitcoind-smoketest"
+    namespace = local.smoketest_namespace
+  }
+
+  data = {
+    bitcoind_rpcpassword = local.bitcoind_rpcpassword
+    bitcoind_endpoint    = "bitcoind.${local.bitcoin_namespace}.svc.cluster.local"
+    bitcoind_port        = 18443
+    bitcoind_user        = "rpcuser"
+  }
+}
+
+resource "kubernetes_secret" "lnd_smoketest" {
+  metadata {
+    name      = "lnd-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    lndmon_endpoint  = "lnd1-lndmon.${local.bitcoin_namespace}.svc.cluster.local"
+    lnd_p2p_endpoint = "lnd1-p2p.${local.bitcoin_namespace}.svc.cluster.local"
+  }
 }

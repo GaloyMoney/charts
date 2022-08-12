@@ -22,7 +22,7 @@ spec:
           - pathType: Prefix
             path: "/.kratos"
               service:
-                name: {{ $fullName }}-public
+                name: {{ include "galoyAuth.fullname" $ }}-public
                 port:
                   name: http
           - pathType: Prefix

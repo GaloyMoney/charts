@@ -60,6 +60,10 @@ twilio: false
 price:
   service:
     type: NodePort
+  postgresql:
+    primary:
+      persistence:
+        enabled: false
 
 devDisableMongoBackup: true
 
