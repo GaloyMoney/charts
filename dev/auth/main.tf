@@ -29,6 +29,10 @@ resource "helm_release" "galoy_auth" {
   chart     = "${path.module}/../../charts/galoy-auth"
   namespace = kubernetes_namespace.auth.metadata[0].name
 
+  values = [
+    file("${path.module}/auth-values.yml")
+  ]
+
   depends_on = [kubernetes_secret.auth_backend_secret]
 
   dependency_update = true
