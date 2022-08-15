@@ -6,6 +6,7 @@ stablesats:
   priceServer:
     port: 3325
 redis:
+  enabled: true
   master:
     persistence:
       enabled: true
