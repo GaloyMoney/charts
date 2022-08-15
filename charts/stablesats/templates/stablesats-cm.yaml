@@ -19,3 +19,7 @@ data:
       enabled: true
       config:
         listen_port: {{ .Values.stablesats.priceServer.port }}
+    tracing:
+      service_name: {{ .Values.stablesats.tracing.serviceName }}
+      host: {{ .Values.stablesats.tracing.jaegerHost }}
+      port: 6831

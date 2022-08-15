@@ -1,10 +1,13 @@
 stablesats:
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:6710d2d2947b48ce7f455e011573388be2c1c07576604706e8b01e21c225894b"
-    git_ref: e2ab18d
+    digest: "sha256:16165efaa2665ea7bedad8bf64da2a6a8c7c32de62b35f73a09f1888202bc524"
+    git_ref: f79f885
   priceServer:
     port: 3325
+  tracing:
+    jaegerHost: "localhost"
+    serviceName: "stablesats"
 redis:
   enabled: true
   master:
