@@ -7,5 +7,5 @@ appVersion: 0.1.8
 dependencies:
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 16.12.2
+    version: 17.0.10
     condition: redis.enabled
