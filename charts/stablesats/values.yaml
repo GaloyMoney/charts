@@ -5,6 +5,9 @@ stablesats:
     git_ref: e2ab18d
   priceServer:
     port: 3325
+  tracing:
+    jaegerHost: "localhost"
+    serviceName: "stablesats"
 redis:
   enabled: true
   master:
