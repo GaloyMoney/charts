@@ -1,5 +1,4 @@
 name: dev-smoketest
-concurrency: dev-smoketest
 on:
   pull_request:
     branches: [main]
