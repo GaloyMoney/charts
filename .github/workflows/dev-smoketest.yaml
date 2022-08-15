@@ -8,6 +8,7 @@ jobs:
   smoketest:
     name: Hit smoketests against Charts in Dev Setup
     runs-on: self-hosted
+    if: ! contains(github.event.pull_request.labels.*.name, 'galoy')
     steps:
       - uses: actions/checkout@v2
       - uses: AbsaOSS/k3d-action@v2
