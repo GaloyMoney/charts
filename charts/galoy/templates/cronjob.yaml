@@ -62,10 +62,20 @@ spec:
                 secretKeyRef:
                   name: lnd1-credentials
                   key: admin_macaroon_base64
+            - name: LND1_LOOP_MACAROON
+              valueFrom:
+                secretKeyRef:
+                  name: lnd1-loop-credentials
+                  key: loop_macaroon_base64
             - name: LND1_TLS
               valueFrom:
                 secretKeyRef:
                   name: lnd1-credentials
+                  key: tls_base64
+            - name: LND1_LOOP_TLS
+              valueFrom:
+                secretKeyRef:
+                  name: lnd1-loop-credentials
                   key: tls_base64
             - name: LND1_PUBKEY
               valueFrom:

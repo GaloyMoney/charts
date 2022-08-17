@@ -189,6 +189,22 @@ resource "kubernetes_secret" "lnd1_credentials" {
   data = data.kubernetes_secret.lnd1_credentials.data
 }
 
+data "kubernetes_secret" "lnd1_loop_credentials" {
+  metadata {
+    name      = "lnd1-loop-credentials"
+    namespace = local.bitcoin_namespace
+  }
+}
+
+resource "kubernetes_secret" "lnd1_loop_credentials" {
+  metadata {
+    name      = "lnd1-loop-credentials"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = data.kubernetes_secret.lnd1_loop_credentials.data
+}
+
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
