@@ -21,4 +21,6 @@ configmap:
   - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
 
 loop:
-  enabled: false
+  enabled: true
+loopserver:
+  enabled: true

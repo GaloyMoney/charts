@@ -27,6 +27,7 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
+      serviceAccountName: {{ include "loop.serviceAccountName" . }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -35,7 +36,20 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          command: ["/bin/sh","-c", "loopd --lnd.host={{ .Release.Name }}:10009 --network {{.Values.global.network}}"]
+          args: 
+            - loopd
+            - --network={{.Values.global.network}}
+            {{- if eq .Values.global.network "regtest" }}
+            - --debuglevel=debug
+            - --server.host=lnd1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
+            - --server.notls
+            {{- end }}
+            - --lnd.host={{ .Release.Name }}:10009
+            - --lnd.macaroonpath=/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon
+            - --lnd.tlspath=/root/.lnd/tls.cert
+            - --tlsautorefresh
+            - --restlisten=0.0.0.0:8081
+            - --rpclisten=0.0.0.0:11010
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -69,6 +83,29 @@ spec:
               mountPath: "/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/"
             - name: loop-storage
               mountPath: /root/.loop
+        - name: export-secrets
+          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            loop -n $NETWORK terms
+            while [[ $? != 0 ]]; do sleep 1; loop -n $NETWORK terms; done
+            /home/alpine/exportSecrets.sh
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
+          env:
+          - name: NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: network
+                key: network
+          volumeMounts:
+          - name: export-secrets
+            mountPath: /home/alpine/exportSecrets.sh
+            subPath: exportSecrets.sh
+          - name: loop-storage
+            mountPath: /root/.loop
       volumes:
       - name: lnd-tls
         secret:
@@ -79,6 +116,10 @@ spec:
       - name: lnd-macaroons
         secret:
           secretName: {{.Release.Name}}-credentials
+      - name: export-secrets
+        configMap:
+          name: {{ printf "%s-export-loop-secrets" (include "lnd.fullname" .) }}
+          defaultMode: 0777
       - name: loop-storage
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:

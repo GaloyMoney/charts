@@ -96,6 +96,8 @@ lndGeneralConfig:
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 loop:
   enabled: true
+loopserver:
+  enabled: false
 lndmon:
   enabled: true
 rbac:

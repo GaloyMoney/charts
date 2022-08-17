@@ -3,13 +3,9 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: lightninglabs/loop
-  tag: v0.19.1-beta
+  repository: lightninglabs/loopserver
+  tag: v0.9.52-beta
   pullPolicy: IfNotPresent
-
-sidecarImage:
-  repository: ntheile/lnd-sidecar
-  digest: "sha256:fde4b3a7506f19d0792b958c45bfca60449f1e220dd24731ab1e75577c7eb211"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -30,7 +26,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 8081
+  port: 11009
 
 resources:
   limits:
