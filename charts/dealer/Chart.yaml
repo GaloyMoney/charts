@@ -25,5 +25,5 @@ dependencies:
     version: 11.7.2
     condition: postgresql.enabled
   - name: common
-    version: 1.13.0
+    version: 2.0.0
     repository: https://charts.bitnami.com/bitnami

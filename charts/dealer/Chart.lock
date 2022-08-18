@@ -4,6 +4,6 @@ dependencies:
   version: 11.7.2
 - name: common
   repository: https://charts.bitnami.com/bitnami
-  version: 1.13.0
-digest: sha256:42cb0e05843fcc496b00575fee1c0f1ed704ab773d1a7c9a40589096661b9917
-generated: "2022-08-16T21:37:24.612219801Z"
+  version: 2.0.0
+digest: sha256:c9d191417ae7e8810660c2c8bc53b323ebee0d5145c99e26babef23874a978da
+generated: "2022-08-18T12:30:25.129776153Z"
