@@ -1,7 +1,7 @@
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
-  version: 1.16.1
+  version: 2.0.0
 - name: loop
   repository: ""
   version: x.x.x
@@ -11,5 +11,5 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.1.19
-digest: sha256:6a4a8473f85ff149591396c0e2ebe47339855f1846f5fb7f6dc196e660aba1e6
-generated: "2022-08-15T21:08:35.497533254Z"
+digest: sha256:9bc1400fe6ec2d0b7f751090257d003dbc005baf7017a8428c053218ac0bf232
+generated: "2022-08-18T12:30:24.677129429Z"
