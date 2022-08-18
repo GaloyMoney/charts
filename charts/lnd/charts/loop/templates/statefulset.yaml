@@ -39,6 +39,7 @@ spec:
           args: 
             - loopd
             - --network={{.Values.global.network}}
+            - --experimental
             {{- if eq .Values.global.network "regtest" }}
             - --debuglevel=debug
             - --server.host=lnd1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
