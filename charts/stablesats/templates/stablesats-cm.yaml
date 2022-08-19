@@ -17,8 +17,12 @@ data:
 
     price_server:
       enabled: true
-      config:
+      server:
         listen_port: {{ .Values.stablesats.priceServer.port }}
+      fees:
+        base_fee_rate: {{ .Values.stablesats.priceServer.fees.baseFeeRate }}
+        immediate_fee_rate: {{ .Values.stablesats.priceServer.fees.immediateFeeRate }}
+        delayed_fee_rate: {{ .Values.stablesats.priceServer.fees.delayedFeeRate }}
     tracing:
       service_name: {{ .Values.stablesats.tracing.serviceName }}
       host: {{ .Values.stablesats.tracing.jaegerHost }}

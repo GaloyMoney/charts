@@ -5,6 +5,10 @@ stablesats:
     git_ref: f79f885
   priceServer:
     port: 3325
+    fees:
+      baseFeeRate: 0.0008
+      immediateFeeRate: 0.0005
+      delayedFeeRate: 0.0007
   tracing:
     jaegerHost: "localhost"
     serviceName: "stablesats"
