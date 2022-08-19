@@ -21,7 +21,7 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
         prometheus.io/path: /metrics
-        prometheus.io/port: {{ .Values.service.ports.metrics | quote }}
+        prometheus.io/port: {{ $.Values.service.ports.metrics | quote }}
         prometheus.io/scrape: "true"
     {{- end }}
       labels:
