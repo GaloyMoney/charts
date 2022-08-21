@@ -1,8 +1,8 @@
 stablesats:
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:09904514f9864da38e06d186cf0a6165960f67246c69565cac9b49850e6c245e"
-    git_ref: 5f275e9
+    digest: "sha256:252d3a18c800fab7ac823ca966b44922a0be08b5973d70155b000faa26f15137"
+    git_ref: 93a8531
   priceServer:
     port: 3325
     fees:
