@@ -1,0 +1,25 @@
+stablesats:
+  image:
+    repository: us.gcr.io/galoy-org/stablesats-rs
+    digest: "sha256:252d3a18c800fab7ac823ca966b44922a0be08b5973d70155b000faa26f15137"
+    git_ref: 93a8531
+  priceServer:
+    port: 3325
+    fees:
+      baseFeeRate: 0.0008
+      immediateFeeRate: 0.0005
+      delayedFeeRate: 0.0007
+  tracing:
+    jaegerHost: "localhost"
+    serviceName: "stablesats"
+redis:
+  enabled: true
+  master:
+    persistence:
+      enabled: true
+  auth:
+    password: password
+  sentinel:
+    enabled: true
+  metrics:
+    enabled: true

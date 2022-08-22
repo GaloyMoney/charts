@@ -1,0 +1,4 @@
+redis:
+  auth:
+    existingSecret: "stablesats-redis"
+    existingSecretPasswordKey: "redis-password"

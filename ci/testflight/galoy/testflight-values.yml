@@ -58,3 +58,8 @@ price:
     primary:
       persistence:
         enabled: false
+
+redis:
+  auth:
+    existingSecret: "galoy-redis"
+    existingSecretPasswordKey: "redis-password"

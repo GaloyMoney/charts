@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "stablesats.fullname" . }}
+  labels:
+    app: {{ template "stablesats.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "stablesats.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: {{ template "stablesats.fullname" . }}
+        release: "{{ .Release.Name }}"
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/stablesats-cm.yaml") . | sha256sum }}
+      {{- with .Values.stablesats.annotations }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.stablesats.image.repository }}@{{ .Values.stablesats.image.digest }}"
+        ports:
+        - containerPort: {{ .Values.stablesats.priceServer.port }}
+        args:
+        - stablesats
+        - run
+        volumeMounts:
+        - name: "config"
+          mountPath: "/stablesats.yml"
+          subPath: "stablesats.yml"
+        env:
+        - name: CRASH_REPORT_CONFIG
+          value: "true"
+        - name: STABLESATS_CONFIG
+          value: "/stablesats.yml"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+            {{- if .Values.redis.auth.existingSecret }}
+              name: {{ .Values.redis.auth.existingSecret }}
+              key: {{ .Values.redis.auth.existingSecretPasswordKey }}
+            {{- else }}
+              name: {{ template "stablesats.fullname" . }}-redis
+              key: "redis-password"
+
+            {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "stablesats.fullname" . }}

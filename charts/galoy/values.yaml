@@ -13,11 +13,11 @@ ca:
   CAEmail: dev@galoy.io
 image:
   repository: us.gcr.io/galoy-org/galoy-app
-  digest: "sha256:f506c6cbd7822b2777f9e0bd06db2f1a12f96ca45782fcc8113fd32c768512c7"
-  git_ref: "6afe43f" # Not used by helm
+  digest: "sha256:dda2b129250adc606ae4616e4ce36b32035152ccc25b357edb9c82e81ac4b61a"
+  git_ref: "c2ad131" # Not used by helm
 mongodbMigrateImage:
   repository: us.gcr.io/galoy-org/galoy-app-migrate
-  digest: "sha256:7a21296b90dc4a1d6f80fe8d1ce2e95be0cb2cc0e1a38b6713d49f5c41f1a923"
+  digest: "sha256:64e602c8199f3765564012a3071a7fa1cf83a12680ec0fa9f7f4091971ea0695"
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
@@ -151,8 +151,8 @@ mongodb:
 ## It is only intended for use in development environments
 devDisableMongoBackup: false
 dealer_price:
-  host: dealer-price.namespace.svc.cluster.local
-  port: 50055
+  host: stablesats-price.namespace.svc.cluster.local
+  port: 3325
 price:
   history:
     postgresqlHost: galoy-postgresql
