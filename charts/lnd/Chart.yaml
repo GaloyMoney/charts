@@ -18,9 +18,6 @@ dependencies:
   - name: loop
     version: x.x.x
     condition: loop.enabled
-  - name: loopserver
-    version: x.x.x
-    condition: loopserver.enabled
   - name: lndmon
     version: x.x.x
     condition: lndmon.enabled
