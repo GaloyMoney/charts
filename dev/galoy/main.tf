@@ -170,22 +170,6 @@ resource "kubernetes_secret" "lnd2_credentials" {
   data = data.kubernetes_secret.lnd2_credentials.data
 }
 
-data "kubernetes_secret" "lnd2_loop_credentials" {
-  metadata {
-    name      = "lnd1-loop-credentials"
-    namespace = local.bitcoin_namespace
-  }
-}
-
-resource "kubernetes_secret" "lnd2_loop_credentials" {
-  metadata {
-    name      = "lnd2-loop-credentials"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
-  }
-
-  data = data.kubernetes_secret.lnd2_loop_credentials.data
-}
-
 data "kubernetes_secret" "lnd1_credentials" {
   metadata {
     name      = "lnd1-credentials"
@@ -200,22 +184,6 @@ resource "kubernetes_secret" "lnd1_credentials" {
   }
 
   data = data.kubernetes_secret.lnd1_credentials.data
-}
-
-data "kubernetes_secret" "lnd1_loop_credentials" {
-  metadata {
-    name      = "lnd1-loop-credentials"
-    namespace = local.bitcoin_namespace
-  }
-}
-
-resource "kubernetes_secret" "lnd1_loop_credentials" {
-  metadata {
-    name      = "lnd1-loop-credentials"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
-  }
-
-  data = data.kubernetes_secret.lnd1_loop_credentials.data
 }
 
 resource "helm_release" "galoy" {
