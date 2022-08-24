@@ -1,10 +1,453 @@
-global:
-  network: mainnet
+## Default values for Galoy Helm Chart.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
+
+## Provide a name in place of `galoy` for `app:` labels
+##
+nameOverride:
+
+## Provide a name to substitute for the full names of resources
+##
+fullnameOverride:
+
 galoy:
-  name: "Galoy Wallet"
-  apollo:
-    playground: false
-# todo: this should be injected in a configmap from bitcoind
+  ## Bitcoin Network to run this Galoy instance on
+  ##
+  network: mainnet
+
+  ## Application Custom Config
+  ## Ref: https://github.com/GaloyMoney/galoy/blob/main/default.yaml
+  ##
+  config:
+    ## Default Galoy Wallet Name
+    name: Galoy Wallet
+
+    ## Apollo Configuration
+    apollo:
+      playground: false
+
+  ## Docker Images for running Galoy Banking Codebase
+  ##
+  images:
+
+    ## Galoy Application Image details
+    ##
+    app:
+      ## Has api, trigger and exporter
+      ##
+      repository: us.gcr.io/galoy-org/galoy-app
+
+      ## Digest of the image
+      ##
+      digest: "sha256:f4315937859b983d79479b1c499b434b757553f8245b4634c9a6b5ed2eb3d91c"
+
+      ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
+      ## Reference for timestamping the corresponding docker image and used by internal CI.
+      ##
+      git_ref: "98e17a3"
+
+    ## Galoy Application MongoDB Migration Image details
+    ##
+    mongodbMigrate:
+      ## Has mongodb migration
+      ##
+      repository: us.gcr.io/galoy-org/galoy-app-migrate
+
+      ## Digest of the image
+      ##
+      digest: "sha256:535bf90ae6398190eb7b163c08c57b8f426d0a2fea645d823be8a1cbefec3325"
+
+  ## Galoy database backup configuration
+  ## This is a custom backup configuration, which means data lying in
+  ## MongoDB and LND can be backed up by custom scripts present in the
+  ## galoy codebase itself.
+  ##
+  backups:
+
+    ## Backup data to Google Cloud Storage Bucket
+    ## To backup to GCS bucket, you would need a GCP Service Account
+    ## that lets you upload to a specific bucket
+    ##
+    gcs:
+      # Enable/disable uploading backup to GCS bucket
+      enabled: false
+
+      # Configuration for GCS bucket
+      config:
+
+        # GCS bucket name to upload to (it should already be created)
+        bucketName: gcs-bucket-name
+
+        # Service account to use to upload backup to above-mentioned bucket
+        serviceAccount:
+
+          # Service account credentials json file must be injected via a secret
+          existingSecret:
+
+            # Secret name
+            name: gcs-sa-key
+
+            # Secret Key
+            key: gcs-sa-key.json
+
+    ## Backup data to Dropbox
+    ## To backup to dropbox, you would need an access token to upload
+    ## data to your dropbox account
+    ##
+    dropbox:
+      # Enable/disable uploading backup to dropbox
+      enabled: false
+
+      # Configuration for Dropbox
+      config:
+
+        # Access Token
+        accessToken:
+
+          # Dropbox Access Token must be injected via a secret
+          existingSecret:
+
+            # Secret Name
+            name: dropbox-access-token
+
+            # Secret Key
+            key: token
+  
+  ## Configuration values for Galoy API components.
+  ##
+  api:
+    ## Override the components name (defaults to api).
+    ##
+    nameOverride:
+
+    ## Number of replicas.
+    ##
+    replicas: 1
+
+    ## Log Level
+    ##
+    logLevel: debug
+
+    ## Port on which API Server is running
+    ##
+    port: 4002
+
+    ## Firebase Notifications Configuration
+    ## It would need a Firebase Service Account to send out notifications
+    ##
+    firebaseNotifications:
+      # Enable/disable notifications on the app
+      enabled: false
+
+      # Firebase Notifications Service Account must be injected via a secret
+      existingSecret:
+
+        ## Secret Name of the Service Account JSON
+        name: galoyapp-firebase-serviceaccount
+
+        # Secret Key
+        key: galoyapp-firebase-serviceaccount.json
+
+    ## Geetest Configuration
+    ##
+    geetestExistingSecret:
+      # Secret Name
+      name: geetest-key
+
+      # Geetest ID Secret Key
+      id_key: id
+
+      # Geetest Key Secret Key
+      secret_key: key
+
+    ## JsonWebToken Secret
+    ##
+    jwtSecretExistingSecret:
+      # Secret Name
+      name: jwt-secret
+
+      # Secret Key
+      key: secret
+
+    ## Apollo Configuration for Apollo Studio
+    ##
+    apollo:
+      # Associate data at Apollo with this variant
+      graphVariant: current
+
+      # Report the GraphQL schema to Apollo
+      schemaReporting: true
+
+      # Graph ID and Key Secret
+      existingSecret:
+        # Secret Name
+        name: galoy-apollo-secret
+
+        # Apollo Graph ID key
+        id_key: id
+
+        # Apollo Key key
+        key_key: key
+
+    ## Twilio Configuration
+    ##
+    twilioExistingSecret:
+      # Secret Name
+      name: twilio-secret
+
+      # Phone Number Secret Key
+      phone_number_key: TWILIO_PHONE_NUMBER
+
+      # Phone Number Secret Key
+      account_sid_key: TWILIO_ACCOUNT_SID
+
+      # Phone Number Secret Key
+      auth_token_key: TWILIO_AUTH_TOKEN
+
+    ## Liveness/Readiness Probes Configuration
+    ## Determines if pod is healthy or if it should be killed.
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    ##
+    probes:
+      ## Enable/disable API probes for healthcheck
+      enabled: true
+
+      ## If pod is starting up/healthy
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+
+      ## When to expose the pod to the service
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+
+
+  ## Configuration values for establishing connection to LND-1
+  ## TODO: This should be injected as ConfigMap from LND Chart
+  ##
+  lnd1:
+    ## DNS for LND1
+    ##
+    dns: lnd1.default.svc.cluster.local
+
+    ## Credentials to access LND RPC
+    ##
+    credentialsExistingSecret:
+      ## Secret Name
+      name: lnd1-credentials
+
+      ## Macaroon Key
+      macaroon_key: admin_macaroon_base64
+
+      ## TLS Key
+      tls_key: tls_base64
+
+    ## Pubkey to verify LND RPC
+    ##
+    pubkeyExistingSecret:
+      ## Secret Name
+      name: lnd1-pubkey
+
+      ## Secret Key
+      key: pubkey
+  
+  ## Configuration values for establishing connection to LND-2
+  ## TODO: This should be injected as ConfigMap from LND Chart
+  ##
+  lnd2:
+    ## DNS for LND2
+    ##
+    dns: lnd2.default.svc.cluster.local
+
+    ## Credentials to access LND RPC
+    ##
+    credentialsExistingSecret:
+      ## Secret Name
+      name: lnd2-credentials
+
+      ## Macaroon Key
+      macaroon_key: admin_macaroon_base64
+
+      ## TLS Key
+      tls_key: tls_base64
+
+    ## Pubkey to verify LND RPC
+    ##
+    pubkeyExistingSecret:
+      ## Secret Name
+      name: lnd2-pubkey
+
+      ## Secret Key
+      key: pubkey
+  
+  ## Configuration values for establishing connection to BITCOIND
+  ## TODO: This should be injected as ConfigMap from Bitcoin Chart
+  ##
+  bitcoind:
+    ## DNS for bitcoind
+    dns: bitcoind.default.svc.cluster.local
+
+    ## Port on which bitcoind is running
+    port: 8332
+
+    ## RPC Password Secret
+    ##
+    rpcPasswordExistingSecret:
+      ## Secret Name
+      name: bitcoind-rpcpassword
+
+      ## Secret Key
+      key: password
+  
+  ## Dealer Service Connection details
+  ##
+  dealer:
+    ## Dealer Service Host
+    host: dealer-price.default.svc.cluster.local
+
+    ## Dealer Service Port
+    port: 50055
+
+## Configuration values for Galoy Price subchart
+# price:
+  ## Price History Host
+  # host: galoy-price.default.svc.cluster.local
+
+  ## Price History Port
+  # port: 50052
+
+
+## Configuration values for the mongodb dependency.
+## Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
+##
+## This is a necessary component and without the database, the chart will not work.
+## Therefore it doesn't have any enable/disable flag.
+##
+# mongodb:
+
+  ## Authentication Configuration
+  # auth:
+    ## Existing secret for authentication
+    ## This secret gets autogenerated if secrets.create is set to true.
+    ##
+    # existingSecret: galoy-mongodb
+
+    ## Username to be used for Galoy
+    ## Autocreated at MongoDB initialization
+    ##
+    ## There should be one and only one username in the array here.
+    ##
+    # usernames: [ testGaloy ]
+
+    ## Database to be used for Galoy
+    ## Autocreated at MongoDB initialization
+    ##
+    ## There should be one and only one database in the array here.
+    ##
+    # databases: [ galoy ]
+  
+  ## Replicaset for no-downtime
+  ##
+  # architecture: replicaset
+
+  ## Replicas for MongoDB
+  ##
+  # replicaCount: 3
+
+## Configuration values for the redis dependency.
+## Ref: https://artifacthub.io/packages/helm/bitnami/redis/
+##
+## This is a necessary component and without the cache, the chart will not work.
+## Therefore it doesn't have any enable/disable flag.
+##
+redis:
+  ## Redis replica config params
+  replica:
+    # Number of Redis to deploy
+    replicaCount: 3
+
+  ## Redis master config params
+  master:
+    persistence:
+      enabled: true
+
+  ## Redis auth config params
+  auth:
+    password: password
+
+  ## Use sentinel on Redis pods
+  sentinel:
+    enabled: true
+
+    ## Master set name
+    masterSet: mymaster
+  
+  ## Sidecar prometheus exporter
+  metrics:
+    enabled: true
+
+## For managing secrets using Helm
+## Set the values if you'd want to make it configurable
+##
+secrets:
+
+  ## Create the secret resource from the following values. Set this to false
+  ## to manage these secrets outside Helm.
+  ##
+  create: true
+
+  ## Secrets for DB access
+  mongodbPassword: password
+  mongodbRootPassword: password
+  mongodbMetricsPassword: password
+  mongodbReplicaSetKey: password
+
+  ## Secrets for Geetest
+  geetestId: id
+  geetestSecretKey: key
+
+  ## Secret for JWT
+  jwtSecret: CHANGE-ME-PLS
+
+  ## Secret for Apollo
+  apolloId: id
+  apolloKey: key
+
+  ## Secret for Twilio
+  twilioPhoneNumber: 99999999
+  twilioAccountSid: sid
+  twilioAuthToken: token
+
+  ## Secrets for BitcoinD
+  bitcoindRpcPassword: password
+
+  ## Secrets for LND1
+  lnd1Macaroon: macaroon
+  lnd1Tls: tls
+  lnd1PubKey: key
+
+  ## Secrets for LND2
+  lnd2Macaroon: macaroon
+  lnd2Tls: tls
+  lnd2PubKey: key
+
+## Tracing details
+##
+tracing:
+  ## Jaeger Tracing Host
+  ##
+  jaegerHost: localhost
+
+
+###### --------------------------- OLDER CONTENTS -------------------------------
+
+global:
+  network: mainnet # todo: this should be injected in a configmap from bitcoind
 bitcoind:
   port: 8332
 lnd1: {}
@@ -26,13 +469,6 @@ deployment:
     healthz: true
     targetPort: 4001
     replicaCount: 1
-  - name: api
-    command: /nodejs/bin/node
-    appEntrypoint: "lib/servers/graphql-main-server.js"
-    healthz: true
-    targetPort: 4002
-    replicaCount: 2
-    reportToApollo: true
   - name: exporter
     appEntrypoint: "lib/servers/exporter.js"
     healthz: true
@@ -58,7 +494,7 @@ service:
     type: NodePort
     targetPort: 4001
     port: 4001
-  - name: api
+  - name: galoy-api
     type: NodePort
     targetPort: 4002
     port: 4002
@@ -89,16 +525,6 @@ twilio: true
 #   TWILIO_PHONE_NUMBER: "phone"
 #   TWILIO_ACCOUNT_SID: "sid"
 #   TWILIO_AUTH_TOKEN: "authtoken"
-redis:
-  master:
-    persistence:
-      enabled: true
-  auth:
-    password: password
-  sentinel:
-    enabled: true
-  metrics:
-    enabled: true
 mongodbaddress: "galoy-mongodb-0.galoy-mongodb-headless,galoy-mongodb-1.galoy-mongodb-headless,galoy-mongodb-2.galoy-mongodb-headless"
 mongodb:
   initdbScripts:

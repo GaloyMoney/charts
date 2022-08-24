@@ -1,16 +1,33 @@
-global:
+galoy:
   network: regtest
 
-galoy:
-  test_accounts:
-    - ref: A
-      phone: "+59981730222"
-      code: "111111"
-      needUsdWallet: true
-      role: bankowner
-      username: bankowner
-  apollo:
-    playground: true
+  backups:
+    gcs:
+      enabled: true
+
+  config:
+    test_accounts:
+      - ref: A
+        phone: "+59981730222"
+        code: "111111"
+        needUsdWallet: true
+        role: bankowner
+        username: bankowner
+    apollo:
+      playground: true
+  
+  bitcoind:
+    dns: bitcoind.galoy-dev-bitcoin.svc.cluster.local
+    port: 18332
+
+  lnd1:
+    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
+
+  lnd2:
+    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
+  
+  dealer:
+    host: dealer-price.galoy-dev-addons.svc.cluster.local
 
 apiIngress:
   name: api-ingress
@@ -69,3 +86,6 @@ devDisableMongoBackup: true
 
 dealer_price:
   host: dealer-price.galoy-dev-addons.svc.cluster.local
+
+secrets:
+  create: false
