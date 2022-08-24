@@ -4910,4 +4910,20 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.0/web-wallet-0.1.0.tgz
       version: 0.1.0
-generated: "2022-08-23T20:09:36.072293176Z"
+  stablesats:
+    - apiVersion: v2
+      appVersion: 0.1.10
+      created: "2022-08-24T07:52:58.600632457Z"
+      dependencies:
+        - condition: redis.enabled
+          name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 17.0.11
+      description: A Helm chart for Kubernetes
+      digest: 58e600063945e429f72f86214d48625179d86a4b0856727a1a03d5d78712fe94
+      name: stablesats
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
+      version: 0.1.0
+generated: "2022-08-24T07:52:58.600650344Z"
