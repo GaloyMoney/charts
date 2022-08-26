@@ -20,10 +20,6 @@ version: 0.1.24-dev
 # It is recommended to use it with quotes.
 appVersion: 0.1.50
 dependencies:
-  - name: postgresql
-    repository: https://charts.bitnami.com/bitnami
-    version: 11.7.2
-    condition: postgresql.enabled
   - name: common
     version: 1.13.0
     repository: https://charts.bitnami.com/bitnami
