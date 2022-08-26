@@ -1,5 +1,0 @@
-postgresql:
-  enabled: true
-  primary:
-    persistence:
-      enabled: false

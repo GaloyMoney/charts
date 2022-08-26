@@ -19,7 +19,7 @@ dealer:
   logLevel: debug
   activeStrategy: OKEX_PERPETUAL_SWAP
   activeWallet: REMOTE_WALLET
-  graphqlUri: http://fake-galoyapi:4000/graphql
+  graphqlUri: http://galoyapi:4000/graphql
   hedgingNotInSimulation: TRUE
   okex5:
     secretName: dealer-okex5
@@ -28,22 +28,3 @@ dealer:
       secret: okex5_secret
       password: okex5_password
       fundPassword: okex5_fund_password
-# === NOTE: Everything below this is for faking the graphql backend. ===
-fakeGaloyApi:
-  enabled: true
-  name: "fake-galoyapi"
-  image:
-    repository: us.gcr.io/galoy-org/fake-galoyapi
-    digest: "sha256:642d65c9f8dd8696a54efc19672152303574c81c049ce82c8f023be2521362fb" # Auto updated by Galoy Bot
-    git_ref: "2275350" # Not used by helm, auto updated by Galoy Bot
-  service:
-    type: ClusterIP
-    port: 4000
-  dbSecretKeyRef:
-    name: dealer-postgres
-    key: postgresql-db-uri
-postgresql:
-  enabled: false
-  postgresqlUsername: postgres
-  existingSecret: dealer-postgres
-  postgresqlDatabase: dealer
