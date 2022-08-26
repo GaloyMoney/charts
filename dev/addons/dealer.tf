@@ -54,7 +54,7 @@ resource "helm_release" "dealer" {
 
   values = [
     templatefile("${path.module}/dealer-values.yml.tmpl", {
-      addons_namespace : kubernetes_namespace.addons.metadata[0].name
+      galoy_namespace : local.galoy_namespace,
     })
   ]
 
