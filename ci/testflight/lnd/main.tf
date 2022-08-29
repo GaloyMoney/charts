@@ -77,6 +77,7 @@ resource "helm_release" "lnd1" {
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   dependency_update = true
+  timeout           = 600
 
   values = [
     file("${path.module}/testflight-values.yml")
