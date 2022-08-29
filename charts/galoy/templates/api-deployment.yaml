@@ -73,6 +73,8 @@ spec:
 
         - name: NETWORK
           value: {{ .Values.galoy.network }}
+        - name: GALOY_API_PORT
+          value: "4002"
         
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}

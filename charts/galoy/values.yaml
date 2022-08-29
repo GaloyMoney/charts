@@ -311,7 +311,7 @@ galoy:
     host: dealer-price.default.svc.cluster.local
 
     ## Dealer Service Port
-    port: 50055
+    port: 3325
 
 ## Configuration values for Galoy Price subchart
 # price:
@@ -580,6 +580,8 @@ dealer_price:
   host: stablesats-price.namespace.svc.cluster.local
   port: 3325
 price:
+  host: galoy-price-history
+  port: 50052
   history:
     postgresqlHost: galoy-postgresql
     host: galoy-price-history

@@ -85,7 +85,7 @@ price:
 devDisableMongoBackup: true
 
 dealer_price:
-  host: dealer-price.galoy-dev-addons.svc.cluster.local
+  host: stablesats-price.galoy-dev-addons.svc.cluster.local
 
 secrets:
   create: false
