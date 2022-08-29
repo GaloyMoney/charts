@@ -33,6 +33,8 @@ resources:
 loop:
   args: "--network=testnet"
   enabled: true
+loopserver:
+  enabled: false
 
 rbac:
   create: true
