@@ -148,27 +148,6 @@ galoy:
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
 
-    ## Geetest Configuration
-    ##
-    geetestExistingSecret:
-      # Secret Name
-      name: geetest-key
-
-      # Geetest ID Secret Key
-      id_key: id
-
-      # Geetest Key Secret Key
-      secret_key: key
-
-    ## JsonWebToken Secret
-    ##
-    jwtSecretExistingSecret:
-      # Secret Name
-      name: jwt-secret
-
-      # Secret Key
-      key: secret
-
     ## Apollo Configuration for Apollo Studio
     ##
     apollo:
@@ -188,21 +167,6 @@ galoy:
 
         # Apollo Key key
         key_key: key
-
-    ## Twilio Configuration
-    ##
-    twilioExistingSecret:
-      # Secret Name
-      name: twilio-secret
-
-      # Phone Number Secret Key
-      phone_number_key: TWILIO_PHONE_NUMBER
-
-      # Phone Number Secret Key
-      account_sid_key: TWILIO_ACCOUNT_SID
-
-      # Phone Number Secret Key
-      auth_token_key: TWILIO_AUTH_TOKEN
 
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
@@ -226,6 +190,46 @@ galoy:
         successThreshold: 2
         timeoutSeconds: 1
 
+  ## Configuration values for Galoy Admin components.
+  ##
+  admin:
+    ## Override the components name (defaults to admin).
+    ##
+    nameOverride:
+
+    ## Number of replicas.
+    ##
+    replicas: 1
+
+    ## Log Level
+    ##
+    logLevel: debug
+
+    ## Port on which Admin API Server is running
+    ##
+    port: 4001
+
+    ## Liveness/Readiness Probes Configuration
+    ## Determines if pod is healthy or if it should be killed.
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    ##
+    probes:
+      ## Enable/disable Admin API probes for healthcheck
+      enabled: true
+
+      ## If pod is starting up/healthy
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+
+      ## When to expose the pod to the service
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
 
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
@@ -312,6 +316,42 @@ galoy:
 
     ## Dealer Service Port
     port: 3325
+  
+  ## Geetest Configuration
+  ##
+  geetestExistingSecret:
+    # Secret Name
+    name: geetest-key
+
+    # Geetest ID Secret Key
+    id_key: id
+
+    # Geetest Key Secret Key
+    secret_key: key
+
+  ## JsonWebToken Secret
+  ##
+  jwtSecretExistingSecret:
+    # Secret Name
+    name: jwt-secret
+
+    # Secret Key
+    key: secret
+
+  ## Twilio Configuration
+  ##
+  twilioExistingSecret:
+    # Secret Name
+    name: twilio-secret
+
+    # Phone Number Secret Key
+    phone_number_key: TWILIO_PHONE_NUMBER
+
+    # Phone Number Secret Key
+    account_sid_key: TWILIO_ACCOUNT_SID
+
+    # Phone Number Secret Key
+    auth_token_key: TWILIO_AUTH_TOKEN
 
 ## Configuration values for Galoy Price subchart
 # price:
@@ -464,11 +504,6 @@ mongodbMigrateImage:
 jaegerHost: localhost
 tracingPrefix: "galoy"
 deployment:
-  - name: graphql-admin
-    appEntrypoint: "lib/servers/graphql-admin-server.js"
-    healthz: true
-    targetPort: 4001
-    replicaCount: 1
   - name: exporter
     appEntrypoint: "lib/servers/exporter.js"
     healthz: true

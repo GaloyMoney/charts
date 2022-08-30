@@ -20,6 +20,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified admin name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "galoy.admin.fullname" -}}
+{{- $name := default "admin" .Values.galoy.admin.nameOverride -}}
+{{- if .Values.fullnameOverride -}}
+{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Migration Job name
 */}}
 {{- define "galoy.migration.jobname" -}}
@@ -165,18 +178,45 @@ Return Galoy environment variables for Twilio
 - name: TWILIO_PHONE_NUMBER
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.galoy.api.twilioExistingSecret.name }}
-      key: {{ .Values.galoy.api.twilioExistingSecret.phone_number_key }}
+      name: {{ .Values.galoy.twilioExistingSecret.name }}
+      key: {{ .Values.galoy.twilioExistingSecret.phone_number_key }}
 - name: TWILIO_ACCOUNT_SID
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.galoy.api.twilioExistingSecret.name }}
-      key: {{ .Values.galoy.api.twilioExistingSecret.account_sid_key }}
+      name: {{ .Values.galoy.twilioExistingSecret.name }}
+      key: {{ .Values.galoy.twilioExistingSecret.account_sid_key }}
 - name: TWILIO_AUTH_TOKEN
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.galoy.api.twilioExistingSecret.name }}
-      key: {{ .Values.galoy.api.twilioExistingSecret.auth_token_key }}
+      name: {{ .Values.galoy.twilioExistingSecret.name }}
+      key: {{ .Values.galoy.twilioExistingSecret.auth_token_key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for Geetest
+*/}}
+{{- define "galoy.geetest.env" -}}
+- name: GEETEST_ID
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.geetestExistingSecret.name }}
+      key: {{ .Values.galoy.geetestExistingSecret.id_key }}
+- name: GEETEST_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.geetestExistingSecret.name }}
+      key: {{ .Values.galoy.geetestExistingSecret.secret_key }}
+{{- end -}}
+
+{{/*
+Return Galoy environment variables for JWT Secret
+*/}}
+{{- define "galoy.jwt.env" -}}
+- name: JWT_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.jwtSecretExistingSecret.name }}
+      key: {{ .Values.galoy.jwtSecretExistingSecret.key }}
 {{- end -}}
 
 {{- define "galoy.jwtSecret" -}}

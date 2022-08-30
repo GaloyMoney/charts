@@ -65,16 +65,16 @@ spec:
 
         env:
         - name: HELMREVISION
-          value: {{ .Release.Revision | quote}}
+          value: {{ .Release.Revision | quote }}
         - name: NODE_ENV
           value: "production"
         - name: LOGLEVEL
-          value: {{ .Values.galoy.api.logLevel }}
+          value: {{ .Values.galoy.api.logLevel | quote }}
 
         - name: NETWORK
           value: {{ .Values.galoy.network }}
         - name: GALOY_API_PORT
-          value: "4002"
+          value: {{ .Values.galoy.api.port | quote }}
         
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
@@ -92,17 +92,8 @@ spec:
 
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
-
-        - name: GEETEST_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.api.geetestExistingSecret.name }}
-              key: {{ .Values.galoy.api.geetestExistingSecret.id_key }}
-        - name: GEETEST_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.api.geetestExistingSecret.name }}
-              key: {{ .Values.galoy.api.geetestExistingSecret.secret_key }}
+{{ include "galoy.geetest.env" . | indent 8 }}
+{{ include "galoy.jwt.env" . | indent 8 }}
 
         - name: APOLLO_GRAPH_VARIANT
           value: {{ .Values.galoy.api.apollo.graphVariant | quote }}
@@ -118,12 +109,6 @@ spec:
             secretKeyRef:
               name: {{ .Values.galoy.api.apollo.existingSecret.name }}
               key: {{ .Values.galoy.api.apollo.existingSecret.key_key }}
-
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.api.jwtSecretExistingSecret.name }}
-              key: {{ .Values.galoy.api.jwtSecretExistingSecret.key }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
