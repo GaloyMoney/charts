@@ -33,6 +33,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified exporter name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "galoy.exporter.fullname" -}}
+{{- $name := default "exporter" .Values.galoy.exporter.nameOverride -}}
+{{- if .Values.fullnameOverride -}}
+{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Migration Job name
 */}}
 {{- define "galoy.migration.jobname" -}}
