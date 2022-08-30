@@ -723,6 +723,20 @@ entries:
   rtl:
     - apiVersion: v2
       appVersion: 0.10.2
+      created: "2022-08-30T08:48:06.507092545Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.0.0
+      description: A Helm chart for Kubernetes
+      digest: a1786838fcca0be5821a02085cd06be49b286d84fdba41adbb8242151503abae
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.1.4/rtl-0.1.4.tgz
+      version: 0.1.4
+    - apiVersion: v2
+      appVersion: 0.10.2
       created: "2022-07-26T05:17:01.109973521Z"
       dependencies:
         - name: common
@@ -5023,4 +5037,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-08-26T15:40:40.383531786Z"
+generated: "2022-08-30T08:48:06.50710893Z"
