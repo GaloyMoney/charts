@@ -1662,6 +1662,30 @@ entries:
       version: 0.1.0
   galoy:
     - apiVersion: v2
+      appVersion: 0.2.49
+      created: "2022-08-30T20:18:38.771442355Z"
+      dependencies:
+        - name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 16.12.2
+        - name: mongodb
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.1.10
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.13.0
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.1.9
+      description: A Helm chart for galoy servers
+      digest: 2f1115ce5ba9bcdea43d8185fcb72d2e581edab9ed1146bdb69bf25ed5c2fe49
+      name: galoy
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-v0.4.25/galoy-0.4.25.tgz
+      version: 0.4.25
+    - apiVersion: v2
       appVersion: 0.2.46
       created: "2022-08-26T15:40:40.383514231Z"
       dependencies:
@@ -5037,4 +5061,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-08-30T08:48:06.50710893Z"
+generated: "2022-08-30T20:18:38.771456043Z"
