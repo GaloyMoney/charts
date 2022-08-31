@@ -82,6 +82,7 @@ resource "helm_release" "dealer" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   depends_on = [
+    kubernetes_secret.postgres_creds,
     kubernetes_secret.okex5_creds,
     kubernetes_secret.dealer_creds
   ]
