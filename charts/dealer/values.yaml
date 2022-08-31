@@ -28,3 +28,6 @@ dealer:
       secret: okex5_secret
       password: okex5_password
       fundPassword: okex5_fund_password
+  databaseUrl:
+    secretName: dealer-postgres
+    secretKey: postgresql-db-uri
