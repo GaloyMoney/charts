@@ -24,5 +24,5 @@ fi
 git merge --no-edit ${BRANCH}
 git add -A
 git status
-git commit -m "Bump ${CHART}-chart to '${REF}'"
+git commit -m "chore: bump ${CHART}-chart to '${REF}'"
 )

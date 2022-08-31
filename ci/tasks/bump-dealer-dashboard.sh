@@ -42,5 +42,5 @@ fi
 git merge --no-edit ${BRANCH}
 git add -A
 git status
-git commit -m "Bump ${CHART}'s grafana dashboard to '${REF}'"
+git commit -m "chore: bump ${CHART}'s grafana dashboard to '${REF}'"
 )
