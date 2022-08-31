@@ -9,6 +9,8 @@ locals {
   galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
 
+  postgres_password   = "postgres"
+  postgres_db_uri     = "postgres://postgres:postgres@dealer-postgresql:5432/dealer"
   okex5_key           = "key"
   okex5_secret        = "secret"
   okex5_password      = "pwd"
@@ -32,6 +34,18 @@ resource "kubernetes_secret" "okex5_creds" {
     "okex5_secret" : local.okex5_secret
     "okex5_password" : local.okex5_password
     "okex5_fund_password" : local.okex5_fund_password
+  }
+}
+
+resource "kubernetes_secret" "postgres_creds" {
+  metadata {
+    name      = "dealer-postgres"
+    namespace = local.testflight_namespace
+  }
+
+  data = {
+    "postgresql-password" : local.postgres_password
+    "postgresql-db-uri" : local.postgres_db_uri
   }
 }
 
