@@ -72,6 +72,11 @@ spec:
               key: {{ .Values.dealer.okex5.secretKey.fundPassword }}
         - name: GRAPHQL_URI
           value: {{ .Values.dealer.graphqlUri }}
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.dealer.databaseUrl.secretName }}
+              key: {{ .Values.dealer.databaseUrl.secretKey }}
         - name: DEALER_PHONE
           valueFrom:
             secretKeyRef:
