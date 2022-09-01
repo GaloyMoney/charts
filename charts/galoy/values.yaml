@@ -76,6 +76,10 @@ galoy:
     ##
     port: 4002
 
+    ## Service type
+    ##
+    serviceType: NodePort
+
     ## Firebase Notifications Configuration
     ## It would need a Firebase Service Account to send out notifications
     ##
@@ -152,6 +156,10 @@ galoy:
     ## Port on which Exporter Server is running
     ##
     port: 8888
+
+    ## Service type
+    ##
+    serviceType: ClusterIP
 
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
@@ -249,6 +257,10 @@ galoy:
     ## Port on which Admin API Server is running
     ##
     port: 4001
+
+    ## Service type
+    ##
+    serviceType: NodePort
 
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
@@ -609,23 +621,6 @@ mongodbMigrateImage:
   digest: "sha256:dcdce622e5880b974bb32013d1fa5ee5d15f3ca37130517c019bf71093d19eee"
 jaegerHost: localhost
 tracingPrefix: "galoy"
-service:
-  - name: graphql
-    type: NodePort
-    targetPort: 4000
-    port: 4000
-  - name: graphql-admin
-    type: NodePort
-    targetPort: 4001
-    port: 4001
-  - name: galoy-api
-    type: NodePort
-    targetPort: 4002
-    port: 4002
-  - name: trigger
-    type: ClusterIP
-    targetPort: 8888
-    port: 8888
 cron:
   - name: cronjob
     appEntrypoint: "lib/servers/cron.js"
