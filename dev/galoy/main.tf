@@ -230,8 +230,10 @@ resource "helm_release" "galoy" {
   depends_on = [
     kubernetes_secret.bitcoinrpc_password,
     kubernetes_secret.lnd1_credentials,
+    kubernetes_secret.lnd1_loop_credentials,
     kubernetes_secret.lnd1_pubkey,
     kubernetes_secret.lnd2_credentials,
+    kubernetes_secret.lnd2_loop_credentials,
     kubernetes_secret.lnd2_pubkey,
     kubernetes_secret.price_history_postgres_creds
   ]
