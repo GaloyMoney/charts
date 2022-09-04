@@ -11,12 +11,7 @@ Create a default fully qualified api name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "galoy.api.fullname" -}}
-{{- $name := default "api" .Values.galoy.api.nameOverride -}}
-{{- if .Values.fullnameOverride -}}
-{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{- default "api" .Values.galoy.api.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -24,12 +19,7 @@ Create a default fully qualified admin name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "galoy.admin.fullname" -}}
-{{- $name := default "admin" .Values.galoy.admin.nameOverride -}}
-{{- if .Values.fullnameOverride -}}
-{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{- default "graphql-admin" .Values.galoy.admin.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -37,12 +27,7 @@ Create a default fully qualified exporter name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "galoy.exporter.fullname" -}}
-{{- $name := default "exporter" .Values.galoy.exporter.nameOverride -}}
-{{- if .Values.fullnameOverride -}}
-{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{- default "exporter" .Values.galoy.exporter.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -50,12 +35,7 @@ Create a default fully qualified trigger name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "galoy.trigger.fullname" -}}
-{{- $name := default "trigger" .Values.galoy.trigger.nameOverride -}}
-{{- if .Values.fullnameOverride -}}
-{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{- default "trigger" .Values.galoy.trigger.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

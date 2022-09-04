@@ -1,35 +1,38 @@
-{{ if .Values.apiIngress }}
+{{- if .Values.galoy.api.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
+
 metadata:
-  name: {{ .Values.apiIngress.name }}
+  name: {{ template "galoy.api.fullname" . }}
   labels:
-    app: {{ .Values.apiIngress.name }}
+    app: {{ template "galoy.api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm
+
   annotations:
     kubernetes.io/ingress.class: nginx
-    {{ if .Values.apiIngress.clusterIssuer }}
-    cert-manager.io/cluster-issuer: {{ .Values.apiIngress.clusterIssuer }}
-    {{ end }}
+    cert-manager.io/cluster-issuer: {{ .Values.galoy.api.ingress.clusterIssuer }}
+
     nginx.ingress.kubernetes.io/limit-rpm: "60"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
     nginx.ingress.kubernetes.io/limit-connections: "40"
+
 spec:
-  {{ if .Values.apiIngress.clusterIssuer }}
   tls:
   - hosts:
-    - {{.Values.apiIngress.host}}
-    secretName: {{.Values.apiIngress.name}}-tls
+    - {{ .Values.galoy.api.ingress.host }}
+    secretName: {{ .Values.galoy.api.ingress.tlsSecretName }}
   {{ end }}
   rules:
-  - host: {{.Values.apiIngress.host}}
+  - host: {{ .Values.galoy.api.ingress.host }}
     http:
       paths:
       - path: /
         pathType: ImplementationSpecific
         backend:
           service:
-            name: api
+            name: {{ template "galoy.api.fullname" . }}
             port:
-              number: 4002
-{{ end }}
+              number: {{ .Values.galoy.api.port }}
+{{- end -}}

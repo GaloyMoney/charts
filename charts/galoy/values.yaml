@@ -80,6 +80,27 @@ galoy:
     ##
     serviceType: NodePort
 
+    ## Ingress configuration.
+    ## Ref: https://kubernetes.io/docs/user-guide/ingress/
+    ##
+    ingress:
+      ## Enable Ingress.
+      ##
+      enabled: false
+
+      ## Ingress Host
+      ##
+      host: api.staging.galoy.io
+
+      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
+      ## Read More: https://cert-manager.io/docs/usage/ingress/
+      ##
+      clusterIssuer: letsencrypt-issuer
+
+      ## TLS Secret Name
+      ##
+      tlsSecretName: api-ingress-tls
+
     ## Firebase Notifications Configuration
     ## It would need a Firebase Service Account to send out notifications
     ##
@@ -261,6 +282,27 @@ galoy:
     ## Service type
     ##
     serviceType: NodePort
+
+    ## Ingress configuration.
+    ## Ref: https://kubernetes.io/docs/user-guide/ingress/
+    ##
+    ingress:
+      ## Enable Ingress.
+      ##
+      enabled: false
+
+      ## Ingress Host
+      ##
+      host: admin.staging.galoy.io
+
+      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
+      ## Read More: https://cert-manager.io/docs/usage/ingress/
+      ##
+      clusterIssuer: letsencrypt-issuer
+
+      ## TLS Secret Name
+      ##
+      tlsSecretName: graphql-admin-tls
 
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
@@ -621,13 +663,6 @@ mongodbMigrateImage:
   digest: "sha256:dcdce622e5880b974bb32013d1fa5ee5d15f3ca37130517c019bf71093d19eee"
 jaegerHost: localhost
 tracingPrefix: "galoy"
-cron:
-  - name: cronjob
-    appEntrypoint: "lib/servers/cron.js"
-    schedule: "0 2 * * *"
-  - name: balance-notif
-    appEntrypoint: "lib/servers/daily-balance-notification.js"
-    schedule: "0 14 * * *"
 mongobackup:
   bucketName: galoy-staging-backups
   mongoToolsVersion: 4.2.14-r6
