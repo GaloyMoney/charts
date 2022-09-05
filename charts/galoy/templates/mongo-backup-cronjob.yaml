@@ -1,55 +1,77 @@
 apiVersion: batch/v1beta1
 kind: CronJob
+
 metadata:
-  name: "mongo-backup"
+  name: {{ template "galoy.mongo_backup_cron.jobname" . }}
   labels:
+    app: {{ template "galoy.mongo_backup_cron.jobname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm
+
 spec:
-  schedule: "0 * * * *"
+  schedule: "0 * * * *" # Fire once every hour
+
   jobTemplate:
     spec:
       activeDeadlineSeconds: 300
+
       template:
         spec:
           restartPolicy: OnFailure
+
           containers:
-          - name: "mongodb-backup"
-            image: "{{ .Values.mongobackup.image.repository }}@{{ .Values.mongobackup.image.digest }}"
-            command: ["/bin/sh","-c", "/var/backup.sh"]
-            volumeMounts:
-            - name: mongo-backup-configmap
-              mountPath: "/var/backup.sh"
-              subPath: backup.sh
-            - name: "service-account"
-              mountPath: "/var/secret/cloud.google.com"
+          - name: {{ template "galoy.mongo_backup_cron.jobname" . }}
+            image: "{{ .Values.galoy.images.mongoBackup.repository }}@{{ .Values.galoy.images.mongoBackup.digest }}"
+            command:
+            - "/bin/sh"
+            - "-c"
+            - "/var/backup.sh"
+
             env:
             - name: NETWORK
-              value: {{ $.Values.global.network }}
-            - name: MONGODB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $.Release.Name }}-mongodb
-                  key: "mongodb-password"
-            - name: MONGODB_USER
-              value: "testGaloy"
-            - name: MONGODB_ADDRESS
-              value: {{ $.Values.mongodbaddress }}
+              value: {{ .Values.galoy.network }}
+
+{{ include "galoy.mongodb.env" . | indent 12 }}
             - name: MONGODB_PORT
               value: "27017"
             - name: MONGODB_DB
               value: "galoy"
+
+            {{ if .Values.galoy.trigger.backups.gcs.enabled }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/var/secret/cloud.google.com/gcs-sa-key.json"
+            {{ end }}
+
+            {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: dropbox-access-token
-                  key: token
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: "/var/secret/cloud.google.com/gcs-sa-key.json"
+                  name: {{- .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.name | quote -}}
+                  key: {{- .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.key | quote -}}
+            {{ end }}
+
+            volumeMounts:
+            - name: mongo-backup-configmap
+              mountPath: "/var/backup.sh"
+              subPath: backup.sh
+
+            {{ if .Values.galoy.trigger.backups.gcs.enabled }}
+            - name: service-account
+              mountPath: "/var/secret/cloud.google.com"
+            {{ end }}
+
           volumes:
           - name: mongo-backup-configmap
             configMap:
               name: mongo-backup-configmap
               defaultMode: 484
-          - name: "service-account"
+
+          {{ if .Values.galoy.trigger.backups.gcs.enabled }}
+          - name: service-account
             secret:
-              secretName: "gcs-sa-key"
+              secretName: {{- .Values.galoy.trigger.backups.gcs.config.serviceAccount.existingSecret.name | quote -}}
+              items:
+              - key: {{- .Values.galoy.trigger.backups.gcs.config.serviceAccount.existingSecret.key | quote -}}
+                path: "gcs-sa-key.json"
+          {{ end }}

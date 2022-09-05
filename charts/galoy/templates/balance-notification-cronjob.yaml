@@ -2,9 +2,9 @@ apiVersion: batch/v1beta1
 kind: CronJob
 
 metadata:
-  name: {{ template "galoy.daily_balance_notification_cron.jobname" . }}
+  name: {{ template "galoy.balance_notification_cron.jobname" . }}
   labels:
-    app: {{ template "galoy.daily_balance_notification_cron.jobname" . }}
+    app: {{ template "galoy.balance_notification_cron.jobname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm
@@ -34,7 +34,7 @@ spec:
             - {{ template "galoy.migration.jobname" . }}
 
           containers:
-          - name: {{ template "galoy.daily_balance_notification_cron.jobname" . }}
+          - name: {{ template "galoy.balance_notification_cron.jobname" . }}
             image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
             args: 
             - "-r"
@@ -101,4 +101,4 @@ spec:
 
           - name: custom-yaml
             secret:
-              secretName: "galoy-config"
+              secretName: "{{ template "galoy.config.name" . }}"

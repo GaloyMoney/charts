@@ -166,4 +166,4 @@ spec:
 
       - name: custom-yaml
         secret:
-          secretName: "galoy-config"
+          secretName: "{{ template "galoy.config.name" . }}"

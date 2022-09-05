@@ -56,7 +56,17 @@ galoy:
       ## Digest of the image
       ##
       digest: "sha256:535bf90ae6398190eb7b163c08c57b8f426d0a2fea645d823be8a1cbefec3325"
-  
+
+    ## Galoy Application MongoDB Backup Image details
+    ##
+    mongoBackup:
+      ## Has mongodb backup
+      ##
+      repository: us.gcr.io/galoy-org/mongo-backup
+
+      ## Digest of the image
+      digest: "sha256:4cfc197ea082ef3dae2d4321a9dfa31ef185f43d578a37a224095b75de656e6a"
+
   ## Configuration values for Galoy API components.
   ##
   api:

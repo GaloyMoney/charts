@@ -46,10 +46,17 @@ CronJob name
 {{- end -}}
 
 {{/*
-CronJob name
+Balance Notification CronJob name
 */}}
-{{- define "galoy.daily_balance_notification_cron.jobname" -}}
+{{- define "galoy.balance_notification_cron.jobname" -}}
 {{- printf "%s-balance-notif" .Release.Name -}}
+{{- end -}}
+
+{{/*
+Mongo Backup CronJob name
+*/}}
+{{- define "galoy.mongo_backup_cron.jobname" -}}
+{{- printf "%s-mongo-backup" .Release.Name -}}
 {{- end -}}
 
 {{/*
@@ -64,6 +71,13 @@ Pre-Migration Job name
 */}}
 {{- define "galoy.pre-migration.jobname" -}}
 {{- printf "%s-pre-mongodb-migrate-%d" .Release.Name .Release.Revision -}}
+{{- end -}}
+
+{{/*
+Config name
+*/}}
+{{- define "galoy.config.name" -}}
+{{- printf "%s-config" .Release.Name -}}
 {{- end -}}
 
 {{/*
