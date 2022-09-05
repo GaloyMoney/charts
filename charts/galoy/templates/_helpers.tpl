@@ -46,6 +46,13 @@ CronJob name
 {{- end -}}
 
 {{/*
+CronJob name
+*/}}
+{{- define "galoy.daily_balance_notification_cron.jobname" -}}
+{{- printf "%s-balance-notif" .Release.Name -}}
+{{- end -}}
+
+{{/*
 Migration Job name
 */}}
 {{- define "galoy.migration.jobname" -}}

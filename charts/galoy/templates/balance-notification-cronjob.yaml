@@ -2,15 +2,15 @@ apiVersion: batch/v1beta1
 kind: CronJob
 
 metadata:
-  name: {{ template "galoy.cron.jobname" . }}
+  name: {{ template "galoy.daily_balance_notification_cron.jobname" . }}
   labels:
-    app: {{ template "galoy.cron.jobname" . }}
+    app: {{ template "galoy.daily_balance_notification_cron.jobname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm
 
 spec:
-  schedule: 0 2 * * * # Fire everyday at 02:00AM
+  schedule: 0 14 * * * # Fire everyday at 02:00PM
 
   jobTemplate:
     spec:
@@ -34,12 +34,12 @@ spec:
             - {{ template "galoy.migration.jobname" . }}
 
           containers:
-          - name: {{ template "galoy.cron.jobname" . }}
+          - name: {{ template "galoy.daily_balance_notification_cron.jobname" . }}
             image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
             args: 
             - "-r"
             - "/app/lib/services/tracing.js"
-            - "lib/servers/cron.js"
+            - "lib/servers/daily-balance-notification.js"
 
             env:
             - name: HELMREVISION

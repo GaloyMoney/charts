@@ -6,7 +6,7 @@ spec:
   backoffLimit: 1
   template:
     spec:
-      {{ if or .Values.galoy.backups.gcs.enabled .Values.galoy.backups.dropbox.enabled }}
+      {{ if or .Values.galoy.trigger.backups.gcs.enabled .Values.galoy.trigger.backups.dropbox.enabled }}
       serviceAccountName: {{ template "galoy.name" . }}
       initContainers:
       - name: trigger-mongodb-backup

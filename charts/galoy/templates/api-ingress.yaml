@@ -23,7 +23,6 @@ spec:
   - hosts:
     - {{ .Values.galoy.api.ingress.host }}
     secretName: {{ .Values.galoy.api.ingress.tlsSecretName }}
-  {{ end }}
   rules:
   - host: {{ .Values.galoy.api.ingress.host }}
     http:
