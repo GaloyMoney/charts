@@ -59,6 +59,13 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+CronJob name
+*/}}
+{{- define "galoy.cron.jobname" -}}
+{{- printf "%s-cronjob" .Release.Name -}}
+{{- end -}}
+
+{{/*
 Migration Job name
 */}}
 {{- define "galoy.migration.jobname" -}}
