@@ -649,40 +649,47 @@ secrets:
   ##
   create: true
 
-  ## Secrets for DB access
-  mongodbPassword: password
-  mongodbRootPassword: password
-  mongodbMetricsPassword: password
-  mongodbReplicaSetKey: password
+  ## Secrets for MongoDB
+  mongodbPassword:
+  mongodbRootPassword:
+  mongodbMetricsPassword:
+  mongodbReplicaSetKey:
+
+  ## Secrets for PostgreSQL
+  postgresPassword:
 
   ## Secrets for Geetest
-  geetestId: id
-  geetestSecretKey: key
+  geetestId:
+  geetestSecretKey:
 
   ## Secret for JWT
-  jwtSecret: CHANGE-ME-PLS
+  jwtSecret:
 
   ## Secret for Apollo
-  apolloId: id
-  apolloKey: key
+  apolloId:
+  apolloKey:
 
   ## Secret for Twilio
-  twilioPhoneNumber: 99999999
-  twilioAccountSid: sid
-  twilioAuthToken: token
+  twilioPhoneNumber:
+  twilioAccountSid:
+  twilioAuthToken:
 
-  ## Secrets for BitcoinD
-  bitcoindRpcPassword: password
+  ## Bitcoin RPC password
+  bitcoindRpcPassword:
 
   ## Secrets for LND1
-  lnd1Macaroon: macaroon
-  lnd1Tls: tls
-  lnd1PubKey: key
+  lnd1Macaroon:
+  lnd1Tls:
+  lnd1LoopMacaroon:
+  lnd1LoopTls:
+  lnd1PubKey:
 
   ## Secrets for LND2
-  lnd2Macaroon: macaroon
-  lnd2Tls: tls
-  lnd2PubKey: key
+  lnd2Macaroon:
+  lnd2Tls:
+  lnd2LoopMacaroon:
+  lnd2LoopTls:
+  lnd2PubKey:
 
 ## Tracing details
 ##
@@ -690,10 +697,6 @@ tracing:
   ## Jaeger Tracing Host
   ##
   jaegerHost: localhost
-
-dealer_price:
-  host: stablesats-price.namespace.svc.cluster.local
-  port: 3325
 
 price:
   host: galoy-price-history
