@@ -341,6 +341,18 @@ galoy:
 
       ## Secret Key
       key: pubkey
+
+    ## Loop Credentials
+    ##
+    loopCredentialsExistingSecret:
+      ## Secret Name
+      name: lnd1-loop-credentials
+
+      ## Macaroon Key
+      macaroon_key: loop_macaroon_base64
+
+      ## TLS Key
+      tls_key: tls_base64
   
   ## Configuration values for establishing connection to LND-2
   ## TODO: This should be injected as ConfigMap from LND Chart
@@ -370,6 +382,18 @@ galoy:
 
       ## Secret Key
       key: pubkey
+
+    ## Loop Credentials
+    ##
+    loopCredentialsExistingSecret:
+      ## Secret Name
+      name: lnd2-loop-credentials
+
+      ## Macaroon Key
+      macaroon_key: loop_macaroon_base64
+
+      ## TLS Key
+      tls_key: tls_base64
   
   ## Configuration values for establishing connection to BITCOIND
   ## TODO: This should be injected as ConfigMap from Bitcoin Chart
