@@ -46,14 +46,14 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
+              path: /metrics
               port: http
             timeoutSeconds: 30
             periodSeconds: 30
             failureThreshold: 6
           readinessProbe:
             httpGet:
-              path: /health
+              path: /metrics
               port: http
             timeoutSeconds: 30
             periodSeconds: 30
