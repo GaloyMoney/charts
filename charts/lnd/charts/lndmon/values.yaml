@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: radarion/lndmon
+  repository: lightninglabs/lndmon
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v0.2.0
+  tag: v0.2.1
 
 imagePullSecrets: []
 nameOverride: ""
