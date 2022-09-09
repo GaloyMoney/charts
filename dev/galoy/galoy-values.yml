@@ -1,10 +1,6 @@
 galoy:
   network: regtest
 
-  backups:
-    gcs:
-      enabled: true
-
   config:
     test_accounts:
       - ref: A
@@ -29,23 +25,6 @@ galoy:
   dealer:
     host: dealer-price.galoy-dev-addons.svc.cluster.local
 
-apiIngress:
-  name: api-ingress
-  host: localhost
-
-bitcoind:
-  port: 18332
-
-needFirebaseServiceAccount: false
-
-lnd1:
-  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-lnd2:
-  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-jwtSecret: "my_non_secured_secret"
-
 mongodb:
   architecture: standalone
   volumePermissions:
@@ -68,12 +47,6 @@ redis:
   metrics:
     enabled: false
 
-mongodbaddress: "galoy-mongodb"
-
-cron: []
-
-twilio: false
-
 price:
   service:
     type: NodePort
@@ -81,11 +54,6 @@ price:
     primary:
       persistence:
         enabled: false
-
-devDisableMongoBackup: true
-
-dealer_price:
-  host: stablesats-price.galoy-dev-addons.svc.cluster.local
 
 secrets:
   create: false
