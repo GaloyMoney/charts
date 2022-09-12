@@ -1,9 +1,12 @@
 galoy:
   network: testnet
 
-  backups:
-    gcs:
-      enabled: true
+  trigger:
+    backups:
+      gcs:
+        enabled: true
+      dropbox:
+        enabled: true
 
   config:
     test_accounts:
