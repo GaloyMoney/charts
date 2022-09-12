@@ -2,6 +2,11 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ template "galoy.migration.jobname" . }}
+  labels:
+    app: {{ template "galoy.migration.jobname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
 spec:
   backoffLimit: 1
   template:
