@@ -179,12 +179,12 @@ Return Galoy environment variables for LND 2 configuration
     secretKeyRef:
       name: {{ .Values.galoy.lnd2.pubkeyExistingSecret.name }}
       key: {{ .Values.galoy.lnd2.pubkeyExistingSecret.key }}
-- name: LND1_LOOP_MACAROON
+- name: LND2_LOOP_MACAROON
   valueFrom:
     secretKeyRef:
       name: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.name }}
       key: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.macaroon_key }}
-- name: LND1_LOOP_TLS
+- name: LND2_LOOP_TLS
   valueFrom:
     secretKeyRef:
       name: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.name }}
