@@ -1,8 +1,11 @@
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
-  version: 1.16.1
+  version: 2.0.3
 - name: loop
+  repository: ""
+  version: x.x.x
+- name: loopserver
   repository: ""
   version: x.x.x
 - name: lndmon
@@ -11,5 +14,5 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.1.19
-digest: sha256:6a4a8473f85ff149591396c0e2ebe47339855f1846f5fb7f6dc196e660aba1e6
-generated: "2022-08-15T21:08:35.497533254Z"
+digest: sha256:677a52246ab36cfd0904bdc2e7702c9a6a4618c84a09b1a6b0e1bd201b2a207a
+generated: "2022-09-12T13:28:48.899088083Z"
