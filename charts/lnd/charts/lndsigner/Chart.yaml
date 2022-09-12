@@ -1,0 +1,17 @@
+apiVersion: v2
+name: lndsigner
+version: 0.0.1-dev
+appVersion: 0.15.1
+description: LND signer helm chart
+keywords:
+  - lndsigner
+maintainers:
+  - name: openoms
+    email: openoms@galoy.io
+  - name: nicolasburtey
+    email: nb@galoy.io
+engine: gotpl
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    version: 1.16.1

@@ -1,0 +1,62 @@
+global:
+  network: mainnet
+image:
+  repository: lightninglabs/lnd
+  tag: v0.15.1-beta
+  pullPolicy: IfNotPresent
+configmap:
+  customValues: []
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+terminationGracePeriodSeconds: 600
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+apiService:
+  # On google cloud, static ip can be created using `gcloud compute addresses create`
+  staticIP: ""
+  type: ClusterIP
+  annotations: {}
+  ports:
+    rpc: 10019
+persistence:
+  enabled: true
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+affinity:
+  podAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - bitcoind
+          topologyKey: kubernetes.io/hostname
+walletPassword: ""
+secrets:
+  create: true
+lndSignerGeneralConfig:
+ - nolisten=true
+ - nobootstrap=true
+ - rpclisten=10019
+ - bitcoin.active=true
+ - bitcoin.mainnet=true
+ - bitcoin.node=nochainbackend
+rbac:
+  create: true
+autoGenerateSeed:
+  enabled: false
+
