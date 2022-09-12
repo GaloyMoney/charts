@@ -112,8 +112,8 @@ spec:
         - name: DROPBOX_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{- .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.name | quote -}}
-              key: {{- .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.key | quote -}}
+              name: {{ .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.name | quote }}
+              key: {{ .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.key | quote }}
         {{ end }}
 
         {{ if .Values.galoy.api.firebaseNotifications.enabled }}
@@ -168,9 +168,9 @@ spec:
       {{ if .Values.galoy.trigger.backups.gcs.enabled }}
       - name: service-account
         secret:
-          secretName: {{- .Values.galoy.trigger.backups.gcs.config.serviceAccount.existingSecret.name | quote -}}
+          secretName: {{ .Values.galoy.trigger.backups.gcs.config.serviceAccount.existingSecret.name | quote }}
           items:
-          - key: {{- .Values.galoy.trigger.backups.gcs.config.serviceAccount.existingSecret.key | quote -}}
+          - key: {{ .Values.galoy.trigger.backups.gcs.config.serviceAccount.existingSecret.key | quote }}
             path: "gcs-sa-key.json"
       {{ end }}
 
