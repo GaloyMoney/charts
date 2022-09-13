@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: mongo-backup-configmap
   labels:
-    app: {{ template "galoy.mongo_backup_cron.jobname" . }}
+    app: {{ template "galoy.mongoBackupCron.jobname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm

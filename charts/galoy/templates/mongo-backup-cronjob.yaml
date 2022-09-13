@@ -2,9 +2,9 @@ apiVersion: batch/v1beta1
 kind: CronJob
 
 metadata:
-  name: {{ template "galoy.mongo_backup_cron.jobname" . }}
+  name: {{ template "galoy.mongoBackupCron.jobname" . }}
   labels:
-    app: {{ template "galoy.mongo_backup_cron.jobname" . }}
+    app: {{ template "galoy.mongoBackupCron.jobname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm
@@ -21,7 +21,7 @@ spec:
           restartPolicy: OnFailure
 
           containers:
-          - name: {{ template "galoy.mongo_backup_cron.jobname" . }}
+          - name: {{ template "galoy.mongoBackupCron.jobname" . }}
             image: "{{ .Values.galoy.images.mongoBackup.repository }}@{{ .Values.galoy.images.mongoBackup.digest }}"
             command:
             - "/bin/sh"

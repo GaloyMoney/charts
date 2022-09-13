@@ -20,7 +20,7 @@ spec:
         - "/bin/sh"
         - "-c"
         - |
-          job_name="{{ template "galoy.pre-migration.jobname" . }}"
+          job_name="{{ template "galoy.preMigration.jobname" . }}"
           echo "Executing ${job_name}"
           kubectl delete job "${job_name}" || true
           kubectl create job --from=cronjob/mongo-backup "${job_name}"
