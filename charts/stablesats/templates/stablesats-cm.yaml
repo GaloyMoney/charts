@@ -23,6 +23,24 @@ data:
         base_fee_rate: {{ .Values.stablesats.priceServer.fees.baseFeeRate }}
         immediate_fee_rate: {{ .Values.stablesats.priceServer.fees.immediateFeeRate }}
         delayed_fee_rate: {{ .Values.stablesats.priceServer.fees.delayedFeeRate }}
+    user_trades:
+      enabled: {{ .Values.stablesats.userTrades.enabled }}
+      config:
+        migrate_on_start: true
+        balance_publish_frequency: {{ .Values.stablesats.userTrades.balancePublishFrequency }}
+        galoy_poll_frequency: {{ .Values.stablesats.userTrades.galoyPollFrequency }}
+    hedging:
+      enabled: {{ .Values.stablesats.hedging.enabled }}
+      config:
+        migrate_on_start: true
+        okex_poll_frequency: {{ .Values.stablesats.hedging.okexPollFrequency }}
+
+    galoy:
+      api: {{ .Values.stablesats.galoy.api }}
+      phone_number: {{ .Values.stablesats.galoy.phoneNumber }}
+    okex:
+      api_key: {{ .Values.stablesats.okex.apiKey }}
+      simulated: {{ .Values.stablesats.okex.simulated }}
     tracing:
       service_name: {{ .Values.stablesats.tracing.serviceName }}
       host: {{ .Values.stablesats.tracing.jaegerHost }}

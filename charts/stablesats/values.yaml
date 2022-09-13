@@ -1,17 +1,39 @@
+secrets:
+  create: true
+  userTradesPgCon: ""
+  hedgingPgCon: ""
+  okexSecretKey: ""
+  okexPassphrase: ""
+  galoyPhoneCode: ""
 stablesats:
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
     digest: "sha256:252d3a18c800fab7ac823ca966b44922a0be08b5973d70155b000faa26f15137"
     git_ref: 93a8531
+  crash_report_config_danger: false
+  userTrades:
+    enabled: true
+    balancePublishFrequency: 5
+    galoyPollFrequency: 5
+  hedging:
+    enabled: true
+    okexPollFrequency: 10
   priceServer:
     port: 3325
     fees:
       baseFeeRate: 0.0008
       immediateFeeRate: 0.0005
       delayedFeeRate: 0.0007
+  galoy:
+    api: "https://api.staging.galoy.io/graphql"
+    phoneNumber: "+50365055530"
+  okex:
+    apiKey: ""
+    simulated: true
   tracing:
     jaegerHost: "localhost"
     serviceName: "stablesats"
+
 redis:
   enabled: true
   master:
@@ -23,3 +45,17 @@ redis:
     enabled: true
   metrics:
     enabled: true
+user-trades-pg:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: stablesats
+    password: stablesats
+    database: stablesats-user-trades
+hedging-pg:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: stablesats
+    password: stablesats
+    database: stablesats-hedging
