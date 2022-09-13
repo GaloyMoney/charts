@@ -10,7 +10,7 @@ port=`setting "specter_port"`
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl specter"
-  curl ${host}:${port} | grep direct # Check if we are being redirected
+  curl --location ${host}:${port} | grep direct # Check if we are being redirected
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done

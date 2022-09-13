@@ -10,7 +10,7 @@ port=`setting "dealer_port"`
 set +e
 for i in {1..30}; do
   echo "Attempt ${i} to curl dealer's /metrics endpoint"
-  curl ${host}:${port}/metrics
+  curl --location ${host}:${port}/metrics
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 5
 done
