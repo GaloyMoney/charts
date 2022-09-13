@@ -206,26 +206,6 @@ Return Galoy environment variables for Redis configuration
 {{- end -}}
 
 {{/*
-Return Galoy environment variables for Reporting to Apollo
-*/}}
-{{- define "galoy.apollo.env" -}}
-- name: APOLLO_GRAPH_VARIANT
-  value: {{ .Values.galoy.api.apollo.graphVariant | quote }}
-- name: APOLLO_SCHEMA_REPORTING
-  value: {{ .Values.galoy.api.apollo.schemaReporting | quote }}
-- name: APOLLO_GRAPH_ID
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.api.apollo.existingSecret.name }}
-      key: {{ .Values.galoy.api.apollo.existingSecret.id_key }}
-- name: APOLLO_KEY
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.api.apollo.existingSecret.name }}
-      key: {{ .Values.galoy.api.apollo.existingSecret.key_key }}
-{{- end -}}
-
-{{/*
 Return Galoy environment variables for Twilio
 */}}
 {{- define "galoy.twilio.env" -}}
