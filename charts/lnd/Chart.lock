@@ -5,11 +5,14 @@ dependencies:
 - name: loop
   repository: ""
   version: x.x.x
+- name: loopserver
+  repository: ""
+  version: x.x.x
 - name: lndmon
   repository: ""
   version: x.x.x
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.1.19
-digest: sha256:6a4a8473f85ff149591396c0e2ebe47339855f1846f5fb7f6dc196e660aba1e6
-generated: "2022-08-15T21:08:35.497533254Z"
+  version: 11.9.0
+digest: sha256:45ee874a2483596571767db3878fb5874615eff10e52da50742ba26496de5b04
+generated: "2022-09-13T10:15:18.590033465Z"
