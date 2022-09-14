@@ -24,6 +24,12 @@ testflight_backups_creds: #@ data.values.testflight_backups_creds
 smoketest_kubeconfig: #@ data.values.staging_smoketest_kubeconfig
 #@ end
 
+#@ def stablesats_chart_vars():
+okex_secret_key: #@ data.values.testflight_okex_secret_key
+okex_passphrase: #@ data.values.testflight_okex_passphrase
+okex_api_key: #@ data.values.testflight_okex_api_key
+#@ end
+
 groups:
 - name: galoy
   jobs:
@@ -90,7 +96,7 @@ jobs:
 - #@ bump_in_deployments_job("monitoring")
 - #@ testflight_job("galoy-auth", "auth")
 - #@ bump_in_deployments_job("galoy-auth")
-- #@ testflight_job("stablesats", "stablesats")
+- #@ testflight_job("stablesats", "stablesats", stablesats_chart_vars())
 - #@ bump_in_deployments_job("stablesats")
 
 - name: build-chain-dl-image
