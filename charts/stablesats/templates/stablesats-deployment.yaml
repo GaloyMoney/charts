@@ -37,7 +37,7 @@ spec:
           subPath: "stablesats.yml"
         env:
         - name: CRASH_REPORT_CONFIG
-          value: "true"
+          value: '{{ .Values.stablesats.crash_report_config_danger }}'
         - name: STABLESATS_CONFIG
           value: "/stablesats.yml"
         - name: REDIS_PASSWORD
@@ -51,6 +51,31 @@ spec:
               key: "redis-password"
 
             {{- end }}
+        - name: GALOY_PHONE_CODE
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "galoy-phone-code"
+        - name: USER_TRADES_PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "user-trades-pg-con"
+        - name: HEDGING_PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "hedging-pg-con"
+        - name: OKEX_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "okex-secret-key"
+        - name: OKEX_PASSPHRASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "okex-passphrase"
       volumes:
       - name: config
         configMap:

@@ -1,4 +1,7 @@
 variable "testflight_namespace" {}
+variable "okex_secret_key" {}
+variable "okex_passphrase" {}
+variable "okex_api_key" {}
 
 locals {
   cluster_name     = "galoy-staging-cluster"
@@ -6,6 +9,7 @@ locals {
   gcp_project      = "galoy-staging"
 
   smoketest_namespace  = "galoy-staging-smoketest"
+  galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -31,14 +35,38 @@ resource "random_password" "redis" {
   special = false
 }
 
-resource "kubernetes_secret" "redis_password" {
+resource "random_password" "user_trades_pg" {
+  length  = 20
+  special = false
+}
+
+resource "random_password" "hedging_pg" {
+  length  = 20
+  special = false
+}
+
+data "kubernetes_secret" "dealer_creds" {
   metadata {
-    name      = "stablesats-redis"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
+    name      = "dealer-creds"
+    namespace = local.galoy_namespace
+  }
+}
+
+resource "kubernetes_secret" "stablesats" {
+  metadata {
+    name      = "stablesats"
+    namespace = kubernetes_namespace.stablesats.metadata[0].name
   }
 
   data = {
-    "redis-password" : random_password.redis.result
+    redis-password: random_password.redis.result
+    user-trades-pg-user-pw: random_password.user_trades_pg.result
+    user-trades-pg-con: "postgres://stablesats:${random_password.user_trades_pg.result}@stablesats-user-trades-pg:5432/stablesats-user-trades"
+    hedging-pg-user-pw: random_password.hedging_pg.result
+    hedging-pg-con: "postgres://stablesats:${random_password.hedging_pg.result}@stablesats-hedging-pg:5432/stablesats-hedging"
+    okex-secret-key: var.okex_secret_key
+    okex-passphrase: var.okex_passphrase
+    galoy-phone-code: data.kubernetes_secret.dealer_creds.data["code"]
   }
 }
 
@@ -48,11 +76,14 @@ resource "helm_release" "stablesats" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    file("${path.module}/testflight-values.yml")
+    templatefile("${path.module}/testfligh-values.yml.tmpl", {
+      galoy_phone_number : data.kubernetes_secret.dealer_creds.data["phone"]
+      okex_api_key : var.okex_api_key
+    })
   ]
 
   depends_on = [
-    kubernetes_secret.redis_password,
+    kubernetes_secret.stablesats,
   ]
 
   dependency_update = true

@@ -9,3 +9,13 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 17.1.4
     condition: redis.enabled
+  - name: postgresql
+    alias: user-trades-pg
+    version: 11.8.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: user-trades-pg.enabled
+  - name: postgresql
+    alias: hedging-pg
+    version: 11.8.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: hedging-pg.enabled
