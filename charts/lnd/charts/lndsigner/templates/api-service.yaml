@@ -16,7 +16,5 @@ spec:
   ports:
     - name: rpc
       port: {{ .Values.apiService.ports.rpc }}
-    - name: rest
-      port: {{ .Values.apiService.ports.rest }}
   selector:
     {{- include "lndsigner.selectorLabels" . | nindent 4 }}
