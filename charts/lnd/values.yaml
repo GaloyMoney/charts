@@ -101,13 +101,13 @@ rbac:
 autoGenerateSeed:
   enabled: false
 postgresql:
-  enabled: true
+  enabled: false
   auth:
     database: lnd
     existingSecret: postgres-creds
 lnd:
   db:
-    backend: postgres
+    backend: bbolt
     config:
       # This secret should contain `uri` as the key
       secret: postgres-creds
