@@ -55,7 +55,7 @@ data "kubernetes_secret" "dealer_creds" {
 resource "kubernetes_secret" "stablesats" {
   metadata {
     name      = "stablesats"
-    namespace = kubernetes_namespace.stablesats.metadata[0].name
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
