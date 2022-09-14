@@ -76,7 +76,7 @@ resource "helm_release" "stablesats" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    templatefile("${path.module}/testfligh-values.yml.tmpl", {
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
       galoy_phone_number : data.kubernetes_secret.dealer_creds.data["phone"]
       okex_api_key : var.okex_api_key
     })
