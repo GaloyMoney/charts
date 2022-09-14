@@ -43,14 +43,8 @@ spec:
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-            {{- if .Values.redis.auth.existingSecret }}
-              name: {{ .Values.redis.auth.existingSecret }}
-              key: {{ .Values.redis.auth.existingSecretPasswordKey }}
-            {{- else }}
-              name: {{ template "stablesats.fullname" . }}-redis
+              name: {{ template "stablesats.fullname" . }}
               key: "redis-password"
-
-            {{- end }}
         - name: GALOY_PHONE_CODE
           valueFrom:
             secretKeyRef:
