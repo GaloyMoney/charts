@@ -111,5 +111,5 @@ lnd:
     config:
       # This secret should contain `uri` as the key
       secret: postgres-creds
-lndsigner:
+signer:
   enabled: true

@@ -1,4 +1,4 @@
-# Default values for loop.
+# Default values for signer.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -44,7 +44,6 @@ resources:
 
 apiService:
   type: ClusterIP
-  annotations: {}
   ports:
     rpc: 10019
 
@@ -58,7 +57,7 @@ walletPassword: ""
 secrets:
   create: true
 
-lndsignerGeneralConfig:
+signerGeneralConfig:
  - nolisten=true
  - nobootstrap=true
  - rpclisten=10019
