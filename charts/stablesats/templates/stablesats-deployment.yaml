@@ -70,6 +70,11 @@ spec:
             secretKeyRef:
               name: {{ template "stablesats.fullname" . }}
               key: "okex-passphrase"
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
       volumes:
       - name: config
         configMap:
