@@ -1,32 +1,40 @@
-global:
-  network: mainnet
+# Default values for loop.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 image:
   repository: lightninglabs/lnd
   tag: v0.15.1-beta
   pullPolicy: IfNotPresent
+
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
   digest: "sha256:6da00b05b8e56da6cce315b5043f49c0ae54de5a0004bac63ab721a3790587ab"
   git_ref: dc770ca
+
 kubemonkey:
   enabled: false
+
 configmap:
   customValues: []
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
+
 terminationGracePeriodSeconds: 600
+
 resources:
   requests:
     cpu: 100m
     memory: 128Mi
+
 apiService:
-  # On google cloud, static ip can be created using `gcloud compute addresses create`
-  staticIP: ""
   type: ClusterIP
   annotations: {}
   ports:
     rpc: 10019
+
 persistence:
   enabled: true
   ## database data Persistent Volume Storage Class
@@ -38,7 +46,7 @@ persistence:
   ##
   # storageClass: "-"
   accessMode: ReadWriteOnce
-  size: 10Gi
+  size: 1Gi
 affinity:
   podAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
@@ -65,4 +73,3 @@ rbac:
   create: true
 autoGenerateSeed:
   enabled: false
-
