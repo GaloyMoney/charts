@@ -10,7 +10,7 @@ data:
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
   {{- end }}
-  {{- range .Values.lndGeneralConfig }}
+  {{- range .Values.lndsignerGeneralConfig }}
     {{ . }}
   {{- end }}
   {{- range .Values.configmap.customValues }}

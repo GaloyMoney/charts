@@ -24,3 +24,11 @@ loop:
   enabled: true
 loopserver:
   enabled: true
+
+lndsigner:
+  enabled: true
+  configmap:
+    customValues:
+    - bitcoin.regtest=true
+    - noseedbackup=1
+    - tlsextradomain=lndsigner1.galoy-dev-bitcoin.svc.cluster.local
