@@ -25,7 +25,7 @@ data:
     {{- end -}}
 
     {{- if .Values.galoy.trigger.backups.gcs.enabled -}}
-    export BUCKET_NAME="{{ .Values.galoy.trigger.backups.gcs.config.bucketName }}"
+    export BUCKET_NAME="{{ .Values.galoy.trigger.backups.gcs.bucketName }}"
     echo "Activating service account"
     gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
     echo "Uploading backup $BACKUP_NAME to gcs"

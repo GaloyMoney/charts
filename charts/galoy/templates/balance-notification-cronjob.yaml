@@ -70,8 +70,8 @@ spec:
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.name | quote }}
-                  key: {{ .Values.galoy.trigger.backups.dropbox.config.accessToken.existingSecret.key | quote }}
+                  name: {{ .Values.galoy.trigger.backups.dropbox.accessTokenExistingSecret.name | quote }}
+                  key: {{ .Values.galoy.trigger.backups.dropbox.accessTokenExistingSecret.key | quote }}
             {{ end }}
 
             {{ if .Values.galoy.api.firebaseNotifications.enabled }}
