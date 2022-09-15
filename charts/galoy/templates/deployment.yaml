@@ -78,6 +78,11 @@ spec:
               value: {{ $.Values.jaegerHost }}
             - name: TRACING_SERVICE_NAME
               value: {{ $.Values.tracingPrefix }}-{{ .name }}
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
             - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
