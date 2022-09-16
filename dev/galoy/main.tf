@@ -82,6 +82,17 @@ resource "kubernetes_secret" "mongodb_creds" {
   }
 }
 
+resource "kubernetes_secret" "redis_creds" {
+  metadata {
+    name      = "galoy-redis-pw"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "redis-password" : "password"
+  }
+}
+
 resource "kubernetes_secret" "dropbox_access_token" {
   metadata {
     name      = "dropbox-access-token"
