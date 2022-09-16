@@ -13,7 +13,7 @@ for i in {1..15}; do
   echo "Attempt ${i} to curl web wallet"
   curl --location ${host}:${port}
   status=$?
-  curl --location ${web_wallet_mobile_host}:${port}
+  curl --location -f ${web_wallet_mobile_host}:${port}
   if [[ $status == 0 ]] && [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
