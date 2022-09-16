@@ -618,7 +618,8 @@ redis:
 
   ## Redis auth config params
   auth:
-    password: password
+    existingSecret: galoy-redis-pw
+    existingSecretPasswordKey: redis-password
 
   ## Use sentinel on Redis pods
   sentinel:
