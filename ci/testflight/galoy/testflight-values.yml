@@ -5,6 +5,7 @@ galoy:
     backups:
       gcs:
         enabled: true
+        bucketName: galoy-staging-backups
       dropbox:
         enabled: true
 
@@ -51,18 +52,6 @@ galoy:
 
   dealer:
     host: dealer-price.galoy-staging-addons.svc.cluster.local
-
-mongobackup:
-  bucketName: "galoy-staging-backups"
-
-lnd1:
-  dns: lnd1.galoy-staging-bitcoin.svc.cluster.local
-
-lnd2:
-  dns: lnd2.galoy-staging-bitcoin.svc.cluster.local
-
-dealer_price:
-  host: dealer-price.galoy-staging-addons.svc.cluster.local
 
 postgresql:
   primary:
