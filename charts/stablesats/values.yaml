@@ -8,8 +8,8 @@ secrets:
 stablesats:
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:5ae9416b6ec277a79d0db1106d857cc2e6d1ed092dcd6963ea7bf8f19938f052"
-    git_ref: "8fc704a"
+    digest: "sha256:fc1506c551a21cc1492e33b030297f8e3a1f6a1176e89dd48a5da45d0e53ec42"
+    git_ref: "d9dedeb"
   crash_report_config_danger: false
   userTrades:
     enabled: true
