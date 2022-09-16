@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ template "galoy.api.fullname" . }}
+  labels:
+    app: {{ template "galoy.api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+
+spec:
+  type: {{ .Values.galoy.api.serviceType }}
+  ports:
+    - port: {{ .Values.galoy.api.port }}
+      targetPort: {{ .Values.galoy.api.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "galoy.api.fullname" . }}

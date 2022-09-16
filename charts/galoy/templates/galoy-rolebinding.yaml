@@ -1,12 +1,12 @@
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: RoleBinding
 metadata:
-  name: {{ $.Release.Name }}-rolebinding
+  name: {{ template "galoy.name" . }}
 roleRef:
   kind: Role
-  name: {{ $.Release.Name }}-role
+  name: {{ template "galoy.name" . }}
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
-    name: {{ $.Release.Name}}-serviceaccount
+    name: {{ template "galoy.name" . }}
     namespace: {{ .Release.Namespace }}

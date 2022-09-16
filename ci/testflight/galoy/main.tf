@@ -109,6 +109,17 @@ resource "kubernetes_secret" "apollo_secret" {
   }
 }
 
+resource "kubernetes_secret" "jwt_secret" {
+  metadata {
+    name      = "jwt-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    secret = "jwt-secret"
+  }
+}
+
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
     name      = "bitcoind-rpcpassword"
@@ -233,10 +244,10 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_endpoint = "api.${local.testflight_namespace}.svc.cluster.local"
-    galoy_port     = 4002
+    galoy_endpoint         = "api.${local.testflight_namespace}.svc.cluster.local"
+    galoy_port             = 4002
     price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
-    price_history_port = 50052
+    price_history_port     = 50052
   }
 }
 
@@ -247,9 +258,9 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   }
 
   data = {
-    username          = local.postgres_username
-    password          = local.postgres_password
-    database          = local.postgres_database
+    username = local.postgres_username
+    password = local.postgres_password
+    database = local.postgres_database
   }
 }
 

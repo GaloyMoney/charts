@@ -7,6 +7,7 @@ locals {
   bitcoin_secret      = "bitcoind-rpcpassword"
   dev_apollo_key      = "dev_apollo_key"
   dev_apollo_graph_id = "dev_apollo_graph_id"
+  jwt_secret          = "jwt"
 
   postgres_database = "price-history"
   postgres_username = "price-history"
@@ -33,6 +34,17 @@ resource "kubernetes_secret" "network" {
   }
 
   data = data.kubernetes_secret.network.data
+}
+
+resource "kubernetes_secret" "jwt_secret" {
+  metadata {
+    name      = "jwt-secret"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    secret = local.jwt_secret
+  }
 }
 
 resource "kubernetes_secret" "gcs_sa_key" {

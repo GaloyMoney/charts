@@ -1,7 +1,11 @@
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: Role
 metadata:
-  name: {{ $.Release.Name}}-role
+  name: {{ template "galoy.name" . }}
+  labels:
+    app: {{ template "galoy.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
 rules:
 - apiGroups: ["batch"]
   resources: ["cronjobs"]
