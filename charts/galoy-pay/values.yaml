@@ -1,7 +1,7 @@
 image:
   repository: us.gcr.io/galoy-org/galoy-pay
-  digest: "sha256:6ab3a786b8f4b22603633046a452a330d6d1f2a6ece246a9a980f39ff1c32909"
-  git_ref: "1be67e7" # Not used by helm
+  digest: "sha256:cac016da4c3702df926de89aa99904f8e01be58cb7b512b63ba943f5ea92b7e9"
+  git_ref: "bafc3df" # Not used by helm
 ingress:
   enabled: false
 service:
