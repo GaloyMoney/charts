@@ -23,7 +23,7 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   job_name="${namespace}-cronjob-smoketest"
   kubectl -n ${namespace} delete job "${job_name}" || true
   echo "Executing cronjob"
-  kubectl -n ${namespace} create job --from=cronjob/cronjob "${job_name}"
+  kubectl -n ${namespace} create job --from=cronjob/galoy-cronjob "${job_name}"
   for i in {1..150}; do
     kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
     if [[ $? -eq 0 ]]; then
