@@ -12,11 +12,23 @@ redis:
     existingSecret: stablesats
     existingSecretPasswordKey: "redis-password"
 user-trades-pg:
+  primary:
+    resources:
+    limits: {}
+    requests:
+      memory: 256Mi
+      cpu: 100m
   auth:
     existingSecret: stablesats
     secretKeys:
       userPasswordKey: "user-trades-pg-user-pw"
 hedging-pg:
+  primary:
+    resources:
+    limits: {}
+    requests:
+      memory: 256Mi
+      cpu: 100m
   auth:
     existingSecret: stablesats
     secretKeys:
