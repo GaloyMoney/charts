@@ -5,96 +5,77 @@
 ## Provide a name in place of `galoy` for `app:` labels
 ##
 nameOverride:
-
 ## Provide a name to substitute for the full names of resources
 ##
 fullnameOverride:
-
 galoy:
   ## Bitcoin Network to run this Galoy instance on
   ##
   network: mainnet
-
   ## Application Custom Config
   ## Ref: https://github.com/GaloyMoney/galoy/blob/main/default.yaml
   ##
   config:
     ## Default Galoy Wallet Name
     name: Galoy Wallet
-
     ## Apollo Configuration
     apollo:
       playground: false
-
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
-
     ## Galoy Application Image details
     ##
     app:
       ## Has api, trigger and exporter
       ##
       repository: us.gcr.io/galoy-org/galoy-app
-
       ## Digest of the image
       ##
-      digest: "sha256:89c167339d1e74fb63d42918df5d7724ba353b2952dbb9d3048cf26f8becb413"
-
+      digest: "sha256:64ec6471988e08ca667fcd4cc025537189848e0541cdfe5f23e76690cba03e2c"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "1800af5"
-
+      git_ref: "64a4751"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
       ## Has mongodb migration
       ##
       repository: us.gcr.io/galoy-org/galoy-app-migrate
-
       ## Digest of the image
       ##
-      digest: "sha256:dcdce622e5880b974bb32013d1fa5ee5d15f3ca37130517c019bf71093d19eee"
-
+      digest: "sha256:81e43bdd7d244f34438b2b5c0c480b8cd6eeaff304100b0ae9d55cf6e62f5997"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
       ## Has mongodb backup
       ##
       repository: us.gcr.io/galoy-org/mongo-backup
-
       ## Digest of the image
       digest: "sha256:4cfc197ea082ef3dae2d4321a9dfa31ef185f43d578a37a224095b75de656e6a"
-
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
       git_ref: "872b70e"
-
   ## Configuration values for Galoy API components.
   ##
   api:
     ## Override the components name (defaults to api).
     ##
     nameOverride:
-
     ## Number of replicas.
     ##
     replicas: 2
-
     ## Log Level
     ##
     logLevel: debug
-
     ## Port on which API Server is running
     ##
     port: 4002
-
     ## Service type
     ##
     serviceType: NodePort
-
     ## Ingress configuration.
     ## Ref: https://kubernetes.io/docs/user-guide/ingress/
     ##
@@ -102,56 +83,43 @@ galoy:
       ## Enable Ingress.
       ##
       enabled: false
-
       ## Ingress Host
       ##
       host: api.staging.galoy.io
-
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
       clusterIssuer: letsencrypt-issuer
-
       ## TLS Secret Name
       ##
       tlsSecretName: api-ingress-tls
-
     ## Firebase Notifications Configuration
     ## It would need a Firebase Service Account to send out notifications
     ##
     firebaseNotifications:
       # Enable/disable notifications on the app
       enabled: false
-
       # Firebase Notifications Service Account must be injected via a secret
       existingSecret:
-
         ## Secret Name of the Service Account JSON
         name: galoyapp-firebase-serviceaccount
-
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
-
     ## Apollo Configuration for Apollo Studio
     ##
     apollo:
       # Associate data at Apollo with this variant
       graphVariant: current
-
       # Report the GraphQL schema to Apollo
       schemaReporting: true
-
       # Graph ID and Key Secret
       existingSecret:
         # Secret Name
         name: galoy-apollo-secret
-
         # Apollo Graph ID key
         id_key: id
-
         # Apollo Key key
         key_key: key
-
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -159,44 +127,36 @@ galoy:
     probes:
       ## Enable/disable API probes for healthcheck
       enabled: true
-
       ## If pod is starting up/healthy
       liveness:
         initialDelaySeconds: 60
         periodSeconds: 10
         failureThreshold: 5
         timeoutSeconds: 1
-
       ## When to expose the pod to the service
       readiness:
         initialDelaySeconds: 5
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
-
   ## Configuration values for Trigger components.
   ##
   trigger:
     ## Override the components name (defaults to trigger).
     ##
     nameOverride:
-
     ## Number of replicas.
     ##
     replicas: 1
-
     ## Log Level
     ##
     logLevel: debug
-
     ## Port on which Exporter Server is running
     ##
     port: 8888
-
     ## Service type
     ##
     serviceType: ClusterIP
-
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -204,28 +164,24 @@ galoy:
     probes:
       ## Enable/disable Admin API probes for healthcheck
       enabled: true
-
       ## If pod is starting up/healthy
       liveness:
         initialDelaySeconds: 60
         periodSeconds: 10
         failureThreshold: 5
         timeoutSeconds: 1
-
       ## When to expose the pod to the service
       readiness:
         initialDelaySeconds: 5
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
-
     ## Galoy database backup configuration
     ## This is a custom backup configuration, which means data lying in
     ## MongoDB and LND can be backed up by custom scripts present in the
     ## galoy codebase itself.
     ##
     backups:
-
       ## Backup data to Google Cloud Storage Bucket
       ## To backup to GCS bucket, you would need a GCP Service Account
       ## that lets you upload to a specific bucket
@@ -233,19 +189,15 @@ galoy:
       gcs:
         # Enable/disable uploading backup to GCS bucket
         enabled: false
-
         # GCS bucket name to upload to (it should already be created)
         bucketName: gcs-bucket-name
-
         # Service account to use to upload backup to above-mentioned bucket
         # Service account credentials json file must be injected via a secret
         serviceAccountExistingSecret:
           # Secret name
           name: gcs-sa-key
-
           # Secret Key
           key: gcs-sa-key.json
-
       ## Backup data to Dropbox
       ## To backup to dropbox, you would need an access token to upload
       ## data to your dropbox account
@@ -253,38 +205,30 @@ galoy:
       dropbox:
         # Enable/disable uploading backup to dropbox
         enabled: false
-
         # Dropbox Access Token must be injected via a secret
         accessTokenExistingSecret:
           # Secret Name
           name: dropbox-access-token
-
           # Secret Key
           key: token
-
   ## Configuration values for Galoy Admin components.
   ##
   admin:
     ## Override the components name (defaults to admin).
     ##
     nameOverride:
-
     ## Number of replicas.
     ##
     replicas: 1
-
     ## Log Level
     ##
     logLevel: debug
-
     ## Port on which Admin API Server is running
     ##
     port: 4001
-
     ## Service type
     ##
     serviceType: NodePort
-
     ## Ingress configuration.
     ## Ref: https://kubernetes.io/docs/user-guide/ingress/
     ##
@@ -292,20 +236,16 @@ galoy:
       ## Enable Ingress.
       ##
       enabled: false
-
       ## Ingress Host
       ##
       host: admin.staging.galoy.io
-
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
       clusterIssuer: letsencrypt-issuer
-
       ## TLS Secret Name
       ##
       tlsSecretName: graphql-admin-tls
-
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -313,40 +253,33 @@ galoy:
     probes:
       ## Enable/disable Admin API probes for healthcheck
       enabled: true
-
       ## If pod is starting up/healthy
       liveness:
         initialDelaySeconds: 60
         periodSeconds: 10
         failureThreshold: 5
         timeoutSeconds: 1
-
       ## When to expose the pod to the service
       readiness:
         initialDelaySeconds: 5
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
-  
   ## Configuration values for Galoy Metrics Exporter components.
   ##
   exporter:
     ## Override the components name (defaults to admin).
     ##
     nameOverride:
-
     ## Number of replicas.
     ##
     replicas: 1
-
     ## Log Level
     ##
     logLevel: debug
-
     ## Port on which Exporter Server is running
     ##
     port: 3000
-
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -354,21 +287,18 @@ galoy:
     probes:
       ## Enable/disable Admin API probes for healthcheck
       enabled: true
-
       ## If pod is starting up/healthy
       liveness:
         initialDelaySeconds: 60
         periodSeconds: 10
         failureThreshold: 5
         timeoutSeconds: 1
-
       ## When to expose the pod to the service
       readiness:
         initialDelaySeconds: 5
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
-
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
   ##
@@ -376,40 +306,31 @@ galoy:
     ## DNS for LND1
     ##
     dns: lnd1.default.svc.cluster.local
-
     ## Credentials to access LND RPC
     ##
     credentialsExistingSecret:
       ## Secret Name
       name: lnd1-credentials
-
       ## Macaroon Key
       macaroon_key: admin_macaroon_base64
-
       ## TLS Key
       tls_key: tls_base64
-
     ## Pubkey to verify LND RPC
     ##
     pubkeyExistingSecret:
       ## Secret Name
       name: lnd1-pubkey
-
       ## Secret Key
       key: pubkey
-
     ## Loop Credentials
     ##
     loopCredentialsExistingSecret:
       ## Secret Name
       name: lnd1-loop-credentials
-
       ## Macaroon Key
       macaroon_key: loop_macaroon_base64
-
       ## TLS Key
       tls_key: tls_base64
-  
   ## Configuration values for establishing connection to LND-2
   ## TODO: This should be injected as ConfigMap from LND Chart
   ##
@@ -417,105 +338,80 @@ galoy:
     ## DNS for LND2
     ##
     dns: lnd2.default.svc.cluster.local
-
     ## Credentials to access LND RPC
     ##
     credentialsExistingSecret:
       ## Secret Name
       name: lnd2-credentials
-
       ## Macaroon Key
       macaroon_key: admin_macaroon_base64
-
       ## TLS Key
       tls_key: tls_base64
-
     ## Pubkey to verify LND RPC
     ##
     pubkeyExistingSecret:
       ## Secret Name
       name: lnd2-pubkey
-
       ## Secret Key
       key: pubkey
-
     ## Loop Credentials
     ##
     loopCredentialsExistingSecret:
       ## Secret Name
       name: lnd2-loop-credentials
-
       ## Macaroon Key
       macaroon_key: loop_macaroon_base64
-
       ## TLS Key
       tls_key: tls_base64
-  
   ## Configuration values for establishing connection to BITCOIND
   ## TODO: This should be injected as ConfigMap from Bitcoin Chart
   ##
   bitcoind:
     ## DNS for bitcoind
     dns: bitcoind.default.svc.cluster.local
-
     ## Port on which bitcoind is running
     port: 8332
-
     ## RPC Password Secret
     ##
     rpcPasswordExistingSecret:
       ## Secret Name
       name: bitcoind-rpcpassword
-
       ## Secret Key
       key: password
-  
   ## Dealer Service Connection details
   ##
   dealer:
     ## Dealer Service Host
     host: dealer-price.default.svc.cluster.local
-
     ## Dealer Service Port
     port: 3325
-  
   ## Geetest Configuration
   ##
   geetestExistingSecret:
     # Secret Name
     name: geetest-key
-
     # Geetest ID Secret Key
     id_key: id
-
     # Geetest Key Secret Key
     secret_key: key
-
   ## JsonWebToken Secret
   ##
   jwtSecretExistingSecret:
     # Secret Name
     name: jwt-secret
-
     # Secret Key
     key: secret
-
   ## Twilio Configuration
   ##
   twilioExistingSecret:
     # Secret Name
     name: twilio-secret
-
     # Phone Number Secret Key
     phone_number_key: TWILIO_PHONE_NUMBER
-
     # Phone Number Secret Key
     account_sid_key: TWILIO_ACCOUNT_SID
-
     # Phone Number Secret Key
     auth_token_key: TWILIO_AUTH_TOKEN
-
-
 # Configuration values for the mongodb dependency.
 # Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
 #
@@ -523,41 +419,34 @@ galoy:
 # Therefore it doesn't have any enable/disable flag.
 #
 mongodb:
-
   # Authentication Configuration
   auth:
     # Existing secret for authentication
     # This secret gets autogenerated if secrets.create is set to true.
     #
     existingSecret: galoy-mongodb
-
     # Username to be used for Galoy
     # Autocreated at MongoDB initialization
     #
     # There should be one and only one username in the array here.
     #
-    usernames: [ testGaloy ]
-
+    usernames: [testGaloy]
     # Database to be used for Galoy
     # Autocreated at MongoDB initialization
     #
     # There should be one and only one database in the array here.
     #
-    databases: [ galoy ]
-  
+    databases: [galoy]
   # Replicaset for no-downtime
   #
   architecture: replicaset
-
   # Replicas for MongoDB
   #
   replicaCount: 3
-
   persistence:
     enabled: true
   arbiter:
     enabled: false
-
   initdbScripts:
     grant_user_admin_role.sh: |
       isMaster=$(mongo admin -u root -p "$MONGODB_ROOT_PASSWORD" --eval "rs.isMaster().ismaster" | tail -1 | tr -d '\n')
@@ -567,7 +456,6 @@ mongodb:
         db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
       EOF
       fi;
-
   # Kube Monkey Labels
   labels:
     kube-monkey/enabled: enabled
@@ -578,7 +466,6 @@ mongodb:
   podLabels:
     kube-monkey/enabled: enabled
     kube-monkey/identifier: mongodb
-
   # Probes
   readinessProbe:
     enabled: false
@@ -594,11 +481,9 @@ mongodb:
     timeoutSeconds: 5
     failureThreshold: 6
     successThreshold: 1
-
   # Prometheus metrics
   metrics:
     enabled: true
-
 ## Configuration values for the redis dependency.
 ## Ref: https://artifacthub.io/packages/helm/bitnami/redis/
 ##
@@ -610,87 +495,69 @@ redis:
   replica:
     # Number of Redis to deploy
     replicaCount: 3
-
   ## Redis master config params
   master:
     persistence:
       enabled: true
-
   ## Redis auth config params
   auth:
     existingSecret: galoy-redis-pw
     existingSecretPasswordKey: redis-password
-
   ## Use sentinel on Redis pods
   sentinel:
     enabled: true
-
     ## Master set name
     masterSet: mymaster
-  
   ## Sidecar prometheus exporter
   metrics:
     enabled: true
-
 ## For managing secrets using Helm
 ## Set the values if you'd want to make it configurable
 ##
 secrets:
-
   ## Create the secret resource from the following values. Set this to false
   ## to manage these secrets outside Helm.
   ##
   create: true
-
   ## Secrets for MongoDB
   mongodbPassword:
   mongodbRootPassword:
   mongodbMetricsPassword:
   mongodbReplicaSetKey:
-
   ## Secrets for PostgreSQL
   postgresPassword:
-
   ## Secrets for Geetest
   geetestId:
   geetestSecretKey:
-
   ## Secret for JWT
   jwtSecret:
-
   ## Secret for Apollo
   apolloId:
   apolloKey:
-
   ## Secret for Twilio
   twilioPhoneNumber:
   twilioAccountSid:
   twilioAuthToken:
-
   ## Bitcoin RPC password
   bitcoindRpcPassword:
-
   ## Secrets for LND1
   lnd1Macaroon:
   lnd1Tls:
   lnd1LoopMacaroon:
   lnd1LoopTls:
   lnd1PubKey:
-
   ## Secrets for LND2
   lnd2Macaroon:
   lnd2Tls:
   lnd2LoopMacaroon:
   lnd2LoopTls:
   lnd2PubKey:
-
 ## Tracing details
 ##
 tracing:
   ## Jaeger Tracing Host
   ##
   jaegerHost: localhost
-
 price:
   host: galoy-price-history
   port: 50052
@@ -698,7 +565,6 @@ price:
     postgresqlHost: galoy-postgresql
     host: galoy-price-history
     port: 50052
-
 postgresql:
   enabled: true
   auth:
