@@ -7,7 +7,7 @@ appVersion: 0.3.1
 dependencies:
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 17.1.5
+    version: 17.1.6
     condition: redis.enabled
   - name: postgresql
     alias: user-trades-pg
