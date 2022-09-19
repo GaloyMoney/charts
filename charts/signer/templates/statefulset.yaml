@@ -45,7 +45,7 @@ spec:
             - --bitcoin.{{ .Values.global.network }}
             - --nolisten
             - --nobootstrap
-            - --rpclisten=10019
+            - --rpclisten=10009
             - --bitcoin.active
             - --bitcoin.node=nochainbackend
             {{- if ne .Values.global.network "regtest" }}
