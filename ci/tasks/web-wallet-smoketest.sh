@@ -11,7 +11,7 @@ port=`setting "web_wallet_port"`
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl web wallet"
-  curl --location ${host}:${port}
+  curl --location -f ${host}:${port}
   status=$?
   curl --location -f ${web_wallet_mobile_host}:${port}
   if [[ $status == 0 ]] && [[ $? == 0 ]]; then success="true"; break; fi;
