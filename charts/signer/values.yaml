@@ -3,19 +3,16 @@
 # Declare variables to be passed into your templates.
 global:
   network: mainnet
-
 image:
   repository: lightninglabs/lnd
   tag: v0.15.1-beta
   pullPolicy: IfNotPresent
-
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
-
 securityContext: {}
   # capabilities:
   #   drop:
@@ -23,37 +20,28 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
-
+terminationGracePeriodSeconds: 600
 resources:
   requests:
     cpu: 100m
     memory: 128Mi
-
 apiService:
   type: ClusterIP
   annotations: {}
   ports:
     rpc: 10009
-
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
-  size: 1Gi
-
+  size: 250Mi
 walletPassword: ""
-
 secrets:
   create: true
-
 rbac:
   create: true
-
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
