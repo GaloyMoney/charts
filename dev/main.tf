@@ -1,4 +1,5 @@
 locals {
+  bitcoin_network          = "regtest"
   name_prefix              = "galoy-dev"
   letsencrypt_issuer_email = "dev@galoy.io"
 }
@@ -17,14 +18,16 @@ module "infra_services" {
 
 module "bitcoin" {
   source = "./bitcoin"
-
-  name_prefix = local.name_prefix
+  
+  bitcoin_network = local.bitcoin_network
+  name_prefix     = local.name_prefix
 }
 
 module "galoy" {
   source = "./galoy"
 
-  name_prefix = local.name_prefix
+  bitcoin_network = local.bitcoin_network
+  name_prefix     = local.name_prefix
 
   depends_on = [
     module.bitcoin

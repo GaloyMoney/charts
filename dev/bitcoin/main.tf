@@ -1,6 +1,8 @@
 variable "name_prefix" {}
+variable "bitcoin_network" {}
 
 locals {
+  bitcoin_network      = var.bitcoin_network
   smoketest_namespace  = "${var.name_prefix}-smoketest"
   bitcoin_namespace    = "${var.name_prefix}-bitcoin"
   bitcoind_rpcpassword = "rpcpassword"
