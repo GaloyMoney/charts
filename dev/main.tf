@@ -8,7 +8,7 @@ locals {
 }
 
 module "infra_services" {
-  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=2a53a2f"
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=86b0906"
 
 }
 
