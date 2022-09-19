@@ -1,0 +1,18 @@
+global:
+  network: regtest
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 256Mi
+
+terminationGracePeriodSeconds: 0
+
+persistence:
+  enabled: false
+
+configmap:
+  customValues:
+  - bitcoin.regtest=true
+  - noseedbackup=1
+  - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local

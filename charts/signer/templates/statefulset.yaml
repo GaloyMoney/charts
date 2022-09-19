@@ -1,0 +1,132 @@
+{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "signer.fullname" . }}
+  labels:
+    {{- include "signer.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: {{ include "signer.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "signer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ $checksum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "signer.selectorLabels" . | nindent 8 }}
+        allow-to-lnd: "true"
+        kube-monkey/identifier: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "signer.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "signer.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - lnd
+          ports:
+            - name: rpc
+              containerPort: {{ .Values.apiService.ports.rpc }}
+          volumeMounts:
+            - name: signer-storage
+              mountPath: /root/.lnd
+            - name: config
+              mountPath: /root/.lnd/lnd.conf
+              subPath: lnd.conf
+            {{- if ne .Values.global.network "regtest" }}
+            - name: signer-password
+              mountPath: /tmp/signer-pass
+              subPath: password
+            {{- end }}
+          startupProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            failureThreshold: 540
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+            initialDelaySeconds: 600
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        {{- if ne .Values.global.network "regtest" }}
+        - name: wallet-init
+          configMap:
+            name: {{ printf "%s-wallet-init" (include "signer.fullname" .) }}
+            defaultMode: 0777
+        {{- end }}
+        - name: export-secrets
+          configMap:
+            name: {{ printf "%s-export-secrets" (include "signer.fullname" .) }}
+            defaultMode: 0777
+        - name: config
+          emptyDir: {}
+        - name: rpcpassword
+          secret:
+            secretName: {{ .Values.bitcoindRpcPassSecretName }}
+        - name: configmap
+          configMap:
+            name: {{ include "signer.fullname" . }}
+        {{- if ne .Values.global.network "regtest" }}
+        - name: signer-password
+          secret:
+            secretName: {{ printf "%s-pass" (include "signer.fullname" .) }}
+        {{- end }}
+        - name: signer-storage
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "signer.fullname" $) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
