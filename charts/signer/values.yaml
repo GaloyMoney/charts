@@ -1,6 +1,8 @@
 # Default values for signer.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  network: mainnet
 
 image:
   repository: lightninglabs/lnd
@@ -10,7 +12,7 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
+podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
@@ -21,14 +23,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-sidecarImage:
-  repository: us.gcr.io/galoy-org/lnd-sidecar
-  digest: "sha256:6da00b05b8e56da6cce315b5043f49c0ae54de5a0004bac63ab721a3790587ab"
-  git_ref: dc770ca
-
-kubemonkey:
-  enabled: false
 
 configmap:
   customValues: []
@@ -44,6 +38,7 @@ resources:
 
 apiService:
   type: ClusterIP
+  annotations: {}
   ports:
     rpc: 10019
 
@@ -67,9 +62,6 @@ signerGeneralConfig:
 
 rbac:
   create: true
-
-autoGenerateSeed:
-  enabled: false
 
 nodeSelector: {}
 

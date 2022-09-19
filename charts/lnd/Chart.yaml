@@ -28,6 +28,3 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 11.1.19
     condition: postgresql.enabled
-  - name: signer
-    version: x.x.x
-    condition: signer.enabled

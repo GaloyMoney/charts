@@ -5,13 +5,7 @@ metadata:
   name: {{ include "signer.fullname" . }}
   labels:
     {{- include "signer.labels" . | nindent 4 }}
-    {{- if .Values.kubemonkey.enabled }}
-    kube-monkey/enabled: enabled
     kube-monkey/identifier: {{ .Release.Name }}
-    kube-monkey/kill-mode: fixed
-    kube-monkey/kill-value: "1"
-    kube-monkey/mtbf: "2"
-    {{- end }}
     {{- if .Values.labels }}
     {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
     {{- end }}
@@ -29,82 +23,27 @@ spec:
       {{- end }}
       labels:
         {{- include "signer.selectorLabels" . | nindent 8 }}
-        allow-to-bitcoind: "true"
-        {{- if .Values.kubemonkey.enabled }}
-        kube-monkey/enabled: enabled
+        allow-to-lnd: "true"
         kube-monkey/identifier: {{ .Release.Name }}
-        {{- end }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ include "signer.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "signer.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
-        {{- if and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled }}
-        - name: init-wallet
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: ['/bin/sh']
-          args:
-          - '-c'
-          - |
-            set -e
-            if lncli -n {{ $.Values.global.network}} state | grep "WAITING_TO_START" ; then
-              exit 0;
-            fi
-            lncli -n {{ $.Values.global.network}} state
-            if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
-              while ! test -f /root/.lnd/tls.cert; do sleep 1; done
-              apk update; apk add expect
-              /home/alpine/walletInit.exp ${NETWORK} $signer_PASS
-            fi
-            # Trap is required otherwise signals are not handled
-            # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
-            trap "echo shutting down; exit 0" SIGKILL SIGTERM
-            while true; do sleep 1; done
-          env:
-          - name: signer_PASS
-            valueFrom:
-              secretKeyRef:
-                name: {{ printf "%s-pass" (include "signer.fullname" .) }}
-                key: password
-          - name: NETWORK
-            valueFrom:
-              secretKeyRef:
-                name: network
-                key: network
-          volumeMounts:
-          - name: wallet-init
-            mountPath: /home/alpine/walletInit.exp
-            subPath: walletInit.exp
-          - name: lnd-storage
-            mountPath: /root/.lnd
-        {{- end }}
-        - name: export-secrets
-          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
-          command: ['/bin/sh']
-          args:
-          - '-c'
-          - |
-            lncli -n=$NETWORK getinfo
-            while [[ $? != 0 ]]; do sleep 1; lncli -n=$NETWORK getinfo; done
-            /home/alpine/exportSecrets.sh
-            trap "echo shutting down; exit 0" SIGKILL SIGTERM
-            while true; do sleep 1; done
-          env:
-          - name: NETWORK
-            valueFrom:
-              secretKeyRef:
-                name: network
-                key: network
-          volumeMounts:
-          - name: export-secrets
-            mountPath: /home/alpine/exportSecrets.sh
-            subPath: exportSecrets.sh
-          - name: signer-storage
-            mountPath: /root/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - lnd
           ports:
             - name: rpc
               containerPort: {{ .Values.apiService.ports.rpc }}
