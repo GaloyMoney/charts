@@ -4,7 +4,7 @@ locals {
 }
 
 module "infra_services" {
-  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=2a53a2f"
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=86b0906"
 
   name_prefix                 = local.name_prefix
   letsencrypt_issuer_email    = local.letsencrypt_issuer_email
