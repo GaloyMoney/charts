@@ -1,4 +1,3 @@
-{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -17,7 +16,6 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ $checksum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -44,15 +42,29 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - lnd
+            - --bitcoin.{{ .Values.global.network }}
+            - --nolisten
+            - --nobootstrap
+            - --rpclisten=10019
+            - --bitcoin.active
+            - --bitcoin.node=nochainbackend
+            {{- if ne .Values.global.network "regtest" }}
+            - --wallet-unlock-password-file=/tmp/signer-pass
+            - --wallet-unlock-allow-create=true
+            {{- end }}
+            {{- if eq .Values.global.network "regtest" }}
+            - --noseedbackup
+            - --tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
+            - --debuglevel=debug
+            {{- end }}
+            - --tlsextradomain={{ include "signer.fullname" . }}
+            - --tlsautorefresh
           ports:
             - name: rpc
               containerPort: {{ .Values.apiService.ports.rpc }}
           volumeMounts:
             - name: signer-storage
               mountPath: /root/.lnd
-            - name: config
-              mountPath: /root/.lnd/lnd.conf
-              subPath: lnd.conf
             {{- if ne .Values.global.network "regtest" }}
             - name: signer-password
               mountPath: /tmp/signer-pass
@@ -88,21 +100,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        {{- if ne .Values.global.network "regtest" }}
-        - name: wallet-init
-          configMap:
-            name: {{ printf "%s-wallet-init" (include "signer.fullname" .) }}
-            defaultMode: 0777
-        {{- end }}
-        - name: export-secrets
-          configMap:
-            name: {{ printf "%s-export-secrets" (include "signer.fullname" .) }}
-            defaultMode: 0777
         - name: config
           emptyDir: {}
-        - name: rpcpassword
-          secret:
-            secretName: {{ .Values.bitcoindRpcPassSecretName }}
         - name: configmap
           configMap:
             name: {{ include "signer.fullname" . }}
