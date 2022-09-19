@@ -2,15 +2,15 @@
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: RoleBinding
 metadata:
-  name: {{ include "lndsigner.fullname" . }}
+  name: {{ include "signer.fullname" . }}
   labels:
-    {{- include "lndsigner.labels" . | nindent 4 }}
+    {{- include "signer.labels" . | nindent 4 }}
 roleRef:
   kind: Role
-  name: {{ include "lndsigner.fullname" . }}
+  name: {{ include "signer.fullname" . }}
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
-    name: {{ include "lndsigner.serviceAccountName" . }}
+    name: {{ include "signer.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 {{- end }}

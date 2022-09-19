@@ -32,6 +32,12 @@ module "bitcoin" {
   ]
 }
 
+module "signer" {
+  source = "./signer"
+
+  name_prefix = local.name_prefix
+}
+
 module "galoy" {
   source = "./galoy"
 
