@@ -25,13 +25,6 @@ spec:
                 name: {{ include "galoyAuth.fullname" $ }}-public
                 port:
                   name: http
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: {{ include "galoyAuth.fullname" $ }}
-                port:
-                  number: {{ $.Values.service.port }}
     {{- end -}}
     {{- end }}
   tls:
