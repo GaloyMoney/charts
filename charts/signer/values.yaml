@@ -37,7 +37,7 @@ apiService:
   type: ClusterIP
   annotations: {}
   ports:
-    rpc: 10019
+    rpc: 10009
 
 persistence:
   enabled: true
