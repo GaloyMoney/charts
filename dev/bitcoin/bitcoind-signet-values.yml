@@ -1,0 +1,18 @@
+global:
+  network: signet
+  service:
+    ports:
+      rpc: 38332
+
+secrets:
+  create: false
+
+persistence:
+  enabled: true
+
+service:
+  type: ClusterIP
+  ports:
+    zmqpubrawtx: 28333
+    zmqpubrawblock: 28332
+    p2p: 38333

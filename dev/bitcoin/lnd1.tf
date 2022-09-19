@@ -18,7 +18,7 @@ resource "helm_release" "lnd" {
   dependency_update = true
   timeout           = 600
   values = [
-    file("${path.module}/lnd-values.yml")
+    file("${path.module}/lnd-${var.bitcoin_network}-values.yml")
   ]
 
   depends_on = [

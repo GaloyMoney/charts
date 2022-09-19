@@ -1,6 +1,8 @@
 variable "name_prefix" {}
+variable "bitcoin_network" {}
 
 locals {
+  bitcoin_network     = var.bitcoin_network
   smoketest_namespace = "${var.name_prefix}-smoketest"
   galoy_namespace     = "${var.name_prefix}-galoy"
   bitcoin_namespace   = "${var.name_prefix}-bitcoin"
@@ -247,7 +249,7 @@ resource "helm_release" "galoy" {
   namespace = kubernetes_namespace.galoy.metadata[0].name
 
   values = [
-    file("${path.module}/galoy-values.yml")
+    file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
   ]
 
   depends_on = [
