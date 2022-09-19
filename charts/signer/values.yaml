@@ -24,9 +24,6 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-configmap:
-  customValues: []
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -51,14 +48,6 @@ walletPassword: ""
 
 secrets:
   create: true
-
-signerGeneralConfig:
- - nolisten=true
- - nobootstrap=true
- - rpclisten=10019
- - bitcoin.active=true
- - bitcoin.node=nochainbackend
-#- bitcoin.mainnet=true
 
 rbac:
   create: true

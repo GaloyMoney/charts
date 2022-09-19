@@ -2,8 +2,13 @@ variable "bitcoin_network" {}
 variable "name_prefix" {}
 
 locals {
-  bitcoin_network = var.bitcoin_network
-  name_prefix     = var.name_prefix
+  bitcoin_network          = var.bitcoin_network
+  name_prefix              = var.name_prefix
+  letsencrypt_issuer_email = "dev@galoy.io"
+}
+
+module "infra_services" {
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=2a53a2f"
 
 }
 
