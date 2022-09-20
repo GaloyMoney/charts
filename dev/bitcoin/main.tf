@@ -17,7 +17,7 @@ resource "kubernetes_namespace" "bitcoin" {
 resource "null_resource" "bitcoind_block_generator" {
 
   provisioner "local-exec" {
-    command     = "./bitcoin/generateBlock.sh"
+    command     = local.bitcoin_network == "regtest" && local.bitcoin_namespace == "galoy-dev-bitcoin" ? "./bitcoin/generateBlock.sh" : "echo Running ${local.bitcoin_network}"
     interpreter = ["sh"]
   }
 
