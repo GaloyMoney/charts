@@ -558,6 +558,9 @@ tracing:
   ## Jaeger Tracing Host
   ##
   jaegerHost: localhost
+  ## Prefix for tracing
+  ##
+  prefix: galoy-staging
 price:
   host: galoy-price-history
   port: 50052

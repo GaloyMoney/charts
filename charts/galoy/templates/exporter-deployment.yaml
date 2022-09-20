@@ -84,7 +84,7 @@ spec:
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
         - name: TRACING_SERVICE_NAME
-          value: {{ template "galoy.exporter.fullname" . }}
+          value: "{{ .Values.tracing.prefix }}-{{ template "galoy.exporter.fullname" . }}"
 
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 8 }}
