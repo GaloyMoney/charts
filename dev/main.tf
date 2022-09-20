@@ -1,6 +1,9 @@
+variable bitcoin_network {}
+variable name_prefix {}
+
 locals {
-  bitcoin_network          = "regtest"
-  name_prefix              = "galoy-dev"
+  bitcoin_network          = var.bitcoin_network
+  name_prefix              = var.name_prefix
   letsencrypt_issuer_email = "dev@galoy.io"
 }
 
