@@ -1,6 +1,3 @@
-image:
-  tag: v0.15.0-beta.rc6
-
 global:
   network: signet
 
@@ -9,10 +6,12 @@ resources:
     cpu: 150m
     memory: 256Mi
 
-terminationGracePeriodSeconds: 0
+terminationGracePeriodSeconds: 60
 
 persistence:
   enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
 
 configmap:
   customValues:
@@ -25,7 +24,8 @@ configmap:
 
 loop:
   enabled: false
-
+loopserver:
+  enabled: false
 lndmon:
   enabled: false
 
