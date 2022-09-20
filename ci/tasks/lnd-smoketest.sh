@@ -10,7 +10,7 @@ lnd_host=`setting "lnd_p2p_endpoint"`
 set +e
 for i in {1..60}; do
   echo "Attempt ${i} to curl lndmon"
-  curl ${lndmon_host}:9092/metrics
+  curl -f ${lndmon_host}:9092/metrics
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
