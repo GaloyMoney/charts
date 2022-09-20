@@ -16,3 +16,9 @@ service:
     zmqpubrawtx: 28333
     zmqpubrawblock: 28332
     p2p: 18444
+
+bitcoindCustomConfig:
+  bind: 0.0.0.0
+  rpcbind: 0.0.0.0
+  rpcallowip: 0.0.0.0/0
+  fallbackfee: 0.0002

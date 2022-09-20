@@ -7,6 +7,12 @@ global:
     ports: 
       rpc: 18443
 
+secrets:
+  create: false
+
+persistence:
+  enabled: false
+
 service:
   type: ClusterIP
   ports:
