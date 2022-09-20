@@ -9,7 +9,7 @@ global:
 
 persistence:
   enabled: true
-  size: 30Gi
+  size: 50Gi
 
 service:
   type: ClusterIP

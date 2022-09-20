@@ -7,6 +7,9 @@ global:
     ports:
       rpc: 38332
 
+secrets:
+  create: false
+
 persistence:
   enabled: true
   size: 2Gi
