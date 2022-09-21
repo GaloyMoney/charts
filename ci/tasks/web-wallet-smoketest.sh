@@ -13,7 +13,9 @@ for i in {1..15}; do
   echo "Attempt ${i} to curl web wallet"
   curl --location -f ${host}:${port}
   status=$?
-  curl --location -f ${web_wallet_mobile_host}:${port}
+  if [[ web_wallet_mobile_host != "" ]]; then curl --location -f ${web_wallet_mobile_host}:${port}
+  else echo "Skipping secondary host - not configured."
+  fi
   if [[ $status == 0 ]] && [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
