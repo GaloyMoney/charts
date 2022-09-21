@@ -42,5 +42,14 @@ deploy-signet:
 all-signet: create-cluster init deploy-signet-services deploy-signet
 
 
+deploy-signet-galoy:
+	cd galoy
+	$(TF) apply -var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+
+delete-signet-galoy:
+	kubectl delete namespace galoy-sig-galoy --force
+
+
 fmt:
 	$(TF) fmt -recursive

@@ -1,40 +1,36 @@
-global:
+galoy:
   network: signet
 
-galoy:
-  test_accounts:
-    - ref: A
-      phone: "+59981730222"
-      code: "111111"
-      needUsdWallet: true
-      role: bankowner
-      username: bankowner
-  apollo:
-    playground: true
+  config:
+    test_accounts:
+      - ref: A
+        phone: "+59981730222"
+        code: "111111"
+        needUsdWallet: true
+        role: bankowner
+        username: bankowner
+    apollo:
+      playground: true
+  
+  bitcoind:
+    dns: bitcoind.galoy-sig-bitcoin.svc.cluster.local
+    port: 38332
 
-apiIngress:
-  name: api-ingress
-  host: localhost
+  lnd1:
+    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
 
-bitcoind:
-  port: 38332
+  lnd2:
+    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
 
-needFirebaseServiceAccount: false
-
-lnd1:
-  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-lnd2:
-  dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-jwtSecret: "my_non_secured_secret"
+  dealer:
+    host: dealer-price.galoy-sig-addons.svc.cluster.local
 
 mongodb:
   architecture: standalone
   volumePermissions:
     enabled: true
   persistence:
-    enabled: false
+    enabled: true
   replicaCount: 1
   metrics:
     enabled: false
@@ -47,21 +43,20 @@ redis:
     replicaCount: 1
   master:
     persistence:
-      enabled: false
+      enabled: true
   metrics:
     enabled: false
-
-mongodbaddress: "galoy-mongodb"
-
-cron: []
-
-twilio: false
 
 price:
   service:
     type: NodePort
+  postgresql:
+    primary:
+      persistence:
+        enabled: true
 
-devDisableMongoBackup: true
+secrets:
+  create: false
 
-dealer_price:
-  host: dealer-price.galoy-dev-addons.svc.cluster.local
+loop:
+  enabled: false

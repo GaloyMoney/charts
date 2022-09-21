@@ -575,3 +575,5 @@ postgresql:
     username: price-history
     database: price-history
     existingSecret: galoy-price-history-postgres-creds
+loop:
+  enabled: true
