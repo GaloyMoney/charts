@@ -27,6 +27,13 @@ deploy:
 all: create-cluster init deploy-services deploy
 
 
+redeploy-galoy:
+	kubectl delete namespace galoy-dev-galoy --force
+	cd galoy
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
+
 deploy-signet-services:
 	$(TF) apply -target module.infra_services.helm_release.cert_manager \
 				-var="bitcoin_network=signet" \
@@ -42,13 +49,11 @@ deploy-signet:
 all-signet: create-cluster init deploy-signet-services deploy-signet
 
 
-deploy-signet-galoy:
+redeploy-signet-galoy:
+	kubectl delete namespace galoy-sig-galoy --force
 	cd galoy
 	$(TF) apply -var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
-
-delete-signet-galoy:
-	kubectl delete namespace galoy-sig-galoy --force
 
 
 fmt:
