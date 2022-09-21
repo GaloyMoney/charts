@@ -1330,6 +1330,16 @@ entries:
       version: 0.1.0
   galoy-pay:
     - apiVersion: v2
+      appVersion: 0.4.8
+      created: "2022-09-21T13:52:57.873545485Z"
+      description: A Helm chart for the admin panel addon to Galoy
+      digest: 9b3ed6a830a6726e271f45509725d48a2349b6501567340c5dabe0497d8821bd
+      name: galoy-pay
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-pay-v0.2.2/galoy-pay-0.2.2.tgz
+      version: 0.2.2
+    - apiVersion: v2
       appVersion: 0.4.7
       created: "2022-09-16T14:54:41.894788568Z"
       description: A Helm chart for the admin panel addon to Galoy
@@ -5915,4 +5925,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-09-21T13:50:27.15283563Z"
+generated: "2022-09-21T13:52:57.873553279Z"
