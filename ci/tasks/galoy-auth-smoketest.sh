@@ -4,13 +4,13 @@ set -eu
 
 source smoketest-settings/helpers.sh
 
-host=`setting "galoy_auth_endpoint"`
-port=`setting "galoy_auth_port"`
+host=`setting "kratos_admin_endpoint"`
+port=`setting "kratos_admin_port"`
 
 set +e
 for i in {1..15}; do
-  echo "Attempt ${i} to curl galoy-auth"
-  curl --location -f ${host}:${port}
+  echo "Attempt ${i} to curl kratos"
+  curl --location -f ${host}:${port}/admin/health/ready
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done

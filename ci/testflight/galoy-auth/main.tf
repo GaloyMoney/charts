@@ -26,8 +26,8 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_auth_endpoint = "auth-backend.${local.testflight_namespace}.svc.cluster.local"
-    galoy_auth_port     = 80
+    kratos_admin_endpoint = "galoy-auth-kratos-admin.${local.testflight_namespace}.svc.cluster.local"
+    kratos_admin_port     = 80
   }
 }
 

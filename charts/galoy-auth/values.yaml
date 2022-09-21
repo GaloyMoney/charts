@@ -1,6 +1,9 @@
+ingress:
+  enabled: false
 kratos:
   kratos:
-    autoMigrate: true
+    automigration:
+      enabled: true
     config:
       identity:
         schemas:
