@@ -1,13 +1,22 @@
 #!/bin/bash
 
+set -eu
+
 source smoketest-settings/helpers.sh
 
 host=`setting "galoy_endpoint"`
 port=`setting "galoy_port"`
 
-curl --location --request POST "${host}:${port}/graphql"\
- --header 'Content-Type: application/json' \
- --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the public galoy API"
+  curl --location -sSf --request POST "${host}:${port}/graphql"\
+   --header 'Content-Type: application/json' \
+   --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
+  if [[ $? == 0 ]]; then success="true"; break; fi;
+  sleep 1
+done
+set -e
 
 if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   echo Testflight failed! - Response:
