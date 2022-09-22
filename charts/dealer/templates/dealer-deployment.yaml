@@ -48,6 +48,8 @@ spec:
           value: {{ .Values.dealer.activeStrategy }}
         - name: ACTIVE_WALLET
           value: {{ .Values.dealer.activeWallet }}
+        - name: HEDGING_DISABLED
+          value: "{{ .Values.dealer.hedgingIsDisabled }}"
         - name: HEDGING_NOT_IN_SIMULATION
           value: "{{ .Values.dealer.hedgingNotInSimulation }}"
         - name: OKEX5_KEY
