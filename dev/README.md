@@ -3,9 +3,8 @@
 Intended as a local environment to test changes to the charts. Not as a dev backend for the mobile app.
 Currently successfully brings up charts - no guarantee that everything is working as in prod, but enough to do some refactorings or stuff like that.
 
-## How To run 
+## Dependencies
 
-dependencies:
 - k3d
 - terraform
 - kubectl
@@ -22,10 +21,33 @@ make deploy
 ```
 
 ### Test
+
+#### Public endpoint
+
+Forward the galoy API port:
+
+```
+k -n galoy-dev-galoy port-forward $(k get pods -A|grep api|awk '{print $2}'|head -1) 8080:4002
+```
+In an other terminal:
+
+```
+host=localhost
+port=8080
+curl --location -sSf --request POST "${host}:${port}/graphql"\
+ --header 'Content-Type: application/json' \
+ --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}'
+
+{"data":{"btcPrice":{"base":19171500000,"currencyUnit":"USDCENT","formattedAmount":"0.019171499999999998","offset":12}}}
+```
+
+#### Authenticated endpoint
+
+Forward the nginx port:
 ```
 kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:80
 ```
-In other terminal:
+In an other terminal:
 ```
 $ curl 'localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
 
@@ -47,6 +69,29 @@ make deploy-signet
 ```
 
 ### Test
+
+#### Public endpoint
+
+Forward the api port:
+
+```
+k -n galoy-sig-galoy port-forward $(k get pods -A|grep api|awk '{print $2}'|head -1) 8080:4002
+```
+In an other terminal:
+
+```
+host=localhost
+port=8080
+curl --location -sSf --request POST "${host}:${port}/graphql"\
+ --header 'Content-Type: application/json' \
+ --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}'
+
+{"data":{"btcPrice":{"base":19171500000,"currencyUnit":"USDCENT","formattedAmount":"0.019171499999999998","offset":12}}}
+```
+
+#### Authenticated endpoint
+
+Forward the nginx port:
 ```
 kubectl -n galoy-sig-ingress port-forward svc/ingress-nginx-controller 38080:80
 ```
