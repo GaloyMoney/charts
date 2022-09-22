@@ -520,10 +520,10 @@ secrets:
   ##
   create: true
   ## Secrets for MongoDB
-  mongodbPassword: pw
-  mongodbRootPassword: pw
-  mongodbMetricsPassword: pw
-  mongodbReplicaSetKey: pw
+  mongodbPassword:
+  mongodbRootPassword:
+  mongodbMetricsPassword:
+  mongodbReplicaSetKey:
   ## Secrets for Redis
   redisPassword:
   ## Secrets for PostgreSQL
