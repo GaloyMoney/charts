@@ -25,6 +25,7 @@ if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   exit 1
 fi
 
+set +e
 if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
   export KUBECONFIG=$(pwd)/kubeconfig.json
@@ -53,6 +54,7 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   fi
   kubectl -n ${namespace} delete job "${job_name}"
 fi
+set -e
 
 # The following health.proto file has been copied from
 # https://github.com/GaloyMoney/price/blob/main/history/src/servers/protos/health.proto
