@@ -1,0 +1,19 @@
+name: automerge
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  helm-dep-sync-check:
+    name: Check if Chart.lock out of sync with Chart.yaml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: update helm dependencies
+        run: cd charts && ls -d */ | xargs -I {} bash -c "cd '{}' && helm dependency update"
+      - name: check git status
+        run: |
+          if [[ -n $(git status -s) ]]; then
+            echo "Helm found Chart.lock out of date issues from Chart.yaml"
+            exit 1
+          fi
