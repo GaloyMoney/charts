@@ -524,10 +524,8 @@ secrets:
   mongodbRootPassword:
   mongodbMetricsPassword:
   mongodbReplicaSetKey:
-
   ## Secrets for Redis
   redisPassword:
-
   ## Secrets for PostgreSQL
   postgresPassword:
   ## Secrets for Geetest
