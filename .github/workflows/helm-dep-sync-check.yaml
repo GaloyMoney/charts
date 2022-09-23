@@ -1,4 +1,4 @@
-name: automerge
+name: helm-dep-sync-check
 on:
   pull_request:
     branches: [main]
