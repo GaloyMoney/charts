@@ -35,6 +35,22 @@ spec:
         - name: "config"
           mountPath: "/stablesats.yml"
           subPath: "stablesats.yml"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 5
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          failureThreshold: 5
+          successThreshold: 2
+          timeoutSeconds: 2
         env:
         - name: CRASH_REPORT_CONFIG
           value: '{{ .Values.stablesats.crash_report_config_danger }}'
