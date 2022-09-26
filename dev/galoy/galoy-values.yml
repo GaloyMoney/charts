@@ -25,6 +25,11 @@ galoy:
   dealer:
     host: dealer-price.galoy-dev-addons.svc.cluster.local
 
+  api:
+    ingress:
+      enabled: true
+      host: localhost
+
 mongodb:
   architecture: standalone
   volumePermissions:
