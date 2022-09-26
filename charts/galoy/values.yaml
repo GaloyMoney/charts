@@ -579,3 +579,7 @@ postgresql:
     existingSecret: galoy-price-history-postgres-creds
 loop:
   enabled: true
+
+oathkeeper:
+  maester:
+    enabled: false
