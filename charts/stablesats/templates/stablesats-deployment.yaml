@@ -39,15 +39,15 @@ spec:
           httpGet:
             path: /healthz
             port: 8080
-          periodSeconds: 1
+          periodSeconds: 2
           failureThreshold: 30
           timeoutSeconds: 1
         livenessProbe:
           httpGet:
             path: /healthz
             port: 8080
-          periodSeconds: 2
-          failureThreshold: 10
+          periodSeconds: 5
+          failureThreshold: 5
           timeoutSeconds: 1
         env:
         - name: CRASH_REPORT_CONFIG
