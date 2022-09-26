@@ -37,7 +37,10 @@ port=8080
 curl --location -sSf --request POST "${host}:${port}/graphql"\
  --header 'Content-Type: application/json' \
  --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}'
+```
 
+Expected output:
+```
 {"data":{"btcPrice":{"base":19171500000,"currencyUnit":"USDCENT","formattedAmount":"0.019171499999999998","offset":12}}}
 ```
 
@@ -45,12 +48,15 @@ curl --location -sSf --request POST "${host}:${port}/graphql"\
 
 Forward the nginx port:
 ```
-kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:80
+kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:443
 ```
 In an other terminal:
 ```
-$ curl 'localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+$ curl -k 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+```
 
+Expected output:
+```
 {"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MTc2YmQ2NmQ0MmFkYWIzNjM2MmEyY2QiLCJuZXR3b3JrIjoibWFpbm5ldCIsImlhdCI6MTYzNTE3MTY4Nn0.n-p5sA9meAmZrVOdngYr216jG3LKOFsFdJmVw6XND3A"}}}
 ```
 
@@ -85,7 +91,10 @@ port=8080
 curl --location -sSf --request POST "${host}:${port}/graphql"\
  --header 'Content-Type: application/json' \
  --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}'
+```
 
+Expected output:
+```
 {"data":{"btcPrice":{"base":19171500000,"currencyUnit":"USDCENT","formattedAmount":"0.019171499999999998","offset":12}}}
 ```
 
@@ -96,9 +105,12 @@ Forward the nginx port:
 kubectl -n galoy-sig-ingress port-forward svc/ingress-nginx-controller 38080:80
 ```
 
-In other terminal:
+In an other terminal:
 ```
-curl 'localhost:38080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+curl -k 'https://llocalhost:38080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+```
 
+Expected output:
+```
 {"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MTc2YmQ2NmQ0MmFkYWIzNjM2MmEyY2QiLCJuZXR3b3JrIjoibWFpbm5ldCIsImlhdCI6MTYzNTE3MTY4Nn0.n-p5sA9meAmZrVOdngYr216jG3LKOFsFdJmVw6XND3A"}}}
 ```
