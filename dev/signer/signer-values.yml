@@ -1,0 +1,7 @@
+global:
+  network: regtest
+
+terminationGracePeriodSeconds: 0
+
+persistence:
+  enabled: false
