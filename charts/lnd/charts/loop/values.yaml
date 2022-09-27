@@ -30,7 +30,9 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 8081
+  port:
+    rest: 8081
+    grpc: 11010 
 
 resources:
   limits:
