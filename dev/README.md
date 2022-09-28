@@ -48,11 +48,11 @@ Expected result:
 
 Forward the nginx port:
 ```
-kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:80
+kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:443
 ```
 In an other terminal:
 ```
-$ curl 'localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+curl -k 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
 ```
 
 Expected result:
@@ -102,12 +102,12 @@ Expected result:
 
 Forward the nginx port:
 ```
-kubectl -n galoy-sig-ingress port-forward svc/ingress-nginx-controller 38080:80
+kubectl -n galoy-sig-ingress port-forward svc/ingress-nginx-controller 38080:443
 ```
 
 In other terminal:
 ```
-curl 'localhost:38080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+curl -k 'https://localhost:38080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
 ```
 
 Expected result:
