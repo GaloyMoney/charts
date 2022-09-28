@@ -37,14 +37,21 @@ spec:
           subPath: "stablesats.yml"
         startupProbe:
           httpGet:
-            path: /healthz
+            path: /health/startup
             port: 8080
           periodSeconds: 2
           failureThreshold: 30
           timeoutSeconds: 1
         livenessProbe:
           httpGet:
-            path: /healthz
+            path: /health/live
+            port: 8080
+          periodSeconds: 5
+          failureThreshold: 5
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /health/ready
             port: 8080
           periodSeconds: 5
           failureThreshold: 5
