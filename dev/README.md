@@ -38,7 +38,6 @@ Expected result:
 
 Currently incomplete functionality - but depending on what you want to hack on it'll work.
 
-
 ## Signet
 
 run in the `dev` folder:
@@ -57,7 +56,7 @@ Forward the nginx port:
 kubectl -n galoy-sig-ingress port-forward svc/ingress-nginx-controller 38080:443
 ```
 
-In other terminal:
+In an other terminal:
 ```
 curl -k 'https://localhost:38080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
 ```
