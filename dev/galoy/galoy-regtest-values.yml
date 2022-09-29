@@ -6,9 +6,10 @@ galoy:
       - ref: A
         phone: "+59981730222"
         code: "111111"
+        role: "bankowner"
+        username: "bankowner"
+        ref: "bankowner"
         needUsdWallet: true
-        role: bankowner
-        username: bankowner
     apollo:
       playground: true
   

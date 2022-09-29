@@ -1,13 +1,22 @@
 #!/bin/bash
 
+set -eu
+
 source smoketest-settings/helpers.sh
 
 host=`setting "galoy_endpoint"`
 port=`setting "galoy_port"`
 
-curl --location --request POST "${host}:${port}/graphql"\
- --header 'Content-Type: application/json' \
- --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the public galoy API"
+  curl --location -sSf --request POST "${host}:${port}/graphql"\
+   --header 'Content-Type: application/json' \
+   --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
+  if [[ $? == 0 ]]; then success="true"; break; fi;
+  sleep 1
+done
+set -e
 
 if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   echo Testflight failed! - Response:
@@ -16,6 +25,7 @@ if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   exit 1
 fi
 
+set +e
 if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
   export KUBECONFIG=$(pwd)/kubeconfig.json
@@ -44,6 +54,7 @@ if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   fi
   kubectl -n ${namespace} delete job "${job_name}"
 fi
+set -e
 
 # The following health.proto file has been copied from
 # https://github.com/GaloyMoney/price/blob/main/history/src/servers/protos/health.proto
