@@ -22,31 +22,7 @@ make deploy
 
 ### Test
 
-#### Public endpoint
-
 Forward the galoy API port:
-
-```
-k -n galoy-dev-galoy port-forward $(k get pods -A|grep api|awk '{print $2}'|head -1) 8080:4002
-```
-In an other terminal:
-
-```
-host=localhost
-port=8080
-curl --location -sSf --request POST "${host}:${port}/graphql"\
- --header 'Content-Type: application/json' \
- --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}'
-```
-
-Expected result:
-```
-{"data":{"btcPrice":{"base":19171500000,"currencyUnit":"USDCENT","formattedAmount":"0.019171499999999998","offset":12}}}
-```
-
-#### Authenticated endpoint
-
-Forward the nginx port:
 ```
 kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:443
 ```
@@ -57,10 +33,10 @@ curl -k 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 
 
 Expected result:
 ```
-{"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MTc2YmQ2NmQ0MmFkYWIzNjM2MmEyY2QiLCJuZXR3b3JrIjoibWFpbm5ldCIsImlhdCI6MTYzNTE3MTY4Nn0.n-p5sA9meAmZrVOdngYr216jG3LKOFsFdJmVw6XND3A"}}}
+{"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MzM1NDA5MTgzZmZmNTFiYWUyMjE1OWQiLCJuZXR3b3JrIjoicmVndGVzdCIsImlhdCI6MTY2NDQzNDMyMX0.Dc6M49I6TQfqS0ZlmIMrwu71GdCcDDzwZsyTb-EVyMk"}}}
 ```
 
-Currently incomplete functionality - but depending on what you want to hack on it'll work
+Currently incomplete functionality - but depending on what you want to hack on it'll work.
 
 
 ## Signet
@@ -75,30 +51,6 @@ make deploy-signet
 ```
 
 ### Test
-
-#### Public endpoint
-
-Forward the api port:
-
-```
-k -n galoy-sig-galoy port-forward $(k get pods -A|grep api|awk '{print $2}'|head -1) 8080:4002
-```
-In an other terminal:
-
-```
-host=localhost
-port=8080
-curl --location -sSf --request POST "${host}:${port}/graphql"\
- --header 'Content-Type: application/json' \
- --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}'
-```
-
-Expected result:
-```
-{"data":{"btcPrice":{"base":19171500000,"currencyUnit":"USDCENT","formattedAmount":"0.019171499999999998","offset":12}}}
-```
-
-#### Authenticated endpoint
 
 Forward the nginx port:
 ```
