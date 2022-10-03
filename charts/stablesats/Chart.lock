@@ -4,9 +4,9 @@ dependencies:
   version: 17.2.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.9.5
+  version: 11.9.6
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.9.5
-digest: sha256:0d4d5427da5e9b51788b9074da0963ce6d68f69258911c8e8c5d10ec48a7caf5
-generated: "2022-09-30T14:13:31.858913635Z"
+  version: 11.9.6
+digest: sha256:52470e0348e2354d8ff18f6614be63c81e38064e1232ca1957218a42cabdd00c
+generated: "2022-10-03T08:08:24.736208423Z"
