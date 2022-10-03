@@ -24,15 +24,13 @@ module "bitcoin" {
   
   bitcoin_network = local.bitcoin_network
   name_prefix     = local.name_prefix
-<<<<<<< HEAD
 }
 
 module "signer" {
   source = "./signer"
 
   name_prefix = local.name_prefix
-=======
->>>>>>> dev-signet
+
 }
 
 module "galoy" {
