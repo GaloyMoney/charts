@@ -6178,6 +6178,31 @@ entries:
       version: 0.1.0
   stablesats:
     - apiVersion: v2
+      appVersion: 0.3.8
+      created: "2022-10-03T05:17:44.357340032Z"
+      dependencies:
+        - condition: redis.enabled
+          name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 17.2.0
+        - alias: user-trades-pg
+          condition: user-trades-pg.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.5
+        - alias: hedging-pg
+          condition: hedging-pg.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.5
+      description: A Helm chart for Kubernetes
+      digest: 85bd406d0fa77e2263b73f351884e543be7fbd6b8c3a48cd3e283e9387ee9edf
+      name: stablesats
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.3.9/stablesats-0.3.9.tgz
+      version: 0.3.9
+    - apiVersion: v2
       appVersion: 0.3.7
       created: "2022-09-28T19:15:40.59302573Z"
       dependencies:
@@ -6472,4 +6497,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-10-03T04:30:41.243789515Z"
+generated: "2022-10-03T05:17:44.357362739Z"
