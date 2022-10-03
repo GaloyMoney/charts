@@ -1,6 +1,8 @@
 variable "name_prefix" {}
+variable "bitcoin_network" {}
 
 locals {
+  bitcoin_network      = var.bitcoin_network
   smoketest_namespace  = "${var.name_prefix}-smoketest"
   bitcoin_namespace    = "${var.name_prefix}-bitcoin"
   bitcoind_rpcpassword = "rpcpassword"
@@ -15,8 +17,8 @@ resource "kubernetes_namespace" "bitcoin" {
 resource "null_resource" "bitcoind_block_generator" {
 
   provisioner "local-exec" {
-    command     = "./bitcoin/generateBlock.sh"
-    interpreter = ["sh"]
+    command     = local.bitcoin_network == "regtest" && local.bitcoin_namespace == "galoy-dev-bitcoin" ? "./bitcoin/generateBlock.sh" : "echo Running ${local.bitcoin_network}"
+    interpreter = ["sh","-c"]
   }
 
   depends_on = [helm_release.bitcoind]

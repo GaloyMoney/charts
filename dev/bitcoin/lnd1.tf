@@ -16,9 +16,9 @@ resource "helm_release" "lnd" {
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
   dependency_update = true
-  timeout           = 600
+  timeout           = local.bitcoin_network == "regtest" ? 900 : 9000
   values = [
-    file("${path.module}/lnd-values.yml")
+    file("${path.module}/lnd-${var.bitcoin_network}-values.yml")
   ]
 
   depends_on = [

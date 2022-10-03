@@ -2,7 +2,9 @@ TF:=terraform
 REPO:=$(shell git rev-parse --show-toplevel)
 
 create-cluster:
-	k3d cluster create --image rancher/k3s:v1.22.13-k3s1 -v "$(REPO):/charts" --k3s-arg "--disable=traefik@server:0" --k3s-arg "--disable=servicelb@server:0"
+	k3d cluster create --image rancher/k3s:v1.22.13-k3s1 -v "$(REPO):/charts" \
+					   --k3s-arg "--disable=traefik@server:0" \
+					   --k3s-arg "--disable=servicelb@server:0"
 
 delete-cluster:
 	k3d cluster delete && rm terraform.tfstate
@@ -11,13 +13,52 @@ init:
 	terraform init
 
 deploy-services:
-	$(TF) apply -target module.infra_services.helm_release.cert_manager -auto-approve
-	$(TF) apply -target module.infra_services -auto-approve
+	$(TF) apply -target module.infra_services.helm_release.cert_manager \
+				-var="bitcoin_network=regtest"	\
+				-var="name_prefix=galoy-dev" -auto-approve
+	$(TF) apply -target module.infra_services \
+				-var="bitcoin_network=regtest" 	\
+				-var="name_prefix=galoy-dev"  -auto-approve
 
 deploy:
-	$(TF) apply -auto-approve
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
+all: create-cluster init deploy-services deploy
+
+
+redeploy-galoy:
+	kubectl delete namespace galoy-dev-galoy --force
+	cd galoy
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
+
+deploy-signet-services:
+	$(TF) apply -target module.infra_services.helm_release.cert_manager \
+				-var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+	$(TF) apply -target module.infra_services \
+				-var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+
+deploy-signet:
+	$(TF) apply -var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+
+all-signet: create-cluster init deploy-signet-services deploy-signet
+
+
+redeploy-signet-galoy:
+	kubectl delete namespace galoy-sig-galoy --force
+	cd galoy
+	$(TF) apply -var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+
+redeploy-signet-addons:
+	kubectl delete namespace galoy-sig-addons --force
+	cd addons
+	$(TF) apply -var="name_prefix=galoy-sig" -auto-approve
 
 fmt:
 	$(TF) fmt -recursive
-
-all: create-cluster init deploy-services deploy

@@ -1,0 +1,68 @@
+galoy:
+  network: signet
+
+  config:
+    test_accounts:
+      - ref: A
+        phone: "+59981730222"
+        code: "111111"
+        role: "bankowner"
+        username: "bankowner"
+        ref: "bankowner"
+        needUsdWallet: true
+    apollo:
+      playground: true
+  
+  bitcoind:
+    dns: bitcoind.galoy-sig-bitcoin.svc.cluster.local
+    port: 38332
+
+  lnd1:
+    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
+
+  lnd2:
+    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
+
+  dealer:
+    host: dealer-price.galoy-sig-addons.svc.cluster.local
+
+  api:
+    ingress:
+      enabled: true
+      host: localhost
+
+mongodb:
+  architecture: standalone
+  volumePermissions:
+    enabled: true
+  persistence:
+    enabled: true
+  replicaCount: 1
+  metrics:
+    enabled: false
+  initDbScripts: {}
+
+redis:
+  volumePermissions:
+    enabled: true
+  replica:
+    replicaCount: 1
+  master:
+    persistence:
+      enabled: true
+  metrics:
+    enabled: false
+
+price:
+  service:
+    type: NodePort
+  postgresql:
+    primary:
+      persistence:
+        enabled: true
+
+secrets:
+  create: false
+
+loop:
+  enabled: false

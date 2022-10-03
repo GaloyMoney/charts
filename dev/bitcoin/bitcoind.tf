@@ -15,7 +15,7 @@ resource "helm_release" "bitcoind" {
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
   values = [
-    file("${path.module}/bitcoind-values.yml")
+    file("${path.module}/bitcoind-${var.bitcoin_network}-values.yml")
   ]
 
   depends_on = [
