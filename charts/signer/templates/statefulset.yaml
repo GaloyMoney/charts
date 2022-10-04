@@ -50,7 +50,7 @@ spec:
             - --bitcoin.node=nochainbackend
             {{- if ne .Values.global.network "regtest" }}
             - --wallet-unlock-password-file=/tmp/signer-pass
-            - --wallet-unlock-allow-create=true
+            - --wallet-unlock-allow-create
             {{- end }}
             {{- if eq .Values.global.network "regtest" }}
             - --noseedbackup

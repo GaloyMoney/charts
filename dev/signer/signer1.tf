@@ -6,6 +6,6 @@ resource "helm_release" "signer" {
   dependency_update = true
   timeout           = 300
   values = [
-    file("${path.module}/signer-values.yml")
+    file("${path.module}/signer-${var.bitcoin_network}-values.yml")
   ]
 }

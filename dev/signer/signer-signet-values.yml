@@ -1,0 +1,9 @@
+global:
+  network: signet
+
+terminationGracePeriodSeconds: 60
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 250Mi
