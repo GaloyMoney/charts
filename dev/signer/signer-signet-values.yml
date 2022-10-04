@@ -7,3 +7,6 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 250Mi
+
+autoGenerateSeed:
+  enabled: true

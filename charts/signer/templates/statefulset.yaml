@@ -1,10 +1,17 @@
+{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "signer.fullname" . }}
   labels:
     {{- include "signer.labels" . | nindent 4 }}
+    {{- if .Values.kubemonkey.enabled }}
+    kube-monkey/enabled: enabled
     kube-monkey/identifier: {{ .Release.Name }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "2"
+    {{- end }}
     {{- if .Values.labels }}
     {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
     {{- end }}
@@ -16,55 +23,103 @@ spec:
   template:
     metadata:
       annotations:
+      annotations:
+        checksum/config: {{ $checksum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "signer.selectorLabels" . | nindent 8 }}
         allow-to-lnd: "true"
+        {{- if .Values.kubemonkey.enabled }}
+        kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ .Release.Name }}
+        {{- end }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ include "signer.serviceAccountName" . }}
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      serviceAccountName: {{ include "signer.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      initContainers:
+        - name: copy-signer-config
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            cat <<EOF > /root/.lnd/lnd.conf
+            $(cat /configmap/lnd.conf)
+            EOF
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /root/.lnd/
       containers:
+        {{- if and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled }}
+        - name: init-wallet
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            set -e
+            if lncli -n {{ $.Values.global.network}} state | grep "WAITING_TO_START" ; then
+              exit 0;
+            fi
+            lncli -n {{ $.Values.global.network}} state
+            if [ ! -f /root/.lnd/data/chain/bitcoin/{{ $.Values.global.network}}/admin.macaroon ]; then
+              while ! test -f /root/.lnd/tls.cert; do sleep 1; done
+              apk update; apk add expect
+              /home/alpine/walletInit.exp {{ $.Values.global.network}} $LND_PASS
+            fi
+            # Trap is required otherwise signals are not handled
+            # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
+          env:
+          - name: LND_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-pass" (include "signer.fullname" .) }}
+                key: password
+          volumeMounts:
+          - name: wallet-init
+            mountPath: /home/alpine/walletInit.exp
+            subPath: walletInit.exp
+          - name: lnd-storage
+            mountPath: /root/.lnd
+        {{- end }}
+        - name: export-secrets
+          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            lncli -n={{ $.Values.global.network}} getinfo
+            while [[ $? != 0 ]]; do sleep 1; lncli -n={{ $.Values.global.network}} getinfo; done
+            /home/alpine/exportSecrets.sh
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
+          volumeMounts:
+          - name: export-secrets
+            mountPath: /home/alpine/exportSecrets.sh
+            subPath: exportSecrets.sh
+          - name: signer-storage
+            mountPath: /root/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            - lnd
-            - --bitcoin.{{ .Values.global.network }}
-            - --nolisten
-            - --nobootstrap
-            - --rpclisten=10009
-            - --bitcoin.active
-            - --bitcoin.node=nochainbackend
-            {{- if ne .Values.global.network "regtest" }}
-            - --wallet-unlock-password-file=/tmp/signer-pass
-            - --wallet-unlock-allow-create
-            {{- end }}
-            {{- if eq .Values.global.network "regtest" }}
-            - --noseedbackup
-            - --tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
-            - --debuglevel=debug
-            {{- end }}
-            - --tlsextradomain={{ include "signer.fullname" . }}
-            - --tlsautorefresh
           ports:
             - name: rpc
               containerPort: {{ .Values.apiService.ports.rpc }}
           volumeMounts:
             - name: signer-storage
               mountPath: /root/.lnd
+            - name: config
+              mountPath: /root/.lnd/lnd.conf
+              subPath: lnd.conf
             {{- if ne .Values.global.network "regtest" }}
             - name: signer-password
               mountPath: /tmp/signer-pass
@@ -100,6 +155,16 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
+        {{- if ne .Values.global.network "regtest" }}
+        - name: wallet-init
+          configMap:
+            name: {{ printf "%s-wallet-init" (include "signer.fullname" .) }}
+            defaultMode: 0777
+        {{- end }}
+        - name: export-secrets
+          configMap:
+            name: {{ printf "%s-export-secrets" (include "signer.fullname" .) }}
+            defaultMode: 0777
         - name: config
           emptyDir: {}
         - name: configmap
