@@ -17,6 +17,7 @@ metadata:
     nginx.ingress.kubernetes.io/limit-rpm: "60"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
     nginx.ingress.kubernetes.io/limit-connections: "40"
+    nginx.org/websocket-services: {{ template "galoy.api.fullname" . }}
 
 spec:
   tls:
