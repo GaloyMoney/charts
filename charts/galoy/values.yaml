@@ -579,3 +579,50 @@ postgresql:
     existingSecret: galoy-price-history-postgres-creds
 loop:
   enabled: true
+oathkeeper:
+  oathkeeper:
+    config:
+      log:
+        level: debug
+      authenticators:
+        noop:
+          enabled: true
+      authorizers:
+        allow:
+          enabled: true
+      mutators:
+        noop:
+          enabled: true
+      access_rules:
+        matching_strategy: regexp
+    accessRules: |
+      [
+        {
+          "id": "public-backend",
+          "upstream": {
+            "url": "http://backend:8000"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(.*)>",
+            "methods": [
+              "GET",
+              "POST"
+            ]
+          },
+          "authenticators": [
+            {
+              "handler": "noop"
+            }
+          ],
+          "authorizer": {
+            "handler": "allow"
+          },
+          "mutators": [
+            {
+              "handler": "noop"
+            }
+          ]
+        }
+      ]
+  maester:
+    enabled: false
