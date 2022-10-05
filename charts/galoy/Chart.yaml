@@ -31,6 +31,3 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 11.1.9
     condition: postgresql.enabled
-  - name: oathkeeper
-    repository: https://k8s.ory.sh/helm/charts
-    version: 0.25.4
