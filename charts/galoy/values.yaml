@@ -606,7 +606,8 @@ oathkeeper:
             "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(.*)>",
             "methods": [
               "GET",
-              "POST"
+              "POST",
+              "OPTIONS"
             ]
           },
           "authenticators": [
