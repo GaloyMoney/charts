@@ -243,6 +243,21 @@ resource "kubernetes_secret" "lnd1_loop_credentials" {
   data = data.kubernetes_secret.lnd1_loop_credentials.data
 }
 
+resource "jose_keyset" "oathkeeper" {}
+
+resource "kubernetes_secret" "oathkeeper" {
+  metadata {
+    name      = "galoy-oathkeeper"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "mutator.id_token.jwks.json" = jsonencode({
+      keys = [ jsondecode(jose_keyset.oathkeeper.private_key) ]
+    })
+  }
+}
+
 resource "helm_release" "galoy" {
   name      = "galoy"
   chart     = "${path.module}/../../charts/galoy"
@@ -289,5 +304,14 @@ resource "kubernetes_secret" "smoketest" {
     galoy_port             = 4002
     price_history_endpoint = "galoy-price-history.${local.galoy_namespace}.svc.cluster.local"
     price_history_port     = 50052
+  }
+}
+
+terraform {
+  required_providers {
+    jose = {
+      source = "bluemill/jose"
+      version = "1.0.0"
+    }
   }
 }

@@ -280,6 +280,21 @@ resource "kubernetes_secret" "redis_password" {
   }
 }
 
+resource "jose_keyset" "oathkeeper" {}
+
+resource "kubernetes_secret" "oathkeeper" {
+  metadata {
+    name      = "galoy-oathkeeper"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "mutator.id_token.jwks.json" = jsonencode({
+      keys = [ jsondecode(jose_keyset.oathkeeper.private_key) ]
+    })
+  }
+}
+
 resource "helm_release" "galoy" {
   name       = "galoy"
   chart      = "${path.module}/chart"
@@ -331,5 +346,14 @@ provider "helm" {
     host                   = "https://${data.google_container_cluster.primary.private_cluster_config.0.private_endpoint}"
     token                  = data.google_client_config.default.access_token
     cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
+  }
+}
+
+terraform {
+  required_providers {
+    jose = {
+      source = "bluemill/jose"
+      version = "1.0.0"
+    }
   }
 }

@@ -69,5 +69,9 @@ redis:
     existingSecret: "galoy-redis"
     existingSecretPasswordKey: "redis-password"
 
+oathkeeper:
+  secret:
+    enabled: false
+
 secrets:
   create: false
