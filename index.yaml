@@ -6066,6 +6066,16 @@ entries:
       version: 0.1.0
   web-wallet:
     - apiVersion: v2
+      appVersion: 0.2.51
+      created: "2022-10-07T09:29:27.920760635Z"
+      description: A Helm chart for the web wallet addon to Galoy
+      digest: 47c51f644983dfadf82bf3f0934f99711e4b5f7464b890c41e007106345b242c
+      name: web-wallet
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.1.36/web-wallet-0.1.36.tgz
+      version: 0.1.36
+    - apiVersion: v2
       appVersion: 0.2.50
       created: "2022-09-30T18:11:49.403714348Z"
       description: A Helm chart for the web wallet addon to Galoy
@@ -6771,4 +6781,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-10-07T07:54:09.584692718Z"
+generated: "2022-10-07T09:29:27.920775962Z"
