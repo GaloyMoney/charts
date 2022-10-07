@@ -25,7 +25,7 @@ jobs:
       - name: Deploy Charts in Dev
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 10 # useless because only retry when error (required field)
+          timeout_minutes: 30
           retry_on: error
           max_attempts: 3
           command: pushd dev && source ./.envrc && make deploy
