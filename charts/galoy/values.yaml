@@ -584,6 +584,7 @@ loop:
   enabled: true
 oathkeeper:
   oathkeeper:
+    replicaCount: 2
     config:
       log:
         level: debug
