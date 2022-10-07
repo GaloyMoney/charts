@@ -583,8 +583,8 @@ postgresql:
 loop:
   enabled: true
 oathkeeper:
+  replicaCount: 2
   oathkeeper:
-    replicaCount: 2
     config:
       log:
         level: debug
