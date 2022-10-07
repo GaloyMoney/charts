@@ -15,6 +15,8 @@ locals {
   smoketest_kubeconfig = var.smoketest_kubeconfig
   backups_sa_creds     = var.testflight_backups_creds
 
+  testflight_api_host = "${var.testflight_namespace}.staging.galoy.io"
+
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
@@ -244,8 +246,8 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_endpoint         = "api.${local.testflight_namespace}.svc.cluster.local"
-    galoy_port             = 4002
+    galoy_endpoint         = local.testflight_api_host
+    galoy_port             = 80
     price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
     price_history_port     = 50052
   }
@@ -302,7 +304,10 @@ resource "helm_release" "galoy" {
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    file("${path.module}/testflight-values.yml")
+    templatefile("${path.module}/testflight-values.yml",
+    {
+      api_host : testflight_api_host
+    })
   ]
 
   depends_on = [

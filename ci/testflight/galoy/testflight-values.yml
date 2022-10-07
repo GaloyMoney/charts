@@ -1,5 +1,9 @@
 galoy:
   network: testnet
+  api:
+    ingress:
+      enabled: true
+      host: ${api_host}
 
   trigger:
     backups:
