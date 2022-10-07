@@ -10,9 +10,9 @@ dependencies:
   version: 2.0.3
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.1.9
+  version: 11.9.7
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
   version: 0.25.4
-digest: sha256:bce0fc09b8abf500caaa71d07bf54e84a70f838883e5fbff7d397c515f4a0a94
-generated: "2022-10-04T15:09:59.521236+02:00"
+digest: sha256:199be816c3b510baade9d7cffbb5600507f1aa63caa35f8db65f5669d244633b
+generated: "2022-10-07T07:40:04.664169251Z"
