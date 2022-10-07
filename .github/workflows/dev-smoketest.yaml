@@ -17,12 +17,18 @@ jobs:
             -v "$(pwd):/charts"
             --k3s-arg --disable=traefik@server:0
             --k3s-arg --disable=servicelb@server:0
-      - name: Run the Charts in Dev Mode
+      - name: Deploy Infra over K3D in Dev Mode
         run: |
           pushd dev && source ./.envrc
           make init
           make deploy-services
-          make deploy
+      - name: Deploy Charts in Dev
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10 # useless because only retry when error (required field)
+          retry_on: error
+          max_attempts: 3
+          command: source ./.envrc && make deploy
       - name: Bitcoin Smoketest
         run: |
           pushd dev && source ./.envrc
