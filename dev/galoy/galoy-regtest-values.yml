@@ -61,5 +61,9 @@ price:
       persistence:
         enabled: false
 
+oathkeeper:
+  secret:
+    enabled: false
+
 secrets:
   create: false
