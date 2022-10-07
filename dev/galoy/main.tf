@@ -264,6 +264,7 @@ resource "helm_release" "galoy" {
   ]
 
   dependency_update = true
+  timeout           = 900
 }
 
 resource "kubernetes_secret" "price_history_postgres_creds" {
