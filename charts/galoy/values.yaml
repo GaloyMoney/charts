@@ -654,8 +654,8 @@ oathkeeper:
                "preserve_path": true,
                "preserve_query": true,
                "subject_from": "sub"
-               }
-             },
+             }
+           },
            { "handler": "anonymous" }
           ],
           "authorizer": {

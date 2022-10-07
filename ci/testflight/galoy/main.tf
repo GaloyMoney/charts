@@ -285,7 +285,7 @@ resource "jose_keyset" "oathkeeper" {}
 resource "kubernetes_secret" "oathkeeper" {
   metadata {
     name      = "galoy-oathkeeper"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
+    namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
   data = {
