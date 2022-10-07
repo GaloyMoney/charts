@@ -28,7 +28,7 @@ jobs:
           timeout_minutes: 10 # useless because only retry when error (required field)
           retry_on: error
           max_attempts: 3
-          command: source ./.envrc && make deploy
+          command: pushd dev && source ./.envrc && make deploy
       - name: Bitcoin Smoketest
         run: |
           pushd dev && source ./.envrc
