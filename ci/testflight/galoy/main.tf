@@ -306,7 +306,7 @@ resource "helm_release" "galoy" {
   values = [
     templatefile("${path.module}/testflight-values.yml",
     {
-      api_host : testflight_api_host
+      api_host : local.testflight_api_host
     })
   ]
 
