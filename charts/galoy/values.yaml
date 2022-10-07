@@ -672,6 +672,3 @@ oathkeeper:
       ]
   maester:
     enabled: false
-  service:
-    proxy:
-      enabled: false

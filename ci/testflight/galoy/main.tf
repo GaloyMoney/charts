@@ -15,7 +15,7 @@ locals {
   smoketest_kubeconfig = var.smoketest_kubeconfig
   backups_sa_creds     = var.testflight_backups_creds
 
-  testflight_api_host = "${var.testflight_namespace}.staging.galoy.io"
+  testflight_api_host = "galoy-oathkeeper-proxy.${local.testflight_namespace}.svc.cluster.local"
 
   postgres_database = "price-history"
   postgres_username = "price-history"
@@ -247,7 +247,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     galoy_endpoint         = local.testflight_api_host
-    galoy_port             = 80
+    galoy_port             = 4455
     price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
     price_history_port     = 50052
   }
@@ -303,12 +303,7 @@ resource "helm_release" "galoy" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
-  values = [
-    templatefile("${path.module}/testflight-values.yml",
-    {
-      api_host : local.testflight_api_host
-    })
-  ]
+  values = [ file("${path.module}/testflight-values.yml") ]
 
   depends_on = [
     kubernetes_secret.bitcoinrpc_password,
