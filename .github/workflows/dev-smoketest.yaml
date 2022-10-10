@@ -29,6 +29,10 @@ jobs:
           retry_on: error
           max_attempts: 3
           command: pushd dev && source ./.envrc && make deploy
+      - name: Wait for Ready
+        run: |
+          echo "Stack takes about 2 minutes to startup, waiting..."
+          sleep 2m
       - name: Bitcoin Smoketest
         run: |
           pushd dev && source ./.envrc
@@ -87,8 +91,6 @@ jobs:
             rm -rf smoketest-settings"
       - name: Dealer Smoketest
         run: |
-          echo "Dealer takes about 2 minutes to startup, waiting..."
-          sleep 2m
           pushd dev && source ./.envrc
           kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
             CHART=dealer ./dev-smoketest-settings.sh && \
