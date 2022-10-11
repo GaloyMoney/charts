@@ -163,6 +163,17 @@ spec:
               mountPath: /tmp/lnd-pass
               subPath: password
             {{- end }}
+            {{- if .Values.lndWatchOnly.enabled }}
+            - name: signer-tls
+              mountPath: "/root/.lnd/signer.cert"
+              subPath: "tls.cert"
+            - name: signer-macaroon
+              mountPath: "/root/.lnd/signer.macaroon"
+              subPath: "signer_macaroon"
+            - name: accounts-signer
+              mountPath: "/root/.lnd/accounts-signer.json"
+              subPath: "accounts-signer"
+            {{- end }}
           startupProbe:
             exec:
               command:
@@ -215,6 +226,26 @@ spec:
         - name: lnd-password
           secret:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
+        {{- end }}
+        {{- if .Values.lndWatchOnly.enabled }}
+        - name: signer-tls
+          secret:
+            secretName: signer1-credentials
+            items:
+            - key: tls.cert
+              path: "tls.cert"
+        - name: signer-macaroon
+          secret:
+            secretName: signer1-credentials
+            items:
+            - key: signer_macaroon
+              path: "signer_macaroon"
+        - name: accounts-signer
+          secret:
+            secretName: signer1-accounts
+            items:
+            - key: accounts-signer
+              path: "accounts-signer"
         {{- end }}
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}

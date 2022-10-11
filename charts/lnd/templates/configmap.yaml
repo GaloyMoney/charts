@@ -25,3 +25,9 @@ data:
     externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
     bitcoin.{{ .Values.global.network }}=true
+  {{- if .Values.lndWatchOnly.enabled }}
+    remotesigner.enable=true
+    remotesigner.rpchost={{ .Values.lndWatchOnly.signer }}
+    remotesigner.tlscertpath=/root/.lnd/signer.cert
+    remotesigner.macaroonpath=/root/.lnd/signer.macaroon
+  {{- end}}
