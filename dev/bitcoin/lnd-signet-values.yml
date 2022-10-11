@@ -24,3 +24,7 @@ configmap:
 
 autoGenerateSeed:
   enabled: true
+
+lndWatchOnly:
+  enabled: true
+  signer: signer1.galoy-signet-signer.svc.cluster.local:10009

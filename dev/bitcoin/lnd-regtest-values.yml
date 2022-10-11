@@ -19,3 +19,12 @@ configmap:
   - bitcoind.rpchost=bitcoind:18443
   - keysend-hold-time=2s
   - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
+
+loop:
+  enabled: true
+loopserver:
+  enabled: true
+
+lndWatchOnly:
+  enabled: true
+  signer: signer1.galoy-dev-signer.svc.cluster.local:10009

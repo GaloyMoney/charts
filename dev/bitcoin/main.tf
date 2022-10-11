@@ -6,6 +6,7 @@ locals {
   smoketest_namespace  = "${var.name_prefix}-smoketest"
   bitcoin_namespace    = "${var.name_prefix}-bitcoin"
   bitcoind_rpcpassword = "rpcpassword"
+  signer_namespace     = "${var.name_prefix}-signer"
 }
 
 resource "kubernetes_namespace" "bitcoin" {
