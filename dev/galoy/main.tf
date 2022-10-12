@@ -7,8 +7,6 @@ locals {
   galoy_namespace     = "${var.name_prefix}-galoy"
   bitcoin_namespace   = "${var.name_prefix}-bitcoin"
   bitcoin_secret      = "bitcoind-rpcpassword"
-  dev_apollo_key      = "dev_apollo_key"
-  dev_apollo_graph_id = "dev_apollo_graph_id"
   jwt_secret          = "jwt"
 
   postgres_database = "price-history"
@@ -116,18 +114,6 @@ resource "kubernetes_secret" "twilio_secret" {
     TWILIO_PHONE_NUMBER = "dummy"
     TWILIO_ACCOUNT_SID  = "ACdummy"
     TWILIO_AUTH_TOKEN   = "dummy"
-  }
-}
-
-resource "kubernetes_secret" "apollo_secret" {
-  metadata {
-    name      = "galoy-apollo-secret"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
-  }
-
-  data = {
-    key = local.dev_apollo_key
-    id  = local.dev_apollo_graph_id
   }
 }
 

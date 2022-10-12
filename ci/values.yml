@@ -13,8 +13,6 @@ github_token: ((github.api_token))
 docker_registry: us.gcr.io/galoy-org
 docker_registry_user: ((docker-creds.username))
 docker_registry_password: ((docker-creds.password))
-testflight_apollo_key: ((testflight-apollo.apollo_key))
-testflight_apollo_graph_id: ((testflight-apollo.apollo_graph_id))
 testflight_backups_creds: ((testflight-backups-bucket.creds_json))
 testflight_okex_secret_key: ((testflight-okex.secret_key))
 testflight_okex_passphrase: ((testflight-okex.passphrase))

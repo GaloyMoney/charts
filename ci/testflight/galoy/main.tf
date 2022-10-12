@@ -1,6 +1,4 @@
 variable "testflight_namespace" {}
-variable "testflight_apollo_graph_id" {}
-variable "testflight_apollo_key" {}
 variable "smoketest_kubeconfig" {}
 variable "testflight_backups_creds" {}
 
@@ -96,18 +94,6 @@ resource "kubernetes_secret" "twilio_secret" {
     TWILIO_PHONE_NUMBER = ""
     TWILIO_ACCOUNT_SID  = ""
     TWILIO_AUTH_TOKEN   = ""
-  }
-}
-
-resource "kubernetes_secret" "apollo_secret" {
-  metadata {
-    name      = "galoy-apollo-secret"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = {
-    key = var.testflight_apollo_key
-    id  = var.testflight_apollo_graph_id
   }
 }
 

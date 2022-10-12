@@ -108,21 +108,6 @@ galoy:
         name: galoyapp-firebase-serviceaccount
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
-    ## Apollo Configuration for Apollo Studio
-    ##
-    apollo:
-      # Associate data at Apollo with this variant
-      graphVariant: current
-      # Report the GraphQL schema to Apollo
-      schemaReporting: true
-      # Graph ID and Key Secret
-      existingSecret:
-        # Secret Name
-        name: galoy-apollo-secret
-        # Apollo Graph ID key
-        id_key: id
-        # Apollo Key key
-        key_key: key
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -536,9 +521,6 @@ secrets:
   geetestSecretKey:
   ## Secret for JWT
   jwtSecret:
-  ## Secret for Apollo
-  apolloId:
-  apolloKey:
   ## Secret for Twilio
   twilioPhoneNumber:
   twilioAccountSid:
