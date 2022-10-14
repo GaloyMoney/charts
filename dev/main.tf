@@ -1,5 +1,5 @@
-variable bitcoin_network {}
-variable name_prefix {}
+variable "bitcoin_network" {}
+variable "name_prefix" {}
 
 locals {
   bitcoin_network          = var.bitcoin_network
@@ -21,7 +21,7 @@ module "infra_services" {
 
 module "bitcoin" {
   source = "./bitcoin"
-  
+
   bitcoin_network = local.bitcoin_network
   name_prefix     = local.name_prefix
 }

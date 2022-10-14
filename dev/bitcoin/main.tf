@@ -18,7 +18,7 @@ resource "null_resource" "bitcoind_block_generator" {
 
   provisioner "local-exec" {
     command     = local.bitcoin_network == "regtest" && local.bitcoin_namespace == "galoy-dev-bitcoin" ? "./bitcoin/generateBlock.sh" : "echo Running ${local.bitcoin_network}"
-    interpreter = ["sh","-c"]
+    interpreter = ["sh", "-c"]
   }
 
   depends_on = [helm_release.bitcoind]

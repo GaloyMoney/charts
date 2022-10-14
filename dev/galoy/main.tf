@@ -253,7 +253,7 @@ resource "kubernetes_secret" "oathkeeper" {
 
   data = {
     "mutator.id_token.jwks.json" = jsonencode({
-      keys = [ jsondecode(jose_keyset.oathkeeper.private_key) ]
+      keys = [jsondecode(jose_keyset.oathkeeper.private_key)]
     })
   }
 }
@@ -311,7 +311,7 @@ resource "kubernetes_secret" "smoketest" {
 terraform {
   required_providers {
     jose = {
-      source = "bluemill/jose"
+      source  = "bluemill/jose"
       version = "1.0.0"
     }
   }

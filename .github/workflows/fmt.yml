@@ -1,0 +1,13 @@
+name: Check formatting
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Terraform fmt
+      uses: hashicorp/setup-terraform@v2
+    - run: terraform fmt -recursive .
+    - run: git diff --exit-code
