@@ -13,6 +13,6 @@ dependencies:
   version: 11.1.9
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
-  version: 0.25.4
-digest: sha256:bce0fc09b8abf500caaa71d07bf54e84a70f838883e5fbff7d397c515f4a0a94
-generated: "2022-10-04T15:09:59.521236+02:00"
+  version: 0.25.6
+digest: sha256:648c892b76d358bfdc0f55a976c5a9f4080639d0926451f974fb8d327baebd04
+generated: "2022-10-13T11:33:36.942488613Z"
