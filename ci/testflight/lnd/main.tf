@@ -65,7 +65,7 @@ resource "kubernetes_secret" "lnd_pg_pass" {
   }
 
   data = {
-    uri = "postgres://postgres:password@lnd1-postgresql:5432/lnd"
+    uri                 = "postgres://postgres:password@lnd1-postgresql:5432/lnd"
     "postgres-password" = "password"
   }
 }

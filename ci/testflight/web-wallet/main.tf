@@ -23,9 +23,9 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    web_wallet_endpoint = "web-wallet.${local.testflight_namespace}.svc.cluster.local"
+    web_wallet_endpoint        = "web-wallet.${local.testflight_namespace}.svc.cluster.local"
     web_wallet_mobile_endpoint = "web-wallet-mobile.${local.testflight_namespace}.svc.cluster.local"
-    web_wallet_port     = 80
+    web_wallet_port            = 80
   }
 }
 

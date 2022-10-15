@@ -292,7 +292,7 @@ resource "kubernetes_secret" "oathkeeper" {
 
   data = {
     "mutator.id_token.jwks.json" = jsonencode({
-      keys = [ jsondecode(jose_keyset.oathkeeper.private_key) ]
+      keys = [jsondecode(jose_keyset.oathkeeper.private_key)]
     })
   }
 }
@@ -303,7 +303,7 @@ resource "helm_release" "galoy" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
-  values = [ file("${path.module}/testflight-values.yml") ]
+  values = [file("${path.module}/testflight-values.yml")]
 
   depends_on = [
     kubernetes_secret.bitcoinrpc_password,
@@ -352,7 +352,7 @@ provider "helm" {
 terraform {
   required_providers {
     jose = {
-      source = "bluemill/jose"
+      source  = "bluemill/jose"
       version = "1.0.0"
     }
   }
