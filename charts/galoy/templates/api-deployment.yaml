@@ -95,21 +95,6 @@ spec:
 {{ include "galoy.geetest.env" . | indent 8 }}
 {{ include "galoy.jwt.env" . | indent 8 }}
 
-        - name: APOLLO_GRAPH_VARIANT
-          value: {{ .Values.galoy.api.apollo.graphVariant | quote }}
-        - name: APOLLO_SCHEMA_REPORTING
-          value: {{ .Values.galoy.api.apollo.schemaReporting | quote }}
-        - name: APOLLO_GRAPH_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.api.apollo.existingSecret.name }}
-              key: {{ .Values.galoy.api.apollo.existingSecret.id_key }}
-        - name: APOLLO_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.api.apollo.existingSecret.name }}
-              key: {{ .Values.galoy.api.apollo.existingSecret.key_key }}
-
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
         - name: PRICE_HISTORY_PORT

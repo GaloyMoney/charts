@@ -18,8 +18,6 @@
 #@   "repo_resource")
 
 #@ def galoy_chart_vars():
-testflight_apollo_graph_id: #@ data.values.testflight_apollo_graph_id
-testflight_apollo_key: #@ data.values.testflight_apollo_key
 testflight_backups_creds: #@ data.values.testflight_backups_creds
 smoketest_kubeconfig: #@ data.values.staging_smoketest_kubeconfig
 #@ end
