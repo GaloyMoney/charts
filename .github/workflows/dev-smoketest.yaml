@@ -69,6 +69,13 @@ jobs:
             CHART=monitoring ./dev-smoketest-settings.sh && \
             ./monitoring-smoketest.sh && \
             rm -rf smoketest-settings"
+      - name: Stablesats Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=stablesats ./dev-smoketest-settings.sh && \
+            ./stablesats-smoketest.sh && \
+            rm -rf smoketest-settings"
       - name: Admin Panel Smoketest
         run: |
           pushd dev && source ./.envrc
