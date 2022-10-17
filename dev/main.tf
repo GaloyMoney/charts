@@ -1,5 +1,5 @@
-variable bitcoin_network {}
-variable name_prefix {}
+variable "bitcoin_network" {}
+variable "name_prefix" {}
 
 locals {
   bitcoin_network          = var.bitcoin_network
