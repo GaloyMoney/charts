@@ -12,6 +12,7 @@ jobs:
       - uses: AbsaOSS/k3d-action@v2
         name: "Create Single Cluster"
         with:
+          k3d-version: v1.23.12-k3s1
           cluster-name: "k3s-default"
           args: >-
             -v "$(pwd):/charts"
