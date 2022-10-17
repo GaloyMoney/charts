@@ -36,7 +36,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          args: 
+          args:
             - loopd
             - --network={{.Values.global.network}}
             - --experimental
@@ -49,6 +49,7 @@ spec:
             - --lnd.macaroonpath=/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon
             - --lnd.tlspath=/root/.lnd/tls.cert
             - --tlsautorefresh
+            - --tlsextradomain={{ include "loop.fullname" . }}
             - --restlisten=0.0.0.0:8081
             - --rpclisten=0.0.0.0:11010
           securityContext:
