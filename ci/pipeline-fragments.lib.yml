@@ -221,7 +221,7 @@ params:
 name: #@ deployment + "-slack"
 type: slack-notification
 source:
-  url: #@ getattr(data.values, deployment + "_slack_webhook_url")
+  url: #@ getattr(data.values, deployment.replace("-", "_") + "_slack_webhook_url")
 #@ end
 
 #@ def repo_out_resource(repo_name):

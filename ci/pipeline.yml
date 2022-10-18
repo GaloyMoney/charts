@@ -71,6 +71,9 @@ groups:
   jobs:
   - stablesats-testflight
   - bump-stablesats-in-deployments
+- name: galoy-deps
+  jobs:
+  - galoy-deps-testflight
 - name: images
   jobs:
   - build-chain-dl-image
@@ -96,6 +99,7 @@ jobs:
 - #@ bump_in_deployments_job("galoy-auth")
 - #@ testflight_job("stablesats", "stablesats", stablesats_chart_vars())
 - #@ bump_in_deployments_job("stablesats")
+- #@ testflight_job("galoy-deps", "galoy-deps")
 
 - name: build-chain-dl-image
   serial: true
@@ -311,6 +315,10 @@ resources:
 - #@ chart_repo_resource("galoy-auth")
 - #@ testflight_tf_resource("galoy-auth")
 - #@ slack_resource("auth")
+
+- #@ chart_repo_resource("galoy-deps")
+- #@ testflight_tf_resource("galoy-deps")
+- #@ slack_resource("galoy-deps")
 
 - name: charts-repo
   type: git
