@@ -10,6 +10,7 @@ variable "okex_api_key" {}
 
 locals {
   stablesats_namespace = "${var.name_prefix}-stablesats"
+  smoketest_namespace  = "${var.name_prefix}-smoketest"
 }
 
 resource "kubernetes_namespace" "stablesats" {
@@ -48,6 +49,17 @@ resource "kubernetes_secret" "stablesats_secrets" {
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
     galoy-phone-code : var.galoy_phone_code
+  }
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name      = "stablesats-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    price_server_grpc_host = "stablesats-price.${local.stablesats_namespace}.svc.cluster.local"
+    price_server_grpc_port = 3325
   }
 }
 
