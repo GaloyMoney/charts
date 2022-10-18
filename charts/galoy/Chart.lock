@@ -1,7 +1,7 @@
 dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 16.12.2
+  version: 17.3.6
 - name: mongodb
   repository: https://charts.bitnami.com/bitnami
   version: 11.1.10
@@ -14,5 +14,5 @@ dependencies:
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
   version: 0.25.6
-digest: sha256:648c892b76d358bfdc0f55a976c5a9f4080639d0926451f974fb8d327baebd04
-generated: "2022-10-13T11:33:36.942488613Z"
+digest: sha256:95733c1969c908e42de592ca1acf9b9d5cb47861ba20fdd9bdc4690c6b052965
+generated: "2022-10-18T12:12:00.095670858Z"
