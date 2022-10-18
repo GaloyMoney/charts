@@ -28,4 +28,5 @@ bitcoin_slack_webhook_url: ((bitcoin-slack.api_url))
 addons_slack_webhook_url: ((addons-slack.api_url))
 auth_slack_webhook_url: ((auth-slack.api_url))
 stablesats_slack_webhook_url: ((addons-slack.api_url))
+galoy_deps_slack_webhook_url: ((addons-slack.api_url))
 slack_username: concourse
