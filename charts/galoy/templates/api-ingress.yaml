@@ -13,6 +13,9 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.galoy.api.ingress.clusterIssuer }}
 
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
+
     nginx.ingress.kubernetes.io/limit-rpm: "60"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
     nginx.ingress.kubernetes.io/limit-connections: "40"
