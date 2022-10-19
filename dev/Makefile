@@ -61,6 +61,9 @@ deploy-signet-services:
 	$(TF) apply -target module.galoy_deps \
 				-var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
+	$(TF) apply -target module.galoy_deps \
+				-var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
 
 deploy-signet:
 	$(TF) apply -var="bitcoin_network=signet" \
@@ -84,6 +87,7 @@ redeploy-signet-addons:
 	kubectl delete namespace galoy-sig-addons --force
 	cd addons
 	$(TF) apply -var="name_prefix=galoy-sig" -auto-approve
+
 
 fmt:
 	$(TF) fmt -recursive

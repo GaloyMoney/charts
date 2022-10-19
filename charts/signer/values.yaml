@@ -5,7 +5,7 @@ global:
   network: mainnet
 image:
   repository: lightninglabs/lnd
-  tag: v0.15.1-beta
+  tag: v0.15.3-beta
   pullPolicy: IfNotPresent
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
