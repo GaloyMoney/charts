@@ -21,6 +21,7 @@ data:
     {{ . }}
   {{- end }}
     tlsextradomain={{ include "signer.fullname" . }}
+    tlsextradomain={{ include "signer.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
   {{- if .Values.apiService.staticIP }}
     tlsextraip={{ .Values.apiService.staticIP }}
   {{- end}}

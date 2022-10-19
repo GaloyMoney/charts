@@ -5,3 +5,6 @@ terminationGracePeriodSeconds: 0
 
 persistence:
   enabled: false
+
+autoGenerateSeed:
+  enabled: true

@@ -9,6 +9,9 @@ data:
   {{- if ne .Values.global.network "regtest" }}
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
+  {{- if ne .Values.lndWatchOnly.enabled }}
+    noseedbackup=true
+  {{- end }}
   {{- end }}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
@@ -29,5 +32,5 @@ data:
     remotesigner.enable=true
     remotesigner.rpchost={{ .Values.lndWatchOnly.signer }}
     remotesigner.tlscertpath=/root/.lnd/signer.cert
-    remotesigner.macaroonpath=/root/.lnd/signer.macaroon
+    remotesigner.macaroonpath=/root/.lnd/signer.custom.macaroon
   {{- end}}

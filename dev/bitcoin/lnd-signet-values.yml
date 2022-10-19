@@ -15,7 +15,6 @@ persistence:
 
 configmap:
   customValues:
-  - bitcoin.signet=true
   - bitcoin.defaultchanconfs=0
   - bitcoind.rpchost=bitcoind:38332
   - keysend-hold-time=2s
@@ -23,7 +22,7 @@ configmap:
   - debuglevel=info
 
 autoGenerateSeed:
-  enabled: true
+  enabled: false
 
 lndWatchOnly:
   enabled: true

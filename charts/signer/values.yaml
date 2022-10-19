@@ -39,7 +39,7 @@ secrets:
 signerGeneralConfig:
   - nolisten=true
   - nobootstrap=true
-  - rpclisten=10009
+  - rpclisten=0.0.0.0:10009
   - bitcoin.active=true
   - bitcoin.node=nochainbackend
   - tlsautorefresh=true
