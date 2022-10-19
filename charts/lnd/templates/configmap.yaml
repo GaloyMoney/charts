@@ -9,9 +9,9 @@ data:
   {{- if ne .Values.global.network "regtest" }}
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
-  {{- if ne .Values.lndWatchOnly.enabled }}
-    noseedbackup=true
   {{- end }}
+  {{- if and .Values.global.network "regtest" (not .Values.lndWatchOnly.enabled) }}
+    noseedbackup=true
   {{- end }}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
