@@ -143,6 +143,14 @@ spec:
             mountPath: /root/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- if .Values.lndWatchOnly.enabled }}
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            base64 -d /root/.lnd/signer_macaroon_base64 > /root/.lnd/signer.custom.macaroon
+            lnd
+          {{- end }}
           ports:
             - name: rpc
               containerPort: {{ .Values.apiService.ports.rpc }}
@@ -168,8 +176,8 @@ spec:
               mountPath: "/root/.lnd/signer.cert"
               subPath: "tls.cert"
             - name: signer-macaroon
-              mountPath: "/root/.lnd/signer.macaroon"
-              subPath: "signer_macaroon"
+              mountPath: "/root/.lnd/signer_macaroon_base64"
+              subPath: "signer_macaroon_base64"
             - name: accounts-signer
               mountPath: "/root/.lnd/accounts-signer.json"
               subPath: "accounts-signer"
@@ -238,8 +246,8 @@ spec:
           secret:
             secretName: signer1-credentials
             items:
-            - key: signer_macaroon
-              path: "signer_macaroon"
+            - key: signer_macaroon_base64
+              path: "signer_macaroon_base64"
         - name: accounts-signer
           secret:
             secretName: signer1-accounts
