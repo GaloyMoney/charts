@@ -20,7 +20,7 @@ data "kubernetes_secret" "signer1_credentials" {
 resource "kubernetes_secret" "signer1_credentials" {
   metadata {
     name      = "signer1-credentials"
-    namespace =  local.bitcoin_namespace
+    namespace = local.bitcoin_namespace
   }
 
   data = data.kubernetes_secret.signer1_credentials.data
@@ -36,7 +36,7 @@ data "kubernetes_secret" "signer1_accounts" {
 resource "kubernetes_secret" "signer1_accounts" {
   metadata {
     name      = "signer1-accounts"
-    namespace =  local.bitcoin_namespace
+    namespace = local.bitcoin_namespace
   }
 
   data = data.kubernetes_secret.signer1_accounts.data

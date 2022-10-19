@@ -44,7 +44,7 @@ module "bitcoin" {
   name_prefix     = local.name_prefix
 
   depends_on = [
-    module.galoy_deps
+    module.galoy_deps,
     module.signer
   ]
 }
