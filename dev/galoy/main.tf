@@ -291,6 +291,8 @@ resource "kubernetes_secret" "smoketest" {
     galoy_port             = 4455
     price_history_endpoint = "galoy-price-history.${local.galoy_namespace}.svc.cluster.local"
     price_history_port     = 50052
+    kratos_admin_endpoint  = "galoy-kratos-admin.${local.galoy_namespace}.svc.cluster.local"
+    kratos_admin_port      = 80
   }
 }
 
