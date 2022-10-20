@@ -14,6 +14,7 @@ locals {
   backups_sa_creds     = var.testflight_backups_creds
 
   testflight_api_host = "galoy-oathkeeper-proxy.${local.testflight_namespace}.svc.cluster.local"
+  kratos_admin_host   = "galoy-kratos-admin.${local.testflight_namespace}.svc.cluster.local"
 
   postgres_database = "price-history"
   postgres_username = "price-history"
@@ -236,6 +237,8 @@ resource "kubernetes_secret" "smoketest" {
     galoy_port             = 4455
     price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
     price_history_port     = 50052
+    kratos_admin_endpoint  = local.kratos_admin_host
+    kratos_admin_port      = 80
   }
 }
 
