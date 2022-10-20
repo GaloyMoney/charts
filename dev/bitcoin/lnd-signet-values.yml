@@ -22,7 +22,7 @@ configmap:
   - debuglevel=info
 
 autoGenerateSeed:
-  enabled: false
+  enabled: true
 
 lndWatchOnly:
   enabled: true

@@ -77,6 +77,12 @@ redeploy-signet-signer:
 	$(TF) apply -var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
 
+redeploy-signet-bitcoin:
+	kubectl delete namespace galoy-sig-bitcoin --force
+	cd bitcoin
+	$(TF) apply -var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+
 redeploy-signet-galoy:
 	kubectl delete namespace galoy-sig-galoy --force
 	cd galoy

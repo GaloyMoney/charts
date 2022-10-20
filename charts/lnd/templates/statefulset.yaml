@@ -97,6 +97,11 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /root/.lnd
+        {{- if .Values.lndWatchOnly.enabled }}
+          - name: accounts-signer
+            mountPath: "/root/.lnd/accounts-signer.json"
+            subPath: "accounts-signer"
+        {{- end }}
         {{- end }}
         - name: tor
           image: osminogin/tor-simple
