@@ -108,6 +108,11 @@ galoy:
         name: galoyapp-firebase-serviceaccount
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
+    ## Kratos Secrets
+    kratos:
+      masterPhonePasswordExistingSecret:
+        name: kratos-master-password
+        key: password
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -539,6 +544,8 @@ secrets:
   lnd2LoopMacaroon:
   lnd2LoopTls:
   lnd2PubKey:
+  ## Secret for Galot app
+  kratosMasterPassword:
 ## Tracing details
 ##
 tracing:
