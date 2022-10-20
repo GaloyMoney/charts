@@ -59,7 +59,7 @@ spec:
             - name: rpcpassword
               mountPath: /rpcpassword
       containers:
-        {{- if and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled }}
+        {{- if or (and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled) (and .Values.lndWatchOnly.enabled .Values.autoGenerateSeed.enabled) }}
         - name: init-wallet
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
@@ -171,7 +171,7 @@ spec:
             - name: config
               mountPath: /root/.lnd/lnd.conf
               subPath: lnd.conf
-            {{- if ne .Values.global.network "regtest" }}
+            {{- if or (ne .Values.global.network "regtest") .Values.lndWatchOnly.enabled }}
             - name: lnd-password
               mountPath: /tmp/lnd-pass
               subPath: password
@@ -217,7 +217,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        {{- if ne .Values.global.network "regtest" }}
+        {{- if or (ne .Values.global.network "regtest") .Values.lndWatchOnly.enabled }}
         - name: wallet-init
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
@@ -235,7 +235,7 @@ spec:
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
-        {{- if ne .Values.global.network "regtest" }}
+        {{- if or (ne .Values.global.network "regtest") .Values.lndWatchOnly.enabled }}
         - name: lnd-password
           secret:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
