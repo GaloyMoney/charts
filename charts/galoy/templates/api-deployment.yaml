@@ -98,8 +98,8 @@ spec:
         - name: KRATOS_MASTER_PHONE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.galoy.api.kratos.masterPhonePassword.name }}
-              key: {{ .Values.galoy.api.kratos.masterPhonePassword.key }}
+              name: {{ .Values.galoy.api.kratos.masterPhonePasswordExistingSecret.name }}
+              key: {{ .Values.galoy.api.kratos.masterPhonePasswordExistingSecret.key }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
