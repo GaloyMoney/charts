@@ -91,10 +91,12 @@ set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl price history server"
   grpcurl -plaintext -proto health.proto ${host}:${port} grpc.health.v1.Health.Check
-  if [[ $? == 0 ]]; then success="true"; break; fi;
+  if [[ $? == 0 ]]; then price_history_healthz="true"; break; fi;
   sleep 1
 done
 set -e
+
+if [[ "$price_history_healthz" != "true" ]]; then echo "Smoke test failed; price history server healthcheck failed" && exit 1; fi;
 
 host=`setting "kratos_admin_endpoint"`
 port=`setting "kratos_admin_port"`
@@ -103,9 +105,9 @@ set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl kratos"
   curl --location -f ${host}:${port}/admin/health/ready
-  if [[ $? == 0 ]]; then success="true"; break; fi;
+  if [[ $? == 0 ]]; then kratos_healthz="true"; break; fi;
   sleep 1
 done
 set -e
 
-if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi;
+if [[ "$kratos_healthz" != "true" ]]; then echo "Smoke test failed; kratos healthcheck failed" && exit 1; fi;
