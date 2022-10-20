@@ -7,7 +7,7 @@ metadata:
 data:
   lnd.conf: |-
   {{- if ne .Values.global.network "regtest" }}
-    wallet-unlock-password-file=/tmp/signer-pass
+    wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
   {{- end }}
   {{- if eq .Values.global.network "regtest" }}

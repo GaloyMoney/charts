@@ -106,7 +106,7 @@ spec:
           - name: export-secrets
             mountPath: /home/alpine/exportSecrets.sh
             subPath: exportSecrets.sh
-          - name: signer-storage
+          - name: lnd-storage
             mountPath: /root/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -115,14 +115,14 @@ spec:
             - name: rpc
               containerPort: {{ .Values.apiService.ports.rpc }}
           volumeMounts:
-            - name: signer-storage
+            - name: lnd-storage
               mountPath: /root/.lnd
             - name: config
               mountPath: /root/.lnd/lnd.conf
               subPath: lnd.conf
             {{- if ne .Values.global.network "regtest" }}
-            - name: signer-password
-              mountPath: /tmp/signer-pass
+            - name: lnd-password
+              mountPath: /tmp/lnd-pass
               subPath: password
             {{- end }}
           startupProbe:
@@ -171,11 +171,11 @@ spec:
           configMap:
             name: {{ include "signer.fullname" . }}
         {{- if ne .Values.global.network "regtest" }}
-        - name: signer-password
+        - name: lnd-password
           secret:
             secretName: {{ printf "%s-pass" (include "signer.fullname" .) }}
         {{- end }}
-        - name: signer-storage
+        - name: lnd-storage
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.existingClaim | default (include "signer.fullname" $) }}
