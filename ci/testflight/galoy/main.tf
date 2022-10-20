@@ -286,6 +286,21 @@ resource "kubernetes_secret" "oathkeeper" {
   }
 }
 
+resource "random_password" "kratos_master_password" {
+  length  = 32
+  special = false
+}
+resource "kubernetes_secret" "kratos_master_password" {
+  metadata {
+    name      = "kratos-master-password"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    "password" = random_password.kratos_master_password.result
+  }
+}
+
 resource "helm_release" "galoy" {
   name       = "galoy"
   chart      = "${path.module}/chart"

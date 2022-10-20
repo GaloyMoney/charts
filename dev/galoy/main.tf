@@ -281,6 +281,21 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   }
 }
 
+resource "random_password" "kratos_master_password" {
+  length  = 32
+  special = false
+}
+resource "kubernetes_secret" "kratos_master_password" {
+  metadata {
+    name      = "kratos-master-password"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "password" = random_password.kratos_master_password.result
+  }
+}
+
 resource "kubernetes_secret" "smoketest" {
   metadata {
     name      = "galoy-smoketest"
