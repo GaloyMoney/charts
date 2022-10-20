@@ -95,6 +95,12 @@ spec:
 {{ include "galoy.geetest.env" . | indent 8 }}
 {{ include "galoy.jwt.env" . | indent 8 }}
 
+        - name: KRATOS_MASTER_PHONE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.kratos.masterPhonePasswordExistingSecret.name }}
+              key: {{ .Values.galoy.api.kratos.masterPhonePasswordExistingSecret.key }}
+
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
         - name: PRICE_HISTORY_PORT
