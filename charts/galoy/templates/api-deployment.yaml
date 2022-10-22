@@ -113,7 +113,7 @@ spec:
 
         {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: "/tmp/service-account.json"
+          value: "/tmp/firebase-service-account/service-account.json"
         {{ end }}
 
         {{ if .Values.galoy.api.probes.enabled }}
@@ -139,7 +139,7 @@ spec:
         volumeMounts:
         {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: firebase-notifications-service-account
-          mountPath: /tmp
+          mountPath: /tmp/firebase-service-account/
           readOnly: true
         {{ end }}
 
