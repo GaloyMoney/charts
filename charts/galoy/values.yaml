@@ -108,11 +108,6 @@ galoy:
         name: galoyapp-firebase-serviceaccount
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
-    ## Kratos Secrets
-    kratos:
-      masterPhonePasswordExistingSecret:
-        name: kratos-master-password
-        key: password
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -292,6 +287,11 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  ## Kratos
+  kratos:
+    masterPhonePasswordExistingSecret:
+      name: kratos-master-password
+      key: password
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
   ##
