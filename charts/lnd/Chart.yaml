@@ -14,7 +14,7 @@ engine: gotpl
 dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
-    version: 1.16.1
+    version: 2.0.4
   - name: loop
     version: x.x.x
     condition: loop.enabled
