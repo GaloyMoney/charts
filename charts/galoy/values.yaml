@@ -599,6 +599,11 @@ oathkeeper:
           config:
             jwks_url: file:///etc/secrets/mutator.id_token.jwks.json
             issuer_url: "galoy.io"
+        header:
+          enabled: true
+          config:
+            headers:
+              orgauthorization: '{{ .MatchContext.Header.Get "Authorization" }}' # tmp during migration of LegacyJWT
       errors:
         fallback:
           - json
@@ -655,6 +660,10 @@ oathkeeper:
             {
               "handler": "id_token",
               "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
+            },
+            {
+              "handler": "header",
+              "config": { "headers": { "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}' }}
             }
           ]
         }
