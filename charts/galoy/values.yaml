@@ -672,6 +672,9 @@ oathkeeper:
     enabled: false
 kratos:
   kratos:
+    session:
+      lifespan: "720h" # 1 month
+      earliest_possible_extend: "360h" # 2 weeks
     automigration:
       enabled: true
     config:
