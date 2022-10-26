@@ -225,8 +225,6 @@ prometheus:
         #       regex: true
         #     - source_labels: [__address__]
         #       target_label: __param_target
-        #     - target_label: __address__
-        #       replacement: blackbox
         #     - source_labels: [__param_target]
         #       target_label: instance
         #     - action: labelmap
@@ -238,28 +236,4 @@ prometheus:
 
   # adds additional scrape configs to prometheus.yml
   # must be a string so you have to add a | after extraScrapeConfigs:
-  # example adds prometheus-blackbox-exporter scrape config
   extraScrapeConfigs: ""
-
-prometheus-blackbox-exporter:
-  secretConfig: true
-  config:
-    modules:
-      buildParameters:
-        prober: http
-        timeout: 3s
-        http:
-          method: POST
-          headers:
-            Content-Type: application/json
-          body: '{"query":"query monitoringPing { mobileVersions { platform currentSupported minSupported } }","variables":{}}'
-      walletAuth:
-        prober: http
-        timeout: 30s
-        http:
-          method: POST
-          fail_if_body_matches_regexp:
-            - "errors+"
-          headers:
-            Content-Type: application/json
-          body: '{"query":"query monitoringPingAuth { me { __typename id phone quizQuestions { __typename question{ id earnAmount } } defaultAccount { __typename id defaultWalletId wallets { __typename id balance walletCurrency transactions(first: 3) { pageInfo { hasNextPage } edges { cursor node { __typename id status direction memo createdAt settlementAmount settlementFee settlementPrice { base offset } initiationVia { __typename ... on InitiationViaIntraLedger { counterPartyWalletId counterPartyUsername } ... on InitiationViaLn { paymentHash } ... on InitiationViaOnChain { address } } settlementVia { __typename ... on SettlementViaIntraLedger { counterPartyWalletId counterPartyUsername } ... on SettlementViaLn { paymentSecret } ... on SettlementViaOnChain { transactionHash } } } } } } } } }","variables":{}}'
