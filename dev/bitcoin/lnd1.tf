@@ -56,6 +56,7 @@ resource "helm_release" "lnd" {
   depends_on = [
     kubernetes_secret.bitcoind,
     helm_release.bitcoind,
-    kubernetes_secret.signer1_credentials
+    kubernetes_secret.signer1_credentials,
+    kubernetes_secret.signer1_accounts
   ]
 }
