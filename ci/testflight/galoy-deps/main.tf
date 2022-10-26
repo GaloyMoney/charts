@@ -70,6 +70,13 @@ provider "helm" {
   }
 }
 
+provider "kubectl" {
+  host                   = "https://${data.google_container_cluster.primary.private_cluster_config.0.private_endpoint}"
+  cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
+  token                  = data.google_client_config.default.access_token
+  load_config_file       = false
+}
+
 terraform {
   required_providers {
     kubectl = {
