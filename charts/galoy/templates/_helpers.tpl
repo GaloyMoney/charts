@@ -157,17 +157,6 @@ Return Galoy environment variables for LND 1 configuration
     secretKeyRef:
       name: {{ .Values.galoy.lnd1.loopCredentialsExistingSecret.name }}
       key: {{ .Values.galoy.lnd1.loopCredentialsExistingSecret.tls_key }}
-{{ else }}
-- name: LND1_LOOP_MACAROON
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd1.credentialsExistingSecret.macaroon_key }}
-- name: LND1_LOOP_TLS
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd1.credentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd1.credentialsExistingSecret.tls_key }}
 {{ end }}
 {{- end -}}
 
@@ -203,17 +192,6 @@ Return Galoy environment variables for LND 2 configuration
     secretKeyRef:
       name: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.name }}
       key: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.tls_key }}
-{{ else }}
-- name: LND2_LOOP_MACAROON
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd2.credentialsExistingSecret.macaroon_key }}
-- name: LND2_LOOP_TLS
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd2.credentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd2.credentialsExistingSecret.tls_key }}
 {{ end }}
 {{- end -}}
 
