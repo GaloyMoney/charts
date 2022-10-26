@@ -34,6 +34,8 @@ kind: KafkaTopic
 metadata:
   name: topic
   namespace: ${kubernetes_namespace.galoy_deps.metadata[0].name}
+  labels:
+    strimzi.io/cluster: ${helm_release.galoy_deps.metadata[0].name}-kafka
 spec:
   partitions: 3
   replicas: 3
