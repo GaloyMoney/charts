@@ -22,6 +22,24 @@ resource "helm_release" "galoy_deps" {
   dependency_update = true
 }
 
+resource "kubectl_manifest" "kafka_topic" {
+  yaml_body = <<YAML
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: topic
+  namespace: ${kubernetes_namespace.galoy_deps.metadata[0].name}
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 7200000
+    segment.bytes: 1073741824
+YAML
+
+  depends_on = [helm_release.galoy_deps]
+}
+
 data "google_container_cluster" "primary" {
   project  = local.gcp_project
   name     = local.cluster_name
@@ -49,5 +67,14 @@ provider "helm" {
     host                   = "https://${data.google_container_cluster.primary.private_cluster_config.0.private_endpoint}"
     token                  = data.google_client_config.default.access_token
     cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
+  }
+}
+
+terraform {
+  required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
   }
 }
