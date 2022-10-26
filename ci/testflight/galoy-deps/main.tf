@@ -28,7 +28,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: topic
-  namespace: ${kubernetes_namespace.galoy_deps.metadata[0].name}
+  namespace: ${kubernetes_namespace.testflight.metadata[0].name}
 spec:
   partitions: 3
   replicas: 3
