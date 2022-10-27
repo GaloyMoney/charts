@@ -74,6 +74,7 @@ groups:
 - name: galoy-deps
   jobs:
   - galoy-deps-testflight
+  - bump-galoy-deps-in-deployments
 - name: images
   jobs:
   - build-chain-dl-image
@@ -100,6 +101,7 @@ jobs:
 - #@ testflight_job("stablesats", "stablesats", stablesats_chart_vars())
 - #@ bump_in_deployments_job("stablesats")
 - #@ testflight_job("galoy-deps", "galoy-deps")
+- #@ bump_in_deployments_job("galoy-deps")
 
 - name: build-chain-dl-image
   serial: true

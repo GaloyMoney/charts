@@ -21,27 +21,13 @@ resource "helm_release" "galoy_deps" {
   chart     = "${path.module}/chart"
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
+  values = [
+    templatefile("${path.module}/galoy-deps-values.yml.tmpl", {
+      watch_namespaces : ["${local.smoketest_namespace}"]
+    })
+  ]
+
   dependency_update = true
-}
-
-resource "kubectl_manifest" "kafka_topic" {
-  yaml_body = <<YAML
-apiVersion: kafka.strimzi.io/v1beta2
-kind: KafkaTopic
-metadata:
-  name: ${local.kafka_topic_name}
-  namespace: ${kubernetes_namespace.testflight.metadata[0].name}
-  labels:
-    strimzi.io/cluster: ${helm_release.galoy_deps.metadata[0].name}-kafka
-spec:
-  partitions: 3
-  replicas: 3
-  config:
-    retention.ms: 7200000
-    segment.bytes: 1073741824
-YAML
-
-  depends_on = [helm_release.galoy_deps]
 }
 
 resource "kubernetes_secret" "smoketest" {
@@ -53,6 +39,8 @@ resource "kubernetes_secret" "smoketest" {
     kafka_broker_endpoint = "galoy-deps-kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
     kafka_broker_port     = 9092
     kafka_topic           = local.kafka_topic_name
+    smoketest_namespace   = local.smoketest_namespace
+    kafka_cluster         = "${helm_release.galoy_deps.metadata[0].name}-kafka"
   }
 }
 
@@ -83,21 +71,5 @@ provider "helm" {
     host                   = "https://${data.google_container_cluster.primary.private_cluster_config.0.private_endpoint}"
     token                  = data.google_client_config.default.access_token
     cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
-  }
-}
-
-provider "kubectl" {
-  host                   = "https://${data.google_container_cluster.primary.private_cluster_config.0.private_endpoint}"
-  cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
-  token                  = data.google_client_config.default.access_token
-  load_config_file       = false
-}
-
-terraform {
-  required_providers {
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.7.0"
-    }
   }
 }
