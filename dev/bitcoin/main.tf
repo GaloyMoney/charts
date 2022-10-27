@@ -48,3 +48,14 @@ resource "kubernetes_secret" "lnd_smoketest" {
     lnd_p2p_endpoint = "lnd1-p2p.${local.bitcoin_namespace}.svc.cluster.local"
   }
 }
+
+resource "kubernetes_secret" "rtl_smoketest" {
+  metadata {
+    name      = "rtl-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    rtl_endpoint = "rtl.${local.bitcoin_namespace}.svc.cluster.local"
+    rtl_port     = 3000
+  }
+}
