@@ -7,7 +7,7 @@ locals {
 
   testflight_namespace = var.testflight_namespace
   smoketest_namespace  = "galoy-staging-smoketest"
-  kafka_topic_name = "topic"
+  kafka_topic_name     = "topic"
 }
 
 resource "kubernetes_namespace" "testflight" {
