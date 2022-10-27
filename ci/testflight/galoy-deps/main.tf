@@ -6,6 +6,8 @@ locals {
   gcp_project      = "galoy-staging"
 
   testflight_namespace = var.testflight_namespace
+  smoketest_namespace  = "galoy-staging-smoketest"
+  kafka_topic_name = "topic"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -27,7 +29,7 @@ resource "kubectl_manifest" "kafka_topic" {
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: topic
+  name: ${local.kafka_topic_name}
   namespace: ${kubernetes_namespace.testflight.metadata[0].name}
   labels:
     strimzi.io/cluster: ${helm_release.galoy_deps.metadata[0].name}-kafka
@@ -40,6 +42,18 @@ spec:
 YAML
 
   depends_on = [helm_release.galoy_deps]
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name      = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    kafka_broker_endpoint = "galoy-deps-kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
+    kafka_broker_port     = 9092
+    kafka_topic           = local.kafka_topic_name
+  }
 }
 
 data "google_container_cluster" "primary" {
