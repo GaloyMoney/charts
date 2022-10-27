@@ -7,7 +7,25 @@ source smoketest-settings/helpers.sh
 kafka_broker_host=`setting "kafka_broker_endpoint"`
 kafka_broker_port=`setting "kafka_broker_port"`
 kafka_topic=`setting "kafka_topic"`
+kafka_cluster=`setting "kafka_cluster"`
+smoketest_namespace=`setting "smoketest_namespace"`
+setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
+export KUBECONFIG=$(pwd)/kubeconfig.json
 
+cat << EOF > topic.yaml
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: $kafka_topic
+  namespace: $smoketest_namespace
+  labels:
+    strimzi.io/cluster: $kafka_cluster
+spec:
+  partitions: 3
+  replicas: 3
+EOF
+
+kubectl apply -f topic.yaml
 
 msg="kafka message"
 set +e
@@ -18,6 +36,8 @@ for i in {1..15}; do
   if [[ "$consumed_message" == "$msg" ]]; then success="true"; break; fi;
   sleep 1
 done
+
+k -n $smoketest_namespace delete kafkatopics.kafka.strimzi.io $kafka_topic
 
 if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi;
 
