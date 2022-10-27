@@ -5,3 +5,5 @@
 nameOverride: ""
 fullnameOverride: ""
 
+strimzi-kafka-operator:
+  watchNamespaces: []
