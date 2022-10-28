@@ -21,5 +21,5 @@ version: 0.1.25-dev
 appVersion: 0.1.53
 dependencies:
   - name: common
-    version: 1.13.0
+    version: 2.1.1
     repository: https://charts.bitnami.com/bitnami
