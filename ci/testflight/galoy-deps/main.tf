@@ -1,5 +1,4 @@
 variable "testflight_namespace" {}
-variable "smoketest_kubeconfig" {}
 
 locals {
   cluster_name     = "galoy-staging-cluster"
@@ -8,7 +7,6 @@ locals {
 
   testflight_namespace = var.testflight_namespace
   smoketest_namespace  = "galoy-staging-smoketest"
-  smoketest_kubeconfig = var.smoketest_kubeconfig
   kafka_topic_name     = "topic"
 }
 
@@ -43,7 +41,6 @@ resource "kubernetes_secret" "smoketest" {
     kafka_topic           = local.kafka_topic_name
     smoketest_namespace   = local.smoketest_namespace
     kafka_cluster         = "${helm_release.galoy_deps.metadata[0].name}-kafka"
-    smoketest_kubeconfig  = local.smoketest_kubeconfig
   }
 }
 
