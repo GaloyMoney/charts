@@ -12,7 +12,7 @@ resource "kubernetes_namespace" "signer" {
 }
 
 resource "helm_release" "signer" {
-  name      = "signer1"
+  name      = "lnd1-signer"
   chart     = "${path.module}/../../charts/signer"
   namespace = kubernetes_namespace.signer.metadata[0].name
 

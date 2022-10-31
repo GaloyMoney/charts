@@ -10,36 +10,36 @@ resource "kubernetes_secret" "lnd_pg_pass" {
   }
 }
 
-data "kubernetes_secret" "signer1_credentials" {
+data "kubernetes_secret" "signer_credentials" {
   metadata {
-    name      = "signer1-credentials"
+    name      = "lnd1-signer-credentials"
     namespace = local.signer_namespace
   }
 }
 
-resource "kubernetes_secret" "signer1_credentials" {
+resource "kubernetes_secret" "signer_credentials" {
   metadata {
-    name      = "signer1-credentials"
+    name      = "lnd1-signer-credentials"
     namespace = local.bitcoin_namespace
   }
 
-  data = data.kubernetes_secret.signer1_credentials.data
+  data = data.kubernetes_secret.signer_credentials.data
 }
 
-data "kubernetes_secret" "signer1_accounts" {
+data "kubernetes_secret" "signer_accounts" {
   metadata {
-    name      = "signer1-accounts"
+    name      = "lnd1-signer-accounts"
     namespace = local.signer_namespace
   }
 }
 
-resource "kubernetes_secret" "signer1_accounts" {
+resource "kubernetes_secret" "signer_accounts" {
   metadata {
-    name      = "signer1-accounts"
+    name      = "lnd1-signer-accounts"
     namespace = local.bitcoin_namespace
   }
 
-  data = data.kubernetes_secret.signer1_accounts.data
+  data = data.kubernetes_secret.signer_accounts.data
 }
 
 resource "helm_release" "lnd" {
@@ -56,7 +56,7 @@ resource "helm_release" "lnd" {
   depends_on = [
     kubernetes_secret.bitcoind,
     helm_release.bitcoind,
-    kubernetes_secret.signer1_credentials,
-    kubernetes_secret.signer1_accounts
+    kubernetes_secret.signer_credentials,
+    kubernetes_secret.signer_accounts
   ]
 }

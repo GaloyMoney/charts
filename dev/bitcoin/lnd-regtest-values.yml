@@ -25,7 +25,7 @@ loopserver:
 
 lndWatchOnly:
   enabled: false
-  signer: signer1.galoy-dev-signer.svc.cluster.local:10009
+  signer: lnd1-signer.galoy-dev-signer.svc.cluster.local:10009
 
 autoGenerateSeed:
   enabled: true

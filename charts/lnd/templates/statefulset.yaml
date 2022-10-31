@@ -243,19 +243,19 @@ spec:
         {{- if .Values.lndWatchOnly.enabled }}
         - name: signer-tls
           secret:
-            secretName: signer1-credentials
+            secretName: {{.Release.Name}}-signer-credentials
             items:
             - key: tls.cert
               path: "tls.cert"
         - name: signer-macaroon
           secret:
-            secretName: signer1-credentials
+            secretName: {{.Release.Name}}-signer-credentials
             items:
             - key: signer_macaroon_base64
               path: "signer_macaroon_base64"
         - name: accounts-signer
           secret:
-            secretName: signer1-accounts
+            secretName: {{.Release.Name}}-signer-accounts
             items:
             - key: accounts-signer
               path: "accounts-signer"

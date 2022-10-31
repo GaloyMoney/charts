@@ -26,4 +26,4 @@ autoGenerateSeed:
 
 lndWatchOnly:
   enabled: true
-  signer: signer1.galoy-sig-signer.svc.cluster.local:10009
+  signer: lnd1-signer.galoy-sig-signer.svc.cluster.local:10009
