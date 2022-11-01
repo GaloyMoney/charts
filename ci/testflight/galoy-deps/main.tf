@@ -9,6 +9,7 @@ locals {
   testflight_namespace = var.testflight_namespace
   smoketest_namespace  = "galoy-staging-smoketest"
   smoketest_kubeconfig = var.smoketest_kubeconfig
+  smoketest_name       = "smoketest"
   kafka_topic_name     = "topic"
 }
 
@@ -41,9 +42,41 @@ resource "kubernetes_secret" "smoketest" {
     kafka_broker_endpoint = "galoy-deps-kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
     kafka_broker_port     = 9092
     kafka_topic           = local.kafka_topic_name
-    smoketest_namespace   = local.smoketest_namespace
+    kafka_namespace       = local.testflight_namespace
     kafka_cluster         = "${helm_release.galoy_deps.metadata[0].name}-kafka"
     smoketest_kubeconfig  = local.smoketest_kubeconfig
+  }
+}
+
+resource "kubernetes_role" "smoketest" {
+  metadata {
+    name      = local.smoketest_name
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  rule {
+    api_groups = ["kafka.strimzi.io"]
+    resources  = ["kafkatopics"]
+    verbs      = ["get", "create", "delete"]
+  }
+}
+
+resource "kubernetes_role_binding" "smoketest" {
+  metadata {
+    name      = local.smoketest_name
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = kubernetes_role.smoketest.metadata[0].name
+  }
+
+  subject {
+    kind      = "ServiceAccount"
+    name      = local.smoketest_name
+    namespace = local.smoketest_namespace
   }
 }
 
