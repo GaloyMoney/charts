@@ -123,6 +123,42 @@ entries:
       version: 0.1.0
   lnd:
     - apiVersion: v2
+      appVersion: 0.15.4
+      created: "2022-11-01T14:47:52.600669441Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 1.16.1
+        - condition: loop.enabled
+          name: loop
+          repository: ""
+          version: x.x.x
+        - condition: loopserver.enabled
+          name: loopserver
+          repository: ""
+          version: x.x.x
+        - condition: lndmon.enabled
+          name: lndmon
+          repository: ""
+          version: x.x.x
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.1.19
+      description: LND helm chart
+      digest: dec5a8dc8511bd00c8e521abd82097cb6426d7a19708499af350f15d9541dd75
+      keywords:
+        - lnd
+      maintainers:
+        - email: krtk6160@galoy.io
+          name: krtk6160
+        - email: nb@galoy.io
+          name: nicolasburtey
+      name: lnd
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.3.8/lnd-0.3.8.tgz
+      version: 0.3.8
+    - apiVersion: v2
       appVersion: 0.15.3
       created: "2022-10-21T12:09:30.608368641Z"
       dependencies:
@@ -7921,4 +7957,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-11-01T11:31:55.694517285Z"
+generated: "2022-11-01T14:47:52.600685626Z"
