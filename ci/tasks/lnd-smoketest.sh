@@ -7,7 +7,7 @@ source smoketest-settings/helpers.sh
 lndmon_host=`setting "lndmon_endpoint"`
 lnd_host=`setting "lnd_p2p_endpoint"`
 
-if [[ "${lndmon_host}" != ""]]; then
+if [[ "${lndmon_host}" != "" ]]; then
   set +e
   for i in {1..60}; do
     echo "Attempt ${i} to curl lndmon"
