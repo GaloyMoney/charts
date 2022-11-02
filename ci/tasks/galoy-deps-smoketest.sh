@@ -6,7 +6,7 @@ source smoketest-settings/helpers.sh
 
 kafka_broker_host=`setting "kafka_broker_endpoint"`
 kafka_broker_port=`setting "kafka_broker_port"`
-kafka_topic="smoketest_topic"
+kafka_topic="smoketest-topic"
 kafka_cluster=`setting "kafka_cluster"`
 kafka_namespace=`setting "kafka_namespace"`
 setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
