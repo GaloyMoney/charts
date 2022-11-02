@@ -101,6 +101,12 @@ spec:
               name: {{ .Values.galoy.kratos.masterPhonePasswordExistingSecret.name }}
               key: {{ .Values.galoy.kratos.masterPhonePasswordExistingSecret.key }}
 
+        - name: OAUTHKEEPER_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.oauthkeeper.publicKeyExistingSecret.name }}
+              key: {{ .Values.galoy.oauthkeeper.publicKeyExistingSecret.key }}
+
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
         - name: PRICE_HISTORY_PORT

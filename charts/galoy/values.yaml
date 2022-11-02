@@ -292,6 +292,10 @@ galoy:
     masterPhonePasswordExistingSecret:
       name: kratos-master-password
       key: password
+  oauthkeeper:
+    publicKeyExistingSecret:
+      name: oauthkeeper-public-key
+      key: key
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
   ##
@@ -546,6 +550,7 @@ secrets:
   lnd2PubKey:
   ## Secret for Galot app
   kratosMasterPassword:
+  oauthkeeperPublicKey:
 ## Tracing details
 ##
 tracing:
