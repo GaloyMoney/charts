@@ -1,5 +1,5 @@
 global:
-  network: testnet
+  network: signet
 
 p2pService:
   type: ClusterIP
@@ -31,8 +31,7 @@ resources:
     cpu: 1000m
 
 loop:
-  args: "--network=testnet"
-  enabled: true
+  enabled: false
 loopserver:
   enabled: false
 

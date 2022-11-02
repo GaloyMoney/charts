@@ -1,5 +1,5 @@
 galoy:
-  network: testnet
+  network: signet
 
   trigger:
     backups:

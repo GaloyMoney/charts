@@ -1,5 +1,5 @@
 global:
-  network: testnet
+  network: signet
   service:
     ports:
       rpc: 18332
