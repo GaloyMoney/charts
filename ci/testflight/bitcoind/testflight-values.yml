@@ -2,7 +2,7 @@ global:
   network: signet
   service:
     ports:
-      rpc: 18332
+      rpc: 38332
 
 secrets:
   create: false
@@ -16,7 +16,7 @@ service:
   ports:
     zmqpubrawtx: 28333
     zmqpubrawblock: 28332
-    p2p: 18333
+    p2p: 38333
 
 bitcoindCustomConfig:
   bind: 0.0.0.0

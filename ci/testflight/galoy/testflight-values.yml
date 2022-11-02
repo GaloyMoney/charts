@@ -42,7 +42,7 @@ galoy:
   
   bitcoind:
     dns: bitcoind.galoy-staging-bitcoin.svc.cluster.local
-    port: 18332
+    port: 38332
   
   lnd1:
     dns: lnd1.galoy-staging-bitcoin.svc.cluster.local
