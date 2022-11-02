@@ -18,7 +18,7 @@ persistence:
 
 configmap:
   customValues:
-    - bitcoind.rpchost=bitcoind.galoy-staging-bitcoin.svc.cluster.local:18332
+    - bitcoind.rpchost=bitcoind.galoy-staging-bitcoin.svc.cluster.local:38332
     - bitcoind.zmqpubrawblock=tcp://bitcoind.galoy-staging-bitcoin.svc.cluster.local:28332
     - bitcoind.zmqpubrawtx=tcp://bitcoind.galoy-staging-bitcoin.svc.cluster.local:28333
     - minchansize=50000

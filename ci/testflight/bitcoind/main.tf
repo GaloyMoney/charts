@@ -39,7 +39,7 @@ resource "kubernetes_secret" "smoketest" {
   data = {
     bitcoind_rpcpassword = random_password.bitcoind_rpcpassword.result
     bitcoind_endpoint    = "bitcoind.${local.testflight_namespace}.svc.cluster.local"
-    bitcoind_port        = 18332
+    bitcoind_port        = 38332
     bitcoind_user        = "rpcuser"
   }
 }
