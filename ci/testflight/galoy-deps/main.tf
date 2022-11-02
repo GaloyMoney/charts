@@ -10,7 +10,6 @@ locals {
   smoketest_namespace  = "galoy-staging-smoketest"
   smoketest_kubeconfig = var.smoketest_kubeconfig
   smoketest_name       = "smoketest"
-  kafka_topic_name     = "topic"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -41,7 +40,6 @@ resource "kubernetes_secret" "smoketest" {
   data = {
     kafka_broker_endpoint = "galoy-deps-kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
     kafka_broker_port     = 9092
-    kafka_topic           = local.kafka_topic_name
     kafka_namespace       = local.testflight_namespace
     kafka_cluster         = "${helm_release.galoy_deps.metadata[0].name}-kafka"
     smoketest_kubeconfig  = local.smoketest_kubeconfig
