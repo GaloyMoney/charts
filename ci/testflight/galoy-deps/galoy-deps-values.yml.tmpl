@@ -1,5 +1,0 @@
-strimzi-kafka-operator:
-  watchNamespaces:
-%{ for namespace in watch_namespaces ~}
-  - "${namespace}"
-%{ endfor ~}
