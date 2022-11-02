@@ -36,8 +36,6 @@ for i in {1..15}; do
   sleep 1
 done
 
-k -n $kafka_namespace delete kafkatopics.kafka.strimzi.io $kafka_topic
-
 if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi;
 
 set -e
