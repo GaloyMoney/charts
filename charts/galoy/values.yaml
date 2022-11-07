@@ -671,13 +671,14 @@ oathkeeper:
   maester:
     enabled: false
 kratos:
+  replicaCount: 2
   kratos:
-    session:
-      lifespan: "720h" # 1 month
-      earliest_possible_extend: "360h" # 2 weeks
     automigration:
       enabled: true
     config:
+      session:
+        lifespan: "720h" # 1 month
+        earliest_possible_extend: "96h" # 4 days
       identity:
         schemas:
           - id: email
