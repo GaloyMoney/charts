@@ -671,6 +671,7 @@ oathkeeper:
   maester:
     enabled: false
 kratos:
+  replicaCount: 2
   kratos:
     session:
       lifespan: "720h" # 1 month
