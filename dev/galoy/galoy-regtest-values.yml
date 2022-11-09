@@ -52,6 +52,11 @@ mongodb:
     enabled: false
   initDbScripts: {}
 
+postgresql:
+  primary:
+    persistence:
+      enabled: false
+
 redis:
   volumePermissions:
     enabled: true
@@ -62,6 +67,9 @@ redis:
       enabled: false
   metrics:
     enabled: false
+  auth:
+    existingSecret: "galoy-redis"
+    existingSecretPasswordKey: "redis-password"
 
 price:
   service:

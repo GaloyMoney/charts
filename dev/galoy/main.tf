@@ -84,7 +84,7 @@ resource "kubernetes_secret" "mongodb_creds" {
 
 resource "kubernetes_secret" "redis_creds" {
   metadata {
-    name      = "galoy-redis-pw"
+    name      = "galoy-redis"
     namespace = kubernetes_namespace.galoy.metadata[0].name
   }
 
