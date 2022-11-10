@@ -21,9 +21,9 @@ stablesats:
   priceServer:
     port: 3325
     fees:
-      baseFeeRate: 0.0008
+      baseFeeRate: 0.0010
       immediateFeeRate: 0.0005
-      delayedFeeRate: 0.0007
+      delayedFeeRate: 0.0010
   galoy:
     api: "https://api.staging.galoy.io/graphql"
     phoneNumber: "+50365055530"
