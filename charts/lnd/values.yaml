@@ -89,6 +89,8 @@ lndGeneralConfig:
   - tor.active=true
   - tor.v3=true
   - tor.skip-proxy-for-clearnet-targets=true
+  - wtclient.active=true
+  - watchtower.active=true
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 loop:
   enabled: true
