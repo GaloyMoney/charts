@@ -31,10 +31,6 @@ module "signer" {
 
   bitcoin_network = local.bitcoin_network
   name_prefix     = local.name_prefix
-
-  depends_on = [
-    module.galoy_deps
-  ]
 }
 
 module "bitcoin" {
