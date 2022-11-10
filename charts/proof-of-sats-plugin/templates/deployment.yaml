@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "proof-of-sats-plugin.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "proof-of-sats-plugin.selectorLabels" . | nindent 6 }}
@@ -35,7 +33,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 4004
+              containerPort: {{.Values.service.port}}
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
