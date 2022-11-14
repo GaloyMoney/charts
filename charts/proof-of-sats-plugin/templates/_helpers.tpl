@@ -50,14 +50,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "proof-of-sats-plugin.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "proof-of-sats-plugin.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "proof-of-sats-plugin.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
