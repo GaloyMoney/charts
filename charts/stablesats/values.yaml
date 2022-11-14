@@ -22,7 +22,7 @@ stablesats:
     port: 3325
     fees:
       baseFeeRate: 0.0010
-      immediateFeeRate: 0.0005
+      immediateFeeRate: 0.0015
       delayedFeeRate: 0.0010
   galoy:
     api: "https://api.staging.galoy.io/graphql"
