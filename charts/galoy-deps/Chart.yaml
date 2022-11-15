@@ -23,3 +23,7 @@ dependencies:
   - name: strimzi-kafka-operator
     repository: https://strimzi.io/charts/
     version: 0.32.0
+  - name: kube-monkey
+    alias: kubemonkey
+    repository: https://asobti.github.io/kube-monkey/charts/repo
+    version: 1.5.0

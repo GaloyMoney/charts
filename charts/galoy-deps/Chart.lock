@@ -2,5 +2,8 @@ dependencies:
 - name: strimzi-kafka-operator
   repository: https://strimzi.io/charts/
   version: 0.32.0
-digest: sha256:bfc1ea7eaa376291180be7e7c8891317137a8b5f6e4fa8d486dc787c9cbb49a5
-generated: "2022-11-03T15:40:32.808235349Z"
+- name: kube-monkey
+  repository: https://asobti.github.io/kube-monkey/charts/repo
+  version: 1.5.0
+digest: sha256:3a6ec7bde3a207846918c61c76cdee0dfde0329c69646229dfdae3cb37fafc2d
+generated: "2022-11-15T18:09:23.072931468+05:30"

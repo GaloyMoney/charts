@@ -7,3 +7,5 @@ fullnameOverride: ""
 
 strimzi-kafka-operator:
   watchNamespaces: []
+
+kubemonkey: {}
