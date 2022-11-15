@@ -1,0 +1,2 @@
+strimzi-kafka-operator:
+  createGlobalResources: false

@@ -23,6 +23,10 @@ resource "helm_release" "galoy_deps" {
   chart     = "${path.module}/chart"
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
+  values = [
+    file("${path.module}/testflight-values.yml")
+  ]
+
   dependency_update = true
 }
 
