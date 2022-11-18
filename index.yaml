@@ -2066,6 +2066,20 @@ entries:
       version: 0.1.0
   dealer:
     - apiVersion: v2
+      appVersion: 0.1.55
+      created: "2022-11-18T11:16:35.613886948Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.2.0
+      description: A Helm chart for Kubernetes
+      digest: f6c202a1ce6ee3bae32ce3eb632f0b00ef5f00f1d99cf3da59d78904dffbc647
+      name: dealer
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/dealer-v0.1.26/dealer-0.1.26.tgz
+      version: 0.1.26
+    - apiVersion: v2
       appVersion: 0.1.53
       created: "2022-09-29T04:54:12.064244023Z"
       dependencies:
@@ -8503,4 +8517,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-11-15T03:53:19.6916828Z"
+generated: "2022-11-18T11:16:35.613901342Z"
