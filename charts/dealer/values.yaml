@@ -6,8 +6,8 @@ dealer:
   replicaCount: 1
   image:
     repository: us.gcr.io/galoy-org/dealer
-    digest: "sha256:d1ee1ffebda87c886dfa851e6917eb25beec26e36332cccaa507157f28286262" # Auto updated by Galoy Bot
-    git_ref: "255bbe4" # Not used by helm, auto updated by Galoy Bot
+    digest: "sha256:1ea62a67dab510fe6617f477a42943ba7effe77b7311fba28b591e396933a5f8" # Auto updated by Galoy Bot
+    git_ref: "62c895b" # Not used by helm, auto updated by Galoy Bot
   exporter:
     path: /metrics
     port: 3333
@@ -34,5 +34,5 @@ dealer:
     secretKey: postgresql-db-uri
 fakeGaloyApi:
   image:
-    digest: sha256:5db037969cfe752e6e1c3810e48c3f9f49454b6b03f1ad9c11c731848070e5d1
-    git_ref: "255bbe4"
+    digest: sha256:f674663bcb8e4542da0cde3b83123977f1654159120219e0c588c689989582fe
+    git_ref: "62c895b"
