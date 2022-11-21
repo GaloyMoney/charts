@@ -1219,6 +1219,19 @@ entries:
       version: 0.1.0
   specter:
     - apiVersion: v2
+      appVersion: 1.10.5
+      created: "2022-11-21T08:16:18.943394809Z"
+      description: A Helm chart for Kubernetes
+      digest: d2c4be50ab8874f67e6e76e04410cca897e863b8c02a280e04f50c7c052f533e
+      maintainers:
+        - email: dev@galoy.io
+          name: Galoy
+      name: specter
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/specter-v0.2.0/specter-0.2.0.tgz
+      version: 0.2.0
+    - apiVersion: v2
       appVersion: 1.7.2
       created: "2022-02-10T13:15:28.222717102Z"
       description: A Helm chart for Kubernetes
@@ -8517,4 +8530,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
-generated: "2022-11-18T11:16:35.613901342Z"
+generated: "2022-11-21T08:16:18.943409424Z"
