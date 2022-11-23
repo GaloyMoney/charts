@@ -2,10 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-nameOverride: ""
-fullnameOverride: ""
-
 strimzi-kafka-operator:
+  enabled: true
+  nameOverride: kafka
   watchNamespaces: []
 
-kubemonkey: {}
+kubemonkey:
+  enabled: true
+  fullnameOverride: kubemonkey

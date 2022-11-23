@@ -5,5 +5,5 @@ dependencies:
 - name: kube-monkey
   repository: https://asobti.github.io/kube-monkey/charts/repo
   version: 1.5.0
-digest: sha256:3a6ec7bde3a207846918c61c76cdee0dfde0329c69646229dfdae3cb37fafc2d
-generated: "2022-11-16T18:42:16.805733895+05:30"
+digest: sha256:a670ecd8373173dd9f370bbb101091cf78a125529bf3b8d02c8389de312ff0a2
+generated: "2022-11-17T14:50:26.269339821+05:30"
