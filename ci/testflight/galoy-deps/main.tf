@@ -36,7 +36,7 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    kafka_broker_endpoint = "galoy-deps-kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
+    kafka_broker_endpoint = "kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
     kafka_broker_port     = 9092
     kafka_namespace       = local.testflight_namespace
     kafka_cluster         = "${helm_release.galoy_deps.metadata[0].name}-kafka"
