@@ -8,7 +8,7 @@ locals {
   ns1 = "test"
   ns2 = "test2"
 
-  kubemonkey_time_zone = "Etc/UTC"
+  kubemonkey_time_zone        = "Etc/UTC"
   kubemonkey_notification_url = "dummy"
   kubemonkey_whitelisted_namespaces = [
     local.ns1,
