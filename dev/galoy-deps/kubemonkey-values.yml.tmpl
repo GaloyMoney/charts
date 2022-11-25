@@ -1,0 +1,16 @@
+strimzi-kafka-operator:
+  enabled: false
+kubemonkey:
+  fullnameOverride: kubemonkey
+  config:
+    timeZone: ${time_zone}
+    whitelistedNamespaces:
+%{ for ns in whitelisted_namespaces ~}
+    - ${ns}
+%{ endfor ~}
+    notifications:
+      enabled: true
+      attacks: |
+        endpoint = "${notification_url}"
+        message = '{"text":"Attacked `{$name}` of `{$namespace}` on {$date} at {$time}. {$error}"}'
+        headers = ["Content-Type:application/json"]
