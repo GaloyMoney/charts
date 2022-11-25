@@ -3,12 +3,12 @@
 # Declare variables to be passed into your templates.
 
 strimzi-kafka-operator:
-  enabled: true
+  enabled: false
   nameOverride: kafka
   watchNamespaces: []
 
 kubemonkey:
-  enabled: true
+  enabled: false
   fullnameOverride: kubemonkey
 
 opentelemetry-collector:
