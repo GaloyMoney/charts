@@ -10,3 +10,153 @@ strimzi-kafka-operator:
 kubemonkey:
   enabled: true
   fullnameOverride: kubemonkey
+
+opentelemetry-collector:
+  enabled: false
+  agentCollector:
+    enabled: false
+  standaloneCollector:
+    enabled: true
+  extraEnvs:
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: "honeycomb-creds"
+        key: "api_key"
+  - name: HONEYCOMB_DATASET
+    valueFrom:
+      secretKeyRef:
+        name: "honeycomb-creds"
+        key: "dataset"
+  config:
+    exporters:
+      logging: {}
+      otlp:
+        endpoint: "api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": $${HONEYCOMB_API_KEY}
+          "x-honeycomb-dataset": $${HONEYCOMB_DATASET}
+    extensions:
+      health_check: {}
+      attributes:
+        actions:
+        - key: graphql.variables.input.code
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.code
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.twoFASecret
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.twoFAToken
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.body
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.macaroon
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.cert
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.secret
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.rawHeaders
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.key
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.value
+          action: update
+          value: "<redacted>"
+      # If set to null, will be overridden with values based on k8s resource limits
+      memory_limiter: null
+      resourcedetection:
+        detectors: [env, gke]
+        timeout: 5s
+        override: false
+      k8sattributes:
+        passthrough: true
+    receivers:
+      jaeger:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14250
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+          thrift_compact:
+            endpoint: 0.0.0.0:6831
+          thrift_binary:
+            endpoint: 0.0.0.0:6832
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - $${MY_POD_IP}:8888
+    service:
+      extensions:
+        - health_check
+      pipelines:
+        logs:
+          exporters:
+            - logging
+          processors:
+            - memory_limiter
+            - batch
+          receivers:
+            - otlp
+        metrics:
+          exporters:
+            - logging
+          processors:
+            - memory_limiter
+            - batch
+          receivers:
+            - otlp
+            - prometheus
+        traces:
+          exporters:
+            - logging
+            - otlp
+          processors:
+          - memory_limiter
+          - resourcedetection
+          - attributes
+          - k8sattributes
+          - tail_sampling
+          - batch
+          receivers:
+            - jaeger
+            - otlp
+  ports:
+    otlp:
+      enabled: true
+      containerPort: 4317
+      servicePort: 4317
+      hostPort: 4317
+      protocol: TCP
+    jaeger-thrift-b:
+      enabled: true
+      containerPort: 6832
+      servicePort: 6832
+      hostPort: 6832
+      protocol: UDP
+    jaeger-thrift:
+      enabled: true
+      containerPort: 14268
+      servicePort: 14268
+      hostPort: 14268
+      protocol: TCP
