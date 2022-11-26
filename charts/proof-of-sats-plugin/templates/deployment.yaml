@@ -22,7 +22,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "proof-of-sats-plugin.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -35,6 +34,24 @@ spec:
             - name: http
               containerPort: {{.Values.service.port}}
               protocol: TCP
+          env:
+          - name: DB_HOST
+            value: {{ .Values.postgresqlHost }}-postgresql-creds
+          - name: DB_PWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "proof-of-sats-plugin.fullname" . }}-postgresql-creds
+                key: password
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "proof-of-sats-plugin.fullname" . }}-postgresql-creds
+                key: username
+          - name: DB_DB
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "proof-of-sats-plugin.fullname" . }}-postgresql-creds
+                key: database
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
