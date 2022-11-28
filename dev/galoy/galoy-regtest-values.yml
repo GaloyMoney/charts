@@ -1,6 +1,6 @@
 galoy:
   network: regtest
-  
+
   config:
     test_accounts:
       - ref: A
