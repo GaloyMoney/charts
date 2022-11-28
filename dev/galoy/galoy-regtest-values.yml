@@ -1,6 +1,6 @@
 galoy:
   network: regtest
-
+  
   config:
     test_accounts:
       - ref: A
@@ -20,6 +20,7 @@ galoy:
       lnd1loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
       lnd2loopRestEndpoint: https://lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:8081
       lnd2loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
+      feeAccountingEnabled: true
     cronConfig:
       swapEnabled: true
 

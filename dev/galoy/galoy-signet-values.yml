@@ -20,6 +20,7 @@ galoy:
       lnd1loopRpcEndpoint: lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:11010
       lnd2loopRestEndpoint: https://lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:8081
       lnd2loopRpcEndpoint: lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:11010
+      feeAccountingEnabled: false
     cronConfig:
       swapEnabled: false
 
