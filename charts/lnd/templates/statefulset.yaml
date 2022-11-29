@@ -59,7 +59,7 @@ spec:
             - name: rpcpassword
               mountPath: /rpcpassword
       containers:
-        {{- if or (and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled) (and .Values.lndWatchOnly.enabled .Values.autoGenerateSeed.enabled) }}
+        {{- if and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled }}
         - name: init-wallet
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
@@ -97,11 +97,6 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /root/.lnd
-        {{- if .Values.lndWatchOnly.enabled }}
-          - name: accounts-signer
-            mountPath: "/root/.lnd/accounts-signer.json"
-            subPath: "accounts-signer"
-        {{- end }}
         {{- end }}
         - name: tor
           image: osminogin/tor-simple
@@ -148,14 +143,6 @@ spec:
             mountPath: /root/.lnd
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          {{- if .Values.lndWatchOnly.enabled }}
-          command:
-          - 'sh'
-          - '-c'
-          - |
-            base64 -d /root/.lnd/signer_macaroon_base64 > /root/.lnd/signer.custom.macaroon
-            lnd
-          {{- end }}
           ports:
             - name: rpc
               containerPort: {{ .Values.apiService.ports.rpc }}
@@ -171,21 +158,10 @@ spec:
             - name: config
               mountPath: /root/.lnd/lnd.conf
               subPath: lnd.conf
-            {{- if or (ne .Values.global.network "regtest") .Values.lndWatchOnly.enabled }}
+            {{- if ne .Values.global.network "regtest" }}
             - name: lnd-password
               mountPath: /tmp/lnd-pass
               subPath: password
-            {{- end }}
-            {{- if .Values.lndWatchOnly.enabled }}
-            - name: signer-tls
-              mountPath: "/root/.lnd/signer.cert"
-              subPath: "tls.cert"
-            - name: signer-macaroon
-              mountPath: "/root/.lnd/signer_macaroon_base64"
-              subPath: "signer_macaroon_base64"
-            - name: accounts-signer
-              mountPath: "/root/.lnd/accounts-signer.json"
-              subPath: "accounts-signer"
             {{- end }}
           startupProbe:
             exec:
@@ -217,7 +193,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        {{- if or (ne .Values.global.network "regtest") .Values.lndWatchOnly.enabled }}
+        {{- if ne .Values.global.network "regtest" }}
         - name: wallet-init
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
@@ -235,30 +211,10 @@ spec:
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
-        {{- if or (ne .Values.global.network "regtest") .Values.lndWatchOnly.enabled }}
+        {{- if ne .Values.global.network "regtest" }}
         - name: lnd-password
           secret:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
-        {{- end }}
-        {{- if .Values.lndWatchOnly.enabled }}
-        - name: signer-tls
-          secret:
-            secretName: {{.Values.lndWatchOnly.signerCredentialsSecretName}}
-            items:
-            - key: tls.cert
-              path: "tls.cert"
-        - name: signer-macaroon
-          secret:
-            secretName: {{.Values.lndWatchOnly.signerCredentialsSecretName}}
-            items:
-            - key: signer_macaroon_base64
-              path: "signer_macaroon_base64"
-        - name: accounts-signer
-          secret:
-            secretName: {{.Values.lndWatchOnly.signerAccountsSecretName}}
-            items:
-            - key: accounts-signer
-              path: "accounts-signer"
         {{- end }}
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}

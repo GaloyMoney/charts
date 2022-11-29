@@ -10,9 +10,6 @@ data:
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
   {{- end }}
-  {{- if and .Values.global.network "regtest" (not .Values.lndWatchOnly.enabled) }}
-    noseedbackup=true
-  {{- end }}
   {{- range .Values.lndGeneralConfig }}
     {{ . }}
   {{- end }}
@@ -28,9 +25,3 @@ data:
     externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
     bitcoin.{{ .Values.global.network }}=true
-  {{- if .Values.lndWatchOnly.enabled }}
-    remotesigner.enable=true
-    remotesigner.rpchost={{ .Values.lndWatchOnly.signerHost }}
-    remotesigner.tlscertpath=/root/.lnd/signer.cert
-    remotesigner.macaroonpath=/root/.lnd/signer.custom.macaroon
-  {{- end}}
