@@ -21,6 +21,7 @@ jobs:
       - name: Deploy Infra over K3D in Dev Mode
         run: |
           pushd dev && source ./.envrc
+          helm repo update
           make init
           make deploy-services
       - name: Deploy Charts in Dev
