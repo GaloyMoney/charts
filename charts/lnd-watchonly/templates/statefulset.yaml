@@ -1,0 +1,284 @@
+{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "lnd-watchonly.fullname" . }}
+  labels:
+    {{- include "lnd-watchonly.labels" . | nindent 4 }}
+    {{- if .Values.kubemonkey.enabled }}
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ .Release.Name }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "2"
+    {{- end }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: {{ include "lnd-watchonly.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "lnd-watchonly.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ $checksum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "lnd-watchonly.selectorLabels" . | nindent 8 }}
+        allow-to-bitcoind: "true"
+        {{- if .Values.kubemonkey.enabled }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ .Release.Name }}
+        {{- end }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "lnd-watchonly.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      initContainers:
+        - name: copy-lnd-config
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            cat <<EOF > /root/.lnd/lnd.conf
+            bitcoind.rpcpass=$(cat /rpcpassword/password)
+          {{- if eq .Values.lnd.db.backend "postgres" }}
+            db.backend=postgres
+            db.postgres.dsn=$(cat /lnd-pg-uri/uri)
+            db.postgres.timeout=0
+            db.postgres.maxconnections=21
+          {{- end}}
+            $(cat /configmap/lnd.conf)
+            EOF
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /root/.lnd/
+            - name: rpcpassword
+              mountPath: /rpcpassword
+            {{- if eq .Values.lnd.db.backend "postgres" }}
+            - name: lnd-pg-uri
+              mountPath: /lnd-pg-uri
+            {{- end}}
+      containers:
+        {{- if .Values.autoGenerateSeed.enabled }}
+        - name: init-wallet
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            set -e
+            if lncli -n {{ $.Values.global.network}} state | grep "WAITING_TO_START" ; then
+              exit 0;
+            fi
+            lncli -n {{ $.Values.global.network}} state
+            if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
+              while ! test -f /root/.lnd/tls.cert; do sleep 1; done
+              apk update; apk add expect
+              /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
+            fi
+            # Trap is required otherwise signals are not handled
+            # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
+          env:
+          - name: LND_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-pass" (include "lnd-watchonly.fullname" .) }}
+                key: password
+          - name: NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: network
+                key: network
+          volumeMounts:
+          - name: wallet-init
+            mountPath: /home/alpine/walletInit.exp
+            subPath: walletInit.exp
+          - name: lnd-storage
+            mountPath: /root/.lnd
+          - name: accounts-signer
+            mountPath: "/root/.lnd/accounts-signer.json"
+            subPath: "accounts-signer"
+        {{- end }}
+        - name: tor
+          image: osminogin/tor-simple
+          securityContext:
+            runAsUser: 100
+          command: ['/bin/sh']
+          volumeMounts:
+          - name: tor-cookie-auth
+            mountPath: /var/lib/tor/auth
+          args:
+          - '-c'
+          - |
+            sed 's/SocksPort 0.0.0.0:9050/SocksPort 127.0.0.1:9050/g' /etc/tor/torrc > ~/torrc
+            cat <<EOF > ~/torrc
+            ControlPort 9051
+            CookieAuthentication 1
+            CookieAuthFile /var/lib/tor/auth/cookie
+            CookieAuthFileGroupReadable 1
+            $(cat ~/torrc)
+            EOF
+            exec tor -f ~/torrc
+        - name: export-secrets
+          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            lncli -n=$NETWORK getinfo
+            while [[ $? != 0 ]]; do sleep 1; lncli -n=$NETWORK getinfo; done
+            /home/alpine/exportSecrets.sh
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
+          env:
+          - name: NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: network
+                key: network
+          volumeMounts:
+          - name: export-secrets
+            mountPath: /home/alpine/exportSecrets.sh
+            subPath: exportSecrets.sh
+          - name: lnd-storage
+            mountPath: /root/.lnd
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            base64 -d /root/.lnd/signer_macaroon_base64 > /root/.lnd/signer.custom.macaroon
+            lnd
+          ports:
+            - name: rpc
+              containerPort: {{ .Values.apiService.ports.rpc }}
+            - name: p2p
+              containerPort: {{ .Values.p2pService.port }}
+            - name: rest
+              containerPort: {{ .Values.apiService.ports.rest }}
+          volumeMounts:
+            - name: tor-cookie-auth
+              mountPath: /var/lib/tor/auth
+            - name: lnd-storage
+              mountPath: /root/.lnd
+            - name: config
+              mountPath: /root/.lnd/lnd.conf
+              subPath: lnd.conf
+            - name: lnd-password
+              mountPath: /tmp/lnd-pass
+              subPath: password
+            - name: signer-tls
+              mountPath: "/root/.lnd/signer.cert"
+              subPath: "tls.cert"
+            - name: signer-macaroon
+              mountPath: "/root/.lnd/signer_macaroon_base64"
+              subPath: "signer_macaroon_base64"
+            - name: accounts-signer
+              mountPath: "/root/.lnd/accounts-signer.json"
+              subPath: "accounts-signer"
+          startupProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            failureThreshold: 540
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+            initialDelaySeconds: 600
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: wallet-init
+          configMap:
+            name: {{ printf "%s-wallet-init" (include "lnd-watchonly.fullname" .) }}
+            defaultMode: 0777
+        - name: export-secrets
+          configMap:
+            name: {{ printf "%s-export-secrets" (include "lnd-watchonly.fullname" .) }}
+            defaultMode: 0777
+        - name: config
+          emptyDir: {}
+        - name: rpcpassword
+          secret:
+            secretName: {{ .Values.bitcoindRpcPassSecretName }}
+        {{- if eq .Values.lnd.db.backend "postgres" }}
+        - name: lnd-pg-uri
+          secret:
+            secretName: {{ .Values.lnd.db.config.secret }}
+        {{- end}}
+        - name: configmap
+          configMap:
+            name: {{ include "lnd-watchonly.fullname" . }}
+        - name: lnd-password
+          secret:
+            secretName: {{ printf "%s-pass" (include "lnd-watchonly.fullname" .) }}
+        - name: signer-tls
+          secret:
+            secretName: {{.Values.lndWatchOnly.signerCredentialsSecretName}}
+            items:
+            - key: tls.cert
+              path: "tls.cert"
+        - name: signer-macaroon
+          secret:
+            secretName: {{.Values.lndWatchOnly.signerCredentialsSecretName}}
+            items:
+            - key: signer_macaroon_base64
+              path: "signer_macaroon_base64"
+        - name: accounts-signer
+          secret:
+            secretName: {{.Values.lndWatchOnly.signerAccountsSecretName}}
+            items:
+            - key: accounts-signer
+              path: "accounts-signer"
+        - name: lnd-storage
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "lnd-watchonly.fullname" $) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        - name: tor-cookie-auth
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

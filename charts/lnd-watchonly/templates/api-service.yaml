@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lnd-watchonly.fullname" . }}
+  labels:
+    {{- include "lnd-watchonly.labels" . | nindent 4 }}
+  {{- with .Values.apiService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.apiService.type }}
+  {{- if and (eq .Values.apiService.type "LoadBalancer") (.Values.apiService.staticIP) }}
+  loadBalancerIP: {{ .Values.apiService.staticIP }}
+  {{- end }}
+  ports:
+    - name: rpc
+      port: {{ .Values.apiService.ports.rpc }}
+    - name: rest
+      port: {{ .Values.apiService.ports.rest }}
+  selector:
+    {{- include "lnd-watchonly.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,57 @@
+# Default values for loop.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: lightninglabs/loop
+  tag: v0.20.1-beta
+  pullPolicy: IfNotPresent
+
+sidecarImage:
+  repository: ntheile/lnd-sidecar
+  digest: "sha256:fde4b3a7506f19d0792b958c45bfca60449f1e220dd24731ab1e75577c7eb211"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port:
+    rest: 8081
+    grpc: 11010 
+
+resources:
+  limits:
+    cpu: 200m
+  requests:
+    cpu: 1m
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+persistence:
+  enabled: true
+  size: 16Mi
+  accessMode: ReadWriteOnce
+
+serviceAccount:
+  create: true
+rbac:
+  create: true

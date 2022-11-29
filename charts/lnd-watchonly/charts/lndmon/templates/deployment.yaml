@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lndmon.fullname" . }}
+  labels:
+    {{- include "lndmon.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "lndmon.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "lndmon.selectorLabels" . | nindent 8 }}
+        kube-monkey/identifier: {{ .Release.Name }}
+        allow-to-lnd-watchonly: "true"
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "lndmon.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          command: ["/bin/sh", "-c", "lndmon --lnd-watchonly.host={{.Release.Name}}:10009 --lnd-watchonly.network {{.Values.global.network}} --prometheus.listenaddr=0.0.0.0:9092"]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: http
+            timeoutSeconds: 30
+            periodSeconds: 30
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: http
+            timeoutSeconds: 30
+            periodSeconds: 30
+            failureThreshold: 6
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: lnd-tls
+              mountPath: /root/.lnd/tls.cert
+              subPath: tls.cert
+            - name: lnd-macaroons
+              mountPath: "/root/.lnd/readonly.macaroon"
+              subPath:  readonly.macaroon
+      volumes:
+      - name: lnd-tls
+        secret:
+          secretName: {{.Release.Name}}-credentials
+          items:
+          - key: tls.cert
+            path: "tls.cert"
+      - name: lnd-macaroons
+        secret:
+          secretName: {{.Release.Name}}-credentials
+          items:
+          - key: readonly.macaroon
+            path: "readonly.macaroon"
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

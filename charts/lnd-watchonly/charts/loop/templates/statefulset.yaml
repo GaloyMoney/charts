@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "loop.fullname" . }}
+  labels:
+    {{- include "loop.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: {{ include "loop.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "loop.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "loop.selectorLabels" . | nindent 8 }}
+        allow-to-lnd-watchonly: "true"
+        kube-monkey/identifier: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "loop.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          args:
+            - loopd
+            - --network={{.Values.global.network}}
+            - --experimental
+            {{- if eq .Values.global.network "regtest" }}
+            - --debuglevel=debug
+            - --server.host=lnd1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
+            - --server.notls
+            {{- end }}
+            - --lnd.host={{ .Release.Name }}:10009
+            - --lnd.macaroonpath=/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon
+            - --lnd.tlspath=/root/.lnd/tls.cert
+            - --tlsautorefresh
+            - --tlsextradomain={{ include "loop.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            - --restlisten=0.0.0.0:8081
+            - --rpclisten=0.0.0.0:11010
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: grpc
+              containerPort: 11010
+            - name: rest
+              containerPort: 8081
+          readinessProbe:
+            exec:
+              command:
+              - loop
+              - -n
+              - {{ $.Values.global.network}}
+              - terms
+          livenessProbe:
+            exec:
+              command:
+              - loop
+              - -n
+              - {{ $.Values.global.network}}
+              - terms
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: lnd-tls
+              mountPath: /root/.lnd/tls.cert
+              subPath: tls.cert
+            - name: lnd-macaroons
+              mountPath: "/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/"
+            - name: loop-storage
+              mountPath: /root/.loop
+        - name: export-secrets
+          image: "{{ .Values.sidecarImage.repository }}@{{ .Values.sidecarImage.digest }}"
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - |
+            loop -n $NETWORK terms
+            while [[ $? != 0 ]]; do sleep 1; loop -n $NETWORK terms; done
+            /home/alpine/exportSecrets.sh
+            trap "echo shutting down; exit 0" SIGKILL SIGTERM
+            while true; do sleep 1; done
+          env:
+          - name: NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: network
+                key: network
+          volumeMounts:
+          - name: export-secrets
+            mountPath: /home/alpine/exportSecrets.sh
+            subPath: exportSecrets.sh
+          - name: loop-storage
+            mountPath: /root/.loop
+      volumes:
+      - name: lnd-tls
+        secret:
+          secretName: {{.Release.Name}}-credentials
+          items:
+          - key: tls.cert
+            path: "tls.cert"
+      - name: lnd-macaroons
+        secret:
+          secretName: {{.Release.Name}}-credentials
+      - name: export-secrets
+        configMap:
+          name: {{ printf "%s-export-secrets" (include "loop.fullname" .) }}
+          defaultMode: 0777
+      - name: loop-storage
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (include "loop.fullname" .) }}
+      {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

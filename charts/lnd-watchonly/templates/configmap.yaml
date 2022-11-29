@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "lnd-watchonly.fullname" . }}
+  labels:
+    {{- include "lnd-watchonly.labels" . | nindent 4 }}
+data:
+  lnd.conf: |-
+  {{- if ne .Values.global.network "regtest" }}
+    wallet-unlock-password-file=/tmp/lnd-pass
+    wallet-unlock-allow-create=true
+  {{- end }}
+  {{- range .Values.lnd-watchonlyGeneralConfig }}
+    {{ . }}
+  {{- end }}
+  {{- range .Values.configmap.customValues }}
+    {{ . }}
+  {{- end }}
+    tlsextradomain={{ include "lnd-watchonly.fullname" . }}
+  {{- if .Values.apiService.staticIP }}
+    tlsextraip={{ .Values.apiService.staticIP }}
+  {{- end}}
+  {{- if .Values.p2pService.staticIP }}
+    tlsextraip={{ .Values.p2pService.staticIP }}
+    externalip={{ .Values.p2pService.staticIP }}
+  {{- end}}
+    bitcoin.{{ .Values.global.network }}=true
+  remotesigner.enable=true
+  remotesigner.rpchost={{ .Values.lndWatchOnly.signerHost }}
+  remotesigner.tlscertpath=/root/.lnd/signer.cert
+  remotesigner.macaroonpath=/root/.lnd/signer.custom.macaroon
+

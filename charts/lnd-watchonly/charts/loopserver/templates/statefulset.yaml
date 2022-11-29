@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "loopserver.fullname" . }}
+  labels:
+    {{- include "loopserver.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: {{ include "loopserver.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "loopserver.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "loopserver.selectorLabels" . | nindent 8 }}
+        allow-to-lnd-watchonly: "true"
+        kube-monkey/identifier: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          args:
+            - daemon
+            - --maxamt=5000000
+            - --lnd.host=lnd-watchonly1.galoy-dev-bitcoin.svc.cluster.local:10009
+            - --lnd.macaroondir=/root/.lnd/data/chain/bitcoin/regtest
+            - --lnd.tlspath=/root/.lnd/tls.cert
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: rpc
+              containerPort: 11009
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: lnd-tls
+              mountPath: /root/.lnd/tls.cert
+              subPath: tls.cert
+            - name: lnd-macaroons
+              mountPath: "/root/.lnd/data/chain/bitcoin/regtest/"
+      volumes:
+      - name: lnd-tls
+        secret:
+          secretName: lnd1-credentials
+          items:
+          - key: tls.cert
+            path: "tls.cert"
+      - name: lnd-macaroons
+        secret:
+          secretName: lnd1-credentials
+      - name: loopserver-storage
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (include "loopserver.fullname" .) }}
+      {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

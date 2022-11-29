@@ -1,0 +1,31 @@
+apiVersion: v2
+name: lnd-watchonly
+version: 0.1.0-dev
+appVersion: 0.15.4
+description: lnd-watchonly helm chart
+keywords:
+  - lnd
+  - watchonly
+maintainers:
+  - name: openoms
+    email: openoms@galoy.io
+  - name: Galoy devs
+    email: dev@galoy.io
+engine: gotpl
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    version: 1.16.1
+  - name: loop
+    version: x.x.x
+    condition: loop.enabled
+  - name: loopserver
+    version: x.x.x
+    condition: loopserver.enabled
+  - name: lndmon
+    version: x.x.x
+    condition: lndmon.enabled
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 11.1.19
+    condition: postgresql.enabled
