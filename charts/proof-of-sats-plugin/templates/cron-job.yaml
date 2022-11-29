@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "proof-of-sats-plugin.fullname" . }}-cronjob
+  labels:
+    app.kubernetes.io/managed-by: Helm
+spec:
+  schedule: "0 0 1 */4 *"
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 60
+      template:
+        spec:
+          containers:
+          - name: get-balance
+            image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+            args:
+            - "servers/cron.js"
+            env:
+            - name: DB_HOST
+              value: {{ .Values.postgresqlHost }}
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "proof-of-sats-plugin.fullname" . }}-postgres-creds
+                  key: password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "proof-of-sats-plugin.fullname" . }}-postgres-creds
+                  key: username
+            - name: DB_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "proof-of-sats-plugin.fullname" . }}-postgres-creds
+                  key: database
+            volumeMounts:
+            - name: custom-yaml
+              mountPath: "/var/yaml/"
+          volumes:
+          - name: custom-yaml
+            secret:
+              secretName: {{ include "proof-of-sats-plugin.fullname" . }}-config
+          restartPolicy: OnFailure
