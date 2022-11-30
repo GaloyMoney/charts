@@ -1,5 +1,5 @@
 apiVersion: v2
-name: signer
+name: lnd-signer
 description: LND signer helm chart
 
 # A chart can be either an 'application' or a 'library' chart.

@@ -2,11 +2,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "signer.fullname" $ }}
+  name: {{ template "lnd-signer.fullname" $ }}
   annotations:
     "helm.sh/resource-policy": keep
   labels:
-    {{- include "signer.labels" . | nindent 4 }}
+    {{- include "lnd-signer.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode | quote }}

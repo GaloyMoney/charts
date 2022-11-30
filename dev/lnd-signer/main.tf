@@ -11,14 +11,14 @@ resource "kubernetes_namespace" "signer" {
   }
 }
 
-resource "helm_release" "signer" {
-  name      = "lnd1-signer"
-  chart     = "${path.module}/../../charts/signer"
+resource "helm_release" "lnd-signer" {
+  name      = "lnd-signer1"
+  chart     = "${path.module}/../../charts/lnd-signer"
   namespace = kubernetes_namespace.signer.metadata[0].name
 
   dependency_update = true
   timeout           = 300
   values = [
-    file("${path.module}/signer-${var.bitcoin_network}-values.yml")
+    file("${path.module}/lnd-signer-${var.bitcoin_network}-values.yml")
   ]
 }

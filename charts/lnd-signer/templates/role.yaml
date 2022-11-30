@@ -2,9 +2,9 @@
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: Role
 metadata:
-  name: {{ include "signer.fullname" . }}
+  name: {{ include "lnd-signer.fullname" . }}
   labels:
-    {{- include "signer.labels" . | nindent 4 }}
+    {{- include "lnd-signer.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]

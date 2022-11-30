@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "signer.fullname" . }}
+  name: {{ include "lnd-signer.fullname" . }}
   labels:
-    {{- include "signer.labels" . | nindent 4 }}
+    {{- include "lnd-signer.labels" . | nindent 4 }}
   {{- with .Values.apiService.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -17,4 +17,4 @@ spec:
     - name: rpc
       port: {{ .Values.apiService.ports.rpc }}
   selector:
-    {{- include "signer.selectorLabels" . | nindent 4 }}
+    {{- include "lnd-signer.selectorLabels" . | nindent 4 }}

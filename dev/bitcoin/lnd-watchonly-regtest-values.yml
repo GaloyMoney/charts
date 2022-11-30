@@ -27,6 +27,6 @@ autoCreateWatchonly:
   enabled: true
 
 signerConfig:
-  signerHost: lnd1-signer.galoy-dev-signer.svc.cluster.local:10009
-  signerCredentialsSecretName: lnd1-signer-credentials
-  signerAccountsSecretName: lnd1-signer-accounts
+  signerHost: lnd-signer1.galoy-dev-signer.svc.cluster.local:10009
+  signerCredentialsSecretName: lnd-signer1-credentials
+  signerAccountsSecretName: lnd-signer1-accounts

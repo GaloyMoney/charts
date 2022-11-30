@@ -26,8 +26,8 @@ module "infra_services" {
   cluster_ca_cert  = "dummy"
 }
 
-module "signer" {
-  source = "./signer"
+module "lnd-signer" {
+  source = "./lnd-signer"
 
   bitcoin_network = local.bitcoin_network
   name_prefix     = local.name_prefix
@@ -40,7 +40,7 @@ module "bitcoin" {
   name_prefix     = local.name_prefix
 
   depends_on = [
-    module.signer
+    module.lnd-signer
   ]
 }
 

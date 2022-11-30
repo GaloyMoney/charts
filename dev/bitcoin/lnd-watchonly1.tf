@@ -1,13 +1,13 @@
 data "kubernetes_secret" "signer_credentials" {
   metadata {
-    name      = "lnd1-signer-credentials"
+    name      = "lnd-signer1-credentials"
     namespace = local.signer_namespace
   }
 }
 
 resource "kubernetes_secret" "signer_credentials" {
   metadata {
-    name      = "lnd1-signer-credentials"
+    name      = "lnd-signer1-credentials"
     namespace = local.bitcoin_namespace
   }
 
@@ -16,14 +16,14 @@ resource "kubernetes_secret" "signer_credentials" {
 
 data "kubernetes_secret" "signer_accounts" {
   metadata {
-    name      = "lnd1-signer-accounts"
+    name      = "lnd-signer1-accounts"
     namespace = local.signer_namespace
   }
 }
 
 resource "kubernetes_secret" "signer_accounts" {
   metadata {
-    name      = "lnd1-signer-accounts"
+    name      = "lnd-signer1-accounts"
     namespace = local.bitcoin_namespace
   }
 

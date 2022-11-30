@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "signer.fullname" . }}
+  name: {{ include "lnd-signer.fullname" . }}
   labels:
-    {{- include "signer.labels" . | nindent 4 }}
+    {{- include "lnd-signer.labels" . | nindent 4 }}
     {{- if .Values.kubemonkey.enabled }}
     kube-monkey/enabled: enabled
     kube-monkey/identifier: {{ .Release.Name }}
@@ -16,10 +16,10 @@ metadata:
     {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
     {{- end }}
 spec:
-  serviceName: {{ include "signer.fullname" . }}
+  serviceName: {{ include "lnd-signer.fullname" . }}
   selector:
     matchLabels:
-      {{- include "signer.selectorLabels" . | nindent 6 }}
+      {{- include "lnd-signer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -29,7 +29,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "signer.selectorLabels" . | nindent 8 }}
+        {{- include "lnd-signer.selectorLabels" . | nindent 8 }}
         allow-to-lnd: "true"
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled
@@ -39,7 +39,7 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "signer.serviceAccountName" . }}
+      serviceAccountName: {{ include "lnd-signer.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         - name: copy-signer-config
@@ -82,7 +82,7 @@ spec:
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
-                name: {{ printf "%s-pass" (include "signer.fullname" .) }}
+                name: {{ printf "%s-pass" (include "lnd-signergnergnergnergnergnergnergnergnergnergnergner.fullname" .) }}
                 key: password
           volumeMounts:
           - name: wallet-init
@@ -158,27 +158,27 @@ spec:
         {{- if ne .Values.global.network "regtest" }}
         - name: wallet-init
           configMap:
-            name: {{ printf "%s-wallet-init" (include "signer.fullname" .) }}
+            name: {{ printf "%s-wallet-init" (include "lnd-signer.fullname" .) }}
             defaultMode: 0777
         {{- end }}
         - name: export-secrets
           configMap:
-            name: {{ printf "%s-export-secrets" (include "signer.fullname" .) }}
+            name: {{ printf "%s-export-secrets" (include "lnd-signer.fullname" .) }}
             defaultMode: 0777
         - name: config
           emptyDir: {}
         - name: configmap
           configMap:
-            name: {{ include "signer.fullname" . }}
+            name: {{ include "lnd-signer.fullname" . }}
         {{- if ne .Values.global.network "regtest" }}
         - name: lnd-password
           secret:
-            secretName: {{ printf "%s-pass" (include "signer.fullname" .) }}
+            secretName: {{ printf "%s-pass" (include "lnd-signer.fullname" .) }}
         {{- end }}
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "signer.fullname" $) }}
+            claimName: {{ .Values.persistence.existingClaim | default (include "lnd-signer.fullname" $) }}
         {{- else }}
           emptyDir: {}
         {{- end }}

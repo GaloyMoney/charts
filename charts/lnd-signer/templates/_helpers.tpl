@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "signer.name" -}}
+{{- define "lnd-signer.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "signer.fullname" -}}
+{{- define "lnd-signer.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "signer.chart" -}}
+{{- define "lnd-signer.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "signer.labels" -}}
-helm.sh/chart: {{ include "signer.chart" . }}
-{{ include "signer.selectorLabels" . }}
+{{- define "lnd-signer.labels" -}}
+helm.sh/chart: {{ include "lnd-signer.chart" . }}
+{{ include "lnd-signer.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "signer.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "signer.name" . }}
+{{- define "lnd-signer.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "lnd-signer.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "signer.serviceAccountName" -}}
+{{- define "lnd-signer.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "signer.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "lnd-signer.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -63,7 +63,7 @@ Create the name of the service account to use
 
 {{- define "walletPassword" -}}
 
-{{- $secret := (lookup "v1" "Secret" .Release.Namespace ( printf "%s-pass" (include "signer.fullname" .))) -}}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace ( printf "%s-pass" (include "lnd-signer.fullname" .))) -}}
 {{- if $secret -}}
 {{/*
    Reusing current password since secret exists

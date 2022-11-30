@@ -185,7 +185,7 @@ spec:
               subPath: "tls.cert"
             - name: signer-macaroon
               mountPath: "/root/.lnd/signer_macaroon_base64"
-              subPath: "signer_macaroon_base64"
+              subPath: "lnd-signer_macaroon_base64"
             - name: accounts-signer
               mountPath: "/root/.lnd/accounts-signer.json"
               subPath: "accounts-signer"
@@ -254,7 +254,7 @@ spec:
             secretName: {{.Values.signerConfig.signerCredentialsSecretName}}
             items:
             - key: signer_macaroon_base64
-              path: "signer_macaroon_base64"
+              path: "lnd-signer_macaroon_base64"
         - name: accounts-signer
           secret:
             secretName: {{.Values.signerConfig.signerAccountsSecretName}}
