@@ -6,11 +6,9 @@ metadata:
     {{- include "lnd-watchonly.labels" . | nindent 4 }}
 data:
   lnd.conf: |-
-  {{- if ne .Values.global.network "regtest" }}
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
-  {{- end }}
-  {{- range .Values.lnd-watchonlyGeneralConfig }}
+  {{- range .Values.lndWatchonlyGeneralConfig }}
     {{ . }}
   {{- end }}
   {{- range .Values.configmap.customValues }}
@@ -25,8 +23,7 @@ data:
     externalip={{ .Values.p2pService.staticIP }}
   {{- end}}
     bitcoin.{{ .Values.global.network }}=true
-  remotesigner.enable=true
-  remotesigner.rpchost={{ .Values.lndWatchOnly.signerHost }}
-  remotesigner.tlscertpath=/root/.lnd/signer.cert
-  remotesigner.macaroonpath=/root/.lnd/signer.custom.macaroon
-
+    remotesigner.enable=true
+    remotesigner.rpchost={{ .Values.signerConfig.signerHost }}
+    remotesigner.tlscertpath=/root/.lnd/signer.cert
+    remotesigner.macaroonpath=/root/.lnd/signer.custom.macaroon

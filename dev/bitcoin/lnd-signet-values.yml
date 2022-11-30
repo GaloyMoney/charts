@@ -23,9 +23,3 @@ configmap:
 
 autoGenerateSeed:
   enabled: true
-
-lndWatchOnly:
-  enabled: true
-  signerHost: lnd1-signer.galoy-sig-signer.svc.cluster.local:10009
-  signerCredentialsSecretName: lnd1-signer-credentials
-  signerAccountsSecretName: lnd1-signer-accounts

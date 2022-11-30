@@ -1,0 +1,32 @@
+global:
+  network: regtest
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 256Mi
+
+terminationGracePeriodSeconds: 0
+
+persistence:
+  enabled: false
+
+configmap:
+  customValues:
+  - bitcoin.defaultchanconfs=0
+  - bitcoind.rpchost=bitcoind:18443
+  - keysend-hold-time=2s
+  - tlsextradomain=lnd-watchonly1.galoy-dev-bitcoin.svc.cluster.local
+
+loop:
+  enabled: true
+loopserver:
+  enabled: true
+
+autoCreateWatchonly:
+  enabled: true
+
+signerConfig:
+  signerHost: lnd1-signer.galoy-dev-signer.svc.cluster.local:10009
+  signerCredentialsSecretName: lnd1-signer-credentials
+  signerAccountsSecretName: lnd1-signer-accounts

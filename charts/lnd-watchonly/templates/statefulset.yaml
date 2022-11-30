@@ -69,7 +69,7 @@ spec:
               mountPath: /lnd-pg-uri
             {{- end}}
       containers:
-        {{- if .Values.autoGenerateSeed.enabled }}
+        {{- if .Values.autoCreateWatchonly.enabled }}
         - name: init-wallet
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
@@ -245,19 +245,19 @@ spec:
             secretName: {{ printf "%s-pass" (include "lnd-watchonly.fullname" .) }}
         - name: signer-tls
           secret:
-            secretName: {{.Values.lndWatchOnly.signerCredentialsSecretName}}
+            secretName: {{.Values.signerConfig.signerCredentialsSecretName}}
             items:
             - key: tls.cert
               path: "tls.cert"
         - name: signer-macaroon
           secret:
-            secretName: {{.Values.lndWatchOnly.signerCredentialsSecretName}}
+            secretName: {{.Values.signerConfig.signerCredentialsSecretName}}
             items:
             - key: signer_macaroon_base64
               path: "signer_macaroon_base64"
         - name: accounts-signer
           secret:
-            secretName: {{.Values.lndWatchOnly.signerAccountsSecretName}}
+            secretName: {{.Values.signerConfig.signerAccountsSecretName}}
             items:
             - key: accounts-signer
               path: "accounts-signer"

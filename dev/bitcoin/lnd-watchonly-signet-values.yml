@@ -1,0 +1,38 @@
+global:
+  network: signet
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 256Mi
+
+terminationGracePeriodSeconds: 60
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+configmap:
+  customValues:
+  - bitcoin.defaultchanconfs=0
+  - bitcoind.rpchost=bitcoind:38332
+  - keysend-hold-time=2s
+  - tlsextradomain=lnd-watchonly1.galoy-sig-bitcoin.svc.cluster.local
+  - debuglevel=info
+
+loop:
+  enabled: false
+loopserver:
+  enabled: false
+lndmon:
+  enabled: false
+
+autoCreateWatchonly:
+  enabled: true
+
+signerConfig:
+  enabled: true
+  signerHost: lnd1-signer.galoy-sig-signer.svc.cluster.local:10009
+  signerCredentialsSecretName: lnd1-signer-credentials
+  signerAccountsSecretName: lnd1-signer-accounts

@@ -59,13 +59,13 @@ spec:
       volumes:
       - name: lnd-tls
         secret:
-          secretName: lnd1-credentials
+          secretName: lnd-watchonly1-credentials
           items:
           - key: tls.cert
             path: "tls.cert"
       - name: lnd-macaroons
         secret:
-          secretName: lnd1-credentials
+          secretName: lnd-watchonly1-credentials
       - name: loopserver-storage
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:

@@ -64,7 +64,7 @@ affinity:
 walletPassword: ""
 secrets:
   create: true
-lnd-watchonlyGeneralConfig:
+lndWatchonlyGeneralConfig:
   - restlisten=0.0.0.0:8080
   - rpclisten=0.0.0.0:10009
   - listen=0.0.0.0:9735
@@ -98,7 +98,7 @@ lndmon:
   enabled: true
 rbac:
   create: true
-autoGenerateSeed:
+autoCreateWatchonly:
   enabled: false
 postgresql:
   enabled: false

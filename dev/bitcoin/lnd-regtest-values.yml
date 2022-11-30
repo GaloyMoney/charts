@@ -14,6 +14,7 @@ persistence:
 configmap:
   customValues:
   - bitcoin.defaultchanconfs=0
+  - noseedbackup=1
   - bitcoind.rpchost=bitcoind:18443
   - keysend-hold-time=2s
   - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
@@ -22,12 +23,3 @@ loop:
   enabled: true
 loopserver:
   enabled: true
-
-autoGenerateSeed:
-  enabled: true
-
-lndWatchOnly:
-  enabled: true
-  signerHost: lnd1-signer.galoy-dev-signer.svc.cluster.local:10009
-  signerCredentialsSecretName: lnd1-signer-credentials
-  signerAccountsSecretName: lnd1-signer-accounts
