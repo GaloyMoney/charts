@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ printf "%s-wallet-init" (include "lnd-watchonly.fullname" .) }}
+  name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
   labels:
-    {{- include "lnd-watchonly.labels" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
 data:
   walletInit.exp: |
     #!/usr/bin/expect -f

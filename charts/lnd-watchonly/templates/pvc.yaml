@@ -2,11 +2,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "lnd-watchonly.fullname" $ }}
+  name: {{ template "lnd.fullname" $ }}
   annotations:
     "helm.sh/resource-policy": keep
   labels:
-    {{- include "lnd-watchonly.labels" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode | quote }}

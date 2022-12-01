@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "lnd-watchonly.fullname" . }}
+  name: {{ include "lnd.fullname" . }}
   labels:
-    {{- include "lnd-watchonly.labels" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
     {{- if .Values.kubemonkey.enabled }}
     kube-monkey/enabled: enabled
     kube-monkey/identifier: {{ .Release.Name }}
@@ -16,10 +16,10 @@ metadata:
     {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
     {{- end }}
 spec:
-  serviceName: {{ include "lnd-watchonly.fullname" . }}
+  serviceName: {{ include "lnd.fullname" . }}
   selector:
     matchLabels:
-      {{- include "lnd-watchonly.selectorLabels" . | nindent 6 }}
+      {{- include "lnd.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -28,7 +28,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "lnd-watchonly.selectorLabels" . | nindent 8 }}
+        {{- include "lnd.selectorLabels" . | nindent 8 }}
         allow-to-bitcoind: "true"
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled
@@ -38,7 +38,7 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "lnd-watchonly.serviceAccountName" . }}
+      serviceAccountName: {{ include "lnd.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         - name: copy-lnd-config
@@ -94,7 +94,7 @@ spec:
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
-                name: {{ printf "%s-pass" (include "lnd-watchonly.fullname" .) }}
+                name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
           - name: NETWORK
             valueFrom:
@@ -221,11 +221,11 @@ spec:
       volumes:
         - name: wallet-init
           configMap:
-            name: {{ printf "%s-wallet-init" (include "lnd-watchonly.fullname" .) }}
+            name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
         - name: export-secrets
           configMap:
-            name: {{ printf "%s-export-secrets" (include "lnd-watchonly.fullname" .) }}
+            name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
             defaultMode: 0777
         - name: config
           emptyDir: {}
@@ -239,10 +239,10 @@ spec:
         {{- end}}
         - name: configmap
           configMap:
-            name: {{ include "lnd-watchonly.fullname" . }}
+            name: {{ include "lnd.fullname" . }}
         - name: lnd-password
           secret:
-            secretName: {{ printf "%s-pass" (include "lnd-watchonly.fullname" .) }}
+            secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
         - name: signer-tls
           secret:
             secretName: {{.Values.signerConfig.signerCredentialsSecretName}}
@@ -264,7 +264,7 @@ spec:
         - name: lnd-storage
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "lnd-watchonly.fullname" $) }}
+            claimName: {{ .Values.persistence.existingClaim | default (include "lnd.fullname" $) }}
         {{- else }}
           emptyDir: {}
         {{- end }}

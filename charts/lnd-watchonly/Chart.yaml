@@ -1,8 +1,8 @@
 apiVersion: v2
-name: lnd-watchonly
-version: 0.1.0-dev
+name: lnd
+version: 0.3.8-dev
 appVersion: 0.15.4
-description: lnd-watchonly helm chart
+description: LND watchonly helm chart
 keywords:
   - lnd
   - watchonly

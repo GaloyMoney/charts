@@ -21,7 +21,7 @@ spec:
       {{- end }}
       labels:
         {{- include "loop.selectorLabels" . | nindent 8 }}
-        allow-to-lnd-watchonly: "true"
+        allow-to-lnd: "true"
         kube-monkey/identifier: {{ .Release.Name }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
@@ -42,7 +42,7 @@ spec:
             - --experimental
             {{- if eq .Values.global.network "regtest" }}
             - --debuglevel=debug
-            - --server.host=lnd-watchonly1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
+            - --server.host=lnd1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
             - --server.notls
             {{- end }}
             - --lnd.host={{ .Release.Name }}:10009

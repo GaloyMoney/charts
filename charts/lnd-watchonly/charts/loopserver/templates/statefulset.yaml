@@ -21,7 +21,7 @@ spec:
       {{- end }}
       labels:
         {{- include "loopserver.selectorLabels" . | nindent 8 }}
-        allow-to-lnd-watchonly: "true"
+        allow-to-lnd: "true"
         kube-monkey/identifier: {{ .Release.Name }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
@@ -35,10 +35,10 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          args:
+          args: 
             - daemon
             - --maxamt=5000000
-            - --lnd.host=lnd-watchonly1.galoy-dev-bitcoin.svc.cluster.local:10009
+            - --lnd.host=lnd1.galoy-dev-bitcoin.svc.cluster.local:10009
             - --lnd.macaroondir=/root/.lnd/data/chain/bitcoin/regtest
             - --lnd.tlspath=/root/.lnd/tls.cert
           securityContext:
@@ -59,13 +59,13 @@ spec:
       volumes:
       - name: lnd-tls
         secret:
-          secretName: lnd-watchonly1-credentials
+          secretName: lnd1-credentials
           items:
           - key: tls.cert
             path: "tls.cert"
       - name: lnd-macaroons
         secret:
-          secretName: lnd-watchonly1-credentials
+          secretName: lnd1-credentials
       - name: loopserver-storage
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:

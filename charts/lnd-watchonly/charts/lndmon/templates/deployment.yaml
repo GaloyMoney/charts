@@ -21,7 +21,7 @@ spec:
       labels:
         {{- include "lndmon.selectorLabels" . | nindent 8 }}
         kube-monkey/identifier: {{ .Release.Name }}
-        allow-to-lnd-watchonly: "true"
+        allow-to-lnd: "true"
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
