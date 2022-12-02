@@ -17,7 +17,7 @@ configmap:
   - noseedbackup=1
   - bitcoind.rpchost=bitcoind:18443
   - keysend-hold-time=2s
-  - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
+  - tlsextradomain=lnd2.galoy-dev-bitcoin.svc.cluster.local
 
 loop:
   enabled: true

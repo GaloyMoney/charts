@@ -42,8 +42,7 @@ resource "kubernetes_secret" "signer_accounts" {
   data = data.kubernetes_secret.signer_accounts.data
 }
 
-# lnd-watchonly
-resource "helm_release" "lnd" {
+resource "helm_release" "lnd-watchonly" {
   name      = "lnd1"
   chart     = "${path.module}/../../charts/lnd-watchonly"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
@@ -62,20 +61,19 @@ resource "helm_release" "lnd" {
   ]
 }
 
-## lnd
-#resource "helm_release" "lnd" {
-#  name      = "lnd1"
-#  chart     = "${path.module}/../../charts/lnd"
-#  namespace = kubernetes_namespace.bitcoin.metadata[0].name
-#
-#  dependency_update = true
-#  timeout           = local.bitcoin_network == "regtest" ? 900 : 9000
-#  values = [
-#    file("${path.module}/lnd-${var.bitcoin_network}-values.yml")
-#  ]
-#
-#  depends_on = [
-#    kubernetes_secret.bitcoind,
-#    helm_release.bitcoind
-#  ]
-#}
+resource "helm_release" "lnd" {
+  name      = "lnd2"
+  chart     = "${path.module}/../../charts/lnd"
+  namespace = kubernetes_namespace.bitcoin.metadata[0].name
+
+  dependency_update = true
+  timeout           = local.bitcoin_network == "regtest" ? 900 : 9000
+  values = [
+    file("${path.module}/lnd-${var.bitcoin_network}-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.bitcoind,
+    helm_release.bitcoind
+  ]
+}

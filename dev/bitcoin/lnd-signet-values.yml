@@ -18,7 +18,7 @@ configmap:
   - bitcoin.defaultchanconfs=0
   - bitcoind.rpchost=bitcoind:38332
   - keysend-hold-time=2s
-  - tlsextradomain=lnd1.galoy-sig-bitcoin.svc.cluster.local
+  - tlsextradomain=lnd2.galoy-sig-bitcoin.svc.cluster.local
   - debuglevel=info
 
 loop:
