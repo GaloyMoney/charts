@@ -90,12 +90,6 @@ lndWatchonlyGeneralConfig:
   - tor.v3=true
   - tor.skip-proxy-for-clearnet-targets=true
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
-loop:
-  enabled: true
-loopserver:
-  enabled: false
-lndmon:
-  enabled: true
 rbac:
   create: true
 autoCreateWatchonly:
@@ -111,4 +105,3 @@ lnd:
     config:
       # This secret should contain `uri` as the key
       secret: postgres-creds
-

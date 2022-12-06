@@ -32,7 +32,7 @@ galoy:
     dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
 
   lnd2:
-    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
+    dns: lnd2.galoy-sig-bitcoin.svc.cluster.local
 
   dealer:
     host: dealer-price.galoy-sig-addons.svc.cluster.local

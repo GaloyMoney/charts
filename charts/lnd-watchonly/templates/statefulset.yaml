@@ -84,7 +84,7 @@ spec:
             if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
               while ! test -f /root/.lnd/tls.cert; do sleep 1; done
               apk update; apk add expect
-              /home/alpine/walletInit.exp ${NETWORK} $LND_PASS
+              /home/alpine/walletInit.exp ${NETWORK} ${LND_PASS}
             fi
             # Trap is required otherwise signals are not handled
             # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1

@@ -18,15 +18,10 @@ configmap:
   - keysend-hold-time=2s
   - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
                    
-loop:
-  enabled: true
-loopserver:
-  enabled: true
-
 autoCreateWatchonly:
   enabled: true
 
 signerConfig:
-  signerHost: lnd-signer1.galoy-dev-signer.svc.cluster.local:10009
-  signerCredentialsSecretName: lnd-signer1-credentials
-  signerAccountsSecretName: lnd-signer1-accounts
+  signerHost: lnd-signer2.galoy-dev-signer.svc.cluster.local:10009
+  signerCredentialsSecretName: lnd-signer2-credentials
+  signerAccountsSecretName: lnd-signer2-accounts

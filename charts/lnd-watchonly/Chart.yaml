@@ -16,15 +16,6 @@ dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
     version: 1.16.1
-  - name: loop
-    version: x.x.x
-    condition: loop.enabled
-  - name: loopserver
-    version: x.x.x
-    condition: loopserver.enabled
-  - name: lndmon
-    version: x.x.x
-    condition: lndmon.enabled
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 11.1.19

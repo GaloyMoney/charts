@@ -21,16 +21,11 @@ configmap:
   - tlsextradomain=lnd1.galoy-sig-bitcoin.svc.cluster.local
   - debuglevel=info
 
-loop:
-  enabled: false
-loopserver:
-  enabled: false
-
 autoCreateWatchonly:
   enabled: true
 
 signerConfig:
   enabled: true
-  signerHost: lnd-signer1.galoy-sig-signer.svc.cluster.local:10009
-  signerCredentialsSecretName: lnd-signer1-credentials
-  signerAccountsSecretName: lnd-signer1-accounts
+  signerHost: lnd-signer2.galoy-sig-signer.svc.cluster.local:10009
+  signerCredentialsSecretName: lnd-signer2-credentials
+  signerAccountsSecretName: lnd-signer2-accounts

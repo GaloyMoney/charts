@@ -51,13 +51,15 @@ data:
 
 
     set timeout -1
-    spawn lncli -n signet createwatchonly /root/.lnd/accounts-signer.json
+    set NETWORK [lindex $argv 0];
+    set PASSWORD [lindex $argv 1];
+    spawn lncli -n $NETWORK createwatchonly /root/.lnd/accounts-signer.json
     match_max 100000
     expect -exact "Input wallet password: "
-    send -- "passwordc\r"
+    send -- "$PASSWORD\r"
     expect -exact "\r
     Confirm password: "
-    send -- "passwordc\r"
+    send -- "$PASSWORD\r"
     expect -exact "\r
     \r
     Input an optional wallet birthday unix timestamp of first block to start scanning from (default 0): "
