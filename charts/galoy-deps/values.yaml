@@ -13,21 +13,7 @@ kubemonkey:
 
 opentelemetry-collector:
   enabled: false
-  agentCollector:
-    enabled: false
-  standaloneCollector:
-    enabled: true
-  extraEnvs:
-  - name: HONEYCOMB_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: "honeycomb-creds"
-        key: "api_key"
-  - name: HONEYCOMB_DATASET
-    valueFrom:
-      secretKeyRef:
-        name: "honeycomb-creds"
-        key: "dataset"
+  mode: deployment
   config:
     exporters:
       logging: {}
@@ -38,6 +24,17 @@ opentelemetry-collector:
           "x-honeycomb-dataset": $${HONEYCOMB_DATASET}
     extensions:
       health_check: {}
+    processors:
+      batch: {}
+      tail_sampling:
+        policies:
+        - name: status_code
+          type: status_code
+          status_code:
+            status_codes: [ERROR]
+        - name: probabilistic
+          type: probabilistic
+          probabilistic: { sampling_percentage: 100 }
       attributes:
         actions:
         - key: graphql.variables.input.code
