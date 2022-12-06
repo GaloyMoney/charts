@@ -21,6 +21,8 @@ module "infra_services" {
 
 module "galoy_deps" {
   source = "./galoy-deps"
+
+  name_prefix = local.name_prefix
 }
 
 module "bitcoin" {

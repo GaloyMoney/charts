@@ -4,12 +4,13 @@ variable "watch_namespaces" {
 
 resource "kubernetes_namespace" "kafka" {
   metadata {
-    name = "kafka"
+    name = local.kafka_namespace
   }
 }
 
 locals {
   watch_namespaces = var.watch_namespaces
+  kafka_namespace  = "${var.name_prefix}-kafka"
 }
 
 resource "helm_release" "kafka" {
