@@ -1,2 +1,7 @@
 strimzi-kafka-operator:
+  enabled: true
   createGlobalResources: false
+opentelemetry-collector:
+  enabled: true
+kubemonkey:
+  enabled: true
