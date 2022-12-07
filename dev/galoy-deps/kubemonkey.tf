@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "kubemonkey" {
   metadata {
-    name = "kubemonkey"
+    name = local.kubemonkey_namespace
   }
 }
 
@@ -8,6 +8,7 @@ locals {
   ns1 = "test"
   ns2 = "test2"
 
+  kubemonkey_namespace        = "${var.name_prefix}-kubemonkey"
   kubemonkey_time_zone        = "Etc/UTC"
   kubemonkey_notification_url = "dummy"
   kubemonkey_whitelisted_namespaces = [

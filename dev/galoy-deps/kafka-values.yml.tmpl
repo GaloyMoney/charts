@@ -1,6 +1,5 @@
-kubemonkey:
-  enabled: false
 strimzi-kafka-operator:
+  enabled: true
   watchNamespaces:
 %{ for namespace in watch_namespaces ~}
   - "${namespace}"
