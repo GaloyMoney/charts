@@ -2,27 +2,24 @@ variable "bitcoin_network" {}
 variable "name_prefix" {}
 
 locals {
-  bitcoin_network          = var.bitcoin_network
-  name_prefix              = var.name_prefix
-  letsencrypt_issuer_email = "dev@galoy.io"
-}
+  bitcoin_network = var.bitcoin_network
+  name_prefix     = var.name_prefix
 
-module "infra_services" {
-  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=86b0906"
-
-  name_prefix                 = local.name_prefix
-  letsencrypt_issuer_email    = local.letsencrypt_issuer_email
-  local_deploy                = true
-  cluster_endpoint            = "dummy"
-  cluster_ca_cert             = "dummy"
-  honeycomb_api_key           = "dummy"
-  kubemonkey_notification_url = "dummy"
 }
 
 module "galoy_deps" {
   source = "./galoy-deps"
 
   name_prefix = local.name_prefix
+}
+
+module "infra_services" {
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=33ba5b9"
+
+  name_prefix       = local.name_prefix
+  cluster_endpoint  = "dummy"
+  cluster_ca_cert   = "dummy"
+  honeycomb_api_key = "dummy"
 }
 
 module "bitcoin" {

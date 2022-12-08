@@ -157,3 +157,28 @@ opentelemetry-collector:
       servicePort: 14268
       hostPort: 14268
       protocol: TCP
+
+cert-manager:
+  enabled: false
+
+ingress-nginx:
+  enabled: false
+  controller:
+    ingressClassResource:
+      default: true
+      watchIngressWithoutClass: true
+    config:
+      enable-opentracing: "true"
+      jaeger-service-name: ${service_name}
+      jaeger-collector-host: ${jaeger_host}
+      jaeger-propagation-format: "w3c"
+      log-format-upstream: "$remote_addr - $remote_user [$time_local] \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\" $request_length $request_time [$proxy_upstream_name] [$proxy_alternative_upstream_name] $upstream_addr $upstream_response_length $upstream_response_time $upstream_status $req_id"
+    service:
+      externalTrafficPolicy: Local
+      type: ${service_type}
+    metrics:
+      enabled: true
+      service:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "10254"
