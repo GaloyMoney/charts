@@ -1,0 +1,23 @@
+apiVersion: v2
+name: loop
+type: application
+version: 0.2.0
+appVersion: 0.20.1
+description: A Helm chart for Kubernetes
+keywords:
+  - loop
+maintainers:
+  - name: Openoms
+    email: openoms@galoy.io
+  - name: Nick
+    email: nicktee@galoy.io
+  - name: Galoy
+    email: dev@galoy.io
+engine: gotpl
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    version: 2.2.0
+  - name: loopserver
+    version: x.x.x
+    condition: loopserver.enabled

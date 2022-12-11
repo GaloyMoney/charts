@@ -90,10 +90,6 @@ lndGeneralConfig:
   - tor.v3=true
   - tor.skip-proxy-for-clearnet-targets=true
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
-loop:
-  enabled: true
-loopserver:
-  enabled: false
 rbac:
   create: true
 autoGenerateSeed:

@@ -2,11 +2,3 @@ dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
   version: 2.2.0
-- name: loop
-  repository: ""
-  version: x.x.x
-- name: loopserver
-  repository: ""
-  version: x.x.x
-digest: sha256:6fad3626323bc5a24734921ffa7588293b8178847d0ff994dc766e2c70e3a378
-generated: "2022-12-20T00:29:00.305903327+05:30"

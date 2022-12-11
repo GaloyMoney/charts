@@ -35,7 +35,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          args: 
+          args:
             - daemon
             - --maxamt=5000000
             - --lnd.host=lnd1.galoy-dev-bitcoin.svc.cluster.local:10009

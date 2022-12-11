@@ -55,3 +55,6 @@ serviceAccount:
   create: true
 rbac:
   create: true
+
+loopserver:
+  enabled: false
