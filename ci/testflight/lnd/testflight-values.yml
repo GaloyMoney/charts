@@ -34,8 +34,6 @@ loop:
   enabled: false
 loopserver:
   enabled: false
-lndmon:
-  enabled: false
 
 rbac:
   create: true

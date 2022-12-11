@@ -44,7 +44,6 @@ resource "kubernetes_secret" "lnd_smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    lndmon_endpoint  = "lnd1-lndmon.${local.bitcoin_namespace}.svc.cluster.local"
     lnd_p2p_endpoint = "lnd1-p2p.${local.bitcoin_namespace}.svc.cluster.local"
   }
 }

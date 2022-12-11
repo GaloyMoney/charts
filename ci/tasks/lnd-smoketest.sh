@@ -4,14 +4,13 @@ set -eu
 
 source smoketest-settings/helpers.sh
 
-lndmon_host=`setting "lndmon_endpoint"`
 lnd_host=`setting "lnd_p2p_endpoint"`
 
-if [[ "${lndmon_host}" != "" ]]; then
+if [[ "${lnd_host}" != "" ]]; then
   set +e
   for i in {1..60}; do
-    echo "Attempt ${i} to curl lndmon"
-    curl -f ${lndmon_host}:9092/metrics
+    echo "Attempt ${i} to connect the lnd_p2p_endpoint"
+    nc -zv ${lnd_host} 9735
     if [[ $? == 0 ]]; then success="true"; break; fi;
       sleep 1
     done
@@ -19,5 +18,3 @@ if [[ "${lndmon_host}" != "" ]]; then
 
     if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi;
 fi
-
-nc -zv ${lnd_host} 9735

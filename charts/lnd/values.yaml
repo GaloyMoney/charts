@@ -94,8 +94,6 @@ loop:
   enabled: true
 loopserver:
   enabled: false
-lndmon:
-  enabled: true
 rbac:
   create: true
 autoGenerateSeed:
