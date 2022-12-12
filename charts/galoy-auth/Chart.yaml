@@ -21,4 +21,4 @@ appVersion: 0.1.0
 dependencies:
   - name: kratos
     repository: https://k8s.ory.sh/helm/charts
-    version: 0.25.4
+    version: 0.26.5
