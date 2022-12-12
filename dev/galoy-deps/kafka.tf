@@ -2,6 +2,7 @@ variable "watch_namespaces" {
   default = []
 }
 
+
 resource "kubernetes_namespace" "kafka" {
   metadata {
     name = local.kafka_namespace
