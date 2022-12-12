@@ -33,6 +33,6 @@ resource "helm_release" "kubemonkey" {
   dependency_update = true
 
   depends_on = [
-    helm_release.kafka
+    helm_release.otel
   ]
 }
