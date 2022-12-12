@@ -1,4 +1,5 @@
 strimzi-kafka-operator:
+  createGlobalResources: false
   enabled: true
   watchNamespaces:
 %{ for namespace in watch_namespaces ~}
