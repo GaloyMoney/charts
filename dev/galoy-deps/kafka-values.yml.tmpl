@@ -3,7 +3,6 @@ kubemonkey:
 opentelemetry-collector:
   enabled: false
 strimzi-kafka-operator:
-  createGlobalResources: false
   watchNamespaces:
 %{ for namespace in watch_namespaces ~}
   - "${namespace}"
