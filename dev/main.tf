@@ -19,11 +19,11 @@ module "infra_services" {
   kubemonkey_notification_url = "dummy"
 }
 
-module "galoy_deps" {
-  source = "./galoy-deps"
+# module "galoy_deps" {
+#   source = "./galoy-deps"
 
-  name_prefix = local.name_prefix
-}
+#   name_prefix = local.name_prefix
+# }
 
 module "bitcoin" {
   source = "./bitcoin"
@@ -31,9 +31,9 @@ module "bitcoin" {
   bitcoin_network = local.bitcoin_network
   name_prefix     = local.name_prefix
 
-  depends_on = [
-    module.galoy_deps
-  ]
+  # depends_on = [
+  #   module.galoy_deps
+  # ]
 }
 
 module "galoy" {

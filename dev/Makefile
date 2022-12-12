@@ -19,9 +19,6 @@ deploy-services:
 	$(TF) apply -target module.infra_services \
 				-var="bitcoin_network=regtest" 	\
 				-var="name_prefix=galoy-dev" -auto-approve
-	$(TF) apply -target module.galoy_deps \
-				-var="bitcoin_network=regtest" \
-				-var="name_prefix=galoy-dev" -auto-approve
 
 deploy:
 	$(TF) apply -var="bitcoin_network=regtest" \
