@@ -1,2 +1,4 @@
-opentelemetry-collector:
-  enabled: true
+strimzi-kafka-operator:
+  enabled: false
+kubemonkey:
+  enabled: false

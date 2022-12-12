@@ -26,7 +26,4 @@ resource "helm_release" "kafka" {
 
   dependency_update = true
 
-  depends_on = [
-    helm_release.otel
-  ]
 }
