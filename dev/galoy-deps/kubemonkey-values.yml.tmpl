@@ -1,7 +1,8 @@
+strimzi-kafka-operator:
+  enabled: false
+opentelemetry-collector:
+  enabled: false
 kubemonkey:
-  rbac:
-    enabled: false
-  enabled: true
   fullnameOverride: kubemonkey
   config:
     timeZone: ${time_zone}
