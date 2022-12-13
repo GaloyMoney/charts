@@ -1,5 +1,2 @@
 strimzi-kafka-operator:
   createGlobalResources: false
-kubemonkey:
-  rbac:
-    enabled: false
