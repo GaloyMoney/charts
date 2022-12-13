@@ -21,9 +21,6 @@ dependencies:
   - name: loopserver
     version: x.x.x
     condition: loopserver.enabled
-  - name: lndmon
-    version: x.x.x
-    condition: lndmon.enabled
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 11.1.19
