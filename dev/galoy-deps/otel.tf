@@ -9,7 +9,7 @@ resource "kubernetes_namespace" "otel" {
 }
 
 resource "helm_release" "otel" {
-  name      = "otel"
+  name      = "opentelemetry-collector"
   chart     = "${path.module}/../../charts/galoy-deps"
   namespace = kubernetes_namespace.otel.metadata[0].name
 
