@@ -105,3 +105,9 @@ lnd:
     config:
       # This secret should contain `uri` as the key
       secret: postgres-creds
+
+signerConfig:
+  enabled: true
+  signerHost: lnd-signer2.galoy-sig-signer.svc.cluster.local:10009
+  signerCredentialsSecretName: lnd-signer2-credentials
+  signerAccountsSecretName: lnd-signer2-accounts
