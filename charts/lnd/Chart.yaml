@@ -23,5 +23,5 @@ dependencies:
     condition: loopserver.enabled
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 11.1.19
+    version: 12.1.5
     condition: postgresql.enabled
