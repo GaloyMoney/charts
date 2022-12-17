@@ -55,7 +55,7 @@ spec:
             - name: JAEGER_HOST
               value: {{ .Values.tracing.jaegerHost | quote }}
             - name: TRACING_SERVICE_NAME
-              value: "{{ .Values.tracing.prefix }}-{{ template "galoy.cron.jobname" . }}"
+              value: "{{ .Values.tracing.prefix }}-{{ template "galoy.balanceNotificationCron.jobname" . }}"
 
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 12 }}
