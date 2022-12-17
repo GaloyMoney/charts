@@ -66,6 +66,8 @@ spec:
 {{ include "galoy.lnd1.env" . | indent 12 }}
 {{ include "galoy.lnd2.env" . | indent 12 }}
 
+{{ include "galoy.jwt.env" . | indent 8 }}
+
             {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
