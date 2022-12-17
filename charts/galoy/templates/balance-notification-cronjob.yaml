@@ -55,7 +55,7 @@ spec:
             - name: JAEGER_HOST
               value: {{ .Values.tracing.jaegerHost | quote }}
             - name: TRACING_SERVICE_NAME
-              value: "{{ .Values.tracing.prefix }}-{{ template "galoy.cron.jobname" . }}"
+              value: "{{ .Values.tracing.prefix }}-{{ template "galoy.balanceNotificationCron.jobname" . }}"
 
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 12 }}
@@ -65,6 +65,8 @@ spec:
 {{ include "galoy.bitcoind.env" . | indent 12 }}
 {{ include "galoy.lnd1.env" . | indent 12 }}
 {{ include "galoy.lnd2.env" . | indent 12 }}
+
+{{ include "galoy.jwt.env" . | indent 8 }}
 
             {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
             - name: DROPBOX_ACCESS_TOKEN
