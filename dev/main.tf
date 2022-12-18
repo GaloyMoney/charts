@@ -14,11 +14,12 @@ module "galoy_deps" {
 }
 
 module "infra_services" {
-  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=33ba5b9"
+  # source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=33ba5b9"
+  source = "../../galoy-infra/modules/services"
 
-  name_prefix       = local.name_prefix
-  cluster_endpoint  = "dummy"
-  cluster_ca_cert   = "dummy"
+  name_prefix      = local.name_prefix
+  cluster_endpoint = "dummy"
+  cluster_ca_cert  = "dummy"
 }
 
 module "bitcoin" {
