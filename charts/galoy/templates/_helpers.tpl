@@ -216,11 +216,11 @@ Return Galoy environment variables for Redis configuration
 Return Galoy environment variables for Twilio
 */}}
 {{- define "galoy.twilio.env" -}}
-- name: TWILIO_PHONE_NUMBER
+- name: TWILIO_VERIFY_SERVICE_ID
   valueFrom:
     secretKeyRef:
       name: {{ .Values.galoy.twilioExistingSecret.name }}
-      key: {{ .Values.galoy.twilioExistingSecret.phone_number_key }}
+      key: {{ .Values.galoy.twilioExistingSecret.verify_service_id }}
 - name: TWILIO_ACCOUNT_SID
   valueFrom:
     secretKeyRef:
