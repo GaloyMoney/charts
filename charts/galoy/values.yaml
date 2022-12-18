@@ -399,11 +399,13 @@ galoy:
   twilioExistingSecret:
     # Secret Name
     name: twilio-secret
-    # Phone Number Secret Key
+    # Phone Number 
     phone_number_key: TWILIO_PHONE_NUMBER
-    # Phone Number Secret Key
+    # Twilio Verify Service Account
+    verify_service_id: TWILIO_VERIFY_SERVICE_ID
+    # Twilio Account ID
     account_sid_key: TWILIO_ACCOUNT_SID
-    # Phone Number Secret Key
+    # Twilio Authentication Token
     auth_token_key: TWILIO_AUTH_TOKEN
 # Configuration values for the mongodb dependency.
 # Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
@@ -527,7 +529,7 @@ secrets:
   ## Secret for JWT
   jwtSecret:
   ## Secret for Twilio
-  twilioPhoneNumber:
+  twilioVerifyService:
   twilioAccountSid:
   twilioAuthToken:
   ## Bitcoin RPC password
