@@ -402,7 +402,7 @@ galoy:
     # Phone Number 
     phone_number_key: TWILIO_PHONE_NUMBER
     # Twilio Verify Service Account
-    verify_service: TWILIO_VERIFY_SERVICE
+    verify_service_id: TWILIO_VERIFY_SERVICE_ID
     # Twilio Account ID
     account_sid_key: TWILIO_ACCOUNT_SID
     # Twilio Authentication Token
