@@ -19,7 +19,6 @@ module "infra_services" {
   name_prefix       = local.name_prefix
   cluster_endpoint  = "dummy"
   cluster_ca_cert   = "dummy"
-  honeycomb_api_key = "dummy"
 }
 
 module "bitcoin" {

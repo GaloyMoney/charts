@@ -4,6 +4,7 @@ locals {
   ingress_namespace        = "${var.name_prefix}-ingress"
   ingress_service_name     = "${var.name_prefix}-ingress"
   jaeger_host              = "opentelemetry-collector.${local.otel_namespace}.svc.cluster.local"
+  enable_tracing           = true
 }
 
 resource "kubernetes_namespace" "ingress" {
@@ -20,10 +21,10 @@ resource "helm_release" "cert_manager" {
   chart     = "${path.module}/../../charts/galoy-deps"
   namespace = kubernetes_namespace.ingress.metadata[0].name
 
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
+  values = [
+    file("${path.module}/cert-manager-values.yml.tmpl")
+  ]
+
   depends_on = [
     helm_release.kafka
   ]
@@ -39,6 +40,7 @@ resource "helm_release" "ingress_nginx" {
       service_type = local.local_deploy ? "NodePort" : "LoadBalancer"
       jaeger_host  = local.jaeger_host
       service_name = local.ingress_service_name
+      enable_tracing = local.enable_tracing
     })
   ]
 

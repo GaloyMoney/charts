@@ -16,14 +16,8 @@ deploy-services:
 	$(TF) apply -target module.galoy_deps.helm_release.cert_manager \
 				-var="bitcoin_network=regtest"	\
 				-var="name_prefix=galoy-dev" -auto-approve
-	$(TF) apply -target module.galoy_deps.kubernetes_manifest.issuer \
-				-var="bitcoin_network=regtest"	\
-				-var="name_prefix=galoy-dev" -auto-approve
 	$(TF) apply -target module.galoy_deps \
 				-var="bitcoin_network=regtest" 	\
-				-var="name_prefix=galoy-dev" -auto-approve
-	$(TF) apply -target module.galoy_deps \
-				-var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
 destroy-services:
