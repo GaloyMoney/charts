@@ -58,18 +58,6 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
-resource "kubernetes_secret" "lnd_pg_pass" {
-  metadata {
-    name      = "postgres-creds"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = {
-    uri                 = "postgres://postgres:password@lnd1-postgresql:5432/lnd"
-    "postgres-password" = "password"
-  }
-}
-
 resource "helm_release" "lnd1" {
   name       = "lnd1"
   chart      = "${path.module}/chart"
