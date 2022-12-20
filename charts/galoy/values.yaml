@@ -319,7 +319,7 @@ galoy:
     ##
     loopCredentialsExistingSecret:
       ## Secret Name
-      name: lnd1-loop-credentials
+      name: loop1-credentials
       ## Macaroon Key
       macaroon_key: loop_macaroon_base64
       ## TLS Key
@@ -351,7 +351,7 @@ galoy:
     ##
     loopCredentialsExistingSecret:
       ## Secret Name
-      name: lnd2-loop-credentials
+      name: loop2-credentials
       ## Macaroon Key
       macaroon_key: loop_macaroon_base64
       ## TLS Key

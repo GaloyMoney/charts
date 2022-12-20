@@ -189,36 +189,36 @@ resource "kubernetes_secret" "lnd1_credentials" {
   data = data.kubernetes_secret.lnd1_credentials.data
 }
 
-data "kubernetes_secret" "lnd1_loop_credentials" {
+data "kubernetes_secret" "loop1_credentials" {
   metadata {
-    name      = "lnd1-loop-credentials"
+    name      = "loop1-credentials"
     namespace = local.bitcoin_namespace
   }
 }
 
-resource "kubernetes_secret" "lnd1_loop_credentials" {
+resource "kubernetes_secret" "loop1_credentials" {
   metadata {
-    name      = "lnd1-loop-credentials"
+    name      = "loop1-credentials"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = data.kubernetes_secret.lnd1_loop_credentials.data
+  data = data.kubernetes_secret.loop1_credentials.data
 }
 
-data "kubernetes_secret" "lnd2_loop_credentials" {
+data "kubernetes_secret" "loop2_credentials" {
   metadata {
-    name      = "lnd2-loop-credentials"
+    name      = "loop2-credentials"
     namespace = local.bitcoin_namespace
   }
 }
 
-resource "kubernetes_secret" "lnd2_loop_credentials" {
+resource "kubernetes_secret" "loop2_credentials" {
   metadata {
-    name      = "lnd2-loop-credentials"
+    name      = "loop2-credentials"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = data.kubernetes_secret.lnd2_loop_credentials.data
+  data = data.kubernetes_secret.loop2_credentials.data
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -312,10 +312,10 @@ resource "helm_release" "galoy" {
   depends_on = [
     kubernetes_secret.bitcoinrpc_password,
     kubernetes_secret.lnd1_credentials,
-    kubernetes_secret.lnd1_loop_credentials,
+    kubernetes_secret.loop1_credentials,
     kubernetes_secret.lnd1_pubkey,
     kubernetes_secret.lnd2_credentials,
-    kubernetes_secret.lnd2_loop_credentials,
+    kubernetes_secret.loop2_credentials,
     kubernetes_secret.lnd2_pubkey,
     kubernetes_secret.price_history_postgres_creds
   ]
