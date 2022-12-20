@@ -8,8 +8,5 @@ dependencies:
 - name: loopserver
   repository: ""
   version: x.x.x
-- name: postgresql
-  repository: https://charts.bitnami.com/bitnami
-  version: 11.1.19
-digest: sha256:b4ff598f1a247a7d42db9e87c24ff35328829544e794294c12bb147d5d1efc49
-generated: "2022-11-15T17:06:55.266810345Z"
+digest: sha256:6fad3626323bc5a24734921ffa7588293b8178847d0ff994dc766e2c70e3a378
+generated: "2022-12-20T00:29:00.305903327+05:30"
