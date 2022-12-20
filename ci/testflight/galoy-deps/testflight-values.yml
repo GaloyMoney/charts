@@ -1,2 +1,4 @@
 strimzi-kafka-operator:
   createGlobalResources: false
+cert-manager:
+  installCRDs: false
