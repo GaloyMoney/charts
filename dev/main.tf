@@ -14,8 +14,7 @@ module "galoy_deps" {
 }
 
 module "infra_services" {
-  # source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=33ba5b9"
-  source = "../../galoy-infra/modules/services"
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=33ba5b9"
 
   name_prefix      = local.name_prefix
   cluster_endpoint = "dummy"
