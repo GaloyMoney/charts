@@ -71,8 +71,8 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Values.persistence.existingClaim | default (include "loopserver.fullname" .) }}
       {{- else }}
-          emptyDir: {}
-        {{- end }}
+        emptyDir: {}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

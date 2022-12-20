@@ -1,0 +1,8 @@
+global:
+  network: regtest
+
+persistence:
+  enabled: false
+
+loopserver:
+  enabled: true

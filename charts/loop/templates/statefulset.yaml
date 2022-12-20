@@ -38,15 +38,15 @@ spec:
         - name: {{ .Chart.Name }}
           args:
             - loopd
-            - --network={{.Values.global.network}}
+            - --network={{ .Values.global.network }}
             - --experimental
             {{- if eq .Values.global.network "regtest" }}
             - --debuglevel=debug
-            - --server.host=lnd1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
+            - --server.host=loop1-loopserver.galoy-dev-bitcoin.svc.cluster.local:11009
             - --server.notls
             {{- end }}
-            - --lnd.host={{ .Release.Name }}:10009
-            - --lnd.macaroonpath=/root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon
+            - --lnd.host={{ .Values.lndConfig.lndReleaseName }}.{{ .Release.Namespace }}.svc.cluster.local:10009
+            - --lnd.macaroonpath=/root/.lnd/data/chain/bitcoin/{{ .Values.global.network }}/admin.macaroon
             - --lnd.tlspath=/root/.lnd/tls.cert
             - --tlsautorefresh
             - --tlsextradomain={{ include "loop.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
@@ -66,14 +66,14 @@ spec:
               command:
               - loop
               - -n
-              - {{ $.Values.global.network}}
+              - {{ .Values.global.network }}
               - terms
           livenessProbe:
             exec:
               command:
               - loop
               - -n
-              - {{ $.Values.global.network}}
+              - {{ .Values.global.network }}
               - terms
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -91,17 +91,11 @@ spec:
           args:
           - '-c'
           - |
-            loop -n $NETWORK terms
-            while [[ $? != 0 ]]; do sleep 1; loop -n $NETWORK terms; done
+            loop -n {{ .Values.global.network }} terms
+            while [[ $? != 0 ]]; do sleep 1; loop -n {{ .Values.global.network }} terms; done
             /home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
-          env:
-          - name: NETWORK
-            valueFrom:
-              secretKeyRef:
-                name: network
-                key: network
           volumeMounts:
           - name: export-secrets
             mountPath: /home/alpine/exportSecrets.sh
@@ -111,7 +105,7 @@ spec:
       volumes:
       - name: lnd-tls
         secret:
-          secretName: {{.Release.Name}}-credentials
+          secretName: {{ .Values.lndConfig.lndReleaseName }}-credentials
           items:
           - key: tls.cert
             path: "tls.cert"
@@ -127,8 +121,8 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Values.persistence.existingClaim | default (include "loop.fullname" .) }}
       {{- else }}
-          emptyDir: {}
-        {{- end }}
+        emptyDir: {}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

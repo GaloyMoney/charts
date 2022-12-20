@@ -13,7 +13,6 @@ maintainers:
     email: nicktee@galoy.io
   - name: Galoy
     email: dev@galoy.io
-engine: gotpl
 dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
