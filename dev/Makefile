@@ -13,14 +13,15 @@ init:
 	terraform init
 
 deploy-services:
-	$(TF) apply -target module.infra_services.helm_release.cert_manager \
+	$(TF) apply -target module.galoy_deps.helm_release.cert_manager \
 				-var="bitcoin_network=regtest"	\
 				-var="name_prefix=galoy-dev" -auto-approve
-	$(TF) apply -target module.infra_services \
+	$(TF) apply -target module.galoy_deps \
 				-var="bitcoin_network=regtest" 	\
 				-var="name_prefix=galoy-dev" -auto-approve
-	$(TF) apply -target module.galoy_deps \
-				-var="bitcoin_network=regtest" \
+
+destroy-services:
+	$(TF) destroy -var="bitcoin_network=regtest"	\
 				-var="name_prefix=galoy-dev" -auto-approve
 
 deploy:

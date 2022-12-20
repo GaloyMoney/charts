@@ -1,0 +1,16 @@
+cert-manager:
+  enabled: false
+kubemonkey:
+  enabled: false
+opentelemetry-collector:
+  enabled: false
+strimzi-kafka-operator:
+  enabled: false
+ingress-nginx:
+  controller:
+    config:
+      enable-opentracing: ${enable_tracing}
+      jaeger-service-name: ${service_name}
+      jaeger-collector-host: ${jaeger_host}
+    service:
+      type: NodePort

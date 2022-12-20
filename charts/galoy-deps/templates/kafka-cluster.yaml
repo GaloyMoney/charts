@@ -1,3 +1,4 @@
+{{- if (index .Values "strimzi-kafka-operator").enabled -}}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
@@ -37,3 +38,4 @@ spec:
           value: "true"
     topicOperator: {}
     userOperator: {}
+{{- end -}}
