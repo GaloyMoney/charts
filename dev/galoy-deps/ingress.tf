@@ -1,6 +1,5 @@
 locals {
   letsencrypt_issuer_email = "dev@galoy.io"
-  local_deploy             = "true"
   ingress_namespace        = "${var.name_prefix}-ingress"
   ingress_service_name     = "${var.name_prefix}-ingress"
   jaeger_host              = "opentelemetry-collector.${local.otel_namespace}.svc.cluster.local"
@@ -37,7 +36,6 @@ resource "helm_release" "ingress_nginx" {
 
   values = [
     templatefile("${path.module}/ingress-values.yml.tmpl", {
-      service_type   = local.local_deploy ? "NodePort" : "LoadBalancer"
       jaeger_host    = local.jaeger_host
       service_name   = local.ingress_service_name
       enable_tracing = local.enable_tracing
