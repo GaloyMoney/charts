@@ -111,7 +111,7 @@ spec:
             path: "tls.cert"
       - name: lnd-macaroons
         secret:
-          secretName: {{.Release.Name}}-credentials
+          secretName: {{ .Values.lndConfig.lndReleaseName }}-credentials
       - name: export-secrets
         configMap:
           name: {{ printf "%s-export-secrets" (include "loop.fullname" .) }}
