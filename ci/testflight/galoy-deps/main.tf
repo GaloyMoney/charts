@@ -10,6 +10,8 @@ locals {
   smoketest_namespace  = "galoy-staging-smoketest"
   smoketest_kubeconfig = var.smoketest_kubeconfig
   smoketest_name       = "smoketest"
+  service_name         = "${testflight_namespace}-ingress"
+  jaeger_host          = "galoy-deps-opentelemetry-collector"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -24,7 +26,10 @@ resource "helm_release" "galoy_deps" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    file("${path.module}/testflight-values.yml")
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
+      service_name : local.service_name
+      jaeger_host : local.jaeger_host
+    })
   ]
 
   dependency_update = true
