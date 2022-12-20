@@ -10,7 +10,7 @@ locals {
   smoketest_namespace  = "galoy-staging-smoketest"
   smoketest_kubeconfig = var.smoketest_kubeconfig
   smoketest_name       = "smoketest"
-  service_name         = "${testflight_namespace}-ingress"
+  service_name         = "${local.testflight_namespace}-ingress"
   jaeger_host          = "galoy-deps-opentelemetry-collector"
 }
 
