@@ -75,3 +75,6 @@ oathkeeper:
 
 secrets:
   create: false
+
+loop:
+  enabled: false
