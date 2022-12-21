@@ -27,7 +27,7 @@ stablesats:
       immediateFeeRate: 0.0015
       delayedFeeRate: 0.0010
     priceCache:
-      stableAfter: 30
+      staleAfter: 30
     health:
       unhealthyMsgIntervalPrice: 20
   galoy:
