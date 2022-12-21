@@ -47,14 +47,14 @@ spec:
             path: /health/live
             port: 8080
           periodSeconds: 5
-          failureThreshold: 5
+          failureThreshold: 6
           timeoutSeconds: 1
         readinessProbe:
           httpGet:
             path: /health/ready
             port: 8080
           periodSeconds: 5
-          failureThreshold: 5
+          failureThreshold: 6
           timeoutSeconds: 1
         env:
         - name: CRASH_REPORT_CONFIG

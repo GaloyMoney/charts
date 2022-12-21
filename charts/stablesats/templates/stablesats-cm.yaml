@@ -38,8 +38,10 @@ data:
       config:
         migrate_on_start: true
         okex_poll_frequency: {{ .Values.stablesats.hedging.okexPollFrequency }}
-        unhealthy_msg_interval_position: {{ .Values.stablesats.hedging.unhealthyMsgIntervalPosition }}
-        unhealthy_msg_interval_liability: {{ .Values.stablesats.hedging.unhealthyMsgIntervalLiability }}
+        health:
+          unhealthy_msg_interval_position: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalPosition }}
+          unhealthy_msg_interval_liability: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalLiability }}
+          unhealthy_msg_interval_price: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalPrice }}
 
     galoy:
       api: {{ .Values.stablesats.galoy.api }}

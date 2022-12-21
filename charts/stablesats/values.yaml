@@ -18,8 +18,10 @@ stablesats:
   hedging:
     enabled: true
     okexPollFrequency: 10
-    unhealthyMsgIntervalPosition: 20
-    unhealthyMsgIntervalLiability: 20
+    health:
+      unhealthyMsgIntervalPosition: 30
+      unhealthyMsgIntervalLiability: 30
+      unhealthyMsgIntervalPrice: 30
   priceServer:
     port: 3325
     fees:
@@ -27,9 +29,9 @@ stablesats:
       immediateFeeRate: 0.0015
       delayedFeeRate: 0.0010
     priceCache:
-      staleAfter: 30
+      staleAfter: 40
     health:
-      unhealthyMsgIntervalPrice: 20
+      unhealthyMsgIntervalPrice: 30
   galoy:
     api: "https://api.staging.galoy.io/graphql"
     phoneNumber: "+50365055530"
