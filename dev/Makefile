@@ -31,6 +31,11 @@ deploy:
 all: create-cluster init deploy-services deploy
 
 
+redeploy-bitcoin:
+	kubectl delete namespace galoy-dev-bitcoin --force
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
 redeploy-galoy:
 	kubectl delete namespace galoy-dev-galoy --force
 	cd galoy

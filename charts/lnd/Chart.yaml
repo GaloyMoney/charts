@@ -15,9 +15,3 @@ dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
     version: 2.2.0
-  - name: loop
-    version: x.x.x
-    condition: loop.enabled
-  - name: loopserver
-    version: x.x.x
-    condition: loopserver.enabled

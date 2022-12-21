@@ -1,6 +1,8 @@
 # Default values for loop.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  network: mainnet
 
 image:
   repository: lightninglabs/loop
@@ -55,3 +57,9 @@ serviceAccount:
   create: true
 rbac:
   create: true
+
+loopserver:
+  enabled: false
+
+lndConfig:
+  lndReleaseName: lnd1

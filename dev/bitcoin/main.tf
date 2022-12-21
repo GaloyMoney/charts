@@ -49,6 +49,17 @@ resource "kubernetes_secret" "lnd_smoketest" {
   }
 }
 
+resource "kubernetes_secret" "loop_smoketest" {
+  count = var.bitcoin_network == "signet" ? 0 : 1
+  metadata {
+    name      = "loop-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    loop_api_endpoint = "loop1.${local.bitcoin_namespace}.svc.cluster.local"
+  }
+}
+
 resource "kubernetes_secret" "rtl_smoketest" {
   metadata {
     name      = "rtl-smoketest"
