@@ -46,14 +46,14 @@ spec:
           httpGet:
             path: /health/live
             port: 8080
-          periodSeconds: 5
+          periodSeconds: 10
           failureThreshold: 6
           timeoutSeconds: 1
         readinessProbe:
           httpGet:
             path: /health/ready
             port: 8080
-          periodSeconds: 5
+          periodSeconds: 10
           failureThreshold: 6
           timeoutSeconds: 1
         env:
