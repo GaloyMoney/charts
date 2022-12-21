@@ -8,8 +8,8 @@ secrets:
 stablesats:
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:b53af147827c45c3be1daa2575104594c8ee00a5525a3e951dff5f8d085ac9c7"
-    git_ref: "44e4746"
+    digest: "sha256:a60c38c6fbb2384f25c0dcb7d04b27966a9a2f37424fe8df391f2edd2d4d22b9"
+    git_ref: "4da93d8"
   crash_report_config_danger: false
   userTrades:
     enabled: true
@@ -18,8 +18,10 @@ stablesats:
   hedging:
     enabled: true
     okexPollFrequency: 10
-    unhealthyMsgIntervalPosition: 20
-    unhealthyMsgIntervalLiability: 20
+    health:
+      unhealthyMsgIntervalPosition: 30
+      unhealthyMsgIntervalLiability: 30
+      unhealthyMsgIntervalPrice: 30
   priceServer:
     port: 3325
     fees:
@@ -27,9 +29,9 @@ stablesats:
       immediateFeeRate: 0.0015
       delayedFeeRate: 0.0010
     priceCache:
-      staleAfter: 30
+      staleAfter: 40
     health:
-      unhealthyMsgIntervalPrice: 20
+      unhealthyMsgIntervalPrice: 30
   galoy:
     api: "https://api.staging.galoy.io/graphql"
     phoneNumber: "+50365055530"
