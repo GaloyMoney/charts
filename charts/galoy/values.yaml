@@ -697,7 +697,7 @@ kratos:
                 hooks:
                   - hook: web_hook
                     config:
-                      url: http://e2e-tests:4012/kratos/registration
+                      url: http://api:4002/kratos/registration
                       method: POST
                       can_interrupt: true
                       body: file:///home/ory/body.jsonnet # TODO: use a base64 encoding instead
