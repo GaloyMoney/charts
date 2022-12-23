@@ -687,7 +687,27 @@ kratos:
             url: file:///etc/config/identity.schema.json
         default_schema_id: email
       selfservice:
-        default_browser_return_url: http://localhost:3000/
+        default_browser_return_url: http://127.0.0.1:4002/
+        flows:
+          registration:
+            lifespan: 10m
+            ui_url: http://127.0.0.1:4002/registration
+            after:
+              password:
+                hooks:
+                  - hook: web_hook
+                    config:
+                      url: http://e2e-tests:4012/kratos/registration
+                      method: POST
+                      can_interrupt: true
+                      body: file:///home/ory/body.jsonnet # TODO: use a base64 encoding instead
+                      auth:
+                        type: api_key
+                        config:
+                          name: Authorization
+                          value: The-Value-of-My-Key
+                          in: header
+                  - hook: session
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
