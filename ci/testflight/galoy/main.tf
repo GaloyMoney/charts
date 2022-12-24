@@ -303,7 +303,7 @@ resource "kubernetes_secret" "kratos_master_user_password" {
 
   data = {
     "master_user_password" = random_password.kratos_master_user_password.result
-    "api_key"              = random_password.kratos_callback_api_key.result
+    "callback_api_key"     = random_password.kratos_callback_api_key.result
   }
 }
 
