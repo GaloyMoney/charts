@@ -104,7 +104,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.galoy.kratos.existingSecret.name }}
-              key: {{ .Values.galoy.kratos.existingSecret.api_key }}
+              key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
