@@ -285,14 +285,20 @@ resource "random_password" "kratos_master_password" {
   length  = 32
   special = false
 }
+
+resource "random_password" "kratos_api_key" {
+  length = 32
+}
+
 resource "kubernetes_secret" "kratos_master_password" {
   metadata {
-    name      = "kratos-master-password"
+    name      = "kratos-secret"
     namespace = kubernetes_namespace.galoy.metadata[0].name
   }
 
   data = {
     "password" = random_password.kratos_master_password.result
+    "api_key"  = random_password.kratos_api_key.result
   }
 }
 

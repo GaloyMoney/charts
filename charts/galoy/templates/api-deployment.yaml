@@ -18,11 +18,11 @@ metadata:
 spec:
 
   replicas: {{ .Values.galoy.api.replicas }}
-  
+
   selector:
     matchLabels:
       app: {{ template "galoy.api.fullname" . }}
-  
+
   template:
 
     metadata:
@@ -47,7 +47,7 @@ spec:
       containers:
       - name: api
         image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-        args: 
+        args:
         - "-r"
         - "/app/lib/services/tracing.js"
         - "lib/servers/graphql-main-server.js"
@@ -75,7 +75,7 @@ spec:
           value: {{ .Values.galoy.network }}
         - name: GALOY_API_PORT
           value: {{ .Values.galoy.api.port | quote }}
-        
+
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
         - name: TRACING_SERVICE_NAME
@@ -98,8 +98,13 @@ spec:
         - name: KRATOS_MASTER_PHONE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.galoy.kratos.masterPhonePasswordExistingSecret.name }}
-              key: {{ .Values.galoy.kratos.masterPhonePasswordExistingSecret.key }}
+              name: {{ .Values.galoy.kratos.existingSecret.name }}
+              key: {{ .Values.galoy.kratos.existingSecret.password }}
+        - name: KRATOS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.kratos.existingSecret.name }}
+              key: {{ .Values.galoy.kratos.existingSecret.api_key }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}
