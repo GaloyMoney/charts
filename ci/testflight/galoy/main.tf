@@ -291,7 +291,7 @@ resource "random_password" "kratos_master_password" {
   special = false
 }
 
-resource "random_password" "kratos_api_key" {
+resource "random_password" "kratos_callback_api_key" {
   length = 32
 }
 
@@ -303,7 +303,7 @@ resource "kubernetes_secret" "kratos_master_password" {
 
   data = {
     "password" = random_password.kratos_master_password.result
-    "api_key"  = random_password.kratos_api_key.result
+    "api_key"  = random_password.kratos_callback_api_key.result
   }
 }
 

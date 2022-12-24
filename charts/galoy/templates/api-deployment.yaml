@@ -100,7 +100,7 @@ spec:
             secretKeyRef:
               name: {{ .Values.galoy.kratos.existingSecret.name }}
               key: {{ .Values.galoy.kratos.existingSecret.password }}
-        - name: KRATOS_API_KEY
+        - name: KRATOS_CALLBACK_API_KEY
           valueFrom:
             secretKeyRef:
               name: {{ .Values.galoy.kratos.existingSecret.name }}
