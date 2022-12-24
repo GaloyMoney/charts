@@ -95,11 +95,11 @@ spec:
 {{ include "galoy.geetest.env" . | indent 8 }}
 {{ include "galoy.jwt.env" . | indent 8 }}
 
-        - name: KRATOS_MASTER_PHONE_PASSWORD
+        - name: KRATOS_MASTER_USER_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.galoy.kratos.existingSecret.name }}
-              key: {{ .Values.galoy.kratos.existingSecret.password }}
+              key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
         - name: KRATOS_CALLBACK_API_KEY
           valueFrom:
             secretKeyRef:

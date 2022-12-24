@@ -281,7 +281,7 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
   }
 }
 
-resource "random_password" "kratos_master_password" {
+resource "random_password" "kratos_master_user_password" {
   length  = 32
   special = false
 }
@@ -290,15 +290,15 @@ resource "random_password" "kratos_callback_api_key" {
   length = 32
 }
 
-resource "kubernetes_secret" "kratos_master_password" {
+resource "kubernetes_secret" "kratos_master_user_password" {
   metadata {
     name      = "kratos-secret"
     namespace = kubernetes_namespace.galoy.metadata[0].name
   }
 
   data = {
-    "password" = random_password.kratos_master_password.result
-    "api_key"  = random_password.kratos_callback_api_key.result
+    "master_user_password" = random_password.kratos_master_user_password.result
+    "api_key"              = random_password.kratos_callback_api_key.result
   }
 }
 

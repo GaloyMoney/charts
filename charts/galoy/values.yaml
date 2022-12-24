@@ -291,7 +291,7 @@ galoy:
   kratos:
     existingSecret:
       name: kratos-secret
-      password: password
+      master_user_password: master_user_password
       api_key: api_key
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
@@ -546,7 +546,7 @@ secrets:
   lnd2LoopTls:
   lnd2PubKey:
   ## Secret for Galoy app
-  kratosMasterPassword:
+  kratosMasterUserPassword:
   kratosApiKey:
 ## Tracing details
 ##
