@@ -18,11 +18,11 @@ metadata:
 spec:
 
   replicas: {{ .Values.galoy.admin.replicas }}
-  
+
   selector:
     matchLabels:
       app: {{ template "galoy.admin.fullname" . }}
-  
+
   template:
 
     metadata:
@@ -47,7 +47,7 @@ spec:
       containers:
       - name: admin
         image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-        args: 
+        args:
         - "-r"
         - "/app/lib/services/tracing.js"
         - "lib/servers/graphql-admin-server.js"
@@ -75,7 +75,7 @@ spec:
           value: {{ .Values.galoy.network }}
         - name: GALOY_ADMIN_PORT
           value: {{ .Values.galoy.admin.port | quote }}
-        
+
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
         - name: TRACING_SERVICE_NAME
@@ -95,11 +95,16 @@ spec:
 {{ include "galoy.geetest.env" . | indent 8 }}
 {{ include "galoy.jwt.env" . | indent 8 }}
 
-        - name: KRATOS_MASTER_PHONE_PASSWORD
+        - name: KRATOS_MASTER_USER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.galoy.kratos.masterPhonePasswordExistingSecret.name }}
-              key: {{ .Values.galoy.kratos.masterPhonePasswordExistingSecret.key }}
+              name: {{ .Values.galoy.kratos.existingSecret.name }}
+              key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
+        - name: KRATOS_CALLBACK_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.kratos.existingSecret.name }}
+              key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.host | quote }}

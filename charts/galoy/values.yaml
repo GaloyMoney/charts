@@ -289,9 +289,10 @@ galoy:
         timeoutSeconds: 1
   ## Kratos
   kratos:
-    masterPhonePasswordExistingSecret:
-      name: kratos-master-password
-      key: password
+    existingSecret:
+      name: kratos-secret
+      master_user_password: master_user_password
+      callback_api_key: callback_api_key
   ## Configuration values for establishing connection to LND-1
   ## TODO: This should be injected as ConfigMap from LND Chart
   ##
@@ -544,8 +545,9 @@ secrets:
   lnd2LoopMacaroon:
   lnd2LoopTls:
   lnd2PubKey:
-  ## Secret for Galot app
-  kratosMasterPassword:
+  ## Secret for Galoy app
+  kratosMasterUserPassword:
+  kratosCallbackApiKey:
 ## Tracing details
 ##
 tracing:
@@ -687,7 +689,8 @@ kratos:
             url: file:///etc/config/identity.schema.json
         default_schema_id: email
       selfservice:
-        default_browser_return_url: http://localhost:3000/
+        default_browser_return_url: http://127.0.0.1:4002/
+
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
