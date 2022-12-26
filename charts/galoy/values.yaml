@@ -35,11 +35,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:3d2620d90d736dcf01ac475b81fdfebfb0cbf2b09b4c9b1cad3b1886692140e6"
+      digest: "sha256:f93b922934efbc06f8a0a24a237aea19ee801849d0622e7caed453c329f42b8a"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "76c77be"
+      git_ref: "b6bd17a"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -48,7 +48,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:d620d1f8e6df2cff14f3dd08f67599de3c0d4f36cd1990371ef92006194ce751"
+      digest: "sha256:2ffc492e46ed0857afa7f015955d5d582963f9a87995460ad102054fb5521dce"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -690,7 +690,6 @@ kratos:
         default_schema_id: email
       selfservice:
         default_browser_return_url: http://127.0.0.1:4002/
-
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
