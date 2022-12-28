@@ -6,8 +6,8 @@ image:
   pullPolicy: IfNotPresent
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
-  digest: "sha256:e408b3f6d5cb1de6f3bfdfa51daba2e3af007176a8ce020906631e953582faea"
-  git_ref: 63a7b08
+  digest: "sha256:b94200ae27ad534f0e20d7dc9fdce320a72354483695a4a6def89987269152ab"
+  git_ref: 9b8bb17
 kubemonkey:
   enabled: false
 configmap:
