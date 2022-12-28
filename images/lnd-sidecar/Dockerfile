@@ -1,7 +1,7 @@
 FROM lightninglabs/lnd:v0.15.4-beta as lnd
 FROM lightninglabs/loop:v0.20.1-beta as loop
 
-FROM alpine/k8s:1.21.5
+FROM alpine/k8s:1.23.14
 
 COPY --from=lnd /bin/lncli /bin/lncli
 COPY --from=loop /bin/loop /bin/loop
