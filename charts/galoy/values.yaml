@@ -674,7 +674,8 @@ oathkeeper:
     enabled: false
 kratos:
   image:
-    tag: v0.11.0
+    repository: ntheile/kratos
+    tag: 0.11.1
   replicaCount: 2
   kratos:
     automigration:
