@@ -32,12 +32,30 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: copy-rtl-config
+          image: busybox
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            cp /RTL/RTL-Config.json /RTL/data/RTL-Config.json
+            chown 1000:1000 /RTL/data/RTL-Config.json
+          volumeMounts:
+            - name: rtl-conf
+              mountPath: "/RTL/RTL-Config.json"
+              subPath: "RTL-Config.json"
+            - name: data
+              mountPath: /RTL/data
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: RTL_CONFIG_PATH
+              value: /RTL/data     
           ports:
             - name: http
               containerPort: {{.Values.service.port}}
@@ -53,17 +71,18 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: rtl-conf
-              mountPath: "/RTL/RTL-Config.json"
-              subPath: "RTL-Config.json"
+            - name: data
+              mountPath: /RTL/data
             {{- $c := 0 | int }}
             {{- range .Values.lnds }}
             {{- $c = add1 $c }}
             - name: "lnd{{ $c }}-rpc"
-              mountPath: "/lnd{{ $c }}/rpc"
+              mountPath: "/RTL/data/lnd{{ $c }}/rpc"
               readOnly: true
             {{- end }}
       volumes:
+          - name: data
+            emptyDir: {}
           - name: rtl-conf
             configMap:
               name: {{ include "rtl.fullname" . }}

@@ -9,7 +9,7 @@ replicaCount: 1
 
 image:
   repository: shahanafarooqui/rtl
-  tag: 0.10.2
+  tag: 0.13.3
   pullPolicy: IfNotPresent
 
 nameOverride: ""
