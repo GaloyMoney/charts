@@ -44,10 +44,10 @@ redeploy-galoy:
 
 
 deploy-signet-services:
-	$(TF) apply -target module.infra_services.helm_release.cert_manager \
+	$(TF) apply -target module.galoy_deps.helm_release.cert_manager \
 				-var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
-	$(TF) apply -target module.infra_services \
+	$(TF) apply -target module.galoy_deps \
 				-var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
 
