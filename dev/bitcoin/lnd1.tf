@@ -61,7 +61,7 @@ resource "helm_release" "lnd" {
 
 resource "helm_release" "lnd-watchonly" {
   name      = "lnd2"
-  chart     = "${path.module}/../../charts/lnd-watchonly"
+  chart     = "${path.module}/../../charts/lnd-segregated"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
   dependency_update = true
