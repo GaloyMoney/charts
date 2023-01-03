@@ -59,12 +59,6 @@ module "addons" {
   ]
 }
 
-module "auth" {
-  source = "./auth"
-
-  name_prefix = local.name_prefix
-}
-
 module "smoketest" {
   source = "./smoketest"
 
