@@ -4,7 +4,6 @@ variable "name_prefix" {}
 locals {
   bitcoin_network = var.bitcoin_network
   name_prefix     = var.name_prefix
-
 }
 
 module "galoy_deps" {
