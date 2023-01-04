@@ -16,7 +16,9 @@ spec:
   ports:
     - name: rpc
       port: {{ .Values.apiService.ports.rpc }}
+    {{- if .Values.watchonly.enabled }}
     - name: rest
       port: {{ .Values.apiService.ports.rest }}
+    {{- end }}
   selector:
     {{- include "lnd.selectorLabels" . | nindent 4 }}

@@ -94,5 +94,3 @@ rbac:
   create: true
 autoGenerateSeed:
   enabled: false
-lndWatchOnly:
-  enabled: false

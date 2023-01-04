@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "signer" {
 
 resource "helm_release" "lnd-signer" {
   name      = "lnd-signer2"
-  chart     = "${path.module}/../../charts/lnd-signer"
+  chart     = "${path.module}/../../charts/lnd-segregated"
   namespace = kubernetes_namespace.signer.metadata[0].name
 
   dependency_update = true
