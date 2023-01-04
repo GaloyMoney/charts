@@ -82,7 +82,7 @@ spec:
           - name: LND_PASS
             valueFrom:
               secretKeyRef:
-                name: {{ printf "%s-pass" (include "lnd-signergnergnergnergnergnergnergnergnergnergnergner.fullname" .) }}
+                name: {{ printf "%s-pass" (include "lnd-signer.fullname" .) }}
                 key: password
           volumeMounts:
           - name: wallet-init

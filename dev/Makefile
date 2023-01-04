@@ -21,8 +21,8 @@ deploy-services:
 				-var="name_prefix=galoy-dev" -auto-approve
 
 destroy-services:
-	$(TF) destroy -var="bitcoin_network=regtest"	\
-				-var="name_prefix=galoy-dev" -auto-approve
+	$(TF) destroy -var="bitcoin_network=regtest" \
+				  -var="name_prefix=galoy-dev" -auto-approve
 
 deploy:
 	$(TF) apply -var="bitcoin_network=regtest" \
@@ -30,11 +30,6 @@ deploy:
 
 all: create-cluster init deploy-services deploy
 
-redeploy-bitcoin:
-	kubectl delete namespace galoy-dev-bitcoin --force
-	cd bitcoin
-	$(TF) apply -var="bitcoin_network=regtest" \
-				-var="name_prefix=galoy-dev" -auto-approve
 
 redeploy-signer:
 	kubectl delete namespace galoy-dev-signer --force
@@ -61,15 +56,13 @@ deploy-signet-services:
 	$(TF) apply -target module.galoy_deps \
 				-var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
-	$(TF) apply -target module.galoy_deps \
-				-var="bitcoin_network=signet" \
-				-var="name_prefix=galoy-sig" -auto-approve
 
 deploy-signet:
 	$(TF) apply -var="bitcoin_network=signet" \
 				-var="name_prefix=galoy-sig" -auto-approve
 
 all-signet: create-cluster init deploy-signet-services deploy-signet
+
 
 redeploy-signet-signer:
 	kubectl delete namespace galoy-sig-signer --force
