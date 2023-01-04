@@ -1,0 +1,24 @@
+{{- if eq .Values.mode "watchonly" }}     
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lnd.fullname" . }}
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+  {{- with .Values.watchonly.apiService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.watchonly.apiService.type }}
+  {{- if and (eq .Values.watchonly.apiService.type "LoadBalancer") (.Values.watchonly.apiService.staticIP) }}
+  loadBalancerIP: {{ .Values.watchonly.apiService.staticIP }}
+  {{- end }}
+  ports:
+    - name: rpc
+      port: {{ .Values.watchonly.apiService.ports.rpc }}
+    - name: rest
+      port: {{ .Values.watchonly.apiService.ports.rest }}
+  selector:
+    {{- include "lnd.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -1,3 +1,5 @@
+{{- if eq .Values.mode "signer" }}
+{{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -26,13 +28,13 @@ data:
     # character to toggle this mode off and on.
 
     set force_conservative 0  ;# set to 1 to force conservative mode even if
-                              ;# script wasn't run conservatively originally
+                ;# script wasn't run conservatively originally
     if {$force_conservative} {
-            set send_slow {1 .1}
-            proc send {ignore arg} {
-                    sleep .1
-                    exp_send -s -- $arg
-            }
+        set send_slow {1 .1}
+        proc send {ignore arg} {
+            sleep .1
+            exp_send -s -- $arg
+        }
     }
 
     #
@@ -49,11 +51,10 @@ data:
     #
     # -Don
 
-
     set timeout -1
     set NETWORK [lindex $argv 0];
     set PASSWORD [lindex $argv 1];
-    spawn lncli -n $NETWORK createwatchonly /root/.lnd/accounts-signer.json
+    spawn lncli -n $NETWORK create
     match_max 100000
     expect -exact "Input wallet password: "
     send -- "$PASSWORD\r"
@@ -62,11 +63,15 @@ data:
     send -- "$PASSWORD\r"
     expect -exact "\r
     \r
-    Input an optional wallet birthday unix timestamp of first block to start scanning from (default 0): "
-    send -- "\r"
-    expect -exact "\r
+    Do you have an existing cipher seed mnemonic or extended master root key you want to use?\r
+    Enter 'y' to use an existing cipher seed mnemonic, 'x' to use an extended master root key \r
+    or 'n' to create a new seed (Enter y/x/n): "
+    send -- "n\r"
+    expect -exact "n\r
     \r
-    \r
-    Input an optional address look-ahead used to scan for used keys (default 2500): "
+    Your cipher seed can optionally be encrypted.\r
+    Input your passphrase if you wish to encrypt it (or press enter to proceed without a cipher seed passphrase): "
     send -- "\r"
     expect eof
+{{- end -}}
+{{- end }}

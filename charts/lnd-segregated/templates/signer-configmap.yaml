@@ -1,0 +1,30 @@
+{{- if eq .Values.mode "signer" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "lnd.fullname" . }}
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+data:
+  lnd.conf: |-
+    bitcoin.{{ .Values.global.network }}=true
+    tlsextradomain={{ include "lnd.fullname" . }}
+    tlsextradomain={{ include "lnd.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  {{- if ne .Values.global.network "regtest" }}
+    wallet-unlock-password-file=/tmp/lnd-pass
+    wallet-unlock-allow-create=true
+  {{- end }}
+  {{- if eq .Values.global.network "regtest" }}
+    noseedbackup=true
+    debuglevel=debug
+  {{- end }}
+  {{- range .Values.signer.generalConfig }}
+    {{ . }}
+  {{- end }}
+  {{- range .Values.configmap.customValues }}
+    {{ . }}
+  {{- end }}
+  {{- if .Values.signer.apiService.staticIP }}
+    tlsextraip={{ .Values.signer.apiService.staticIP }}
+  {{- end }}
+{{- end }}
