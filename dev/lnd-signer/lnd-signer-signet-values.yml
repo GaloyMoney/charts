@@ -1,8 +1,7 @@
-signer:
-  enabled: true
-
 global:
   network: signet
+
+mode: signer
 
 terminationGracePeriodSeconds: 60
 
@@ -11,5 +10,6 @@ persistence:
   accessMode: ReadWriteOnce
   size: 250Mi
 
-autoGenerateSeed:
-  enabled: true
+signer:
+  autoGenerateSeed:
+    enabled: true

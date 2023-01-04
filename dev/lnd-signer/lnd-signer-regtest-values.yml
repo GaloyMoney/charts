@@ -1,13 +1,13 @@
-signer:
-  enabled: true
- 
 global:
   network: regtest
+
+mode: signer
 
 terminationGracePeriodSeconds: 0
 
 persistence:
   enabled: false
 
-autoGenerateSeed:
-  enabled: true
+signer:
+  autoGenerateSeed:
+    enabled: true

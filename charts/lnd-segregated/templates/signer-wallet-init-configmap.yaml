@@ -1,6 +1,5 @@
-
-# don't use when signer on regtest
-{{- if or (ne .Values.global.network "regtest") (.Values.watchonly.enabled) }}
+{{- if eq .Values.mode "signer" }}
+{{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -56,24 +55,6 @@ data:
     set timeout -1
     set NETWORK [lindex $argv 0];
     set PASSWORD [lindex $argv 1];
-  {{- if .Values.watchonly.enabled }}      
-    spawn lncli -n $NETWORK createwatchonly /root/.lnd/accounts-signer.json
-    match_max 100000
-    expect -exact "Input wallet password: "
-    send -- "$PASSWORD\r"
-    expect -exact "\r
-    Confirm password: "
-    send -- "$PASSWORD\r"
-    expect -exact "\r
-    \r
-    Input an optional wallet birthday unix timestamp of first block to start scanning from (default 0): "
-    send -- "\r"
-    expect -exact "\r
-    \r
-    \r
-    Input an optional address look-ahead used to scan for used keys (default 2500): "
-  {{- end }}
-  {{- if .Values.signer.enabled }}
     spawn lncli -n $NETWORK create
     match_max 100000
     expect -exact "Input wallet password: "
@@ -91,7 +72,7 @@ data:
     \r
     Your cipher seed can optionally be encrypted.\r
     Input your passphrase if you wish to encrypt it (or press enter to proceed without a cipher seed passphrase): "
-  {{- end }}
     send -- "\r"
     expect eof
 {{- end -}}
+{{- end }}

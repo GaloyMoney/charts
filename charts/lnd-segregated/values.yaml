@@ -3,6 +3,11 @@
 # Declare variables to be passed into your templates.
 global:
   network: mainnet
+
+# choose between the mode: 'watchonly' or 'signer'
+# find the respective group of settings below
+mode: watchonly
+
 image:
   repository: lightninglabs/lnd
   tag: v0.15.5-beta
@@ -13,6 +18,10 @@ sidecarImage:
   git_ref: 63a7b08
 kubemonkey:
   enabled: false
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "9092"
+  prometheus.io/scrape: "true"
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -26,13 +35,34 @@ secrets:
   create: true
 rbac:
   create: true
+persistence:
+  enabled: true
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+affinity:
+podAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - bitcoind
+        topologyKey: kubernetes.io/hostname
+configmap:
+  customValues: []
 
 watchonly:
-  enabled: true
-  podAnnotations:
-    prometheus.io/path: /metrics
-    prometheus.io/port: "9092"
-    prometheus.io/scrape: "true"
   apiService:
     # On google cloud, static ip can be created using `gcloud compute addresses create`
     staticIP: ""
@@ -46,32 +76,8 @@ watchonly:
     staticIP: ""
     type: ClusterIP
     port: 9735
-  persistence:
-    enabled: true
-    ## database data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    # storageClass: "-"
-    accessMode: ReadWriteOnce
-    size: 10Gi
-  affinity:
-  podAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - bitcoind
-          topologyKey: kubernetes.io/hostname
   ## lnd.conf entries for the watchonly lnd
-  watchonlyGeneralConfig:
+  generalConfig:
     - restlisten=0.0.0.0:8080
     - rpclisten=0.0.0.0:10009
     - listen=0.0.0.0:9735
@@ -97,39 +103,24 @@ watchonly:
     - tor.v3=true
     - tor.skip-proxy-for-clearnet-targets=true
   bitcoindRpcPassSecretName: bitcoind-rpcpassword
-  configmap:
-    customValues: []
   autoCreateWatchonly:
     enabled: false
   signerConfig:
-    enabled: true
     signerHost: lnd2.galoy-sig-signer.svc.cluster.local:10009
     signerCredentialsSecretName: lnd-signer2-credentials
-    signerAccountsSecretName: lnd-signer2-accounts
+    signerAccountsSecretName: lnd2-accounts
 
 signer:
-  enabled: false
-  ## Provide a name in place of `lnd` for `app:` labels
-  nameOverride:
-  ## Provide a name to substitute for the full names of resources
-  fullnameOverride:
-  nodeSelector: {}
-  tolerations: []
   ## use only a GRPC endpoint for the signer
   apiService:
     type: ClusterIP
     annotations: {}
     ports:
       rpc: 10009
-  persistence:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 250Mi
-  affinity: {}
   autoGenerateSeed:
     enabled: false
   ## lnd.conf entries for the signer
-  signerGeneralConfig:
+  generalConfig:
     - nolisten=true
     - nobootstrap=true
     - rpclisten=0.0.0.0:10009

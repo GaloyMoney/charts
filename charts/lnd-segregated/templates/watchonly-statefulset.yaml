@@ -1,5 +1,5 @@
-{{- if .Values.watchonly.enabled }}     
-{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+{{- if eq .Values.mode "watchonly" }}     
+{{ $checksum := include (print $.Template.BasePath "/watchonly-configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -50,12 +50,6 @@ spec:
           - |
             cat <<EOF > /root/.lnd/lnd.conf
             bitcoind.rpcpass=$(cat /rpcpassword/password)
-          {{- if eq .Values.lnd.db.backend "postgres" }}
-            db.backend=postgres
-            db.postgres.dsn=$(cat /lnd-pg-uri/uri)
-            db.postgres.timeout=0
-            db.postgres.maxconnections=21
-          {{- end}}
             $(cat /configmap/lnd.conf)
             EOF
           volumeMounts:
@@ -65,12 +59,8 @@ spec:
               mountPath: /root/.lnd/
             - name: rpcpassword
               mountPath: /rpcpassword
-            {{- if eq .Values.lnd.db.backend "postgres" }}
-            - name: lnd-pg-uri
-              mountPath: /lnd-pg-uri
-            {{- end}}
       containers:
-        {{- if .Values.autoCreateWatchonly.enabled }}
+        {{- if .Values.watchonly.autoCreateWatchonly.enabled }}
         - name: init-wallet
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command: ['/bin/sh']
@@ -78,14 +68,14 @@ spec:
           - '-c'
           - |
             set -e
-            if lncli -n {{ $.Values.global.network}} state | grep "WAITING_TO_START" ; then
+            if lncli -n {{ .Values.global.network }} state | grep "WAITING_TO_START" ; then
               exit 0;
             fi
-            lncli -n {{ $.Values.global.network}} state
-            if [ ! -f /root/.lnd/data/chain/bitcoin/${NETWORK}/admin.macaroon ]; then
+            lncli -n {{ .Values.global.network }} state
+            if [ ! -f /root/.lnd/data/chain/bitcoin/{{ .Values.global.network }}/admin.macaroon ]; then
               while ! test -f /root/.lnd/tls.cert; do sleep 1; done
               apk update; apk add expect
-              /home/alpine/walletInit.exp ${NETWORK} ${LND_PASS}
+              /home/alpine/walletInit.exp {{ .Values.global.network }} ${LND_PASS}
             fi
             # Trap is required otherwise signals are not handled
             # https://stackoverflow.com/questions/45148381/why-cant-i-ctrl-c-a-sleep-infinity-in-docker-when-it-runs-as-pid-1
@@ -97,11 +87,6 @@ spec:
               secretKeyRef:
                 name: {{ printf "%s-pass" (include "lnd.fullname" .) }}
                 key: password
-          - name: NETWORK
-            valueFrom:
-              secretKeyRef:
-                name: network
-                key: network
           volumeMounts:
           - name: wallet-init
             mountPath: /home/alpine/walletInit.exp
@@ -138,17 +123,11 @@ spec:
           args:
           - '-c'
           - |
-            lncli -n=$NETWORK getinfo
-            while [[ $? != 0 ]]; do sleep 1; lncli -n=$NETWORK getinfo; done
+            lncli -n={{ .Values.global.network }} getinfo
+            while [[ $? != 0 ]]; do sleep 1; lncli -n={{ .Values.global.network }} getinfo; done
             /home/alpine/exportSecrets.sh
             trap "echo shutting down; exit 0" SIGKILL SIGTERM
             while true; do sleep 1; done
-          env:
-          - name: NETWORK
-            valueFrom:
-              secretKeyRef:
-                name: network
-                key: network
           volumeMounts:
           - name: export-secrets
             mountPath: /home/alpine/exportSecrets.sh
@@ -165,11 +144,11 @@ spec:
             lnd
           ports:
             - name: rpc
-              containerPort: {{ .Values.apiService.ports.rpc }}
+              containerPort: {{ .Values.watchonly.apiService.ports.rpc }}
             - name: p2p
-              containerPort: {{ .Values.p2pService.port }}
+              containerPort: {{ .Values.watchonly.p2pService.port }}
             - name: rest
-              containerPort: {{ .Values.apiService.ports.rest }}
+              containerPort: {{ .Values.watchonly.apiService.ports.rest }}
           volumeMounts:
             - name: tor-cookie-auth
               mountPath: /var/lib/tor/auth
@@ -195,7 +174,7 @@ spec:
               command:
               - sh
               - -c
-              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+              - "lncli -n {{ .Values.global.network}} state | grep -q SERVER_ACTIVE"
             failureThreshold: 540
             periodSeconds: 10
           readinessProbe:
@@ -203,7 +182,7 @@ spec:
               command:
               - sh
               - -c
-              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+              - "lncli -n {{ .Values.global.network}} state | grep -q SERVER_ACTIVE"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
@@ -212,7 +191,7 @@ spec:
               command:
               - sh
               - -c
-              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+              - "lncli -n {{ .Values.global.network}} state | grep -q SERVER_ACTIVE"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
@@ -232,12 +211,7 @@ spec:
           emptyDir: {}
         - name: rpcpassword
           secret:
-            secretName: {{ .Values.bitcoindRpcPassSecretName }}
-        {{- if eq .Values.lnd.db.backend "postgres" }}
-        - name: lnd-pg-uri
-          secret:
-            secretName: {{ .Values.lnd.db.config.secret }}
-        {{- end}}
+            secretName: {{ .Values.watchonly.bitcoindRpcPassSecretName }}
         - name: configmap
           configMap:
             name: {{ include "lnd.fullname" . }}
@@ -246,19 +220,19 @@ spec:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
         - name: signer-tls
           secret:
-            secretName: {{.Values.signerConfig.signerCredentialsSecretName}}
+            secretName: {{.Values.watchonly.signerConfig.signerCredentialsSecretName}}
             items:
             - key: tls.cert
               path: "tls.cert"
         - name: signer-macaroon
           secret:
-            secretName: {{.Values.signerConfig.signerCredentialsSecretName}}
+            secretName: {{.Values.watchonly.signerConfig.signerCredentialsSecretName}}
             items:
             - key: signer_macaroon_base64
               path: "lnd-signer_macaroon_base64"
         - name: accounts-signer
           secret:
-            secretName: {{.Values.signerConfig.signerAccountsSecretName}}
+            secretName: {{.Values.watchonly.signerConfig.signerAccountsSecretName}}
             items:
             - key: accounts-signer
               path: "accounts-signer"

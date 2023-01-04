@@ -1,0 +1,22 @@
+{{- if eq .Values.mode "signer" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lnd.fullname" . }}
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+  {{- with .Values.signer.apiService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.signer.apiService.type }}
+  {{- if and (eq .Values.signer.apiService.type "LoadBalancer") (.Values.signer.apiService.staticIP) }}
+  loadBalancerIP: {{ .Values.signer.apiService.staticIP }}
+  {{- end }}
+  ports:
+    - name: rpc
+      port: {{ .Values.signer.apiService.ports.rpc }}
+  selector:
+    {{- include "lnd.selectorLabels" . | nindent 4 }}
+{{- end }}

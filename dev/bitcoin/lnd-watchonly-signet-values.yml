@@ -1,6 +1,8 @@
 global:
   network: signet
 
+mode: watchonly
+
 resources:
   limits:
     cpu: 150m
@@ -21,11 +23,11 @@ configmap:
   - tlsextradomain=lnd1.galoy-sig-bitcoin.svc.cluster.local
   - debuglevel=info
 
-autoCreateWatchonly:
-  enabled: true
+watchonly:
+  autoCreateWatchonly:
+    enabled: true
 
-signerConfig:
-  enabled: true
-  signerHost: lnd-signer2.galoy-sig-signer.svc.cluster.local:10009
-  signerCredentialsSecretName: lnd-signer2-credentials
-  signerAccountsSecretName: lnd-signer2-accounts
+  signerConfig:
+    signerHost: lnd2.galoy-sig-signer.svc.cluster.local:10009
+    signerCredentialsSecretName: lnd-signer2-credentials
+    signerAccountsSecretName: lnd2-accounts

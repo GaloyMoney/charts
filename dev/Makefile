@@ -33,7 +33,7 @@ all: create-cluster init deploy-services deploy
 
 redeploy-signer:
 	kubectl delete namespace galoy-dev-signer --force
-	cd signer
+	cd lnd-signer
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 

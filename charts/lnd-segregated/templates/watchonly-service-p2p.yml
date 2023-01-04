@@ -1,0 +1,18 @@
+{{- if eq .Values.mode "watchonly" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lnd.fullname" . }}-p2p
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.watchonly.p2pService.type }}
+  {{- if and (eq .Values.watchonly.p2pService.type "LoadBalancer") (.Values.watchonly.p2pService.staticIP) }}
+  loadBalancerIP: {{ .Values.watchonly.p2pService.staticIP }}
+  {{- end }}
+  ports:
+    - name: p2p
+      port: {{ .Values.watchonly.p2pService.port }}
+  selector:
+    {{- include "lnd.selectorLabels" . | nindent 4 }}
+{{- end -}}

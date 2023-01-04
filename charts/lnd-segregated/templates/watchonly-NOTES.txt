@@ -1,14 +1,15 @@
+{{- if eq .Values.mode "watchonly" }}
 1. Get the application URL by running these commands:
-{{- if contains "NodePort" .Values.apiService.type }}
+{{- if contains "NodePort" .Values.watchonly.apiService.type }}
   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "lnd.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
-{{- else if contains "LoadBalancer" .Values.apiService.type }}
+{{- else if contains "LoadBalancer" .Values.watchonly.apiService.type }}
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
            You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "lnd.fullname" . }}'
   export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "lnd.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.apiService.ports.rpc }}
-{{- else if contains "ClusterIP" .Values.apiService.type }}
+  echo http://$SERVICE_IP:{{ .Values.watchonly.apiService.ports.rpc }}
+{{- else if contains "ClusterIP" .Values.watchonly.apiService.type }}
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "lnd.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
   echo "Visit http://127.0.0.1:8080 to use your application"
@@ -26,3 +27,4 @@ kubectl -n {{ .Release.Namespace }} logs {{ include "lnd.fullname" . }}-wallet-c
 kubectl -n {{ .Release.Namespace }} delete pod {{ include "lnd.fullname" . }}-wallet-create
 
 Warning: Make sure you write/store the seed somewhere, because if lost you will not be able to retrieve it again, and you might end up losing all your funds.
+{{- end -}}
