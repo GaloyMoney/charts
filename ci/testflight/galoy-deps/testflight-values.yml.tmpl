@@ -1,5 +1,7 @@
 strimzi-kafka-operator:
   createGlobalResources: false
+kubemonkey:
+  fullnameOverride: ${kubemonkey_fullname_override}
 cert-manager:
   installCRDs: false
 ingress-nginx:

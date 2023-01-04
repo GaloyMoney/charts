@@ -6,12 +6,13 @@ locals {
   cluster_location = "us-east1"
   gcp_project      = "galoy-staging"
 
-  testflight_namespace = var.testflight_namespace
-  smoketest_namespace  = "galoy-staging-smoketest"
-  smoketest_kubeconfig = var.smoketest_kubeconfig
-  smoketest_name       = "smoketest"
-  service_name         = "${local.testflight_namespace}-ingress"
-  jaeger_host          = "galoy-deps-opentelemetry-collector"
+  testflight_namespace         = var.testflight_namespace
+  smoketest_namespace          = "galoy-staging-smoketest"
+  smoketest_kubeconfig         = var.smoketest_kubeconfig
+  smoketest_name               = "smoketest"
+  service_name                 = "${local.testflight_namespace}-ingress"
+  jaeger_host                  = "galoy-deps-opentelemetry-collector"
+  kubemonkey_fullname_override = local.testflight_namespace
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -29,6 +30,7 @@ resource "helm_release" "galoy_deps" {
     templatefile("${path.module}/testflight-values.yml.tmpl", {
       service_name : local.service_name
       jaeger_host : local.jaeger_host
+      kubemonkey_fullname_override : local.kubemonkey_fullname_override
     })
   ]
 
