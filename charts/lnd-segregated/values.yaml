@@ -108,7 +108,7 @@ watchonly:
   signerConfig:
     signerHost: lnd2.galoy-sig-signer.svc.cluster.local:10009
     signerCredentialsSecretName: lnd-signer2-credentials
-    signerAccountsSecretName: lnd2-accounts
+    signerAccountsSecretName: lnd-signer2-accounts
 
 signer:
   ## use only a GRPC endpoint for the signer
