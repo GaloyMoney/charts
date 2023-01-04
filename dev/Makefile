@@ -38,6 +38,8 @@ redeploy-signer:
 				-var="name_prefix=galoy-dev" -auto-approve
 
 redeploy-bitcoin:
+	# needs a block created manually after start:
+	# kubectl -n galoy-dev-bitcoin exec bitcoind-0 -- bitcoin-cli generatetoaddress 1 bcrt1qxcpz7ytf3nwlhjay4n04nuz8jyg3hl4ud02t9t 
 	kubectl delete namespace galoy-dev-bitcoin --force
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
