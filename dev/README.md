@@ -65,3 +65,44 @@ Expected result:
 ```
 {"data":{"userLogin":{"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MTc2YmQ2NmQ0MmFkYWIzNjM2MmEyY2QiLCJuZXR3b3JrIjoibWFpbm5ldCIsImlhdCI6MTYzNTE3MTY4Nn0.n-p5sA9meAmZrVOdngYr216jG3LKOFsFdJmVw6XND3A"}}}
 ```
+
+## RTL access
+```
+env=galoy-dev
+
+# get the password
+k -n ${env}-bitcoin get secrets rtl-pass -o jsonpath='{.data.password}' | base64 -d; echo
+
+# forward the port from the pod
+k -n ${env}-bitcoin port-forward svc/rtl 3000:3000
+
+# access RTL on http://localhost:3000
+```
+
+## Grafana access
+```
+env=galoy-dev
+
+# get the admin-user
+k -n ${env}-monitoring get secrets monitoring-grafana -o jsonpath='{.data.admin-user}' | base64 -d; echo
+
+# get the password
+k -n ${env}-monitoring get secrets monitoring-grafana -o jsonpath='{.data.admin-password}' | base64 -d; echo
+
+# forward the port from the pod
+k -n ${env}-monitoring port-forward svc/monitoring-grafana 3000:80
+
+# access Grafana on http://localhost:3000
+```
+
+## Port access from a remote computer
+```
+# port forward with ssh
+localport=3000      # chosen port on the desktop with the web browser
+user=k3d            # remote user (example)
+host=192.168.3.170  # the IP address of the server (example)
+
+ssh -L $localport:127.0.0.1:3000 $user@$host
+
+# access the service on http://localhost:$localport
+```
