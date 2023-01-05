@@ -10,12 +10,12 @@ dependencies:
   version: 2.2.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.9.13
+  version: 12.1.7
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
   version: 0.26.5
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.26.5
-digest: sha256:12f040e807437e406d98d857c59acdc4616fa26d65be2a20b8bee15d33e616f5
-generated: "2022-12-21T14:06:28.58672Z"
+digest: sha256:31e5eb6c724a435e6c786d3ba7c0b53af36f78d73bf86c85e69de1c034411eae
+generated: "2023-01-05T15:17:47.719056279Z"
