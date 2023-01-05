@@ -4,7 +4,6 @@ variable "name_prefix" {}
 locals {
   bitcoin_network = var.bitcoin_network
   name_prefix     = var.name_prefix
-
 }
 
 module "galoy_deps" {
@@ -57,12 +56,6 @@ module "addons" {
   depends_on = [
     module.galoy
   ]
-}
-
-module "auth" {
-  source = "./auth"
-
-  name_prefix = local.name_prefix
 }
 
 module "smoketest" {

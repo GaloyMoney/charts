@@ -55,13 +55,6 @@ jobs:
             CHART=galoy ./dev-smoketest-settings.sh && \
             ./galoy-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Galoy Auth Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=galoy-auth ./dev-smoketest-settings.sh && \
-            ./galoy-auth-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: Monitoring Smoketest
         run: |
           pushd dev && source ./.envrc
