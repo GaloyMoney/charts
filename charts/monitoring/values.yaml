@@ -160,10 +160,10 @@ prometheus:
               regex: __meta_kubernetes_service_label_(.+)
             - source_labels: [__meta_kubernetes_namespace]
               action: replace
-              target_label: kubernetes_namespace
+              target_label: namespace
             - source_labels: [__meta_kubernetes_service_name]
               action: replace
-              target_label: kubernetes_name
+              target_label: service
             - source_labels: [__meta_kubernetes_pod_node_name]
               action: replace
               target_label: kubernetes_node
@@ -196,10 +196,10 @@ prometheus:
               regex: __meta_kubernetes_pod_label_(.+)
             - source_labels: [__meta_kubernetes_namespace]
               action: replace
-              target_label: kubernetes_namespace
+              target_label: namespace
             - source_labels: [__meta_kubernetes_pod_name]
               action: replace
-              target_label: kubernetes_pod_name
+              target_label: pod
             - source_labels: [__meta_kubernetes_pod_name]
               regex: 'prometheus-kube-state-metrics-.*'
               action: drop
@@ -209,30 +209,6 @@ prometheus:
             - source_labels: [__meta_kubernetes_pod_name]
               regex: 'dealer.*'
               action: drop
-
-        # - job_name: 'kubernetes-services'
-
-        #   metrics_path: /probe
-        #   params:
-        #     module: [http_2xx]
-
-        #   kubernetes_sd_configs:
-        #     - role: service
-
-        #   relabel_configs:
-        #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_probe]
-        #       action: keep
-        #       regex: true
-        #     - source_labels: [__address__]
-        #       target_label: __param_target
-        #     - source_labels: [__param_target]
-        #       target_label: instance
-        #     - action: labelmap
-        #       regex: __meta_kubernetes_service_label_(.+)
-        #     - source_labels: [__meta_kubernetes_namespace]
-        #       target_label: kubernetes_namespace
-        #     - source_labels: [__meta_kubernetes_service_name]
-        #       target_label: kubernetes_name
 
   # adds additional scrape configs to prometheus.yml
   # must be a string so you have to add a | after extraScrapeConfigs:
