@@ -2,6 +2,8 @@ variable "testflight_namespace" {}
 variable "okex_secret_key" {}
 variable "okex_passphrase" {}
 variable "okex_api_key" {}
+variable "bitfinex_secret_key" {}
+variable "bitfinex_api_key" {}
 
 locals {
   cluster_name     = "galoy-staging-cluster"
@@ -66,6 +68,7 @@ resource "kubernetes_secret" "stablesats" {
     hedging-pg-con : "postgres://stablesats:${random_password.hedging_pg.result}@stablesats-hedging-pg:5432/stablesats-hedging"
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
+    bitfinex-secret-key : var.bitfinex_secret_key
     galoy-phone-code : data.kubernetes_secret.dealer_creds.data["code"]
   }
 }

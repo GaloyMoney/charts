@@ -91,6 +91,11 @@ spec:
             secretKeyRef:
               name: {{ template "stablesats.fullname" . }}
               key: "okex-passphrase"
+        - name: BITFINEX_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "bitfinex-secret-key"
         - name: KUBE_NODE_NAME
           valueFrom:
             fieldRef:

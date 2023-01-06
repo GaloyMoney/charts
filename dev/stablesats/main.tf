@@ -7,6 +7,8 @@ variable "okex_passphrase" {}
 variable "galoy_phone_code" {}
 variable "galoy_phone_number" {}
 variable "okex_api_key" {}
+variable "bitfinex_secret_key" {}
+variable "bitfinex_api_key" {}
 
 locals {
   stablesats_namespace = "${var.name_prefix}-stablesats"
@@ -47,6 +49,7 @@ resource "kubernetes_secret" "stablesats_secrets" {
     hedging-pg-con : "postgres://stablesats:${random_password.hedging_pg.result}@stablesats-hedging-pg:5432/stablesats-hedging"
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
+    bitfinex-secret-key : var.bitfinex_secret_key
     galoy-phone-code : var.galoy_phone_code
   }
 }
