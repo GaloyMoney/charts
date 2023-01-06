@@ -2,6 +2,6 @@ grafana:
   ingress:
     enabled: false
 prometheus:
-  nodeExporter:
+  prometheus-node-exporter:
     service:
       hostPort: 9101
