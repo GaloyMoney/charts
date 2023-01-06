@@ -4,4 +4,4 @@ grafana:
 prometheus:
   prometheus-node-exporter:
     service:
-      hostPort: 9101
+      port: 9101
