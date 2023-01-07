@@ -13,7 +13,7 @@ module "galoy_deps" {
 }
 
 module "infra_services" {
-  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/services?ref=8c5c578"
+  source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/smoketest/gcp?ref=13b2ef9"
 
   name_prefix      = local.name_prefix
   cluster_endpoint = "dummy"
