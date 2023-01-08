@@ -5,6 +5,8 @@ secrets:
   okexSecretKey: ""
   okexPassphrase: ""
   galoyPhoneCode: ""
+  bitfinexSecretKey: ""
+  bitfinexApiKey: ""
 stablesats:
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs

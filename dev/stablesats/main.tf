@@ -50,6 +50,7 @@ resource "kubernetes_secret" "stablesats_secrets" {
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
     bitfinex-secret-key : var.bitfinex_secret_key
+    bitfinex-api-key : var.bitfinex_api_key
     galoy-phone-code : var.galoy_phone_code
   }
 }
