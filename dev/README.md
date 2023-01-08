@@ -83,8 +83,7 @@ k -n ${env}-bitcoin port-forward svc/rtl 3000:3000
 ```
 env=galoy-dev
 
-# get the admin-user
-k -n ${env}-monitoring get secrets monitoring-grafana -o jsonpath='{.data.admin-user}' | base64 -d; echo
+the user is: `admin` (https://github.com/bitnami/charts/blob/main/bitnami/grafana/values.yaml#L76)
 
 # get the password
 k -n ${env}-monitoring get secrets monitoring-grafana -o jsonpath='{.data.admin-password}' | base64 -d; echo
