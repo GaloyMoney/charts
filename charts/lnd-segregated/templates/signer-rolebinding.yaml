@@ -1,16 +1,18 @@
+{{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}
 {{- if and .Values.serviceAccount.create .Values.rbac.create }}
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: RoleBinding
 metadata:
-  name: {{ include "lnd.fullname" . }}
+  name: {{ include "lnd.watchonly.fullname" . }}
   labels:
-    {{- include "lnd.labels" . | nindent 4 }}
+    {{- include "lnd.watchonly.labels" . | nindent 4 }}
 roleRef:
   kind: Role
-  name: {{ include "lnd.fullname" . }}
+  name: {{ include "lnd.watchonly.fullname" . }}
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
-    name: {{ include "lnd.serviceAccountName" . }}
+    name: {{ include "lnd.signer.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- end }}

@@ -1,12 +1,14 @@
+{{- if or (eq .Values.mode "signer") (eq .Values.mode "complete") }}
 {{- if .Values.rbac.create }}
 apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 kind: Role
 metadata:
-  name: {{ include "lnd.fullname" . }}
+  name: {{ include "lnd.signer.fullname" . }}
   labels:
-    {{- include "lnd.labels" . | nindent 4 }}
+    {{- include "lnd.signer.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
     verbs: ["create", "get", "patch", "delete"]
+{{- end }}
 {{- end }}

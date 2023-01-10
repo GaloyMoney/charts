@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "lnd.fullname" . }}
+  name: {{ include "lnd.watchonly.fullname" . }}
   labels:
-    {{- include "lnd.labels" . | nindent 4 }}
+    {{- include "lnd.watchonly.fullname" . | nindent 4 }}
 data:
   lnd.conf: |-
     bitcoin.{{ .Values.global.network }}=true
-    tlsextradomain={{ include "lnd.fullname" . }}
-    tlsextradomain={{ include "lnd.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+    tlsextradomain={{ include "lnd.watchonly.fullname" . }}
+    tlsextradomain={{ include "lnd.watchonly.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
     wallet-unlock-password-file=/tmp/lnd-pass
     wallet-unlock-allow-create=true
   {{- range .Values.watchonly.generalConfig }}

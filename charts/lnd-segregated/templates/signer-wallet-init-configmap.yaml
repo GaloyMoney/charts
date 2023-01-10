@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
+  name: {{ printf "%s-wallet-init" (include "lnd.signer.fullname" .) }}
   labels:
-    {{- include "lnd.labels" . | nindent 4 }}
+    {{- include "lnd.signer.fullname" . | nindent 4 }}
 data:
   walletInit.exp: |
     #!/usr/bin/expect -f

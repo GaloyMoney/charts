@@ -6,7 +6,7 @@ global:
 
 # choose between the modes: ''complete', 'watchonly' or 'signer'
 # find the respective group of settings below
-mode: watchonly
+mode: complete
 
 image:
   repository: lightninglabs/lnd

@@ -1,30 +1,30 @@
 {{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}
 1. Get the application URL by running these commands:
 {{- if contains "NodePort" .Values.watchonly.apiService.type }}
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "lnd.fullname" . }})
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "lnd.watchonly.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 {{- else if contains "LoadBalancer" .Values.watchonly.apiService.type }}
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "lnd.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "lnd.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "lnd.watchonly.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "lnd.watchonly.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
   echo http://$SERVICE_IP:{{ .Values.watchonly.apiService.ports.rpc }}
 {{- else if contains "ClusterIP" .Values.watchonly.apiService.type }}
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "lnd.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "lnd.watchonly.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
 2. To get the TLS, run:
-export TLS=$(kubectl -n {{ .Release.Namespace }} exec {{ include "lnd.fullname" . }}-0 -- base64 /root/.lnd/tls.cert | tr -d '\n\r')
+export TLS=$(kubectl -n {{ .Release.Namespace }} exec {{ include "lnd.watchonly.fullname" . }}-0 -- base64 /root/.lnd/tls.cert | tr -d '\n\r')
 3. To get the macaroon, run:
-export MACAROON=$(kubectl exec -n {{ .Release.Namespace }} {{ include "lnd.fullname" . }}-0 -- base64 /root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon | tr -d '\n\r')
+export MACAROON=$(kubectl exec -n {{ .Release.Namespace }} {{ include "lnd.watchonly.fullname" . }}-0 -- base64 /root/.lnd/data/chain/bitcoin/{{.Values.global.network}}/admin.macaroon | tr -d '\n\r')
 4. To execute lncli against the pod, run the following commands:
-kubectl -n {{ .Release.Namespace }} port-forward {{ include "lnd.fullname" . }}-0 10009
+kubectl -n {{ .Release.Namespace }} port-forward {{ include "lnd.watchonly.fullname" . }}-0 10009
 lncli -n {{ .Release.Namespace }} help
 5. To retrieve the seed for the lnd wallet, run:
-kubectl -n {{ .Release.Namespace }} logs {{ include "lnd.fullname" . }}-wallet-create
-kubectl -n {{ .Release.Namespace }} delete pod {{ include "lnd.fullname" . }}-wallet-create
+kubectl -n {{ .Release.Namespace }} logs {{ include "lnd.watchonly.fullname" . }}-wallet-create
+kubectl -n {{ .Release.Namespace }} delete pod {{ include "lnd.watchonly.fullname" . }}-wallet-create
 
 Warning: Make sure you write/store the seed somewhere, because if lost you will not be able to retrieve it again, and you might end up losing all your funds.
 {{- end -}}
