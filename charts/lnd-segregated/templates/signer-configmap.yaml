@@ -21,7 +21,7 @@ data:
   {{- range .Values.signer.generalConfig }}
     {{ . }}
   {{- end }}
-  {{- range .Values.configmap.customValues }}
+  {{- range .Values.signer.configmap.customValues }}
     {{ . }}
   {{- end }}
   {{- if .Values.signer.apiService.staticIP }}

@@ -15,7 +15,7 @@ data:
   {{- range .Values.watchonly.generalConfig }}
     {{ . }}
   {{- end }}
-  {{- range .Values.configmap.customValues }}
+  {{- range .Values.watchonly.configmap.customValues }}
     {{ . }}
   {{- end }}
   {{- if .Values.watchonly.apiService.staticIP }}

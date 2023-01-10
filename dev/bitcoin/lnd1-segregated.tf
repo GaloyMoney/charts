@@ -1,5 +1,5 @@
 resource "helm_release" "lnd-segregated" {
-  name      = "lnd2"
+  name      = "lnd1"
   chart     = "${path.module}/../../charts/lnd-segregated"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
