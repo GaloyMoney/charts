@@ -31,12 +31,6 @@ deploy:
 all: create-cluster init deploy-services deploy
 
 
-redeploy-signer:
-	kubectl delete namespace galoy-dev-signer --force
-	cd lnd-signer
-	$(TF) apply -var="bitcoin_network=regtest" \
-				-var="name_prefix=galoy-dev" -auto-approve
-
 redeploy-bitcoin:
 	# needs a block created manually after start:
 	# kubectl -n galoy-dev-bitcoin exec bitcoind-0 -- bitcoin-cli generatetoaddress 1 bcrt1qxcpz7ytf3nwlhjay4n04nuz8jyg3hl4ud02t9t 
@@ -65,12 +59,6 @@ deploy-signet:
 
 all-signet: create-cluster init deploy-signet-services deploy-signet
 
-
-redeploy-signet-signer:
-	kubectl delete namespace galoy-sig-signer --force
-	cd signer
-	$(TF) apply -var="bitcoin_network=signet" \
-				-var="name_prefix=galoy-sig" -auto-approve
 
 redeploy-signet-bitcoin:
 	kubectl delete namespace galoy-sig-bitcoin --force
