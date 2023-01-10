@@ -30,7 +30,7 @@ resource "kubernetes_secret" "signer_accounts" {
   data = data.kubernetes_secret.signer_accounts.data
 }
 
-resource "helm_release" "lnd-complete" {
+resource "helm_release" "lnd-segregated" {
   name      = "lnd2"
   chart     = "${path.module}/../../charts/lnd-segregated"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
@@ -38,7 +38,7 @@ resource "helm_release" "lnd-complete" {
   dependency_update = true
   timeout           = local.bitcoin_network == "regtest" ? 900 : 9000
   values = [
-    file("${path.module}/lnd-complete-${var.bitcoin_network}-values.yml")
+    file("${path.module}/lnd-segregated-${var.bitcoin_network}-values.yml")
   ]
 
   depends_on = [

@@ -1,7 +1,7 @@
 global:
   network: signet
 
-mode: watchonly
+mode: complete
 
 resources:
   limits:
