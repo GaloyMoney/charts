@@ -1,35 +1,3 @@
-data "kubernetes_secret" "signer_credentials" {
-  metadata {
-    name      = "lnd-signer2-credentials"
-    namespace = local.bitcoin_namespace
-  }
-}
-
-resource "kubernetes_secret" "signer_credentials" {
-  metadata {
-    name      = "lnd-signer2-credentials"
-    namespace = local.bitcoin_namespace
-  }
-
-  data = data.kubernetes_secret.signer_credentials.data
-}
-
-data "kubernetes_secret" "signer_accounts" {
-  metadata {
-    name      = "lnd-signer2-accounts"
-    namespace = local.bitcoin_namespace
-  }
-}
-
-resource "kubernetes_secret" "signer_accounts" {
-  metadata {
-    name      = "lnd-signer2-accounts"
-    namespace = local.bitcoin_namespace
-  }
-
-  data = data.kubernetes_secret.signer_accounts.data
-}
-
 resource "helm_release" "lnd-segregated" {
   name      = "lnd2"
   chart     = "${path.module}/../../charts/lnd-segregated"
@@ -43,8 +11,6 @@ resource "helm_release" "lnd-segregated" {
 
   depends_on = [
     kubernetes_secret.bitcoind,
-    helm_release.bitcoind,
-    kubernetes_secret.signer_credentials,
-    kubernetes_secret.signer_accounts
+    helm_release.bitcoind
   ]
 }

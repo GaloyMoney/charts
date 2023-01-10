@@ -28,7 +28,7 @@ watchonly:
     enabled: true
 
   signerConfig:
-    signerHost: lnd2-signer.galoy-dev-signer.svc.cluster.local:10009
+    signerHost: lnd2-signer:10009
     signerCredentialsSecretName: lnd2-signer-credentials
     signerAccountsSecretName: lnd2-signer-accounts
 
