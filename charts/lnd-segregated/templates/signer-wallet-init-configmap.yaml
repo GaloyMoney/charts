@@ -1,4 +1,4 @@
-{{- if eq .Values.mode "signer" }}
+{{- if or (eq .Values.mode "signer") (eq .Values.mode "complete") }}
 {{- if ne .Values.global.network "regtest" }}
 apiVersion: v1
 kind: ConfigMap

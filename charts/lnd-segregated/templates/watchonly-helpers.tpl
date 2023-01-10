@@ -1,3 +1,4 @@
+{{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}
 {{/*
 Expand the name of the chart.
 */}}
@@ -76,3 +77,4 @@ Create the name of the service account to use
 {{- (randAlpha 24) | b64enc -}}
 {{- end -}}
 {{- end -}}
+{{- end }}

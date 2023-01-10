@@ -1,4 +1,4 @@
-{{- if eq .Values.mode "watchonly" }}     
+{{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}     
 {{ $checksum := include (print $.Template.BasePath "/watchonly-configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet

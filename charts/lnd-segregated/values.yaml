@@ -4,7 +4,7 @@
 global:
   network: mainnet
 
-# choose between the mode: 'watchonly' or 'signer'
+# choose between the modes: ''complete', 'watchonly' or 'signer'
 # find the respective group of settings below
 mode: watchonly
 
@@ -63,6 +63,7 @@ configmap:
   customValues: []
 
 watchonly:
+  fullnameOverride: lnd-watchonly
   apiService:
     # On google cloud, static ip can be created using `gcloud compute addresses create`
     staticIP: ""
@@ -111,6 +112,7 @@ watchonly:
     signerAccountsSecretName: lnd-signer2-accounts
 
 signer:
+  fullnameOverride: lnd-signer
   ## use only a GRPC endpoint for the signer
   apiService:
     type: ClusterIP

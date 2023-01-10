@@ -1,7 +1,8 @@
-{{- if eq .Values.mode "watchonly" }}     
+{{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}
 apiVersion: v1
 kind: Service
 metadata:
+#TODO
   name: {{ include "lnd.fullname" . }}
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
