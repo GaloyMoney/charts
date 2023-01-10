@@ -1,7 +1,7 @@
 global:
   network: regtest
 
-mode: watchonly
+mode: complete
 
 resources:
   limits:
@@ -21,6 +21,8 @@ configmap:
   - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
 
 watchonly:
+  persistence:
+    enabled: false
   autoCreateWatchonly:
     enabled: true
 
@@ -28,3 +30,9 @@ watchonly:
     signerHost: lnd-signer2.galoy-dev-signer.svc.cluster.local:10009
     signerCredentialsSecretName: lnd-signer2-credentials
     signerAccountsSecretName: lnd-signer2-accounts
+
+signer:
+  persistence:
+    enabled: false
+  autoGenerateSeed:
+    enabled: true

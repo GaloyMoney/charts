@@ -177,9 +177,9 @@ spec:
             secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
         {{- end }}
         - name: lnd-storage
-        {{- if .Values.persistence.enabled }}
+        {{- if .Values.signer.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "lnd.fullname" $) }}
+            claimName: {{ .Values.signer.persistence.existingClaim | default (include "lnd.fullname" $) }}
         {{- else }}
           emptyDir: {}
         {{- end }}

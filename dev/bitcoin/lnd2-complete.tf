@@ -1,7 +1,7 @@
 data "kubernetes_secret" "signer_credentials" {
   metadata {
     name      = "lnd-signer2-credentials"
-    namespace = local.signer_namespace
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -17,7 +17,7 @@ resource "kubernetes_secret" "signer_credentials" {
 data "kubernetes_secret" "signer_accounts" {
   metadata {
     name      = "lnd-signer2-accounts"
-    namespace = local.signer_namespace
+    namespace = local.bitcoin_namespace
   }
 }
 
@@ -30,7 +30,7 @@ resource "kubernetes_secret" "signer_accounts" {
   data = data.kubernetes_secret.signer_accounts.data
 }
 
-resource "helm_release" "lnd-watchonly" {
+resource "helm_release" "lnd-complete" {
   name      = "lnd2"
   chart     = "${path.module}/../../charts/lnd-segregated"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
@@ -38,7 +38,7 @@ resource "helm_release" "lnd-watchonly" {
   dependency_update = true
   timeout           = local.bitcoin_network == "regtest" ? 900 : 9000
   values = [
-    file("${path.module}/lnd-watchonly-${var.bitcoin_network}-values.yml")
+    file("${path.module}/lnd-complete-${var.bitcoin_network}-values.yml")
   ]
 
   depends_on = [

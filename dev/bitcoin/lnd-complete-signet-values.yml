@@ -10,11 +10,6 @@ resources:
 
 terminationGracePeriodSeconds: 60
 
-persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 1Gi
-
 configmap:
   customValues:
   - bitcoin.defaultchanconfs=0
@@ -24,6 +19,11 @@ configmap:
   - debuglevel=info
 
 watchonly:
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
   autoCreateWatchonly:
     enabled: true
 
@@ -31,3 +31,12 @@ watchonly:
     signerHost: lnd-signer2.galoy-sig-signer.svc.cluster.local:10009
     signerCredentialsSecretName: lnd-signer2-credentials
     signerAccountsSecretName: lnd-signer2-accounts
+
+signer:
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 250Mi
+
+  autoGenerateSeed:
+    enabled: true

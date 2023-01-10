@@ -237,9 +237,9 @@ spec:
             - key: accounts-signer
               path: "accounts-signer"
         - name: lnd-storage
-        {{- if .Values.persistence.enabled }}
+        {{- if .Values.watchonly.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "lnd.fullname" $) }}
+            claimName: {{ .Values.watchonly.persistence.existingClaim | default (include "lnd.fullname" $) }}
         {{- else }}
           emptyDir: {}
         {{- end }}
