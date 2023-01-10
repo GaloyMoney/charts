@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "lnd.signer.fullname" . }}
   labels:
-    {{- include "lnd.signer.fullname" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
   {{- with .Values.signer.apiService.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -18,5 +18,5 @@ spec:
     - name: rpc
       port: {{ .Values.signer.apiService.ports.rpc }}
   selector:
-    {{- include "lnd.signer.selectorLabels" . | nindent 4 }}
+    {{- include "lnd.selectorLabels" . | nindent 4 }}
 {{- end }}

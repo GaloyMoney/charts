@@ -19,6 +19,7 @@ configmap:
   - debuglevel=info
 
 watchonly:
+  fullnameOverride: lnd2
   persistence:
     enabled: true
     accessMode: ReadWriteOnce
@@ -28,11 +29,12 @@ watchonly:
     enabled: true
 
   signerConfig:
-    signerHost: lnd-signer2.galoy-sig-signer.svc.cluster.local:10009
-    signerCredentialsSecretName: lnd-signer2-credentials
-    signerAccountsSecretName: lnd-signer2-accounts
+    signerHost: lnd2-signer.galoy-sig-signer.svc.cluster.local:10009
+    signerCredentialsSecretName: lnd2-signer-credentials
+    signerAccountsSecretName: lnd2-signer-accounts
 
 signer:
+  fullnameOverride: lnd2-signer
   persistence:
     enabled: true
     accessMode: ReadWriteOnce

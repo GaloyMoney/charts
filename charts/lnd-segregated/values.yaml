@@ -107,9 +107,9 @@ watchonly:
   autoCreateWatchonly:
     enabled: false
   signerConfig:
-    signerHost: lnd2.galoy-sig-signer.svc.cluster.local:10009
-    signerCredentialsSecretName: lnd-signer2-credentials
-    signerAccountsSecretName: lnd-signer2-accounts
+    signerHost: lnd-signer.galoy-sig-signer.svc.cluster.local:10009
+    signerCredentialsSecretName: lnd-signer-credentials
+    signerAccountsSecretName: lnd-signer-accounts
 
 signer:
   fullnameOverride: lnd-signer

@@ -5,7 +5,7 @@ kind: Role
 metadata:
   name: {{ include "lnd.watchonly.fullname" . }}
   labels:
-    {{- include "lnd.watchonly.labels" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]

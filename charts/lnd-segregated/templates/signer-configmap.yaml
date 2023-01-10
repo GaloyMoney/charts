@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "lnd.signer.fullname" . }}
   labels:
-    {{- include "lnd.signer.fullname" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
 data:
   lnd.conf: |-
     bitcoin.{{ .Values.global.network }}=true

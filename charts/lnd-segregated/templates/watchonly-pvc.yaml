@@ -7,7 +7,7 @@ metadata:
   annotations:
     "helm.sh/resource-policy": keep
   labels:
-    {{- include "lnd.watchonly.labels" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.watchonly.persistence.accessMode | quote }}

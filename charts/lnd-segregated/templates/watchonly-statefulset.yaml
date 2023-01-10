@@ -5,7 +5,7 @@ kind: StatefulSet
 metadata:
   name: {{ include "lnd.watchonly.fullname" . }}
   labels:
-    {{- include "lnd.watchonly.fullname" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
     {{- if .Values.kubemonkey.enabled }}
     kube-monkey/enabled: enabled
     kube-monkey/identifier: {{ .Release.Name }}
@@ -20,7 +20,7 @@ spec:
   serviceName: {{ include "lnd.watchonly.fullname" . }}
   selector:
     matchLabels:
-      {{- include "lnd.watchonly.selectorLabels" . | nindent 6 }}
+      {{- include "lnd.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -29,7 +29,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "lnd.watchonly.selectorLabels" . | nindent 8 }}
+        {{- include "lnd.selectorLabels" . | nindent 8 }}
         allow-to-bitcoind: "true"
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled

@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ printf "%s-wallet-init" (include "lnd.watchonly.fullname" .) }}
   labels:
-    {{- include "lnd.watchonly.fullname" . | nindent 4 }}
+    {{- include "lnd.labels" . | nindent 4 }}
 data:
   walletInit.exp: |
     #!/usr/bin/expect -f
