@@ -287,6 +287,8 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  balanceNotificationCron:
+    enabled: false
   ## Kratos
   kratos:
     existingSecret:
