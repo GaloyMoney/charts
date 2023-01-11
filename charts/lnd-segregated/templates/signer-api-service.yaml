@@ -1,8 +1,8 @@
-{{- if eq .Values.mode "signer" }}
+{{- if or (eq .Values.mode "signer") (eq .Values.mode "complete") }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "lnd.fullname" . }}
+  name: {{ include "lnd.signer.fullname" . }}
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
   {{- with .Values.signer.apiService.annotations }}

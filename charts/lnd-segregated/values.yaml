@@ -4,9 +4,9 @@
 global:
   network: mainnet
 
-# choose between the mode: 'watchonly' or 'signer'
+# choose between the modes: ''complete', 'watchonly' or 'signer'
 # find the respective group of settings below
-mode: watchonly
+mode: complete
 
 image:
   repository: lightninglabs/lnd
@@ -35,18 +35,6 @@ secrets:
   create: true
 rbac:
   create: true
-persistence:
-  enabled: true
-  ## database data Persistent Volume Storage Class
-  ## If defined, storageClassName: <storageClass>
-  ## If set to "-", storageClassName: "", which disables dynamic provisioning
-  ## If undefined (the default) or set to null, no storageClassName spec is
-  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-  ##   GKE, AWS & OpenStack)
-  ##
-  # storageClass: "-"
-  accessMode: ReadWriteOnce
-  size: 10Gi
 affinity:
 podAffinity:
   preferredDuringSchedulingIgnoredDuringExecution:
@@ -59,10 +47,21 @@ podAffinity:
               values:
                 - bitcoind
         topologyKey: kubernetes.io/hostname
-configmap:
-  customValues: []
 
 watchonly:
+  fullnameOverride: lnd-watchonly
+  persistence:
+    enabled: true
+    ## database data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    accessMode: ReadWriteOnce
+    size: 10Gi
   apiService:
     # On google cloud, static ip can be created using `gcloud compute addresses create`
     staticIP: ""
@@ -76,6 +75,7 @@ watchonly:
     staticIP: ""
     type: ClusterIP
     port: 9735
+  bitcoindRpcPassSecretName: bitcoind-rpcpassword
   ## lnd.conf entries for the watchonly lnd
   generalConfig:
     - restlisten=0.0.0.0:8080
@@ -102,23 +102,62 @@ watchonly:
     - tor.active=true
     - tor.v3=true
     - tor.skip-proxy-for-clearnet-targets=true
-  bitcoindRpcPassSecretName: bitcoind-rpcpassword
+    ## The number of times we should attempt to check our remote signer RPC
+    ## connection before gracefully shutting down. Set this value to 0 to disable
+    ## this health check.
+    - healthcheck.remotesigner.attempts=2
+    
+    ## The amount of time we allow a call to our remote signer RPC connection to take
+    ## before we fail the attempt. This value must be >= 1s.
+    # healthcheck.remotesigner.timeout=1s
+    
+    ## The amount of time we should backoff between failed attempts to check remote
+    ## signer RPC connection. This value must be >= 1s.
+    # healthcheck.remotesigner.backoff=30s
+    
+    ## The amount of time we should wait between remote signer RPC connection health
+    ## checks. This value must be >= 1m.
+    # healthcheck.remotesigner.interval=1m
+    
+    ##The timeout for connecting to and signing requests with the remote signer.
+    ##Valid time units are {s, m, h}.
+    #remotesigner.timeout=5s
+    
+    ##If a wallet with private key material already exists, migrate it into a
+    ##watch-only wallet on first startup.
+    ##WARNING: This cannot be undone! Make sure you have backed up your seed before
+    ##you use this flag! All private keys will be purged from the wallet after first
+    ##unlock with this flag!
+    #remotesigner.migrate-wallet-to-watch-only=true
+  configmap:
+    customValues: []
   autoCreateWatchonly:
     enabled: false
   signerConfig:
-    signerHost: lnd2.galoy-sig-signer.svc.cluster.local:10009
-    signerCredentialsSecretName: lnd-signer2-credentials
-    signerAccountsSecretName: lnd-signer2-accounts
+    signerHost: lnd-signer:10009
+    signerCredentialsSecretName: lnd-signer-credentials
+    signerAccountsSecretName: lnd-signer-accounts
 
 signer:
+  fullnameOverride: lnd-signer
+  persistence:
+    enabled: true
+    ## database data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    accessMode: ReadWriteOnce
+    size: 1Gi
   ## use only a GRPC endpoint for the signer
   apiService:
     type: ClusterIP
     annotations: {}
     ports:
       rpc: 10009
-  autoGenerateSeed:
-    enabled: false
   ## lnd.conf entries for the signer
   generalConfig:
     - nolisten=true
@@ -127,3 +166,7 @@ signer:
     - bitcoin.active=true
     - bitcoin.node=nochainbackend
     - tlsautorefresh=true
+  configmap:
+    customValues: []
+  autoGenerateSeed:
+    enabled: false

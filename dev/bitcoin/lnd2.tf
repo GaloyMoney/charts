@@ -1,5 +1,5 @@
 resource "helm_release" "lnd" {
-  name      = "lnd1"
+  name      = "lnd2"
   chart     = "${path.module}/../../charts/lnd"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 

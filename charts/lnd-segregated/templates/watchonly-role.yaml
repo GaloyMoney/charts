@@ -1,0 +1,14 @@
+{{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}
+{{- if .Values.rbac.create }}
+apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+kind: Role
+metadata:
+  name: {{ include "lnd.watchonly.fullname" . }}
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create", "get", "patch", "delete"]
+{{- end }}
+{{- end }}

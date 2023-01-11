@@ -21,12 +21,5 @@ configmap:
   - tlsextradomain=lnd1.galoy-sig-bitcoin.svc.cluster.local
   - debuglevel=info
 
-loop:
-  enabled: false
-loopserver:
-  enabled: false
-lndmon:
-  enabled: false
-
 autoGenerateSeed:
   enabled: true

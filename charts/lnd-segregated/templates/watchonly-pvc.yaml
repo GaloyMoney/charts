@@ -1,0 +1,25 @@
+{{- if or (eq .Values.mode "watchonly") (eq .Values.mode "complete") }}
+{{- if and .Values.watchonly.persistence.enabled (not .Values.watchonly.persistence.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "lnd.watchonly.fullname" $ }}
+  annotations:
+    "helm.sh/resource-policy": keep
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.watchonly.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.watchonly.persistence.size | quote }}
+{{- if .Values.watchonly.persistence.storageClass }}
+{{- if (eq "-" .Values.watchonly.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.watchonly.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

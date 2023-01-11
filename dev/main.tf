@@ -21,13 +21,6 @@ module "infra_services" {
   cluster_ca_cert  = "dummy"
 }
 
-module "lnd-signer" {
-  source = "./lnd-signer"
-
-  bitcoin_network = local.bitcoin_network
-  name_prefix     = local.name_prefix
-}
-
 module "bitcoin" {
   source = "./bitcoin"
 
@@ -36,7 +29,6 @@ module "bitcoin" {
 
   depends_on = [
     module.galoy_deps,
-    module.lnd-signer
   ]
 }
 

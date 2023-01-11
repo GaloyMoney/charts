@@ -1,0 +1,25 @@
+{{- if or (eq .Values.mode "signer") (eq .Values.mode "complete") }}
+{{- if and .Values.signer.persistence.enabled (not .Values.signer.persistence.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "lnd.signer.fullname" $ }}
+  annotations:
+    "helm.sh/resource-policy": keep
+  labels:
+    {{- include "lnd.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.signer.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.signer.persistence.size | quote }}
+{{- if .Values.signer.persistence.storageClass }}
+{{- if (eq "-" .Values.signer.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.signer.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

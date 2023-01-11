@@ -1,9 +1,9 @@
-{{- if eq .Values.mode "signer" }}
+{{- if or (eq .Values.mode "signer") (eq .Values.mode "complete") }}
 {{ $checksum := include (print $.Template.BasePath "/signer-configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "lnd.fullname" . }}
+  name: {{ include "lnd.signer.fullname" . }}
   labels:
     {{- include "lnd.labels" . | nindent 4 }}
     {{- if .Values.kubemonkey.enabled }}
@@ -17,7 +17,7 @@ metadata:
     {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
     {{- end }}
 spec:
-  serviceName: {{ include "lnd.fullname" . }}
+  serviceName: {{ include "lnd.signer.fullname" . }}
   selector:
     matchLabels:
       {{- include "lnd.selectorLabels" . | nindent 6 }}
@@ -40,7 +40,7 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "lnd.serviceAccountName" . }}
+      serviceAccountName: {{ include "lnd.signer.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       initContainers:
         - name: copy-signer-config
@@ -159,27 +159,27 @@ spec:
         {{- if ne .Values.global.network "regtest" }}
         - name: wallet-init
           configMap:
-            name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
+            name: {{ printf "%s-wallet-init" (include "lnd.signer.fullname" .) }}
             defaultMode: 0777
         {{- end }}
         - name: export-secrets
           configMap:
-            name: {{ printf "%s-export-secrets" (include "lnd.fullname" .) }}
+            name: {{ printf "%s-export-secrets" (include "lnd.signer.fullname" .) }}
             defaultMode: 0777
         - name: config
           emptyDir: {}
         - name: configmap
           configMap:
-            name: {{ include "lnd.fullname" . }}
+            name: {{ include "lnd.signer.fullname" . }}
         {{- if ne .Values.global.network "regtest" }}
         - name: lnd-password
           secret:
-            secretName: {{ printf "%s-pass" (include "lnd.fullname" .) }}
+            secretName: {{ printf "%s-pass" (include "lnd.signer.fullname" .) }}
         {{- end }}
         - name: lnd-storage
-        {{- if .Values.persistence.enabled }}
+        {{- if .Values.signer.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "lnd.fullname" $) }}
+            claimName: {{ .Values.signer.persistence.existingClaim | default (include "lnd.signer.fullname" $) }}
         {{- else }}
           emptyDir: {}
         {{- end }}
