@@ -11,6 +11,6 @@ resource "helm_release" "loop" {
   ]
 
   depends_on = [
-    helm_release.lnd
+    helm_release.lnd-segregated
   ]
 }
