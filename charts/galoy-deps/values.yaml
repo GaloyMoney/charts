@@ -13,7 +13,7 @@ kubemonkey:
 
 opentelemetry-collector:
   enabled: true
-  mode: deployment
+  mode: daemonset
   config:
     exporters:
       logging: {}
@@ -73,7 +73,7 @@ opentelemetry-collector:
       # If set to null, will be overridden with values based on k8s resource limits
       memory_limiter: null
       resourcedetection:
-        detectors: [env, gke]
+        detectors: [env, gcp]
         timeout: 5s
         override: false
       k8sattributes:
