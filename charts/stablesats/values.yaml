@@ -14,7 +14,7 @@ stablesats:
   userTrades:
     enabled: true
     balancePublishFrequency: 5
-    galoyPollFrequency: 20
+    galoyPollFrequency: 10
   hedging:
     enabled: true
     okexPollFrequency: 10
