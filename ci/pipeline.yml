@@ -67,10 +67,6 @@ groups:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
-- name: auth
-  jobs:
-  - galoy-auth-testflight
-  - bump-galoy-auth-in-deployments
 - name: stablesats
   jobs:
   - stablesats-testflight
@@ -100,8 +96,6 @@ jobs:
 - #@ bump_in_deployments_job("galoy")
 - #@ testflight_job("monitoring", "monitoring")
 - #@ bump_in_deployments_job("monitoring")
-- #@ testflight_job("galoy-auth", "auth")
-- #@ bump_in_deployments_job("galoy-auth")
 - #@ testflight_job("stablesats", "stablesats", stablesats_chart_vars())
 - #@ bump_in_deployments_job("stablesats")
 - #@ testflight_job("galoy-deps", "galoy-deps", galoy_deps_chart_vars())
@@ -317,10 +311,6 @@ resources:
 - #@ chart_repo_resource("stablesats")
 - #@ testflight_tf_resource("stablesats")
 - #@ slack_resource("stablesats")
-
-- #@ chart_repo_resource("galoy-auth")
-- #@ testflight_tf_resource("galoy-auth")
-- #@ slack_resource("auth")
 
 - #@ chart_repo_resource("galoy-deps")
 - #@ testflight_tf_resource("galoy-deps")
