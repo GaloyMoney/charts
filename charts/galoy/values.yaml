@@ -636,6 +636,22 @@ oathkeeper:
           "mutators": [ { "handler": "noop" } ]
         },
         {
+          "id": "allow-clear-cookies-endpoint",
+          "upstream": { "url": "http://api:4002" },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies"
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [ { "handler": "anonymous" } ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [
+            {
+              "handler": "delete_cookies",
+              "config": { "cookies": ["ory_kratos_session", "csrf*"] }
+            }
+          ]
+        },
+        {
           "id": "galoy-backend",
           "upstream": {
             "url": "http://api:4002"
