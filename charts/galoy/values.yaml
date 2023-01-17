@@ -639,7 +639,7 @@ oathkeeper:
           "id": "allow-clear-cookies-endpoint",
           "upstream": { "url": "http://api:4002" },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies"
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies",
             "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [ { "handler": "anonymous" } ],
