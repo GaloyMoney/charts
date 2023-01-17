@@ -1,4 +1,4 @@
-FROM lncm/bitcoind:v0.21.1
+FROM lncm/bitcoind:v24.0.1
 
 USER root
 
@@ -12,6 +12,6 @@ RUN cd ~ && \
   && ./google-cloud-sdk/install.sh --quiet \
   && rm *.tar.gz
 
-env PATH="${PATH}:/data/google-cloud-sdk/bin"
+ENV PATH="${PATH}:/data/google-cloud-sdk/bin"
 
 ENTRYPOINT []
