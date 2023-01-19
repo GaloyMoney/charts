@@ -1,4 +1,4 @@
-FROM lightninglabs/lnd:v0.15.4-beta as lnd
+FROM lightninglabs/lnd:v0.15.5-beta as lnd
 FROM lightninglabs/loop:v0.20.1-beta as loop
 
 FROM alpine/k8s:1.23.14
