@@ -42,7 +42,7 @@ redeploy-galoy:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
-redeploy-signet-monitoring:
+redeploy-monitoring:
 	-kubectl delete namespace galoy-dev-monitoring --force
 	cd monitoring
 	$(TF) apply -var="bitcoin_network=regtest" \

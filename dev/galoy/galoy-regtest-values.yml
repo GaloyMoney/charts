@@ -1,6 +1,18 @@
 galoy:
   network: regtest
 
+  images:
+    ## Galoy Application Image details
+    ##
+    app:
+      ## Has api, trigger and exporter
+      ##
+      repository: openoms/galoy_pr2057:latest
+      ## Digest of the image
+      ##
+      digest: "sha256:ae7386f731fbec8b9b8f80c55b036c0e1df432a65af4b482f4d88b7bb63bea3f"
+
+
   config:
     test_accounts:
       - ref: A

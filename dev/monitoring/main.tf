@@ -54,20 +54,24 @@ data "kubernetes_secret" "monitoring-grafana" {
     namespace = local.monitoring_namespace
     name      = "monitoring-grafana"
   }
+  
+  depends_on = [
+    helm_release.monitoring,
+  ]
 }
 
 output "grafana_password" {
   sensitive = true
   value = data.kubernetes_secret.monitoring-grafana.data["admin-password"]
+
+  depends_on = [
+    helm_release.monitoring,
+  ]
 }
 
 provider "grafana" {
-  #url = "http://localhost:80"
-  #url = "http://10.43.16.233:3000"
   url = "http://${local.grafana_url}"
-  #url = "http://10.43.229.85"
   auth = "admin:${data.kubernetes_secret.monitoring-grafana.data["admin-password"]}"
-  #auth = "admin:aZMPpQYpXjaC3MMrGsVb4TlW2XvAq7W0u3W35Qjm"
 }
 
 terraform {
