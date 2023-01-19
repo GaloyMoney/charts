@@ -1,5 +1,6 @@
+
 resource "helm_release" "loop" {
-  count     = var.bitcoin_network == "signet" ? 0 : 1
+  count     = 0
   name      = "loop1"
   chart     = "${path.module}/../../charts/loop"
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
