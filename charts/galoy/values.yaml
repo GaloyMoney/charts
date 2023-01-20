@@ -596,7 +596,7 @@ oathkeeper:
         cookie_session:
           enabled: true
           config:
-            check_session_url: http://kratos:4433/sessions/whoami
+            check_session_url: http://galoy-kratos-public:4433/sessions/whoami
             preserve_path: true
             subject_from: identity.id
             extra_from: identity.traits
