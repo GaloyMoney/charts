@@ -16,8 +16,12 @@ resource "kubernetes_namespace" "bitcoin" {
 
 resource "null_resource" "bitcoind_block_generator" {
 
+  triggers = {
+    run_every_time = timestamp()
+  }
+
   provisioner "local-exec" {
-    command     = local.bitcoin_network == "regtest" && local.bitcoin_namespace == "galoy-dev-bitcoin" ? "./bitcoin/generateBlock.sh" : "echo Running ${local.bitcoin_network}"
+    command     = local.bitcoin_network == "regtest" && local.bitcoin_namespace == "galoy-dev-bitcoin" ? "${path.module}/generateBlock.sh" : "echo Running ${local.bitcoin_network}"
     interpreter = ["sh", "-c"]
   }
 
