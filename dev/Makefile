@@ -42,6 +42,12 @@ redeploy-galoy:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
+redeploy-signet-monitoring:
+	-kubectl delete namespace galoy-dev-monitoring --force
+	cd monitoring
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
 
 deploy-signet-services:
 	$(TF) apply -target module.galoy_deps.helm_release.cert_manager \
@@ -68,6 +74,13 @@ redeploy-signet-addons:
 	-kubectl delete namespace galoy-sig-addons --force
 	cd addons
 	$(TF) apply -var="name_prefix=galoy-sig" -auto-approve
+
+redeploy-signet-monitoring:
+	-kubectl delete namespace galoy-sig-monitoring --force
+	cd monitoring
+	$(TF) apply -var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
+
 
 fmt:
 	$(TF) fmt -recursive
