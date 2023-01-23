@@ -20,7 +20,9 @@ resource "helm_release" "monitoring" {
   namespace = kubernetes_namespace.monitoring.metadata[0].name
 
   values = [
-    file("${path.module}/monitoring-values.yml")
+    templatefile("${path.module}/monitoring-values.yml.tmpl", {
+      namespace : local.monitoring_namespace
+    })
   ]
 
   dependency_update = true
@@ -49,12 +51,17 @@ resource "grafana_dashboard" "main" {
   ]
 }
 
+provider "grafana" {
+  url  = "http://${local.grafana_url}"
+  auth = "admin:${data.kubernetes_secret.monitoring-grafana.data["admin-password"]}"
+}
+
 data "kubernetes_secret" "monitoring-grafana" {
   metadata {
     namespace = local.monitoring_namespace
     name      = "monitoring-grafana"
   }
-  
+
   depends_on = [
     helm_release.monitoring,
   ]
@@ -62,16 +69,11 @@ data "kubernetes_secret" "monitoring-grafana" {
 
 output "grafana_password" {
   sensitive = true
-  value = data.kubernetes_secret.monitoring-grafana.data["admin-password"]
+  value     = data.kubernetes_secret.monitoring-grafana.data["admin-password"]
 
   depends_on = [
     helm_release.monitoring,
   ]
-}
-
-provider "grafana" {
-  url = "http://${local.grafana_url}"
-  auth = "admin:${data.kubernetes_secret.monitoring-grafana.data["admin-password"]}"
 }
 
 terraform {
