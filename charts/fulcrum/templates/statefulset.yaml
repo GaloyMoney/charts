@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "fulcrum.fullname" . }}
+  labels:
+    {{- include "fulcrum.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: {{ include "fulcrum.fullname" . }}
+  terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+  selector:
+    matchLabels:
+      app: {{ template "fulcrum.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        {{- include "fulcrum.selectorLabels" . | nindent 8 }}
+        app: {{ template "fulcrum.fullname" . }}
+        release: "{{ .Release.Name }}"
+        allow-to-bitcoind: "true"
+    spec:
+      serviceAccountName: {{ include "fulcrum.serviceAccountName" . }}
+      initContainers:
+        - name: copy-fulcrum-config
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            # fill the bitcoin rpcpassword in fulcrum.conf
+            cat <<EOF > /config/fulcrum.conf
+            rpcpassword=$(cat /rpcpassword/password)
+            $(cat /configmap/fulcrum.conf)
+            EOF
+            # create the ssl key and cert files if not present
+            if [ ! -f /.fulcrum/tls.key ] || [ ! -f /.fulcrum/tls.cert ]; then
+              openssl req -newkey rsa:2048 -sha256 -nodes -x509 -days 365 -subj "/O=Fulcrum" -keyout "/.fulcrum/tls.key" -out "/.fulcrum/tls.cert"
+            fi
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /config
+            - name: rpcpassword
+              mountPath: /rpcpassword
+            - name: fulcrum-storage
+              mountPath: /.fulcrum
+      containers:
+        - name: fulcrum
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: tcp
+              containerPort: {{ .Values.service.ports.tcp }}
+            - name: ssl
+              containerPort: {{ .Values.service.ports.ssl }}
+            - name: ws
+              containerPort: {{ .Values.service.ports.ws }}
+            - name: wss
+              containerPort: {{ .Values.service.ports.wss }}
+            - name: stats
+              containerPort: {{ .Values.service.ports.stats }}
+          command: ["Fulcrum", "/config/fulcrum.conf"]
+          volumeMounts:
+            - name: config
+              mountPath: /config/fulcrum.conf
+              subPath: fulcrum.conf
+            - name: fulcrum-storage
+              mountPath: /.fulcrum
+          startupProbe:
+            tcpSocket:
+              port: stats
+            failureThreshold: 10
+            periodSeconds: 2
+          readinessProbe:
+            tcpSocket:
+              port: ssl
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            # allow 10h for initial sync
+            failureThreshold: 7200
+          livenessProbe:
+            tcpSocket:
+              port: ssl
+            # allow 10h for initial sync
+            initialDelaySeconds: 36000
+            periodSeconds: 10
+            failureThreshold: 2
+          # Define the resources to be created
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      # Define the volumes to be used by the container
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: rpcpassword
+          secret:
+            secretName: {{ .Values.bitcoindRpcPassSecretName }}
+        - name: configmap
+          configMap:
+            name: {{ include "fulcrum.fullname" . }}
+        - name: fulcrum-storage
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "fulcrum.fullname" $) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

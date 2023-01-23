@@ -33,6 +33,7 @@ all: create-cluster init deploy-services deploy
 
 redeploy-bitcoin:
 	-kubectl delete namespace galoy-dev-bitcoin --force
+	cd bitcoin
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
@@ -42,9 +43,15 @@ redeploy-galoy:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
-redeploy-signet-monitoring:
+redeploy-monitoring:
 	-kubectl delete namespace galoy-dev-monitoring --force
 	cd monitoring
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
+redeploy-smoketest:
+	-kubectl delete namespace galoy-dev-smoketest --force
+	cd smoketest
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
@@ -63,6 +70,12 @@ deploy-signet:
 
 all-signet: create-cluster init deploy-signet-services deploy-signet
 
+
+redeploy-signet-bitcoin:
+	-kubectl delete namespace galoy-sig-bitcoin --force
+	cd bitcoin
+	$(TF) apply -var="bitcoin_network=signet" \
+				-var="name_prefix=galoy-sig" -auto-approve
 
 redeploy-signet-galoy:
 	-kubectl delete namespace galoy-sig-galoy --force

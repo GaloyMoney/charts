@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fulcrum.fullname" . }}
+  labels:
+    {{- include "fulcrum.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: tcp
+      port: {{ .Values.service.ports.tcp }}
+    - name: ssl
+      port: {{ .Values.service.ports.ssl }}
+    - name: ws
+      port: {{ .Values.service.ports.ws }}
+    - name: wss
+      port: {{ .Values.service.ports.wss }}
+    - name: stats
+      port: {{ .Values.service.ports.stats }}
+  selector:
+    {{- include "fulcrum.selectorLabels" . | nindent 4 }}
