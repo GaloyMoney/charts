@@ -2,7 +2,7 @@ apiVersion: v2
 name: stablesats
 description: A Helm chart for Kubernetes
 type: application
-version: 0.3.26
+version: 0.3.26-dev
 appVersion: 0.3.27
 dependencies:
   - name: redis
