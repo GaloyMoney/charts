@@ -25,7 +25,7 @@ spec:
       - name: admin-panel
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.service.port }}
         env:
         - name: NEXT_PUBLIC_GRAPHQL_URL
           value: {{ .Values.adminPanel.graphqlUrl }}
