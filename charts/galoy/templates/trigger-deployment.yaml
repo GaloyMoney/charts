@@ -18,11 +18,11 @@ metadata:
 spec:
 
   replicas: {{ .Values.galoy.trigger.replicas }}
-  
+
   selector:
     matchLabels:
       app: {{ template "galoy.trigger.fullname" . }}
-  
+
   template:
 
     metadata:
@@ -31,7 +31,6 @@ spec:
         app: {{ template "galoy.trigger.fullname" . }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ template "galoy.trigger.fullname" . }}
-        allow-to-lnd: "true"
         allow-to-bitcoind: "true"
 
     spec:
@@ -47,7 +46,7 @@ spec:
       containers:
       - name: api
         image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-        args: 
+        args:
         - "-r"
         - "/app/lib/services/tracing.js"
         - "lib/servers/trigger.js"
@@ -73,7 +72,7 @@ spec:
 
         - name: NETWORK
           value: {{ .Values.galoy.network }}
-        
+
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
         - name: TRACING_SERVICE_NAME

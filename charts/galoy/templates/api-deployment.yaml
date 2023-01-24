@@ -31,7 +31,6 @@ spec:
         app: {{ template "galoy.api.fullname" . }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
-        allow-to-lnd: "true"
         allow-to-bitcoind: "true"
 
     spec:

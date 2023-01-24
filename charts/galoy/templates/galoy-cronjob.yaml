@@ -19,7 +19,6 @@ spec:
       template:
         metadata:
           labels:
-            allow-to-lnd: "true"
             allow-to-bitcoind: "true"
 
         spec:
@@ -36,7 +35,7 @@ spec:
           containers:
           - name: {{ template "galoy.cron.jobname" . }}
             image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-            args: 
+            args:
             - "-r"
             - "/app/lib/services/tracing.js"
             - "lib/servers/cron.js"

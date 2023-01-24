@@ -45,8 +45,7 @@ resource "kubernetes_pod" "smoketest" {
     namespace = local.smoketest_namespace
 
     labels = {
-      "allow-to-bitcoind" : "true",
-      "allow-to-lnd" : "true"
+      "allow-to-bitcoind" : "true"
     }
   }
 

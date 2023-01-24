@@ -21,7 +21,6 @@ spec:
       {{- end }}
       labels:
         {{- include "loopserver.selectorLabels" . | nindent 8 }}
-        allow-to-lnd: "true"
         kube-monkey/identifier: {{ .Release.Name }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
