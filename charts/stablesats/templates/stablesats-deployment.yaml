@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: {{ template "stablesats.fullname" . }}
       release: {{ .Release.Name }}
-  replicas: {{ '.Values.stablesats.replicas' }}
+  replicas: {{ .Values.stablesats.replicas }}
   template:
     metadata:
       labels:
