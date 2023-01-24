@@ -43,8 +43,6 @@ galoy:
 
 mongodb:
   architecture: standalone
-  volumePermissions:
-    enabled: true
   persistence:
     enabled: false
   replicaCount: 1
@@ -53,8 +51,6 @@ mongodb:
   initDbScripts: {}
 
 redis:
-  volumePermissions:
-    enabled: true
   replica:
     replicaCount: 1
   master:
@@ -62,6 +58,8 @@ redis:
       enabled: false
   metrics:
     enabled: false
+  sentinel:
+    getMasterTimeout: 5
 
 price:
   service:
