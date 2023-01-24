@@ -15,36 +15,20 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
-data "kubernetes_secret" "bitcoin_rpcpassword" {
+data "kubernetes_secret" "bitcoind_rpcpassword" {
   metadata {
     name      = "bitcoind-rpcpassword"
     namespace = "galoy-staging-bitcoin"
   }
 }
 
-resource "kubernetes_secret" "bitcoinrpc_password" {
+resource "kubernetes_secret" "bitcoind_rpcpassword" {
   metadata {
     name      = "bitcoind-rpcpassword"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = data.kubernetes_secret.bitcoin_rpcpassword.data
-}
-
-data "kubernetes_secret" "network" {
-  metadata {
-    name      = "network"
-    namespace = "galoy-staging-bitcoin"
-  }
-}
-
-resource "kubernetes_secret" "network" {
-  metadata {
-    name      = "network"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = data.kubernetes_secret.network.data
+  data = data.kubernetes_secret.bitcoind_rpcpassword.data
 }
 
 resource "kubernetes_secret" "smoketest" {
