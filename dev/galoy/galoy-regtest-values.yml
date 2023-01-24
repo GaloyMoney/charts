@@ -62,6 +62,8 @@ redis:
       enabled: false
   metrics:
     enabled: false
+  sentinel:
+    getMasterTimeout: 5
 
 price:
   service:
