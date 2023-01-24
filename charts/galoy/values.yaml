@@ -673,6 +673,13 @@ oathkeeper:
           },
           "authenticators": [
            {
+            "handler": "cookie_session",
+            "config": {
+               "check_session_url": "http://kratos:4433/sessions/whoami",
+               "preserve_path": true,
+               "preserve_query": true,
+               "subject_from": "identity.id"
+             },      
              "handler": "bearer_token",
              "config": {
                "check_session_url": "http://api:4002/auth/validatetoken",
