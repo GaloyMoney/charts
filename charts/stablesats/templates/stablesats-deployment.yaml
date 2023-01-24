@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: {{ template "stablesats.fullname" . }}
       release: {{ .Release.Name }}
-  replicas: 2
+  replicas: {{ '.Values.stablesats.replicas' }}
   template:
     metadata:
       labels:
@@ -59,6 +59,8 @@ spec:
         env:
         - name: CRASH_REPORT_CONFIG
           value: '{{ .Values.stablesats.crash_report_config_danger }}'
+        - name: MIGRATE_TO_UNIFIED_DB
+          value: '{{ .Values.stablesats.migrate_to_unified_db }}'
         - name: STABLESATS_CONFIG
           value: "/stablesats.yml"
         - name: REDIS_PASSWORD
@@ -81,6 +83,11 @@ spec:
             secretKeyRef:
               name: {{ template "stablesats.fullname" . }}
               key: "hedging-pg-con"
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "pg-con"
         - name: OKEX_SECRET_KEY
           valueFrom:
             secretKeyRef:

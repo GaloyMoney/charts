@@ -1,16 +1,19 @@
 secrets:
   create: true
+  pgCon: ""
   userTradesPgCon: ""
   hedgingPgCon: ""
   okexSecretKey: ""
   okexPassphrase: ""
   galoyPhoneCode: ""
 stablesats:
+  replicas: 2
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
     digest: "sha256:b5473b456dbb6614a71c07de0fc9e2b4bec248fba1ac568de78c6364f8c188f3"
     git_ref: "6afaf91"
   crash_report_config_danger: false
+  migrate_to_unified_db: false
   userTrades:
     enabled: true
     balancePublishFrequency: 5
