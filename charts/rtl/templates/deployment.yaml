@@ -20,7 +20,6 @@ spec:
       {{- end }}
       labels:
         {{- include "rtl.selectorLabels" . | nindent 8 }}
-        allow-to-lnd: "true"
         kube-monkey/identifier: {{ .Release.Name }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
@@ -55,7 +54,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: RTL_CONFIG_PATH
-              value: /RTL/data     
+              value: /RTL/data
           ports:
             - name: http
               containerPort: {{.Values.service.port}}
