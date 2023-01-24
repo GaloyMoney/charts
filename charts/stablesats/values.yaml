@@ -10,8 +10,8 @@ stablesats:
   replicas: 2
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:b5473b456dbb6614a71c07de0fc9e2b4bec248fba1ac568de78c6364f8c188f3"
-    git_ref: "6afaf91"
+    digest: "sha256:e193d36f0c1d2ce9f26c34d21803ff333ad12c7c8600ebdaadee8ee0ba6e9d98"
+    git_ref: "f98f704"
   crash_report_config_danger: false
   migrate_to_unified_db: false
   userTrades:
