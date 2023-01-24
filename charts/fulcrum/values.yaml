@@ -62,7 +62,7 @@ persistence:
   size: 200Gi
 
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
-bitcoindRpcPort: 18443
+bitcoindRpcPort: 8332
 
 fulcrumGenericConfig:
   # https://github.com/cculianu/Fulcrum/blob/master/doc/fulcrum-example-config.conf
