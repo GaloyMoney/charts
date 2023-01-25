@@ -1,5 +1,5 @@
 locals {
-  otel_namespace = "${var.name_prefix}-deps-otel"
+  otel_namespace = "${var.name_prefix}-otel"
 }
 
 resource "kubernetes_namespace" "otel" {
