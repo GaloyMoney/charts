@@ -25,7 +25,7 @@ spec:
 EOF
 
 # Clean kafka topic if already exists, could be leftover from previous failed jobs
--kubectl -n $kafka_namespace delete kafkatopics.kafka.strimzi.io $kafka_topic
+kubectl -n $kafka_namespace delete kafkatopics.kafka.strimzi.io $kafka_topic || true
 kubectl -n $kafka_namespace apply -f topic.yaml
 
 msg="kafka message"
