@@ -82,19 +82,19 @@ opentelemetry-collector:
       jaeger:
         protocols:
           grpc:
-            endpoint: 0.0.0.0:14250
+            endpoint: ${MY_POD_IP}:14250
           thrift_http:
-            endpoint: 0.0.0.0:14268
+            endpoint: ${MY_POD_IP}:14268
           thrift_compact:
-            endpoint: 0.0.0.0:6831
+            endpoint: ${MY_POD_IP}:6831
           thrift_binary:
-            endpoint: 0.0.0.0:6832
+            endpoint: ${MY_POD_IP}:6832
       otlp:
         protocols:
           grpc:
-            endpoint: 0.0.0.0:4317
+            endpoint: ${MY_POD_IP}:4317
           http:
-            endpoint: 0.0.0.0:4318
+            endpoint: ${MY_POD_IP}:4318
       prometheus:
         config:
           scrape_configs:
