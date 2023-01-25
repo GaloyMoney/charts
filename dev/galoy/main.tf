@@ -314,6 +314,10 @@ resource "kubernetes_secret" "smoketest" {
     price_history_port     = 50052
     kratos_admin_endpoint  = "galoy-kratos-admin.${local.galoy_namespace}.svc.cluster.local"
     kratos_admin_port      = 80
+    oathkeeper_api_endpoint   = "galoy-oathkeeper-api.${local.galoy_namespace}.svc.cluster.local"
+    oathkeeper_api_port       = 4456
+    kratos_public_endpoint  = "galoy-kratos-public.${local.galoy_namespace}.svc.cluster.local"
+    kratos_public_port      = 80
   }
 }
 

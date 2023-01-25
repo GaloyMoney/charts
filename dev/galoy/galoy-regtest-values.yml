@@ -1,6 +1,19 @@
 galoy:
   network: regtest
-
+  images:
+    ## Galoy Application Image details
+    ##
+    app:
+      ## Has api, trigger and exporter
+      ##
+      repository: ntheile/galoy-test:0.0.11
+      ## Digest of the image
+      ##
+      digest: "sha256:aa2ac0be4888d14d855acba828997131dc51bfd349364e379509bb4d55539694"
+      ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
+      ## Reference for timestamping the corresponding docker image and used by internal CI.
+      ##
+      git_ref: "e9fd5ff"
   config:
     test_accounts:
       - ref: A
@@ -22,6 +35,11 @@ galoy:
       lnd2loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
     cronConfig:
       swapEnabled: true
+    kratosConfig:
+      publicApi: http://galoy-kratos-public.galoy-dev-galoy.svc.cluster.local
+      adminApi:  http://galoy-kratos-admin.galoy-dev-galoy.svc.cluster.local
+      corsAllowedOrigins:
+        - https://localhost:8080
 
   bitcoind:
     dns: bitcoind.galoy-dev-bitcoin.svc.cluster.local
