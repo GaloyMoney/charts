@@ -244,6 +244,18 @@ resource "kubernetes_secret" "oathkeeper" {
   }
 }
 
+
+resource "helm_release" "postgresql" {
+  name       = "postgresql"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "postgresql"
+  namespace  = kubernetes_namespace.galoy.metadata[0].name
+
+  values = [
+    file("${path.module}/postgresql-values.yml")
+  ]
+}
+
 resource "helm_release" "galoy" {
   name      = "galoy"
   chart     = "${path.module}/../../charts/galoy"
@@ -261,7 +273,8 @@ resource "helm_release" "galoy" {
     kubernetes_secret.lnd2_credentials,
     kubernetes_secret.loop2_credentials,
     kubernetes_secret.lnd2_pubkey,
-    kubernetes_secret.price_history_postgres_creds
+    kubernetes_secret.price_history_postgres_creds,
+    helm_release.postgresql
   ]
 
   dependency_update = true

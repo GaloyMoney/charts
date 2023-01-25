@@ -721,7 +721,7 @@ kratos:
 
       version: v0.11.0
 
-      dsn: memory
+      dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
 
       serve:
         public:
