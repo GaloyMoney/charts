@@ -33,6 +33,11 @@ resource "random_password" "hedging_pg" {
   special = false
 }
 
+resource "random_password" "postgresql" {
+  length  = 20
+  special = false
+}
+
 resource "kubernetes_secret" "stablesats_secrets" {
   metadata {
     name      = "stablesats"
@@ -45,6 +50,8 @@ resource "kubernetes_secret" "stablesats_secrets" {
     user-trades-pg-con : "postgres://stablesats:${random_password.user_trades_pg.result}@stablesats-user-trades-pg:5432/stablesats-user-trades"
     hedging-pg-user-pw : random_password.hedging_pg.result
     hedging-pg-con : "postgres://stablesats:${random_password.hedging_pg.result}@stablesats-hedging-pg:5432/stablesats-hedging"
+    pg-user-pw : random_password.postgresql.result
+    pg-con : "postgres://stablesats:${random_password.postgresql.result}@stablesats-hedging-pg:5432/stablesats-hedging"
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
     galoy-phone-code : var.galoy_phone_code
