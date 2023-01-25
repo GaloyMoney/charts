@@ -19,3 +19,7 @@ dependencies:
     version: 11.9.6
     repository: https://charts.bitnami.com/bitnami
     condition: hedging-pg.enabled
+  - name: postgresql
+    version: 11.9.6
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled

@@ -56,16 +56,23 @@ redis:
   metrics:
     enabled: true
 user-trades-pg:
-  enabled: true
+  enabled: false
   auth:
     enablePostgresUser: false
     username: stablesats
     password: stablesats
     database: stablesats-user-trades
 hedging-pg:
-  enabled: true
+  enabled: false
   auth:
     enablePostgresUser: false
     username: stablesats
     password: stablesats
     database: stablesats-hedging
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: stablesats
+    password: stablesats
+    database: stablesats

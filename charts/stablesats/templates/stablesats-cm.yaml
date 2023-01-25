@@ -15,6 +15,12 @@ data:
         - host: "{{ .Chart.Name }}-redis-node-2.{{ .Chart.Name }}-redis-headless"
 {{- end }}
 
+    exchanges:
+      okex:
+        weight: 1.0
+        config:
+          api_key: {{ .Values.stablesats.okex.apiKey }}
+          simulated: {{ .Values.stablesats.okex.simulated }}
     price_server:
       enabled: true
       server:
@@ -42,13 +48,9 @@ data:
           unhealthy_msg_interval_position: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalPosition }}
           unhealthy_msg_interval_liability: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalLiability }}
           unhealthy_msg_interval_price: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalPrice }}
-
     galoy:
       api: {{ .Values.stablesats.galoy.api }}
       phone_number: {{ .Values.stablesats.galoy.phoneNumber }}
-    okex:
-      api_key: {{ .Values.stablesats.okex.apiKey }}
-      simulated: {{ .Values.stablesats.okex.simulated }}
     tracing:
       service_name: {{ .Values.stablesats.tracing.serviceName }}
       host: {{ .Values.stablesats.tracing.jaegerHost }}
