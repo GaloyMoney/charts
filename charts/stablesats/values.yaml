@@ -6,7 +6,7 @@ secrets:
   galoyPhoneCode: ""
 stablesats:
   priceReplicas: 2
-  dealerReplicas: 2
+  dealerReplicas: 1
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
     digest: "sha256:429e0404a623890ab0c336071677368fb85de9cf65f8bb8524e5c178910a8db2"
