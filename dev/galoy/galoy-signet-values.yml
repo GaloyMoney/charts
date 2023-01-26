@@ -67,10 +67,11 @@ redis:
 price:
   service:
     type: NodePort
-  postgresql:
-    primary:
-      persistence:
-        enabled: true
+
+postgresql:
+  primary:
+    persistence:
+      enabled: true
 
 secrets:
   create: false
