@@ -44,7 +44,7 @@ stablesats:
   tracing:
     jaegerHost: "localhost"
     priceServiceName: "stablesats-price"
-    dealerServiceName: "stablesats"
+    dealerServiceName: "stablesats-dealer"
 redis:
   enabled: true
   master:
