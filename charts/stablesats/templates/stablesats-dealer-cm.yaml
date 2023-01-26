@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "stablesats.fullname" . }}
+  name: {{ include "stablesats.fullname" . }}-dealer
 data:
   stablesats.yml: |-
     pubsub:
@@ -15,6 +15,9 @@ data:
         - host: "{{ .Chart.Name }}-redis-node-2.{{ .Chart.Name }}-redis-headless"
 {{- end }}
 
+    db:
+      pool_size: {{ .Values.stablesats.db.pool_size }}
+      migrate_on_startup: true
     exchanges:
       okex:
         weight: 1.0
@@ -22,27 +25,15 @@ data:
           api_key: {{ .Values.stablesats.okex.apiKey }}
           simulated: {{ .Values.stablesats.okex.simulated }}
     price_server:
-      enabled: true
-      server:
-        listen_port: {{ .Values.stablesats.priceServer.port }}
-      fees:
-        base_fee_rate: {{ .Values.stablesats.priceServer.fees.baseFeeRate }}
-        immediate_fee_rate: {{ .Values.stablesats.priceServer.fees.immediateFeeRate }}
-        delayed_fee_rate: {{ .Values.stablesats.priceServer.fees.delayedFeeRate }}
-      price_cache:
-        stale_after: {{ .Values.stablesats.priceServer.priceCache.staleAfter }}
-      health:
-        unhealthy_msg_interval_price: {{ .Values.stablesats.priceServer.health.unhealthyMsgIntervalPrice }}
+      enabled: false
     user_trades:
       enabled: {{ .Values.stablesats.userTrades.enabled }}
       config:
-        migrate_on_start: true
         balance_publish_frequency: {{ .Values.stablesats.userTrades.balancePublishFrequency }}
         galoy_poll_frequency: {{ .Values.stablesats.userTrades.galoyPollFrequency }}
     hedging:
       enabled: {{ .Values.stablesats.hedging.enabled }}
       config:
-        migrate_on_start: true
         okex_poll_frequency: {{ .Values.stablesats.hedging.okexPollFrequency }}
         health:
           unhealthy_msg_interval_position: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalPosition }}
@@ -52,6 +43,6 @@ data:
       api: {{ .Values.stablesats.galoy.api }}
       phone_number: {{ .Values.stablesats.galoy.phoneNumber }}
     tracing:
-      service_name: {{ .Values.stablesats.tracing.serviceName }}
+      service_name: {{ .Values.stablesats.tracing.dealerServiceName }}
       host: {{ .Values.stablesats.tracing.jaegerHost }}
       port: 6831

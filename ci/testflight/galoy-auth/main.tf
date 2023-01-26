@@ -1,7 +1,4 @@
 variable "testflight_namespace" {}
-variable "okex_secret_key" {}
-variable "okex_passphrase" {}
-variable "okex_api_key" {}
 
 locals {
   cluster_name     = "galoy-staging-cluster"
@@ -9,19 +6,12 @@ locals {
   gcp_project      = "galoy-staging"
 
   smoketest_namespace  = "galoy-staging-smoketest"
-  galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
-}
 
-resource "kubernetes_secret" "smoketest" {
-  metadata {
-    name      = local.testflight_namespace
-    namespace = local.smoketest_namespace
-  }
-  data = {
-    price_server_grpc_host = "stablesats-price.${local.testflight_namespace}.svc.cluster.local"
-    price_server_grpc_port = 3325
-  }
+  session_keys = "session-keys"
+
+  postgres_database = "auth_db"
+  postgres_password = "postgres"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -30,57 +20,59 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
-resource "random_password" "redis" {
-  length  = 20
-  special = false
-}
-
-resource "random_password" "postgresql" {
-  length  = 20
-  special = false
-}
-
-data "kubernetes_secret" "dealer_creds" {
+resource "kubernetes_secret" "smoketest" {
   metadata {
-    name      = "dealer-creds"
-    namespace = local.galoy_namespace
+    name      = local.testflight_namespace
+    namespace = local.smoketest_namespace
   }
-}
-
-resource "kubernetes_secret" "stablesats" {
-  metadata {
-    name      = "stablesats"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
   data = {
-    redis-password : random_password.redis.result
-    pg-user-pw : random_password.postgresql.result
-    pg-con : "postgres://stablesats:${random_password.postgresql.result}@stablesats-postgresql:5432/stablesats"
-    okex-secret-key : var.okex_secret_key
-    okex-passphrase : var.okex_passphrase
-    galoy-phone-code : data.kubernetes_secret.dealer_creds.data["code"]
+    kratos_admin_endpoint = "galoy-auth-kratos-admin.${local.testflight_namespace}.svc.cluster.local"
+    kratos_admin_port     = 80
   }
 }
 
-resource "helm_release" "stablesats" {
-  name      = "stablesats"
-  chart     = "${path.module}/chart"
-  namespace = kubernetes_namespace.testflight.metadata[0].name
+resource "kubernetes_secret" "auth_backend" {
+  metadata {
+    name      = "auth-backend"
+    namespace = local.testflight_namespace
+  }
+  data = {
+    "session-keys" : local.session_keys
+  }
+}
+
+resource "helm_release" "galoy_auth" {
+  name       = "galoy-auth"
+  chart      = "${path.module}/chart"
+  repository = "https://galoymoney.github.io/charts/"
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    templatefile("${path.module}/testflight-values.yml.tmpl", {
-      galoy_phone_number : data.kubernetes_secret.dealer_creds.data["phone"]
-      okex_api_key : var.okex_api_key
+    templatefile("${path.module}/galoy-auth-testflight-values.yml.tmpl", {
+      postgres_database : local.postgres_database
+      postgres_password : local.postgres_password
     })
   ]
 
-  depends_on = [
-    kubernetes_secret.stablesats,
-  ]
-
   dependency_update = true
+
+  depends_on = [helm_release.postgres]
 }
+
+resource "helm_release" "postgres" {
+  name       = "postgresql"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "postgresql"
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/postgres-testflight-values.yml.tmpl", {
+      postgres_database : local.postgres_database
+      postgres_password : local.postgres_password
+    })
+  ]
+}
+
 
 data "google_container_cluster" "primary" {
   project  = local.gcp_project

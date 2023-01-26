@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "stablesats.fullname" . }}-price
+data:
+  stablesats.yml: |-
+    exchanges:
+      okex:
+        weight: 1.0
+    price_server:
+      enabled: true
+      server:
+        listen_port: {{ .Values.stablesats.priceServer.port }}
+      fees:
+        base_fee_rate: {{ .Values.stablesats.priceServer.fees.baseFeeRate }}
+        immediate_fee_rate: {{ .Values.stablesats.priceServer.fees.immediateFeeRate }}
+        delayed_fee_rate: {{ .Values.stablesats.priceServer.fees.delayedFeeRate }}
+      price_cache:
+        stale_after: {{ .Values.stablesats.priceServer.priceCache.staleAfter }}
+      health:
+        unhealthy_msg_interval_price: {{ .Values.stablesats.priceServer.health.unhealthyMsgIntervalPrice }}
+    user_trades:
+      enabled: false
+    hedging:
+      enabled: false
+    tracing:
+      service_name: {{ .Values.stablesats.tracing.priceServiceName }}
+      host: {{ .Values.stablesats.tracing.jaegerHost }}
+      port: 6831

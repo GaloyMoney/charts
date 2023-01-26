@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "stablesats.fullname" . }}
+  name: {{ template "stablesats.fullname" . }}-price
   labels:
-    app: {{ template "stablesats.fullname" . }}
+    app: {{ template "stablesats.fullname" . }}-price
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
 spec:
   selector:
     matchLabels:
-      app: {{ template "stablesats.fullname" . }}
+      app: {{ template "stablesats.fullname" . }}-price
       release: {{ .Release.Name }}
-  replicas: {{ .Values.stablesats.replicas }}
+  replicas: {{ .Values.stablesats.priceReplicas }}
   template:
     metadata:
       labels:
-        app: {{ template "stablesats.fullname" . }}
+        app: {{ template "stablesats.fullname" . }}-price
         release: "{{ .Release.Name }}"
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/stablesats-cm.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/stablesats-price-cm.yaml") . | sha256sum }}
       {{- with .Values.stablesats.annotations }}
         {{ toYaml . | nindent 8 }}
       {{- end }}
@@ -59,45 +59,8 @@ spec:
         env:
         - name: CRASH_REPORT_CONFIG
           value: '{{ .Values.stablesats.crash_report_config_danger }}'
-        - name: MIGRATE_TO_UNIFIED_DB
-          value: '{{ .Values.stablesats.migrate_to_unified_db }}'
         - name: STABLESATS_CONFIG
           value: "/stablesats.yml"
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "redis-password"
-        - name: GALOY_PHONE_CODE
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "galoy-phone-code"
-        - name: USER_TRADES_PG_CON
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "user-trades-pg-con"
-        - name: HEDGING_PG_CON
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "hedging-pg-con"
-        - name: PG_CON
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "pg-con"
-        - name: OKEX_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "okex-secret-key"
-        - name: OKEX_PASSPHRASE
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "okex-passphrase"
         - name: KUBE_NODE_NAME
           valueFrom:
             fieldRef:
@@ -106,4 +69,4 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: {{ include "stablesats.fullname" . }}
+          name: {{ include "stablesats.fullname" . }}-price

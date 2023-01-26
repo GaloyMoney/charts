@@ -1,19 +1,19 @@
 secrets:
   create: true
   pgCon: ""
-  userTradesPgCon: ""
-  hedgingPgCon: ""
   okexSecretKey: ""
   okexPassphrase: ""
   galoyPhoneCode: ""
 stablesats:
-  replicas: 2
+  priceReplicas: 2
+  dealerReplicas: 2
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
     digest: "sha256:429e0404a623890ab0c336071677368fb85de9cf65f8bb8524e5c178910a8db2"
     git_ref: "da6ea6c"
   crash_report_config_danger: false
-  migrate_to_unified_db: false
+  db:
+    pool_size: 20
   userTrades:
     enabled: true
     balancePublishFrequency: 5
@@ -43,7 +43,8 @@ stablesats:
     simulated: true
   tracing:
     jaegerHost: "localhost"
-    serviceName: "stablesats"
+    priceServiceName: "stablesats-price"
+    dealerServiceName: "stablesats"
 redis:
   enabled: true
   master:
@@ -55,20 +56,6 @@ redis:
     enabled: true
   metrics:
     enabled: true
-user-trades-pg:
-  enabled: false
-  auth:
-    enablePostgresUser: false
-    username: stablesats
-    password: stablesats
-    database: stablesats-user-trades
-hedging-pg:
-  enabled: false
-  auth:
-    enablePostgresUser: false
-    username: stablesats
-    password: stablesats
-    database: stablesats-hedging
 postgresql:
   enabled: true
   auth:
