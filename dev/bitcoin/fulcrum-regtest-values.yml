@@ -1,0 +1,4 @@
+persistence:
+  enabled: false
+
+bitcoindRpcPort: 18443

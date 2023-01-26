@@ -42,6 +42,18 @@ resource "kubernetes_secret" "bitcoind_smoketest" {
   }
 }
 
+resource "kubernetes_secret" "fulcrum_smoketest" {
+  metadata {
+    name      = "fulcrum-smoketest"
+    namespace = local.smoketest_namespace
+  }
+
+  data = {
+    fulcrum_endpoint   = "fulcrum.${local.bitcoin_namespace}.svc.cluster.local"
+    fulcrum_stats_port = 8080
+  }
+}
+
 resource "kubernetes_secret" "lnd_smoketest" {
   metadata {
     name      = "lnd-smoketest"
