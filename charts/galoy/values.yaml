@@ -35,11 +35,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:3bbdaf1c390b1d143767da44b5b3703426ff1a2bf19c90a88637b428b9e39f1d"
+      digest: "sha256:168e803cac42a78a01094532b317df9d6cc29e75c751207e03fb5dadfdbf678c"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "5b5c12c"
+      git_ref: "0fc6444"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -48,7 +48,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:117cb48b6b3c91b0b576d9c0f560f70851e969d50479021ace7c08f1638baca8"
+      digest: "sha256:0ed93794b6e2f018f365ed240e580eaf5530cc9b15b481ea7b8b8001a1d00141"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -629,82 +629,7 @@ oathkeeper:
       access_rules:
         matching_strategy: regexp
     mutatorIdTokenJWKs: '{ "keys": [ { "use": "sig", "kty": "RSA", "kid": "ad3cab84-6f62-45c4-abee-6146b1257e8c", "alg": "RS256", "n": "plXws2h_LudAleQ16jTX7lkwPxzOk9ud-Ti_Qi00Qk9AMY5dKWQGRSpI2OHTSahX7QdN_0DfMlIjM55o_l1cIltMEPt8Bllns8v6VKIlaOk4BzkYKf6pc1hTyTEWaVw2gh7vYyurycfQ-7e0BNToZ0QVL6s-rSjVm_cCvkRx1uVVLRFWroBYk-rWN1nC50Pucr6A3sm_jphY7Jzt9KFUijNRtHTBPN11NqUTU7apklI_-sU-x8_jBBrB2Hb3PNkpvjqXT8ug-C7M5yYltBIAL08Gsce-aAX55nCFFRICVrGv-gKMwwdMjQQMEU-yRWvW2doc48fy9ubk4vtHd0xbWQ", "e": "AQAB", "d": "pBmFLnqZfxyGi1pqFnWr0moLPzicVSMF5yolBpSySfkFy9436u3TgckFtXKVkMWUeTQLrxfBG1QNho9x5gEVNI_9q4NwCJOLy8YhYf3WCnqL3BRn0oZ7hmBNyN-0zJ086YK7iYs8IAYSF0RVRa8G2VpBzJWVcCApHYXEHxJHfUmMXpaETBacmgxTheiRpSPCpLHifhWpq6khHWLMHaaXZnIFii6CGhCc_gbYtTZm_jAcC_KL5SP27qabgM50aTzBSBwRs0kvADvvlaOUI-5qelrXig-MbrFGeMsA7H0HJojAlQU2gyiw295MH0n9g1F75HkICSuZQbERh2Keqw9QQQ", "p": "zDkd6W44QcdkcwZR_a_yZj5FDIz1D-YtciKcnPIE3ZHRqPe6w-0Exyd8DRd-OURuGjZWCXSGJ0hDFZo0ClOR13EhOMJRLkSM1Cpzbg3nyrpmbrMZdg6IUx556Wa_Tl86mhuyjfWSdL2yBUjZPLTu2wB_xj5oyROGpTWiEiEZsOM", "q": "0IHIFV-Y06UFqyYmRoYa9NFgRpSiKjx0_K6-tf1HbZsnxcRQBMDabQDkIrH-K83U1ulPYA59YTIATcIOAclYYm-y9LI98GpbJXTYj_Y64FeOX_k0XshdEZ0h5skAdZ2SK9wit6Bq0VR8oT3TyZP5-k4WsZva0ILaH2XvlC6MY5M", "dp": "g-jkrDFYPwymkjFj5kOug2H3QasOY02ezxkSJcGhaOhWDxisVv8SVfzoAKDLE_xiTaYJHqRYPqlLQ3nN4VmnWwwklD_XJdZ7TFN7KXvr2yNZJGmkqX-riFyoDB0ktl-GP6JiS5VyGtuoUAeE4dRQb767yXXoQvDMyIuC-sjMilc", "dq": "aGEP8OMydoEeHVezwYpQ5E4MjEjMBajOR9CS2Dg7EbuiZXapODfzIK5ZhqTkQLmB2zRg8A1Q5t9JF6QVrv9Ep8KTK7wvFbOofU_JOghh4Pzz4Ue319sl_DNVTVtCR57iFeLV3mcIElLhMTbqVvclJRECe1cyaz-WQjGdhejnjtE", "qi": "DYS6rZvq90A9OVsKzknNGxATwQEVK1dKpeuGXgkuseT5N7Tb36htFaHu2k0j1WNHArdZYf215S7d0kYECyyOIGsOL2QNkwrg0cIiQCQdUot-9oNgD3QfxQNJrmcAJkNL5XJEv9_yVVcoKh2yy898LfbQZymcjs3xRlQV1EBEUy8" } ] }'
-    accessRules: |
-      [
-        {
-          "id": "decline-direct-access-validatetoken",
-          "upstream": { "url": "http://api:4002" },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/validatetoken",
-            "methods": ["GET", "POST"]
-          },
-          "authenticators": [ { "handler": "unauthorized" } ],
-          "authorizer": { "handler": "allow" },
-          "mutators": [ { "handler": "noop" } ]
-        },
-        {
-          "id": "allow-clear-cookies-endpoint",
-          "upstream": { "url": "http://api:4002" },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies",
-            "methods": ["GET", "POST", "OPTIONS"]
-          },
-          "authenticators": [ { "handler": "anonymous" } ],
-          "authorizer": { "handler": "allow" },
-          "mutators": [
-            {
-              "handler": "delete_cookies",
-              "config": { "cookies": ["ory_kratos_session", "csrf*"] }
-            }
-          ]
-        },
-        {
-          "id": "galoy-backend",
-          "upstream": {
-            "url": "http://api:4002"
-          },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(.*)>",
-            "methods": [
-              "GET",
-              "POST",
-              "OPTIONS"
-            ]
-          },
-          "authenticators": [
-           {
-            "handler": "cookie_session",
-            "config": {
-               "check_session_url": "http://kratos:4433/sessions/whoami",
-               "preserve_path": true,
-               "preserve_query": true,
-               "subject_from": "identity.id"
-             },      
-             "handler": "bearer_token",
-             "config": {
-               "check_session_url": "http://api:4002/auth/validatetoken",
-               "preserve_path": true,
-               "preserve_query": true,
-               "subject_from": "sub"
-             }
-           },
-           { "handler": "anonymous" }
-          ],
-          "authorizer": {
-            "handler": "allow"
-          },
-          "mutators": [
-            {
-              "handler": "id_token",
-              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
-            },
-            {
-              "handler": "header",
-              "config": { "headers": { "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}' }}
-            }
-          ]
-        }
-      ]
+    accessRules: "[\n  {\n    \"id\": \"decline-direct-access-validatetoken\",\n    \"upstream\": { \"url\": \"http://api:4002\" },\n    \"match\": {\n      \"url\": \"<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/validatetoken\",\n      \"methods\": [\"GET\", \"POST\"]\n    },\n    \"authenticators\": [ { \"handler\": \"unauthorized\" } ],\n    \"authorizer\": { \"handler\": \"allow\" },\n    \"mutators\": [ { \"handler\": \"noop\" } ]\n  },\n  {\n    \"id\": \"allow-clear-cookies-endpoint\",\n    \"upstream\": { \"url\": \"http://api:4002\" },\n    \"match\": {\n      \"url\": \"<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies\",\n      \"methods\": [\"GET\", \"POST\", \"OPTIONS\"]\n    },\n    \"authenticators\": [ { \"handler\": \"anonymous\" } ],\n    \"authorizer\": { \"handler\": \"allow\" },\n    \"mutators\": [\n      {\n        \"handler\": \"delete_cookies\",\n        \"config\": { \"cookies\": [\"ory_kratos_session\", \"csrf*\"] }\n      }\n    ]\n  },\n  {\n    \"id\": \"galoy-backend\",\n    \"upstream\": {\n      \"url\": \"http://api:4002\"\n    },\n    \"match\": {\n      \"url\": \"<(http|https)>://<[a-zA-Z0-9-.:]+>/<(.*)>\",\n      \"methods\": [\n        \"GET\",\n        \"POST\",\n        \"OPTIONS\"\n      ]\n    },\n    \"authenticators\": [\n     {\n      \"handler\": \"cookie_session\",\n      \"config\": {\n         \"check_session_url\": \"http://kratos:4433/sessions/whoami\",\n         \"preserve_path\": true,\n         \"preserve_query\": true,\n         \"subject_from\": \"identity.id\"\n       },      \n       \"handler\": \"bearer_token\",\n       \"config\": {\n         \"check_session_url\": \"http://api:4002/auth/validatetoken\",\n         \"preserve_path\": true,\n         \"preserve_query\": true,\n         \"subject_from\": \"sub\"\n       }\n     },\n     { \"handler\": \"anonymous\" }\n    ],\n    \"authorizer\": {\n      \"handler\": \"allow\"\n    },\n    \"mutators\": [\n      {\n        \"handler\": \"id_token\",\n        \"config\": { \"claims\": '{\"sub\": \"{{ print .Subject }}\"}' }\n      },\n      {\n        \"handler\": \"header\",\n        \"config\": { \"headers\": { \"orgauthorization\": '{{ .MatchContext.Header.Get \"Authorization\" }}' }}\n      }\n    ]\n  }\n]\n"
   maester:
     enabled: false
 kratos:
@@ -718,11 +643,8 @@ kratos:
       secrets:
         default:
           - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
-
       version: v0.11.0
-
       dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
-
       serve:
         public:
           base_url: http://127.0.0.1:4433/
@@ -749,16 +671,13 @@ kratos:
               - Content-Type
               - Set-Cookie
             debug: true
-
         admin:
           base_url: http://0.0.0.0:4434/
-
       selfservice:
         default_browser_return_url: http://localhost:3000/
         allowed_return_urls:
           - http://127.0.0.1:4002/
           - http://localhost:3000/
-      
         methods:
           oidc:
             enabled: false
@@ -768,23 +687,18 @@ kratos:
             enabled: true
           password:
             enabled: true
-      
           code:
             enabled: true
             config:
               # Defines how long the verification or the recovery code is valid for (default 1h)
               lifespan: 15m
-      
         flows:
           error:
             ui_url: http://127.0.0.1:4002/error
-      
           settings:
             ui_url: http://127.0.0.1:4002/settings
             privileged_session_max_age: 15m
-      
             required_aal: aal1
-      
             after:
               profile:
                 hooks:
@@ -800,29 +714,23 @@ kratos:
                           name: Authorization
                           value: The-Value-of-My-Key
                           in: header
-      
           recovery:
             enabled: true
             ui_url: http://127.0.0.1:4002/recovery
-      
           verification:
             use: code # Defines which method is used, one of 'code' or 'link'.
             enabled: true
-      
           logout:
             after:
               default_browser_return_url: http://127.0.0.1:4002/login
-      
           login:
             ui_url: http://localhost:3000/login
             lifespan: 10m
-      
             # this below make phone authentication fails even if there is no email in the schema
             # after:
             #   password:
             #     hooks:
             #     - hook: require_verified_address
-      
           registration:
             lifespan: 10m
             ui_url: http://localhost:3000/register
@@ -842,43 +750,34 @@ kratos:
                           value: The-Value-of-My-Key
                           in: header
                   - hook: session
-      
       log:
         level: debug
         format: json
         leak_sensitive_values: true
-
       secrets:
         cookie:
           - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
         cipher:
           - 32-LONG-SECRET-NOT-SECURE-AT-ALL
-
       ciphers:
         algorithm: xchacha20-poly1305
-
       hashers:
         algorithm: bcrypt
         bcrypt:
           cost: 8
-
       identity:
         default_schema_id: email
         schemas:
           - id: email
             url: file:///etc/config/identity.schema.json
-
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
-
       session:
         lifespan: "720h" # 1 month
         earliest_possible_extend: "96h" # 4 days
-
         whoami:
           required_aal: aal1
-
     identitySchemas:
       "identity.schema.json": |
         {
