@@ -16,7 +16,7 @@ data:
 {{- end }}
 
     db:
-      pool_size: {{ .Values.stablesats.db.pool_size }}
+      pool_size: {{ .Values.stablesats.db.poolSize }}
       migrate_on_startup: true
     exchanges:
       okex:

@@ -13,7 +13,7 @@ stablesats:
     git_ref: "da6ea6c"
   crash_report_config_danger: false
   db:
-    pool_size: 20
+    poolSize: 20
   userTrades:
     enabled: true
     balancePublishFrequency: 5
