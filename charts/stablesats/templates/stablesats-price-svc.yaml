@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ template "stablesats.fullname" . }}-price
   labels:
-    app: {{ template "stablesats.fullname" . }}
+    app: {{ template "stablesats.fullname" . }}-price
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
 spec:
@@ -14,4 +14,4 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: {{ template "stablesats.fullname" . }}
+    app: {{ template "stablesats.fullname" . }}-price

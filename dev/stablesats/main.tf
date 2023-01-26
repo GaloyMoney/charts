@@ -23,16 +23,6 @@ resource "random_password" "redis" {
   special = false
 }
 
-resource "random_password" "user_trades_pg" {
-  length  = 20
-  special = false
-}
-
-resource "random_password" "hedging_pg" {
-  length  = 20
-  special = false
-}
-
 resource "random_password" "postgresql" {
   length  = 20
   special = false
@@ -46,12 +36,8 @@ resource "kubernetes_secret" "stablesats_secrets" {
 
   data = {
     redis-password : random_password.redis.result
-    user-trades-pg-user-pw : random_password.user_trades_pg.result
-    user-trades-pg-con : "postgres://stablesats:${random_password.user_trades_pg.result}@stablesats-user-trades-pg:5432/stablesats-user-trades"
-    hedging-pg-user-pw : random_password.hedging_pg.result
-    hedging-pg-con : "postgres://stablesats:${random_password.hedging_pg.result}@stablesats-hedging-pg:5432/stablesats-hedging"
     pg-user-pw : random_password.postgresql.result
-    pg-con : "postgres://stablesats:${random_password.postgresql.result}@stablesats-hedging-pg:5432/stablesats-hedging"
+    pg-con : "postgres://stablesats:${random_password.postgresql.result}@stablesats-postgresql:5432/stablesats"
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
     galoy-phone-code : var.galoy_phone_code

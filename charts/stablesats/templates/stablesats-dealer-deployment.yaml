@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "stablesats.fullname" . }}-dealer
+  labels:
+    app: {{ template "stablesats.fullname" . }}-dealer
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "stablesats.fullname" . }}-dealer
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.stablesats.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "stablesats.fullname" . }}-dealer
+        release: "{{ .Release.Name }}"
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/stablesats-dealer-cm.yaml") . | sha256sum }}
+      {{- with .Values.stablesats.annotations }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.stablesats.image.repository }}@{{ .Values.stablesats.image.digest }}"
+        ports:
+        - containerPort: {{ .Values.stablesats.priceServer.port }}
+        args:
+        - stablesats
+        - run
+        volumeMounts:
+        - name: "config"
+          mountPath: "/stablesats.yml"
+          subPath: "stablesats.yml"
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: 8080
+          periodSeconds: 2
+          failureThreshold: 30
+          timeoutSeconds: 1
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+          periodSeconds: 10
+          failureThreshold: 6
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          periodSeconds: 10
+          failureThreshold: 6
+          timeoutSeconds: 1
+        env:
+        - name: CRASH_REPORT_CONFIG
+          value: '{{ .Values.stablesats.crash_report_config_danger }}'
+        - name: MIGRATE_TO_UNIFIED_DB
+          value: '{{ .Values.stablesats.migrate_to_unified_db }}'
+        - name: STABLESATS_CONFIG
+          value: "/stablesats.yml"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "redis-password"
+        - name: GALOY_PHONE_CODE
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "galoy-phone-code"
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "pg-con"
+        - name: OKEX_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "okex-secret-key"
+        - name: OKEX_PASSPHRASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "okex-passphrase"
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "stablesats.fullname" . }}-dealer

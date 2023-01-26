@@ -11,16 +11,6 @@ redis:
   auth:
     existingSecret: stablesats
     existingSecretPasswordKey: "redis-password"
-user-trades-pg:
-  auth:
-    existingSecret: stablesats
-    secretKeys:
-      userPasswordKey: "user-trades-pg-user-pw"
-hedging-pg:
-  auth:
-    existingSecret: stablesats
-    secretKeys:
-      userPasswordKey: "hedging-pg-user-pw"
 postgresql:
   auth:
     existingSecret: stablesats
