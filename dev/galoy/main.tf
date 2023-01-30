@@ -256,12 +256,31 @@ resource "helm_release" "postgresql" {
   ]
 }
 
+resource "random_password" "kratos_callback_api_key" {
+  length = 32
+}
+
+resource "kubernetes_secret" "kratos_master_user_password" {
+  metadata {
+    name      = "kratos-secret"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "master_user_password" = random_password.kratos_master_user_password.result
+    "callback_api_key"     = random_password.kratos_callback_api_key.result
+  }
+}
+
 resource "helm_release" "galoy" {
   name      = "galoy"
   chart     = "${path.module}/../../charts/galoy"
   namespace = kubernetes_namespace.galoy.metadata[0].name
 
   values = [
+    templatefile("${path.module}/kratos-values.yml.tmpl", {
+      kratos_callback_api_key : kubernetes_secret.kratos_master_user_password.data["callback_api_key"]
+    }),
     file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
   ]
 
@@ -274,6 +293,7 @@ resource "helm_release" "galoy" {
     kubernetes_secret.loop2_credentials,
     kubernetes_secret.lnd2_pubkey,
     kubernetes_secret.price_history_postgres_creds,
+    kubernetes_secret.kratos_master_user_password,
     helm_release.postgresql
   ]
 
@@ -297,22 +317,6 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
 resource "random_password" "kratos_master_user_password" {
   length  = 32
   special = false
-}
-
-resource "random_password" "kratos_callback_api_key" {
-  length = 32
-}
-
-resource "kubernetes_secret" "kratos_master_user_password" {
-  metadata {
-    name      = "kratos-secret"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
-  }
-
-  data = {
-    "master_user_password" = random_password.kratos_master_user_password.result
-    "callback_api_key"     = random_password.kratos_callback_api_key.result
-  }
 }
 
 resource "kubernetes_secret" "smoketest" {
