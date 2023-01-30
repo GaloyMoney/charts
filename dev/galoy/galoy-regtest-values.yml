@@ -17,6 +17,10 @@ galoy:
   config:
     test_accounts:
       - ref: A
+        phone: "+16505554321"
+        code: "321321"
+        needUsdWallet: true
+      - ref: B
         phone: "+59981730222"
         code: "111111"
         role: "bankowner"
