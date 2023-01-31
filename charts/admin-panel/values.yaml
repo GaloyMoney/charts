@@ -8,4 +8,4 @@ service:
   port: 3000
   type: ClusterIP
 adminPanel:
-  graphqlUrl: http://api.galoy-dev-galoy.svc.cluster.local:4002
+  graphqlUrl: http://localhost:4002/graphql
