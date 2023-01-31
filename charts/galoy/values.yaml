@@ -668,7 +668,7 @@ oathkeeper:
             "url": "http://api:4002"
           },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(.*)>",
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(?!auth/clearCookies)(.*)>",
             "methods": [
               "GET",
               "POST",
@@ -723,11 +723,6 @@ kratos:
           cors:
             enabled: true
             allow_credentials: true
-            # allowed_origins:
-            #   - http://127.0.0.1:4433
-            #   - http://0.0.0.0:4434
-            #   - http://localhost:3000
-            #   - http://127.0.0.1:3000
             allowed_methods:
               - POST
               - GET
@@ -757,9 +752,6 @@ kratos:
         default_schema_id: phone_or_email_password_v0
       selfservice:
         default_browser_return_url: http://localhost:3000/
-        # allowed_return_urls:
-        #   - http://127.0.0.1:4002/
-        #   - http://localhost:3000/
         methods:
           oidc:
             enabled: false
@@ -843,7 +835,7 @@ kratos:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
       
-      dsn: "postgres://postgres:dzVjHTqQoQ@my-release-postgresql.default.svc.cluster.local:5432/postgres?sslmode=disable"
+      dsn: "postgres://postgres:EPsssRyyrp@my-release-postgresql.default.svc.cluster.local:5432/postgres?sslmode=disable"
       
       secrets:
         default:
@@ -878,6 +870,7 @@ kratos:
                   "title": "E-Mail",
                   "type": "string",
                   "format": "email",
+                  "minLength": 3,
                   "ory.sh/kratos": {
                     "credentials": {
                       "password": {

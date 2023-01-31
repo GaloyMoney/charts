@@ -24,13 +24,12 @@ metadata:
     nginx.ingress.kubernetes.io/auth-method: GET
     nginx.ingress.kubernetes.io/auth-response-headers: "Authorization, orgauthorization, Set-Cookie"
     nginx.ingress.kubernetes.io/auth-forward-cookie: "*"
-    nginx.ingress.kubernetes.io/auth-forward-headers: "*"
     nginx.ingress.kubernetes.io/auth-snippet: |
-       proxy_set_header X-Original-URL $request_uri;
-       proxy_set_header X-Forwarded-Method $request_method;
-       proxy_set_header X-Forwarded-Proto $scheme;
-       proxy_set_header X-Forwarded-Host $host;
-       proxy_set_header X-Forwarded-Uri $request_uri;
+      proxy_set_header X-Original-URL $request_uri;
+      proxy_set_header X-Forwarded-Method $request_method;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header X-Forwarded-Uri $request_uri;
 
 spec:
   ingressClassName: nginx
