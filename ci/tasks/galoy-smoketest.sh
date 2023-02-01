@@ -4,16 +4,20 @@ set -eu
 
 source smoketest-settings/helpers.sh
 
-host=`setting "galoy_endpoint"`
-port=`setting "galoy_port"`
+# galoy
+host=$(setting "galoy_endpoint")
+port=$(setting "galoy_port")
 
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the public galoy API"
-  curl --location -sSf --request POST "${host}:${port}/graphql"\
-   --header 'Content-Type: application/json' \
-   --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
-  if [[ $? == 0 ]]; then success="true"; break; fi;
+  curl --location -sSf --request POST "${host}:${port}/graphql" \
+    --header 'Content-Type: application/json' \
+    --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' >response.json
+  if [[ $? == 0 ]]; then
+    success="true"
+    break
+  fi
   sleep 1
 done
 set -e
@@ -26,16 +30,16 @@ if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
 fi
 
 set +e
-if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
-  setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
+if [[ $(setting_exists "smoketest_kubeconfig") != "null" ]]; then
+  setting "smoketest_kubeconfig" | base64 --decode >kubeconfig.json
   export KUBECONFIG=$(pwd)/kubeconfig.json
-  namespace=`setting "galoy_namespace"`
+  namespace=$(setting "galoy_namespace")
   job_name="${namespace}-cronjob-smoketest"
   kubectl -n ${namespace} delete job "${job_name}" || true
   echo "Executing cronjob"
   kubectl -n ${namespace} create job --from=cronjob/galoy-cronjob "${job_name}"
   for i in {1..150}; do
-    kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
+    kubectl -n ${namespace} wait --for=condition=complete job "${job_name}"
     if [[ $? -eq 0 ]]; then
       echo "Cronjob execution completed"
       break
@@ -58,7 +62,7 @@ set -e
 
 # The following health.proto file has been copied from
 # https://github.com/GaloyMoney/price/blob/main/history/src/servers/protos/health.proto
-cat << EOF > health.proto
+cat <<EOF >health.proto
 syntax = "proto3";
 
 package grpc.health.v1;
@@ -84,30 +88,74 @@ service Health {
 }
 EOF
 
-host=`setting "price_history_endpoint"`
-port=`setting "price_history_port"`
+# price_history
+host=$(setting "price_history_endpoint")
+port=$(setting "price_history_port")
 
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl price history server"
   grpcurl -plaintext -proto health.proto ${host}:${port} grpc.health.v1.Health.Check
-  if [[ $? == 0 ]]; then price_history_healthz="true"; break; fi;
+  if [[ $? == 0 ]]; then
+    price_history_healthz="true"
+    break
+  fi
   sleep 1
 done
 set -e
 
-if [[ "$price_history_healthz" != "true" ]]; then echo "Smoke test failed; price history server healthcheck failed" && exit 1; fi;
+if [[ "$price_history_healthz" != "true" ]]; then echo "Smoke test failed; price history server healthcheck failed" && exit 1; fi
 
-host=`setting "kratos_admin_endpoint"`
-port=`setting "kratos_admin_port"`
+# kratos_admin
+host=$(setting "kratos_admin_endpoint")
+port=$(setting "kratos_admin_port")
 
 set +e
 for i in {1..15}; do
-  echo "Attempt ${i} to curl kratos"
+  echo "Attempt ${i} to curl kratos_admin"
   curl --location -f ${host}:${port}/admin/health/ready
-  if [[ $? == 0 ]]; then kratos_healthz="true"; break; fi;
+  if [[ $? == 0 ]]; then
+    kratos_admin_healthz="true"
+    break
+  fi
   sleep 1
 done
 set -e
 
-if [[ "$kratos_healthz" != "true" ]]; then echo "Smoke test failed; kratos healthcheck failed" && exit 1; fi;
+if [[ "$kratos_admin_healthz" != "true" ]]; then echo "Smoke test failed; kratos_admin healthcheck failed" && exit 1; fi
+
+# oathkeeper_api
+host=$(setting "oathkeeper_api_endpoint")
+port=$(setting "oathkeeper_api_port")
+
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl oathkeeper_api"
+  curl --location -f ${host}:${port}/health/ready
+  if [[ $? == 0 ]]; then
+    oathkeeper_api_healthz="true"
+    break
+  fi
+  sleep 1
+done
+set -e
+
+if [[ "$oathkeeper_api_healthz" != "true" ]]; then echo "Smoke test failed; oathkeeper_api healthcheck failed" && exit 1; fi
+
+# kratos_public
+host=$(setting "kratos_public_endpoint")
+port=$(setting "kratos_public_port")
+
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl kratos_public"
+  nc -zv ${host} ${port}
+  if [[ $? == 0 ]]; then
+    kratos_public_healthz="true"
+    break
+  fi
+  sleep 1
+done
+set -e
+
+if [[ "$kratos_public_healthz" != "true" ]]; then echo "Smoke test failed; kratos_public healthcheck failed" && exit 1; fi
