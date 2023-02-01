@@ -2152,6 +2152,16 @@ entries:
   galoy-pay:
     - apiVersion: v2
       appVersion: 0.5.12
+      created: "2023-02-01T15:07:42.114379738Z"
+      description: A Helm chart for the admin panel addon to Galoy
+      digest: d30e2683e4c6c47ab3781b55020ab2e79738c2dfed7d1df4fa5774dafec103a7
+      name: galoy-pay
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-pay-v0.3.10/galoy-pay-0.3.10.tgz
+      version: 0.3.10
+    - apiVersion: v2
+      appVersion: 0.5.12
       created: "2022-12-22T09:54:22.00670902Z"
       description: A Helm chart for the admin panel addon to Galoy
       digest: 3317eb95af44b9bf9becc68aef7b43bda7358a8502128153da7c4890ea105803
@@ -11237,4 +11247,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.0/galoy-deps-0.1.0.tgz
       version: 0.1.0
-generated: "2023-02-01T05:38:25.215999913Z"
+generated: "2023-02-01T15:07:42.114393919Z"
