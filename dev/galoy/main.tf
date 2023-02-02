@@ -279,7 +279,7 @@ resource "helm_release" "galoy" {
 
   values = [
     templatefile("${path.module}/kratos-values.yml.tmpl", {
-      kratos_callback_api_key : kubernetes_secret.kratos_master_user_password.data["callback_api_key"]
+      kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
     file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
   ]
