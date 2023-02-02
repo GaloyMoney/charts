@@ -1,55 +1,7 @@
 kratos:
-  image:
-    tag: v0.11.1
-  replicaCount: 2
   kratos:
-    automigration:
-      enabled: true
     config:
-      secrets:
-        default:
-          - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
-      version: v0.11.0
-      dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
-      serve:
-        public:
-          base_url: http://127.0.0.1:4433/
-          cors:
-            enabled: true
-            allow_credentials: true
-            allowed_methods:
-              - POST
-              - GET
-              - PUT
-              - PATCH
-              - DELETE
-            allowed_headers:
-              - Authorization
-              - Cookie
-              - Content-Type
-              - X-Session-Token
-            exposed_headers:
-              - Content-Type
-              - Set-Cookie
-            debug: true
-        admin:
-          base_url: http://galoy-kratos-admin/
       selfservice:
-        default_browser_return_url: http://localhost:3000/
-        methods:
-          oidc:
-            enabled: false
-          webauthn:
-            enabled: false
-          totp:
-            enabled: true
-          password:
-            enabled: true
-          code:
-            enabled: true
-            config:
-              # Defines how long the verification or the recovery code is valid for (default 1h)
-              lifespan: 15m
         flows:
           error:
             ui_url: http://api:4002/error
@@ -71,21 +23,7 @@ kratos:
                           name: Authorization
                           value: ${kratos_callback_api_key}
                           in: header
-          recovery:
-            enabled: true
-            ui_url: http://api:4002/recovery
-          verification:
-            use: code # Defines which method is used, one of 'code' or 'link'.
-            enabled: true
-          logout:
-            after:
-              default_browser_return_url: http://api:4002/login
-          login:
-            ui_url: http://localhost:3000/login
-            lifespan: 10m
           registration:
-            lifespan: 10m
-            ui_url: http://localhost:3000/register
             after:
               password:
                 hooks:
@@ -102,79 +40,3 @@ kratos:
                           value: ${kratos_callback_api_key}
                           in: header
                   - hook: session
-      log:
-        level: debug
-        format: json
-        leak_sensitive_values: true
-      secrets:
-        cookie:
-          - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
-        cipher:
-          - 32-LONG-SECRET-NOT-SECURE-AT-ALL
-      ciphers:
-        algorithm: xchacha20-poly1305
-      hashers:
-        algorithm: bcrypt
-        bcrypt:
-          cost: 8
-      identity:
-        default_schema_id: email
-        schemas:
-          - id: email
-            url: file:///etc/config/identity.schema.json
-      courier:
-        smtp:
-          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
-      session:
-        lifespan: "720h" # 1 month
-        earliest_possible_extend: "96h" # 4 days
-        whoami:
-          required_aal: aal1
-    identitySchemas:
-      "identity.schema.json": |
-          {
-            "$id": "https://schemas.ory.sh/presets/kratos/quickstart/phone-no-password/identity.schema.json",
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "title": "PhoneOrEmailPassword",
-            "type": "object",
-            "properties": {
-              "traits": {
-                "type": "object",
-                "properties": {
-                  "phone": {
-                    "type": "string",
-                    "format": "string",
-                    "title": "phone",
-                    "minLength": 3,
-                    "ory.sh/kratos": {
-                      "credentials": {
-                        "password": {
-                          "identifier": true
-                        }
-                      }
-                    }
-                  },
-                  "email": {
-                    "title": "E-Mail",
-                    "type": "string",
-                    "format": "email",
-                    "minLength": 3,
-                    "ory.sh/kratos": {
-                      "credentials": {
-                        "password": {
-                          "identifier": true
-                        }
-                      },
-                      "verification": {
-                        "via": "email"
-                      },
-                      "recovery": {
-                        "via": "email"
-                      }
-                    }
-                  }
-                },
-                "additionalProperties": false
-              }
-            }
-          }
