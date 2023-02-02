@@ -12,6 +12,6 @@ resource "kubernetes_secret" "admin_panel_smoketest" {
   }
   data = {
     admin_panel_endpoint = "admin-panel.${local.addons_namespace}.svc.cluster.local"
-    admin_panel_port     = 80
+    admin_panel_port     = 3000
   }
 }
