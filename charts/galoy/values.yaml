@@ -588,10 +588,7 @@ oathkeeper:
         bearer_token:
           enabled: true
           config:
-            check_session_url: http://galoy-kratos-public/sessions/whoami
-            preserve_path: true
-            subject_from: identity.id
-            extra_from: identity.traits
+            check_session_url: http://api:4002/auth/validatetoken
         anonymous:
           enabled: true
           config:
