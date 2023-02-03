@@ -257,7 +257,8 @@ resource "helm_release" "postgresql" {
 }
 
 resource "random_password" "kratos_callback_api_key" {
-  length = 32
+  length  = 32
+  special = false
 }
 
 resource "kubernetes_secret" "kratos_master_user_password" {
