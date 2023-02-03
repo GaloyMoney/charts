@@ -24,7 +24,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 #### Forward the oathkeeper-proxy port:
 * Run and keep open:
   ```
-  kubectl -n galoy-dev-galoy port-forward svc/galoy-oathkeeper-proxy  8080:4455
+  kubectl -n galoy-dev-galoy port-forward svc/galoy-oathkeeper-proxy 8080:4455
   ```
 #### Test the galoy-api
 
