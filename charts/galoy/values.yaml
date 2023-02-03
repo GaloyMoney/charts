@@ -793,7 +793,7 @@ kratos:
       dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
       serve:
         public:
-          base_url: http://galoy-kratos-public/
+          base_url: http://galoy-kratos-public:80/
           cors:
             enabled: true
             allow_credentials: true
