@@ -13,9 +13,6 @@ locals {
   smoketest_kubeconfig = var.smoketest_kubeconfig
   backups_sa_creds     = var.testflight_backups_creds
 
-  testflight_api_host = "galoy-oathkeeper-proxy.${local.testflight_namespace}.svc.cluster.local"
-  kratos_admin_host   = "galoy-kratos-admin.${local.testflight_namespace}.svc.cluster.local"
-
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
@@ -232,13 +229,18 @@ resource "kubernetes_secret" "smoketest" {
     name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
+
   data = {
-    galoy_endpoint         = local.testflight_api_host
-    galoy_port             = 4455
-    price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
-    price_history_port     = 50052
-    kratos_admin_endpoint  = local.kratos_admin_host
-    kratos_admin_port      = 80
+    galoy_endpoint          = "galoy-oathkeeper-proxy.${local.testflight_namespace}.svc.cluster.local"
+    galoy_port              = 4455
+    price_history_endpoint  = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
+    price_history_port      = 50052
+    kratos_admin_endpoint   = "galoy-kratos-admin.${local.testflight_namespace}.svc.cluster.local"
+    kratos_admin_port       = 80
+    oathkeeper_api_endpoint = "galoy-oathkeeper-api.${local.testflight_namespace}.svc.cluster.local"
+    oathkeeper_api_port     = 4456
+    kratos_public_endpoint  = "galoy-kratos-public.${local.testflight_namespace}.svc.cluster.local"
+    kratos_public_port      = 80
   }
 }
 
