@@ -35,11 +35,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:beb741284fc5cd6bb77095be35ed7c08caaa11b47c7469ef6d7f4c6deef078c1"
+      digest: "sha256:ceeb8025173b6e4ac3d549629bdfd3093d743d322ef39ae8f18c1387184fad6f"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "d811894"
+      git_ref: "552bf38"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -48,7 +48,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:613175a49265d280cb08680c9bafd759bc31f8c70666d772461afc52e3108159"
+      digest: "sha256:09e2ab01f751c94acbc895022a6eea9aa63b9071141058840b1f2bff76a4c941"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
