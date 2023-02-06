@@ -821,15 +821,10 @@ kratos:
       dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
       serve:
         public:
-          base_url: http://127.0.0.1:4433/
+          base_url: http://galoy-kratos-public:4433/
           cors:
             enabled: true
             allow_credentials: true
-            allowed_origins:
-              - http://127.0.0.1:4433
-              - http://0.0.0.0:4434
-              - http://localhost:3000
-              - http://127.0.0.1:3000
             allowed_methods:
               - POST
               - GET
@@ -846,12 +841,9 @@ kratos:
               - Set-Cookie
             debug: true
         admin:
-          base_url: http://0.0.0.0:4434/
+          base_url: http://galoy-kratos-admin:4434/
       selfservice:
         default_browser_return_url: http://localhost:3000/
-        allowed_return_urls:
-          - http://127.0.0.1:4002/
-          - http://localhost:3000/
         methods:
           oidc:
             enabled: false
@@ -868,9 +860,9 @@ kratos:
               lifespan: 15m
         flows:
           error:
-            ui_url: http://127.0.0.1:4002/error
+            ui_url: http://api:4002/error
           settings:
-            ui_url: http://127.0.0.1:4002/settings
+            ui_url: http://api:4002/settings
             privileged_session_max_age: 15m
             required_aal: aal1
             after:
@@ -881,22 +873,22 @@ kratos:
                       # url: http://e2e-tests:4002/auth/after_settings_hooks
                       url: http://invalid-because-we-dont-want-profile-to-be-updated
                       method: POST
-                      body: file:///home/ory/body.jsonnet
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ==
                       auth:
                         type: api_key
                         config:
                           name: Authorization
-                          value: The-Value-of-My-Key
+                          value: callback_api_key
                           in: header
           recovery:
             enabled: true
-            ui_url: http://127.0.0.1:4002/recovery
+            ui_url: http://api:4002/recovery
           verification:
-            use: code # Defines which method is used, one of 'code' or 'link'.
+            use: code
             enabled: true
           logout:
             after:
-              default_browser_return_url: http://127.0.0.1:4002/login
+              default_browser_return_url: http://api:4002/login
           login:
             ui_url: http://localhost:3000/login
             lifespan: 10m
@@ -913,26 +905,21 @@ kratos:
                 hooks:
                   - hook: web_hook
                     config:
-                      url: http://e2e-tests:4012/kratos/registration
+                      url: http://api:4002/kratos/registration
                       method: POST
                       can_interrupt: true
-                      body: file:///home/ory/body.jsonnet # TODO: use a base64 encoding instead
+                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ=="
                       auth:
                         type: api_key
                         config:
                           name: Authorization
-                          value: The-Value-of-My-Key
+                          value: callback_api_key
                           in: header
                   - hook: session
       log:
         level: debug
         format: json
         leak_sensitive_values: true
-      secrets:
-        cookie:
-          - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
-        cipher:
-          - 32-LONG-SECRET-NOT-SECURE-AT-ALL
       ciphers:
         algorithm: xchacha20-poly1305
       hashers:
@@ -940,10 +927,10 @@ kratos:
         bcrypt:
           cost: 8
       identity:
-        default_schema_id: email
         schemas:
-          - id: email
+          - id: phone_or_email_password_v0
             url: file:///etc/config/identity.schema.json
+        default_schema_id: phone_or_email_password_v0
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
@@ -955,35 +942,41 @@ kratos:
     identitySchemas:
       "identity.schema.json": |
         {
-          "$id": "https://schemas.ory.sh/presets/kratos/quickstart/email-password/identity.schema.json",
+          "$id": "https://schemas.ory.sh/presets/kratos/quickstart/phone-no-password/identity.schema.json",
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "title": "Person",
+          "title": "PhoneOrEmailPassword",
           "type": "object",
           "properties": {
             "traits": {
               "type": "object",
               "properties": {
-                "email": {
+                "phone": {
                   "type": "string",
-                  "format": "email",
-                  "title": "E-Mail",
+                  "format": "string",
+                  "title": "phone",
                   "minLength": 3,
                   "ory.sh/kratos": {
                     "credentials": {
                       "password": {
                         "identifier": true
                       }
-                    },
-                    "verification": {
-                      "via": "email"
-                    },
-                    "recovery": {
-                      "via": "email"
+                    }
+                  }
+                },
+                "email": {
+                  "title": "E-Mail",
+                  "type": "string",
+                  "format": "email",
+                  "minLength": 3,
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
                     }
                   }
                 }
               },
-              "required": ["email"],
               "additionalProperties": false
             }
           }
