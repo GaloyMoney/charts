@@ -638,57 +638,134 @@ oathkeeper:
             "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/validatetoken",
             "methods": ["GET", "POST"]
           },
-          "authenticators": [ { "handler": "unauthorized" } ],
+          "authenticators": [{ "handler": "unauthorized" }],
           "authorizer": { "handler": "allow" },
-          "mutators": [ { "handler": "noop" } ]
+          "mutators": [{ "handler": "noop" }]
         },
         {
-          "id": "allow-clear-cookies-endpoint",
+          "id": "cookie-anonymous-routes",
           "upstream": { "url": "http://api:4002" },
           "match": {
             "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies",
             "methods": ["GET", "POST", "OPTIONS"]
           },
-          "authenticators": [ { "handler": "anonymous" } ],
+          "authenticators": [{ "handler": "anonymous" }],
           "authorizer": { "handler": "allow" },
-          "mutators": [
-            {
-              "handler": "delete_cookies",
-              "config": { "cookies": ["ory_kratos_session", "csrf*"] }
-            }
-          ]
+          "mutators": [{ "handler": "noop" }]
         },
         {
-          "id": "galoy-backend",
-          "upstream": {
-            "url": "http://api:4002"
-          },
+          "id": "cookie-auth-routes",
+          "upstream": { "url": "http://api:4002" },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(.*)>",
-            "methods": [
-              "GET",
-              "POST",
-              "OPTIONS"
-            ]
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(login|logout)>",
+            "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [
-           {
-            "handler": "cookie_session",
-            "config": {
-               "check_session_url": "http://kratos:4433/sessions/whoami",
-               "preserve_path": true,
-               "preserve_query": true,
-               "subject_from": "identity.id"
-             },      
-             "handler": "bearer_token",
-             "config": {
-               "check_session_url": "http://api:4002/auth/validatetoken",
-               "preserve_path": true,
-               "preserve_query": true,
-               "subject_from": "sub"
-             }
-           },
-           { "handler": "anonymous" }
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "admin-backend",
+          "upstream": {
+            "url": "http://graphql-admin:4001",
+            "strip_path": "/admin"
+          },
+          "match": {
+            "url": "<(http|https)>://<.*><[0-9]+>/admin<.*>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "sub"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authenticators": [{ "handler": "unauthorized" }],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "cookie-auth-routes",
+          "upstream": { "url": "http://api:4002" },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(login|logout)>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "admin-backend",
+          "upstream": {
+            "url": "http://graphql-admin:4001",
+            "strip_path": "/admin"
+          },
+          "match": {
+            "url": "<(http|https)>://<.*><[0-9]+>/admin<.*>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "sub"
+              }
+            },
+            { "handler": "anonymous" }
           ],
           "authorizer": {
             "handler": "allow"
@@ -700,7 +777,60 @@ oathkeeper:
             },
             {
               "handler": "header",
-              "config": { "headers": { "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}' }}
+              "config": {
+                "headers": {
+                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "galoy-backend",
+          "upstream": {
+            "url": "http://api:4002"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(graphql|kratos|browser|healthz|metrics)(.*)>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://api:4002/auth/validatetoken",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "sub"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": {
+            "handler": "allow"
+          },
+          "mutators": [
+            {
+              "handler": "id_token",
+              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
+            },
+            {
+              "handler": "header",
+              "config": {
+                "headers": {
+                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
+                }
+              }
             }
           ]
         }
