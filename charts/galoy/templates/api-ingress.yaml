@@ -22,8 +22,7 @@ metadata:
 
     nginx.ingress.kubernetes.io/auth-url: "http://galoy-oathkeeper-api.{{ .Release.Namespace }}.svc.cluster.local:4456/decisions"
     nginx.ingress.kubernetes.io/auth-method: GET
-    nginx.ingress.kubernetes.io/auth-response-headers: "Authorization, orgauthorization, Set-Cookie"
-    nginx.ingress.kubernetes.io/auth-forward-cookie: "*"
+    nginx.ingress.kubernetes.io/auth-response-headers: Authorization, orgauthorization
     nginx.ingress.kubernetes.io/auth-snippet: |
       proxy_set_header X-Original-URL $request_uri;
       proxy_set_header X-Forwarded-Method $request_method;

@@ -22,11 +22,6 @@ galoy:
       lnd2loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
     cronConfig:
       swapEnabled: true
-    kratosConfig:
-      publicApi: http://galoy-kratos-public.galoy-dev-galoy.svc.cluster.local
-      adminApi:  http://galoy-kratos-admin.galoy-dev-galoy.svc.cluster.local
-      corsAllowedOrigins:
-        - https://localhost:8080
 
   bitcoind:
     dns: bitcoind.galoy-dev-bitcoin.svc.cluster.local
