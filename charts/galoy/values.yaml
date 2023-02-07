@@ -596,7 +596,7 @@ oathkeeper:
         cookie_session:
           enabled: true
           config:
-            check_session_url: http://galoy-kratos-public:4433/sessions/whoami
+            check_session_url: http://galoy-kratos-public:80/sessions/whoami
             preserve_path: true
             subject_from: identity.id
             extra_from: identity.traits
@@ -650,65 +650,6 @@ oathkeeper:
             "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [{ "handler": "anonymous" }],
-          "authorizer": { "handler": "allow" },
-          "mutators": [{ "handler": "noop" }]
-        },
-        {
-          "id": "cookie-auth-routes",
-          "upstream": { "url": "http://api:4002" },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(login|logout)>",
-            "methods": ["GET", "POST", "OPTIONS"]
-          },
-          "authenticators": [
-            {
-              "handler": "cookie_session",
-              "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "identity.traits"
-              }
-            },
-            { "handler": "anonymous" }
-          ],
-          "authorizer": { "handler": "allow" },
-          "mutators": [{ "handler": "noop" }]
-        },
-        {
-          "id": "admin-backend",
-          "upstream": {
-            "url": "http://graphql-admin:4001",
-            "strip_path": "/admin"
-          },
-          "match": {
-            "url": "<(http|https)>://<.*><[0-9]+>/admin<.*>",
-            "methods": ["GET", "POST", "OPTIONS"]
-          },
-          "authenticators": [
-            {
-              "handler": "cookie_session",
-              "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "identity.traits"
-              }
-            },
-            {
-              "handler": "bearer_token",
-              "config": {
-                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "sub"
-              }
-            },
-            { "handler": "anonymous" }
-          ],
-          "authenticators": [{ "handler": "unauthorized" }],
           "authorizer": { "handler": "allow" },
           "mutators": [{ "handler": "noop" }]
         },
