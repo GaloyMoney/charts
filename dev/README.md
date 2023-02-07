@@ -40,7 +40,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 2. query an authenticated endpoint (fill out the `session_token` from above)
     ```
     session_token="CrDr5orsnFLg3SL3Jpk9cH0wXENAWqbY"
-    curl -k 'http://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: bearer ${session_token}' --data-binary '{"query": "{ me { phone } }" }'
+    curl -k 'http://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: bearer ${session_token}" --data-binary '{"query": "{ me { phone } }" }'
     ```
     Expected result:
     ```
