@@ -262,7 +262,6 @@ resource "helm_release" "galoy" {
   namespace = kubernetes_namespace.galoy.metadata[0].name
 
   values = [
-    templatefile("${path.module}/oathkeeper-values.yml.tmpl", {}),
     file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
   ]
 
