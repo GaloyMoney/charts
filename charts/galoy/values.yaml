@@ -772,6 +772,10 @@ oathkeeper:
           },
           "mutators": [
             {
+              "handler": "delete_cookies",
+              "config": { "cookies": ["ory_kratos_session", "csrf*"]
+            },
+            {
               "handler": "id_token",
               "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
             },
