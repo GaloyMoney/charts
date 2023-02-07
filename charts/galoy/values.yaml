@@ -809,6 +809,11 @@ oathkeeper:
 kratos:
   image:
     tag: v0.11.1
+  ingress:
+    admin:
+      enabled: false
+    public:
+      enabled: false
   replicaCount: 2
   kratos:
     automigration:
