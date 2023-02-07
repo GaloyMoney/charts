@@ -826,7 +826,7 @@ kratos:
       dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
       serve:
         public:
-          base_url: http://galoy-kratos-public:4433/
+          base_url: http://galoy-kratos-public:80/
           cors:
             enabled: true
             allow_credentials: true
@@ -846,7 +846,7 @@ kratos:
               - Set-Cookie
             debug: true
         admin:
-          base_url: http://galoy-kratos-admin:4434/
+          base_url: http://galoy-kratos-admin:80/
       selfservice:
         default_browser_return_url: http://localhost:3000/
         methods:
