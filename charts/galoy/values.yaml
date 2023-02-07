@@ -802,7 +802,7 @@ oathkeeper:
             {
               "handler": "cookie_session",
               "config": {
-                "check_session_url": "http://kratos:4433/sessions/whoami",
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
