@@ -45,6 +45,8 @@ galoy:
     ingress:
       enabled: true
       host: localhost
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
 mongodb:
   architecture: standalone

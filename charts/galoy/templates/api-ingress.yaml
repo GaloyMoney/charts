@@ -31,6 +31,10 @@ metadata:
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header X-Forwarded-Uri $request_uri;
 
+    {{- with .Values.galoy.api.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
 spec:
   ingressClassName: nginx
   tls:
