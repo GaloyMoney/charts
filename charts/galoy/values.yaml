@@ -677,6 +677,34 @@ oathkeeper:
           "mutators": [{ "handler": "noop" }]
         },
         {
+          "id": "apollo-playground-ui",
+          "upstream": {
+            "url": "http://api:4002"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
+            "methods": ["GET", "OPTIONS"]
+          },
+          "authenticators": [{ "handler": "anonymous" }],
+          "authorizer": { "handler": "allow" },
+          "mutators": [
+            {
+              "handler": "header",
+              "config": {
+                "headers": {
+                  "orgauthorization": "{{ .MatchContext.Header.Get \"Authorization\" }}"
+                }
+              }
+            },
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": "{\"sub\": \"{{ print .Subject }}\"}"
+              }
+            }
+          ]
+        },
+        {
           "id": "admin-backend",
           "upstream": {
             "url": "http://graphql-admin:4001",
