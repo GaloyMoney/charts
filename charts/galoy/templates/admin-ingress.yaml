@@ -27,6 +27,10 @@ metadata:
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header X-Forwarded-Uri $request_uri;
 
+    {{- with .Values.galoy.admin.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
 spec:
   ingressClassName: nginx
   tls:
@@ -37,6 +41,9 @@ spec:
   - host: {{ .Values.galoy.admin.ingress.host }}
     http:
       paths:
+      {{- if .Values.galoy.admin.ingress.extraPaths }}
+      {{- toYaml .Values.galoy.admin.ingress.extraPaths | nindent 6 }}
+      {{- end }}
       - path: /
         pathType: ImplementationSpecific
         backend:

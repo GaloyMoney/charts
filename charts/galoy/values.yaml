@@ -711,7 +711,7 @@ oathkeeper:
             "strip_path": "/admin"
           },
           "match": {
-            "url": "<(http|https)>://<.*><[0-9]+>/admin<.*>",
+            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
             "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [

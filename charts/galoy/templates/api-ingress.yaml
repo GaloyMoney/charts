@@ -45,6 +45,9 @@ spec:
   - host: {{ .Values.galoy.api.ingress.host }}
     http:
       paths:
+      {{- if .Values.galoy.api.ingress.extraPaths }}
+      {{- toYaml .Values.galoy.api.ingress.extraPaths | nindent 6 }}
+      {{- end }}
       - path: /
         pathType: ImplementationSpecific
         backend:

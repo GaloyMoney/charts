@@ -21,16 +21,16 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 ### Test
 
-#### Forward the oathkeeper-proxy port:
+#### Forward the galoy API port:
 * Run and keep open:
   ```
-  kubectl -n galoy-dev-galoy port-forward svc/galoy-oathkeeper-proxy 8080:4455
+  kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:443
   ```
 #### Test the galoy-api
 
 1. get session token
     ```
-    curl -ksS 'http://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}' | jq '.data.userLogin.authToken'
+    curl -ksS 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}' | jq '.data.userLogin.authToken'
     ```
 
     Example result:
@@ -40,7 +40,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 2. query an authenticated endpoint (fill out the `session_token` from above)
     ```
     session_token="CrDr5orsnFLg3SL3Jpk9cH0wXENAWqbY"
-    curl -k 'http://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: bearer ${session_token}" --data-binary '{"query": "{ me { phone } }" }'
+    curl -k 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: bearer ${session_token}" --data-binary '{"query": "{ me { phone } }" }'
     ```
     Expected result:
     ```
@@ -50,7 +50,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 1. get session token
     ```
-    curl -ksS 'http://localhost:8080/admin/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}' | jq '.data.userLogin.authToken'
+    curl -ksS 'https://localhost:8080/admin/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}' | jq '.data.userLogin.authToken'
     ```
 
     Example result:
