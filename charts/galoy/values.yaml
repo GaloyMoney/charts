@@ -761,7 +761,7 @@ oathkeeper:
           },
           "match": {
             "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(graphql|kratos|browser|healthz|metrics)(.*)>",
-            "methods": ["GET", "POST", "OPTIONS"]
+            "methods": ["POST"]
           },
           "authenticators": [
             {
