@@ -30,6 +30,11 @@ deploy:
 
 all: create-cluster init deploy-services deploy
 
+refresh:
+	$(TF) refresh -var="bitcoin_network=regtest" \
+				  -var="name_prefix=galoy-dev"
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
 
 redeploy-bitcoin:
 	-kubectl delete namespace galoy-dev-bitcoin --force
