@@ -110,3 +110,16 @@ run-galoy-smoketest:
 fmt:
 	cd ..
 	$(TF) fmt -recursive
+
+plan:
+	$(TF) plan -sensative -var="bitcoin_network=regtest" -var="name_prefix=galoy-dev"
+
+review:
+	$(TF) show -json | jq
+
+delete:
+	kubectl delete namespace $(ns) --force
+
+apply:
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve

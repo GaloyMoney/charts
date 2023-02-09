@@ -60,7 +60,6 @@ spec:
           value: {{ .Values.webWallet.walletName }}
         - name: SHARE_URL
           value: {{ .Values.webWallet.galoyPayEndpoint }}
-        {{- if eq .Values.webWallet.kratos.enabled true }}
         - name: KRATOS_API_URL
           value: {{ .Values.webWallet.kratos.apiUrl }}
         - name: KRATOS_BROWSER_URL
@@ -68,8 +67,7 @@ spec:
         - name: GALOY_AUTH_ENDPOINT
           value: {{ .Values.webWallet.galoyAuthEndpoint }}
         - name: KRATOS_FEATURE_FLAG
-          value: "true"
-        {{- end }}
+          value: "false"
 {{- if .Values.webWallet.additionalEnvVars }}
 {{ toYaml .Values.webWallet.additionalEnvVars | indent 8 }}
 {{- end }}

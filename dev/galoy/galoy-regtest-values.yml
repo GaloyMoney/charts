@@ -1,15 +1,31 @@
 galoy:
   network: regtest
-
+  images:
+    ## Galoy Application Image details
+    ##
+    app:
+      ## Has api, trigger and exporter
+      ##
+      repository: ntheile/galoy-test:0.0.16
+      ## Digest of the image
+      ##
+      digest: "sha256:d8b607d2449fdf7cf50cf06aefcc5df08328df85b9e88f742586befcf52d66ad"
+      ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
+      ## Reference for timestamping the corresponding docker image and used by internal CI.
+      ##
+      git_ref: "d8b607d2"
   config:
     test_accounts:
       - ref: A
-        phone: "+59981730222"
-        code: "111111"
+        phone: "+16505554321"
+        code: "321321"
         role: "bankowner"
         username: "bankowner"
         ref: "bankowner"
         needUsdWallet: true
+      - ref: B
+        phone: "+16505554332"
+        code: "321321"
     apollo:
       playground: true
     swap:
