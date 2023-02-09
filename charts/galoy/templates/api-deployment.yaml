@@ -58,8 +58,11 @@ spec:
             cpu: 1000m
 
         ports:
-        - name: http
+        - name: api
           containerPort: {{ .Values.galoy.api.port }}
+          protocol: TCP
+        - name: admin
+          containerPort: {{ .Values.galoy.admin.port }}
           protocol: TCP
 
         env:
@@ -74,6 +77,8 @@ spec:
           value: {{ .Values.galoy.network }}
         - name: GALOY_API_PORT
           value: {{ .Values.galoy.api.port | quote }}
+        - name: GALOY_ADMIN_PORT
+          value: {{ .Values.galoy.admin.port | quote }}
 
         - name: JAEGER_HOST
           value: {{ .Values.tracing.jaegerHost | quote }}
