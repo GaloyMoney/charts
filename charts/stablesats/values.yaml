@@ -9,8 +9,8 @@ stablesats:
   dealerReplicas: 1
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:5cc606b108e650cf911a4122c2e039da3997f60137c1e0102ab563a809a4bf81"
-    git_ref: "9fce641"
+    digest: "sha256:26caff062236d2cfe1f13bd70aae82be34bc830dbce86741ed702ff7388568cc"
+    git_ref: "adedd64"
   crash_report_config_danger: false
   db:
     poolSize: 20
