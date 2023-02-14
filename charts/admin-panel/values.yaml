@@ -9,3 +9,4 @@ service:
   type: ClusterIP
 adminPanel:
   graphqlUrl: http://localhost:4002/graphql
+  authUrl: http://localhost:4002/auth

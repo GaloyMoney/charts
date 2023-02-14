@@ -1,0 +1,3 @@
+adminPanel:
+  graphqlUrl: http://api:4002/graphql
+  authUrl: http://api:4002/auth

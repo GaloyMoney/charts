@@ -9,7 +9,7 @@ mobileLayout:
     digest: "sha256:bae7712c3147c954f7c917fb323e4b41256bea2426c99051019fc4e94faa065d"
     git_ref: "bae7712" # Not used by helm
 ingress:
-  enabled: falses
+  enabled: false
 service:
   port: 80
   type: ClusterIP

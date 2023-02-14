@@ -67,6 +67,15 @@ Currently successfully brings up charts - no guarantee that everything is workin
     ```
 2. open http://localhost:3000
 
+#### Test the admin panel
+
+1. port forward the web wallet on 3001
+    ```
+    admin_panel=$(kubectl -n galoy-dev-addons get pods | grep admin-panel | awk '{print $1}')
+    kubectl -n galoy-dev-addons port-forward --address 0.0.0.0 $admin_panel 3001:3000
+    ```
+2. open http://localhost:3001
+
 ## Signet
 
 * run in the `dev` folder:
