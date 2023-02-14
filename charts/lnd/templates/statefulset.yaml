@@ -58,6 +58,38 @@ spec:
               mountPath: /root/.lnd/
             - name: rpcpassword
               mountPath: /rpcpassword
+        {{- if .Values.loadWallet.enabled }}
+        - name: load-regtest-wallet
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            cat /root/wallet_db | base64 -d > /root/wallet.db
+            cat /root/macaroons_db | base64 -d > /root/macaroons.db
+            cat /root/admin_macaroon | base64 -d > /root/admin.macaroon
+            cat /root/readonly_macaroon | base64 -d > /root/readonly.macaroon
+            mkdir -p /root/.lnd/data/chain/bitcoin/regtest/
+            cp /root/wallet.db /root/.lnd/data/chain/bitcoin/regtest/wallet.db
+            cp /root/macaroons.db /root/.lnd/data/chain/bitcoin/regtest/macaroons.db
+            cp /root/admin.macaroon /root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+            cp /root/readonly.macaroon /root/.lnd/data/chain/bitcoin/regtest/readonly.macaroon
+          volumeMounts:
+          - name: lnd-storage
+            mountPath: /root/.lnd
+          - name: lnd-wallet
+            mountPath: /root/wallet_db
+            subPath: wallet_db
+          - name: lnd-wallet
+            mountPath: /root/macaroons_db
+            subPath: macaroons_db
+          - name: lnd-wallet
+            mountPath: /root/admin_macaroon
+            subPath: admin_macaroon
+          - name: lnd-wallet
+            mountPath: /root/readonly_macaroon
+            subPath: readonly_macaroon
+       {{- end }}
       containers:
         {{- if and (ne .Values.global.network "regtest") .Values.autoGenerateSeed.enabled }}
         - name: init-wallet
@@ -198,6 +230,11 @@ spec:
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
+        {{- end }}
+        {{- if .Values.loadWallet.enabled }}
+        - name: lnd-wallet
+          secret:
+            secretName: {{ .Values.loadWallet.walletSecretName }}
         {{- end }}
         - name: export-secrets
           configMap:

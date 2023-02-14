@@ -1,3 +1,17 @@
+resource "kubernetes_secret" "lnd1_wallet" {
+  metadata {
+    name      = "lnd1-wallet"
+    namespace = kubernetes_namespace.bitcoin.metadata[0].name
+  }
+
+  data = {
+    "wallet_db"         = filebase64("${path.module}/regtest/lnd1.wallet.db")
+    "macaroons_db"      = filebase64("${path.module}/regtest/lnd1.macaroons.db")
+    "admin_macaroon"    = filebase64("${path.module}/regtest/lnd1.admin.macaroon")
+    "readonly_macaroon" = filebase64("${path.module}/regtest/lnd1.readonly.macaroon")
+  }
+}
+
 resource "helm_release" "lnd" {
   name      = "lnd1"
   chart     = "${path.module}/../../charts/lnd"
