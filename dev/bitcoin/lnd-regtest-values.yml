@@ -19,7 +19,3 @@ configmap:
   - bitcoind.rpchost=bitcoind:18443
   - keysend-hold-time=2s
   - tlsextradomain=lnd1.galoy-dev-bitcoin.svc.cluster.local
-
-loadWallet:
-  enabled: true
-  walletSecretName: lnd1-wallet

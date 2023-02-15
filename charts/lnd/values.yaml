@@ -94,6 +94,3 @@ rbac:
   create: true
 autoGenerateSeed:
   enabled: false
-loadWallet:
-  enabled: false
-  walletSecretName: ""
