@@ -22,8 +22,10 @@ data:
       okex:
         weight: 1.0
         config:
-          api_key: {{ .Values.stablesats.okex.apiKey }}
-          simulated: {{ .Values.stablesats.okex.simulated }}
+          poll_frequency: {{ .Values.stablesats.exchanges.okex.pollFrequency }}
+          client:
+            api_key: {{ .Values.stablesats.exchanges.okex.client.apiKey }}
+            simulated: {{ .Values.stablesats.exchanges.okex.client.simulated }}
     price_server:
       enabled: false
     user_trades:
@@ -34,7 +36,6 @@ data:
     hedging:
       enabled: {{ .Values.stablesats.hedging.enabled }}
       config:
-        okex_poll_frequency: {{ .Values.stablesats.hedging.okexPollFrequency }}
         health:
           unhealthy_msg_interval_position: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalPosition }}
           unhealthy_msg_interval_liability: {{ .Values.stablesats.hedging.health.unhealthyMsgIntervalLiability }}

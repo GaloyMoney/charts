@@ -9,8 +9,8 @@ stablesats:
   dealerReplicas: 1
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:807b87b16d134b4ca2e2463cc7796753caae53bef881dfb1741a52a08f49445d"
-    git_ref: "c40f11f"
+    digest: "sha256:eb3868d40f02feedbd82a9909ceedf5afe85ebd5e2c572b790020ca3f33e4aed"
+    git_ref: "4dbc2a9"
   crash_report_config_danger: false
   db:
     poolSize: 20
@@ -20,7 +20,6 @@ stablesats:
     galoyPollFrequency: 10
   hedging:
     enabled: true
-    okexPollFrequency: 10
     health:
       unhealthyMsgIntervalPosition: 30
       unhealthyMsgIntervalLiability: 30
@@ -38,9 +37,12 @@ stablesats:
   galoy:
     api: "https://api.staging.galoy.io/graphql"
     phoneNumber: "+50365055530"
-  okex:
-    apiKey: ""
-    simulated: true
+  exchanges:
+    okex:
+      pollFrequency: 10
+      client:
+        apiKey: ""
+        simulated: true
   tracing:
     jaegerHost: "localhost"
     priceServiceName: "stablesats-price"
