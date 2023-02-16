@@ -20,7 +20,6 @@ stablesats:
     galoyPollFrequency: 10
   hedging:
     enabled: true
-    okexPollFrequency: 10
     health:
       unhealthyMsgIntervalPosition: 30
       unhealthyMsgIntervalLiability: 30
@@ -38,9 +37,12 @@ stablesats:
   galoy:
     api: "https://api.staging.galoy.io/graphql"
     phoneNumber: "+50365055530"
-  okex:
-    apiKey: ""
-    simulated: true
+  exchanges:
+    okex:
+      pollFrequency: 10
+      client:
+        apiKey: ""
+        simulated: true
   tracing:
     jaegerHost: "localhost"
     priceServiceName: "stablesats-price"

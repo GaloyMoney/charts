@@ -4,9 +4,11 @@ stablesats:
   priceReplicas: 1
   galoy:
     phoneNumber: '"${galoy_phone_number}"'
-  okex:
-    apiKey: "${okex_api_key}"
-    simulated: true
+  exchanges:
+    okex:
+      client:
+        apiKey: "${okex_api_key}"
+        simulated: true
   crash_report_config_danger: true
 redis:
   auth:
