@@ -1,0 +1,6 @@
+dependencies:
+- name: galoy-nostr
+  repository: ""
+  version: x.x.x
+digest: sha256:c54c9ef1570fa82b0a3a6e2a1eafcbb607aae27f9bbaff1d94edc45a2f8144b5
+generated: "2023-02-17T17:04:16.247458642+05:30"

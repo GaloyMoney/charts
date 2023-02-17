@@ -39,7 +39,7 @@ refresh:
 redeploy-bitcoin:
 	-kubectl delete namespace galoy-dev-bitcoin --force
 	cd bitcoin
-	$(TF) apply -var="bitcoin_network=regtest" \
+	$(TF) apply -target module.bitcoin -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
 redeploy-galoy:
