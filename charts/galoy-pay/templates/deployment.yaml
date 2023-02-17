@@ -41,8 +41,8 @@ spec:
               name: galoy-redis-pw
               key: "redis-password"
         - name: REDIS_0_DNS
-          value: "galoy-redis-node-0.galoy-redis-headless"
+          value: {{.Values.redis.redis0Dns}}
         - name: REDIS_1_DNS
-          value: "galoy-redis-node-1.galoy-redis-headless"
+          value: {{.Values.redis.redis1Dns}}
         - name: REDIS_2_DNS
-          value: "galoy-redis-node-2.galoy-redis-headless"
+          value: {{.Values.redis.redis2Dns}}
