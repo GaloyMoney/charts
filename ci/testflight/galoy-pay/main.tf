@@ -35,7 +35,7 @@ resource "helm_release" "galoy_pay" {
 
 resource "kubernetes_secret" "redis_creds" {
   metadata {
-    name      = "galoy-nostr-redis-pw"
+    name      = "galoy-redis-pw"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 

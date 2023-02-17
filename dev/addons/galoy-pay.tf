@@ -18,14 +18,21 @@ resource "kubernetes_secret" "galoy_pay_smoketest" {
     galoy_pay_port     = 80
   }
 }
+
+data "kubernetes_secret" "redis_creds" {
+  metadata {
+    name      = "galoy-redis-pw"
+    namespace = local.galoy_namespace
+  }
+}
 resource "kubernetes_secret" "redis_creds" {
   metadata {
-    name      = "galoy-nostr-redis-pw"
+    name      = "galoy-redis-pw"
     namespace = kubernetes_namespace.addons.metadata[0].name
   }
 
   data = {
-    "redis-password" : "password"
+    "redis-password" : data.kubernetes_secret.redis_creds.data
   }
 }
 

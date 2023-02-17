@@ -32,17 +32,29 @@ spec:
             secretKeyRef:
               name: {{ .Values.nostr.existingSecret }}
               key: key
-        - name: LND1_DNS
+        - name: LND_DNS
           value: "{{ .Values.lnd1.dns }}"
-        - name: LND1_MACAROON
+        - name: LND_MACAROON
           valueFrom:
             secretKeyRef:
               name: lnd-credentials
               key: readonly_macaroon_base64
-        - name: LND1_TLS
+        - name: LND_TLS
           valueFrom:
             secretKeyRef:
               name: lnd-credentials
               key: tls_base64
 
-{{ include "galoyNostr.redis.env" . | indent 8 }}
+        - name: REDIS_MASTER_NAME
+          value: "mymaster"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: galoy-redis-pw
+              key: "redis-password"
+        - name: REDIS_0_DNS
+          value: {{.Values.redis.redis0Dns}}
+        - name: REDIS_1_DNS
+          value: {{.Values.redis.redis1Dns}}
+        - name: REDIS_2_DNS
+          value: {{.Values.redis.redis2Dns}}

@@ -15,20 +15,3 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 {{- end }}
-
-{{/*
-Return Galoy environment variables for Redis configuration
-*/}}
-{{- define "galoyNostr.redis.env" -}}
-- name: REDIS_MASTER_NAME
-  value: {{ .Values.redis.sentinel.masterSet | quote }}
-- name: REDIS_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.redis.auth.existingSecret | quote }}
-      key: {{ .Values.redis.auth.existingSecretPasswordKey | quote }}
-{{ range until (.Values.redis.replica.replicaCount | int) }}
-- name: {{ printf "REDIS_%d_DNS" . }}
-  value: {{ printf "galoy-nostr-redis-node-%d.galoy-nostr-redis-headless" . | quote }}
-{{ end }}
-{{- end -}}

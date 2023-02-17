@@ -12,3 +12,9 @@ graphqlHostnameInternal: service-name.namespace.svc.cluster.local
 nostrPubkeynostrPubkey: "pubkey"
 galoy-nostr:
   fullnameOverride: galoy-nostr
+redis:
+  replica:
+    replicaCount: 3
+  auth:
+    existingSecret: galoy-redis-pw
+    existingSecretPasswordKey: redis-password
