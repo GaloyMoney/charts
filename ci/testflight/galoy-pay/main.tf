@@ -35,7 +35,7 @@ resource "helm_release" "galoy_pay" {
 
   values = [
     templatefile("${path.module}/testflight-values.yml.tmpl", {
-      redis_namespace: "${local.galoy_namespace}"
+      redis_namespace : "${local.galoy_namespace}"
     })
   ]
 }
