@@ -6,6 +6,7 @@ locals {
   gcp_project      = "galoy-staging"
 
   smoketest_namespace  = "galoy-staging-smoketest"
+  bitcoin_namespace    = "galoy-staging-bitcoin"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -31,6 +32,46 @@ resource "helm_release" "galoy_pay" {
   chart     = "${path.module}/chart"
   namespace = kubernetes_namespace.testflight.metadata[0].name
 }
+
+resource "kubernetes_secret" "redis_creds" {
+  metadata {
+    name      = "galoy-nostr-redis-pw"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    "redis-password" : "password"
+  }
+}
+
+resource "kubernetes_secret" "nostr_private_key" {
+  metadata {
+    name      = "galoy-nostr-private-key"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    # random key
+    "key" : "bb159f7aaafa75a7d4470307c9d6ea18409d4f082b41abcf6346aaae5b2b3b10"
+  }
+}
+
+data "kubernetes_secret" "lnd1_credentials" {
+  metadata {
+    name      = "lnd1-credentials"
+    namespace = local.bitcoin_namespace
+  }
+}
+
+resource "kubernetes_secret" "lnd1_credentials" {
+  metadata {
+    name      = "lnd-credentials"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = data.kubernetes_secret.lnd1_credentials.data
+}
+
 
 data "google_container_cluster" "primary" {
   project  = local.gcp_project
