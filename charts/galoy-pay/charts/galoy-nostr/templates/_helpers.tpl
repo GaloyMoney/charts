@@ -3,7 +3,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "galoyPay.fullname" -}}
+{{- define "galoyNostr.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -17,9 +17,9 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Return environment variables for Redis configuration
+Return Galoy environment variables for Redis configuration
 */}}
-{{- define "galoy.redis.env" -}}
+{{- define "galoyNostr.redis.env" -}}
 - name: REDIS_MASTER_NAME
   value: {{ .Values.redis.sentinel.masterSet | quote }}
 - name: REDIS_PASSWORD
@@ -29,6 +29,6 @@ Return environment variables for Redis configuration
       key: {{ .Values.redis.auth.existingSecretPasswordKey | quote }}
 {{ range until (.Values.redis.replica.replicaCount | int) }}
 - name: {{ printf "REDIS_%d_DNS" . }}
-  value: {{ printf "galoy-redis-node-%d.galoy-redis-headless" . | quote }}
+  value: {{ printf "galoy-nostr-redis-node-%d.galoy-nostr-redis-headless" . | quote }}
 {{ end }}
 {{- end -}}

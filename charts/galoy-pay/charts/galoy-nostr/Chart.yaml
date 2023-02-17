@@ -1,6 +1,7 @@
 apiVersion: v2
-name: galoy-pay
-description: A Helm chart for the admin panel addon to Galoy
+name: galoy-nostr
+description: A Helm chart for the galoy-nostr addon to galoy-pay
+
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -10,15 +11,18 @@ description: A Helm chart for the admin panel addon to Galoy
 # a dependency of application charts to inject those utilities and functions into the rendering
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
+
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.3.14-dev
+version: 0.1.0
+
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 0.5.16
+appVersion: 0.1.0
+
 dependencies:
-  - name: galoy-nostr
-    condition: galoy-nostr.enabled
-    version: x.x.x
+  - name: redis
+    repository: https://charts.bitnami.com/bitnami
+    version: 17.7.2

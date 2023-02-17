@@ -1,0 +1,35 @@
+image:
+  repository: krtk6160/galoy-nostr
+  digest: "sha256:862be606a9a741c6812cc256efc7f80fb2e2b9ed56494d48cd8473527a18d21f"
+  git_ref: "01c8066" # Not used by helm
+ingress:
+  enabled: false
+service:
+  port: 3000
+  type: NodePort
+lnd1:
+  dns: "lnd1.galoy-dev-bitcoin.svc.cluster.local"
+redis:
+  ## Redis replica config params
+  replica:
+    # Number of Redis to deploy
+    replicaCount: 3
+  ## Redis master config params
+  master:
+    persistence:
+      enabled: true
+  ## Redis auth config params
+  auth:
+    existingSecret: galoy-nostr-redis-pw
+    existingSecretPasswordKey: redis-password
+  ## Use sentinel on Redis pods
+  sentinel:
+    enabled: true
+    ## Master set name
+    masterSet: mymaster
+nostr:
+  existingSecret: galoy-nostr-private-key
+secrets:
+  create: false
+  redisPassword: password
+  nostrPrivateKey: private-key

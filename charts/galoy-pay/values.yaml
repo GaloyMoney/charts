@@ -9,3 +9,6 @@ service:
   type: ClusterIP
 graphqlHostname: domain.example
 graphqlHostnameInternal: service-name.namespace.svc.cluster.local
+nostrPubkeynostrPubkey: "pubkey"
+galoy-nostr:
+  fullnameOverride: galoy-nostr
