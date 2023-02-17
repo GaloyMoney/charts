@@ -27,6 +27,7 @@ redis:
     enabled: true
     ## Master set name
     masterSet: mymaster
+  fullnameOverride: galoy-nostr-redis
 nostr:
   existingSecret: galoy-nostr-private-key
 secrets:

@@ -2,6 +2,10 @@ resource "helm_release" "galoy_pay" {
   name      = "galoy-pay"
   chart     = "${path.module}/../../charts/galoy-pay"
   namespace = kubernetes_namespace.addons.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/galoy-pay-values.yml.tmpl", {})
+  ]
 }
 
 resource "kubernetes_secret" "galoy_pay_smoketest" {

@@ -29,6 +29,6 @@ Return environment variables for Redis configuration
       key: {{ .Values.redis.auth.existingSecretPasswordKey | quote }}
 {{ range until (.Values.redis.replica.replicaCount | int) }}
 - name: {{ printf "REDIS_%d_DNS" . }}
-  value: {{ printf "galoy-redis-node-%d.galoy-redis-headless" . | quote }}
+  value: {{ printf "galoy-nostr-redis-node-%d.galoy-nostr-redis-headless" . | quote }}
 {{ end }}
 {{- end -}}
