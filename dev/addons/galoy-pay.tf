@@ -31,9 +31,7 @@ resource "kubernetes_secret" "redis_creds" {
     namespace = kubernetes_namespace.addons.metadata[0].name
   }
 
-  data = {
-    "redis-password" : data.kubernetes_secret.redis_creds.data
-  }
+  data = data.kubernetes_secret.redis_creds.data
 }
 
 resource "kubernetes_secret" "nostr_private_key" {

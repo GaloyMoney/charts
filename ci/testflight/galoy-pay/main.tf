@@ -40,15 +40,19 @@ resource "helm_release" "galoy_pay" {
   ]
 }
 
+data "kubernetes_secret" "redis_creds" {
+  metadata {
+    name      = "galoy-redis-pw"
+    namespace = local.galoy_namespace
+  }
+}
 resource "kubernetes_secret" "redis_creds" {
   metadata {
     name      = "galoy-redis-pw"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = {
-    "redis-password" : "password"
-  }
+  data = data.kubernetes_secret.redis_creds.data
 }
 
 resource "kubernetes_secret" "nostr_private_key" {
