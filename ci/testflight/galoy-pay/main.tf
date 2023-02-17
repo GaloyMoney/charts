@@ -7,6 +7,7 @@ locals {
 
   smoketest_namespace  = "galoy-staging-smoketest"
   bitcoin_namespace    = "galoy-staging-bitcoin"
+  galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -31,6 +32,12 @@ resource "helm_release" "galoy_pay" {
   name      = "galoy-pay"
   chart     = "${path.module}/chart"
   namespace = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
+      redis_namespace: "${local.galoy_namespace}"
+    })
+  ]
 }
 
 resource "kubernetes_secret" "redis_creds" {

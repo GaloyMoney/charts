@@ -1,10 +1,5 @@
 galoy-nostr:
   redis:
-    master:
-      persistence:
-        enabled: false
-    sentinel:
-      getMasterTimeout: 5
     redis0Dns: "galoy-redis-node-0.galoy-redis-headless.galoy-dev-galoy.svc.cluster.local"
     redis1Dns: "galoy-redis-node-1.galoy-redis-headless.galoy-dev-galoy.svc.cluster.local"
     redis2Dns: "galoy-redis-node-2.galoy-redis-headless.galoy-dev-galoy.svc.cluster.local"
