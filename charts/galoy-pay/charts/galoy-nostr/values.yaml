@@ -1,6 +1,6 @@
 image:
   repository: krtk6160/galoy-nostr
-  digest: "sha256:fe2ab4e42bb92bc01518d26f58c780a3bc8a24c86ba44afec12d4773e12f6708"
+  digest: "sha256:4dd2a9505107372dcd7dc33c4e481fd21ad774bed8bde560a251ee14d0cf1845"
   git_ref: "01c8066" # Not used by helm
 ingress:
   enabled: false
