@@ -11,10 +11,12 @@ graphqlHostname: domain.example
 graphqlHostnameInternal: service-name.namespace.svc.cluster.local
 nostrPubkeynostrPubkey: "pubkey"
 galoy-nostr:
+  enabled: true
   fullnameOverride: galoy-nostr
 redis:
-  replica:
-    replicaCount: 3
+  redis0Dns: "galoy-redis-node-0.galoy-redis-headless"
+  redis1Dns: "galoy-redis-node-1.galoy-redis-headless"
+  redis2Dns: "galoy-redis-node-2.galoy-redis-headless"
   auth:
     existingSecret: galoy-redis-pw
     existingSecretPasswordKey: redis-password

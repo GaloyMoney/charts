@@ -1,6 +1,6 @@
 image:
   repository: krtk6160/galoy-nostr
-  digest: "sha256:862be606a9a741c6812cc256efc7f80fb2e2b9ed56494d48cd8473527a18d21f"
+  digest: "sha256:fe2ab4e42bb92bc01518d26f58c780a3bc8a24c86ba44afec12d4773e12f6708"
   git_ref: "01c8066" # Not used by helm
 ingress:
   enabled: false
@@ -11,8 +11,6 @@ redis:
   redis0Dns: "galoy-redis-node-0.galoy-redis-headless"
   redis1Dns: "galoy-redis-node-1.galoy-redis-headless"
   redis2Dns: "galoy-redis-node-2.galoy-redis-headless"
-  replica:
-    replicaCount: 3
   auth:
     existingSecret: galoy-redis-pw
     existingSecretPasswordKey: redis-password

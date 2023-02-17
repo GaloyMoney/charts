@@ -32,14 +32,14 @@ spec:
             secretKeyRef:
               name: {{ .Values.nostr.existingSecret }}
               key: key
-        - name: LND_DNS
+        - name: LND1_DNS
           value: "{{ .Values.lnd1.dns }}"
-        - name: LND_MACAROON
+        - name: LND1_MACAROON
           valueFrom:
             secretKeyRef:
               name: lnd-credentials
               key: readonly_macaroon_base64
-        - name: LND_TLS
+        - name: LND1_TLS
           valueFrom:
             secretKeyRef:
               name: lnd-credentials
