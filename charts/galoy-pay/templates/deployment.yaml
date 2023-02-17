@@ -38,7 +38,7 @@ spec:
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: galoy-nostr-redis-pw
+              name: galoy-redis-pw
               key: "redis-password"
         - name: REDIS_0_DNS
           value: "galoy-redis-node-0.galoy-redis-headless"
