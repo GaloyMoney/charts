@@ -6,6 +6,8 @@ source smoketest-settings/helpers.sh
 
 host=$(setting "galoy_endpoint")
 port=$(setting "galoy_port")
+phone=$(setting "phone")
+code=$(setting "code")
 
 function break_and_display_on_error_response() {
   if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
@@ -24,7 +26,7 @@ set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the decline-direct-access-validatetoken route"
   curl -LksS -X GET "${host}:${port}/auth/validatetoken" >response.json
-  if grep Unauthorized <response.json; then
+  if grep Unauthorized >/dev/null <response.json; then
     success="true"
     break
   fi
@@ -32,7 +34,7 @@ for i in {1..15}; do
 done
 set -e
 
-if ! grep Unauthorized <response.json; then
+if ! grep Unauthorized >/dev/null <response.json; then
   echo Smoketest failed! - Response:
   cat response.json
   echo "Should be unauthorized"
@@ -48,7 +50,7 @@ for i in {1..15}; do
   curl -LksSf "${host}:${port}/graphql" \
     -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' \
     -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' \
-    -H 'Origin: ${host}:${port}' --data-binary \
+    -H "Origin: ${host}:${port}" --data-binary \
     '{"query":"query btcPrice {\n btcPrice {\n base\n currencyUnit\n formattedAmount\n offset\n }\n }","variables":{}}' \
     >response.json
 
@@ -70,7 +72,8 @@ for i in {1..15}; do
   echo "Attempt ${i} to curl the galoy-backend auth"
   curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
-    '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}'
+    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+    >response.json
   if [[ $? == 0 ]]; then
     success="true"
     break
@@ -80,3 +83,48 @@ done
 set -e
 
 break_and_display_on_error_response
+
+# admin-backend
+#${host}:${port}/admin/<.*>
+#POST
+#curl -ksS 'http://localhost:4002/admin/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+16505554321","code":"321321"}}}'
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the admin-backend route"
+  curl -LksSf  "${host}:${port}/admin/graphql" \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' --data-binary \
+    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+    >response.json
+  if [[ $? == 0 ]]; then
+    success="true"
+    break
+  fi
+  sleep 1
+done
+set -e
+
+break_and_display_on_error_response
+
+
+# galoy-backend-middleware-routes
+#${host}:${port}/healthz
+#GET
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the galoy-backend-middleware-routes"
+  curl -LksSv -X GET "${host}:${port}/healthz" 2>response.json
+  if grep "HTTP/1.1 200 OK" >/dev/null <response.json; then
+    success="true"
+    break
+  fi
+  sleep 1
+done
+set -e
+
+if ! grep "HTTP/1.1 200 OK" >/dev/null <response.json; then
+  echo Smoketest failed! - Response:
+  cat response.json
+  echo "Should be HTTP/1.1 200 OK"
+  exit 1
+fi
