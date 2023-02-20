@@ -100,5 +100,13 @@ redeploy-signet-monitoring:
 				-var="name_prefix=galoy-sig" -auto-approve
 
 
+run-smoketests:
+	kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+    CHART=galoy ./dev-smoketest-settings.sh && \
+    ./galoy-oathkeeper-smoketest.sh && \
+    rm -rf smoketest-settings"
+
+
 fmt:
+	cd ..
 	$(TF) fmt -recursive
