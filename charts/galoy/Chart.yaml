@@ -23,7 +23,7 @@ dependencies:
     version: 17.7.5
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
-    version: 12.1.31
+    version: 13.6.8
   - name: common
     version: 2.2.3
     repository: https://charts.bitnami.com/bitnami
