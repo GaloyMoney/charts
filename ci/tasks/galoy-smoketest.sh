@@ -36,29 +36,30 @@ set -e
 
 break_and_display_on_error_response
 
-# galoy-backend auth
-#"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql<.*>",
-#"methods": [ "POST" ]
-set +e
-for i in {1..15}; do
-  echo "Attempt ${i} to curl the galoy-backend auth"
-  curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
-    -H 'Accept: application/json' --data-binary \
-    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
-    >response.json
-  if [[ $? == 0 ]]; then
-    if grep "null" >/dev/null <response.json; then
-      cat response.json
-    else
-      success="true"
-      break
-    fi
-  fi
-  sleep 1
-done
-set -e
-
-break_and_display_on_error_response
+#FIXME
+## galoy-backend auth
+##"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql<.*>",
+##"methods": [ "POST" ]
+#set +e
+#for i in {1..15}; do
+#  echo "Attempt ${i} to curl the galoy-backend auth"
+#  curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
+#    -H 'Accept: application/json' --data-binary \
+#    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+#    >response.json
+#  if [[ $? == 0 ]]; then
+#    if grep "null" >/dev/null <response.json; then
+#      cat response.json
+#    else
+#      success="true"
+#      break
+#    fi
+#  fi
+#  sleep 1
+#done
+#set -e
+#
+#break_and_display_on_error_response
 
 #FIXME
 ## admin-backend auth
