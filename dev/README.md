@@ -113,9 +113,9 @@ Currently successfully brings up charts - no guarantee that everything is workin
   ```
 
 ## Smoketests
-### run the automated run-galoy-oathkeeper-smoketest used in github actions
+### run the automated run-galoy-smoketest used in github actions
   ```
-  make run-galoy-oathkeeper-smoketest
+  make run-galoy-smoketest
   ```
 ### to test manually:
 
@@ -123,7 +123,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
   ```
   kubectl -n galoy-dev-galoy port-forward  svc/galoy-oathkeeper-proxy 4455:4455
   ```
-* run the smoketest from another window (examples from the [galoy-oathkeeper-smoketest.sh](/ci/tasks/galoy-oathkeeper-smoketest.sh)):
+* run the smoketest from another window (examples from the [galoy-smoketest.sh](/ci/tasks/galoy-smoketest.sh)):
   ```
   host=localhost
   port=4455

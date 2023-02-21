@@ -759,7 +759,7 @@ oathkeeper:
             "url": "http://api:4002"
           },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(kratos|browser|healthz|metrics)(.*)>",
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(kratos|browser)(.*)>",
             "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [
