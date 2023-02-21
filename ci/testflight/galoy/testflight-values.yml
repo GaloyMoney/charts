@@ -12,27 +12,27 @@ galoy:
   config:
     test_accounts:
       - ref: A
-        phone: "+50365055543"
-        code: "182731"
-        needUsdWallet: true
-        currency: BTC
-      - ref: B
-        phone: "+50365055544"
-        code: "840172"
-        phoneMetadataCarrierType: mobile
-        needUsdWallet: true
-        currency: BTC
-      - ref: C
-        phone: "+50365055545"
-        code: "105369"
-        title: business
-        currency: BTC
-      - ref: D
         phone: "+59981730222" # bankowner
         code: "824197"
         needUsdWallet: true
         role: bankowner
         username: bankowner
+      - ref: B
+        phone: "+50365055543"
+        code: "182731"
+        needUsdWallet: true
+        currency: BTC
+      - ref: C
+        phone: "+50365055544"
+        code: "840172"
+        phoneMetadataCarrierType: mobile
+        needUsdWallet: true
+        currency: BTC
+      - ref: D
+        phone: "+50365055545"
+        code: "105369"
+        title: business
+        currency: BTC
       - ref: E
         phone: "+59981730223" # dealer
         code: "824199"
