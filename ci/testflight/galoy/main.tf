@@ -258,8 +258,9 @@ resource "kubernetes_secret" "smoketest" {
     price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
     price_history_port     = 50052
 
-    test_accounts  = kubernetes_secret.test_accounts.data.json
-    admin_accounts = kubernetes_secret.test_accounts.data.json
+    test_accounts      = kubernetes_secret.test_accounts.data.json
+    admin_accounts     = kubernetes_secret.test_accounts.data.json
+    admin_api_endpoint = local.testflight_api_host
   }
 }
 

@@ -5,7 +5,9 @@ set -eu
 source smoketest-settings/helpers.sh
 
 host=$(setting "galoy_endpoint")
+admin_host=$(setting "admin_api_endpoint")
 port=$(setting "galoy_port")
+
 
 phone=$(echo "$(setting "test_accounts")" | jq -r '.[0].phone')
 code=$(echo "$(setting "test_accounts")" | jq -r '.[0].code')
@@ -65,7 +67,7 @@ break_and_display_on_error_response
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the admin-backend route"
-  curl -LksSf  "${host}:${port}/admin/graphql" \
+  curl -LksSf  "${admin_host}:${port}/admin/graphql" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
     "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${admin_phone}\",\"code\":\"${admin_code}\"}}}" \
