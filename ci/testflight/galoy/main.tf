@@ -333,7 +333,11 @@ resource "helm_release" "galoy" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
-  values = [file("${path.module}/testflight-values.yml")]
+  values = [
+    templatefile("${path.module}/kratos-values.yml.tmpl", {
+      kratos_callback_api_key : random_password.kratos_callback_api_key.result
+    }),
+  file("${path.module}/testflight-values.yml")]
 
   depends_on = [
     kubernetes_secret.bitcoinrpc_password,
