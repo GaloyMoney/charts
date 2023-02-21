@@ -14,8 +14,8 @@ locals {
   postgres_password = "price-history"
 
   test_account_number = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].phone
-  code                = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].code
-  tag                 = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].username
+  test_account_code   = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].code
+  test_account_tag    = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].username
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -333,8 +333,8 @@ resource "kubernetes_secret" "test_accounts" {
     json = jsonencode([
       {
         phone = local.test_account_number
-        code  = local.code
-        tag   = local.tag
+        code  = local.test_account_code
+        tag   = local.test_account_tag
       }
     ])
   }
