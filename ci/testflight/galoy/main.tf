@@ -260,7 +260,7 @@ resource "kubernetes_secret" "smoketest" {
 
     test_accounts      = kubernetes_secret.test_accounts.data.json
     admin_accounts     = kubernetes_secret.test_accounts.data.json
-    admin_api_endpoint = local.testflight_api_host
+    admin_api_endpoint = "${local.testflight_api_host}:4455/admin/graphql"
   }
 }
 
