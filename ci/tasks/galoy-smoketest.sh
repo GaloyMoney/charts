@@ -10,6 +10,7 @@ port=$(setting "galoy_port")
 phone=$(echo "$(setting "test_accounts")" | jq -r '.[0].phone')
 code=$(echo "$(setting "test_accounts")" | jq -r '.[0].code')
 
+# galoy-backend unauthenticated
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the public galoy API"
@@ -28,6 +29,7 @@ if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
   exit 1
 fi
 
+# price history server healthcheck
 # The following health.proto file has been copied from
 # https://github.com/GaloyMoney/price/blob/main/history/src/servers/protos/health.proto
 cat << EOF > health.proto
@@ -71,7 +73,6 @@ set -e
 if [[ "$price_history_healthz" != "true" ]]; then echo "Smoke test failed; price history server healthcheck failed" && exit 1; fi;
 
 ## oathkeeper smoketests
-
 function break_and_display_on_error_response() {
   if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
     echo Smoketest failed! - Response:
@@ -107,7 +108,8 @@ break_and_display_on_error_response
 
 # admin-backend auth
 #"url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
-#"methods": ["GET", "POST", "OPTIONS"]set +e
+#"methods": ["GET", "POST", "OPTIONS"]
+set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the admin-backend route"
   curl -LksSf  "${host}:${port}/admin/graphql" \
@@ -130,7 +132,6 @@ set -e
 break_and_display_on_error_response
 
 ## cronjob
-
 set +e
 if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
   setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json

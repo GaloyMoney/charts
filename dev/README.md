@@ -138,19 +138,15 @@ Currently successfully brings up charts - no guarantee that everything is workin
     -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' \
     -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' \
     -H 'Origin: ${host}:${port}' --data-binary \
-    '{"query":"query btcPrice {\n btcPrice {\n base\n currencyUnit\n formattedAmount\n offset\n }\n }","variables":{}}' \
+    '{"query":"query btcPrice {\n btcPrice {\n base\n currencyUnit\n formattedAmount\n offset\n }\n }","variables":{}}'
 
   # galoy-backend auth
   curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
-    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
-
-  # galoy-backend-middleware-routes
-  curl -LksSv -X GET "${host}:${port}/healthz"
-
+    "{\"query\":\"mutation login(\$input: UserLoginInput\!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}"
   # admin-backend
   curl -LksSf  "${host}:${port}/admin/graphql" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
-    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+    "{\"query\":\"mutation login(\$input: UserLoginInput\!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
   ```
