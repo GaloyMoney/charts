@@ -104,7 +104,7 @@ run-galoy-oathkeeper-smoketest:
 	kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
     CHART=galoy ./dev-smoketest-settings.sh && \
     ./galoy-oathkeeper-smoketest.sh && \
-    rm -rf smoketest-settings"
+    rm -rf smoketest-settings response.json"
 
 
 fmt:

@@ -6,8 +6,9 @@ source smoketest-settings/helpers.sh
 
 host=$(setting "galoy_endpoint")
 port=$(setting "galoy_port")
-phone=$(setting "phone")
-code=$(setting "code")
+
+phone=$(echo "$(setting "test_accounts")" | jq -r '.[0].phone')
+code=$(echo "$(setting "test_accounts")" | jq -r '.[0].code')
 
 function break_and_display_on_error_response() {
   if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
@@ -19,8 +20,8 @@ function break_and_display_on_error_response() {
 }
 
 # decline-direct-access-validatetoken
-#${host}:${port}/auth/validatetoken
-#GET
+#"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/validatetoken",
+#"methods": ["GET", "POST"]
 #unauthorized
 set +e
 for i in {1..15}; do
@@ -42,8 +43,8 @@ if ! grep Unauthorized >/dev/null <response.json; then
 fi
 
 # apollo-playground-ui
-#${host}:${port}/graphql
-#GET
+#"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
+#"methods": ["GET", "OPTIONS"]
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the graphql route"
@@ -65,8 +66,8 @@ set -e
 break_and_display_on_error_response
 
 # galoy-backend auth
-#${host}:${port}/graphql<.*>
-#POST
+#"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql<.*>",
+#"methods": [ "POST" ]
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the galoy-backend auth"
@@ -75,41 +76,22 @@ for i in {1..15}; do
     "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
     >response.json
   if [[ $? == 0 ]]; then
-    success="true"
-    break
+    if grep "null" >/dev/null <response.json; then
+      cat response.json
+    else
+      success="true"
+      break
+    fi
   fi
   sleep 1
 done
 set -e
 
 break_and_display_on_error_response
-
-# admin-backend
-#${host}:${port}/admin/<.*>
-#POST
-#curl -ksS 'http://localhost:4002/admin/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+16505554321","code":"321321"}}}'
-set +e
-for i in {1..15}; do
-  echo "Attempt ${i} to curl the admin-backend route"
-  curl -LksSf  "${host}:${port}/admin/graphql" \
-    -H 'Content-Type: application/json' \
-    -H 'Accept: application/json' --data-binary \
-    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
-    >response.json
-  if [[ $? == 0 ]]; then
-    success="true"
-    break
-  fi
-  sleep 1
-done
-set -e
-
-break_and_display_on_error_response
-
 
 # galoy-backend-middleware-routes
-#${host}:${port}/healthz
-#GET
+#"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(kratos|browser|healthz|metrics)(.*)>",
+#"methods": ["GET", "POST", "OPTIONS"]
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the galoy-backend-middleware-routes"
@@ -128,3 +110,27 @@ if ! grep "HTTP/1.1 200 OK" >/dev/null <response.json; then
   echo "Should be HTTP/1.1 200 OK"
   exit 1
 fi
+
+# admin-backend
+#"url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
+#"methods": ["GET", "POST", "OPTIONS"]set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the admin-backend route"
+  curl -LksSf  "${host}:${port}/admin/graphql" \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' --data-binary \
+    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+    >response.json
+  if [[ $? == 0 ]]; then
+    if grep "null" >/dev/null <response.json; then
+      cat response.json
+    else
+      success="true"
+      break
+    fi
+  fi
+  sleep 1
+done
+set -e
+
+break_and_display_on_error_response

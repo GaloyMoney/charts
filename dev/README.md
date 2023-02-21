@@ -123,7 +123,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
   ```
   kubectl -n galoy-dev-galoy port-forward  svc/galoy-oathkeeper-proxy 4455:4455
   ```
-* run the smoketest from another window eg. from the [galoy-oathkeeper-smoketest.sh](/ci/tasks/galoy-oathkeeper-smoketest.sh):
+* run the smoketest from another window (examples from the [galoy-oathkeeper-smoketest.sh](/ci/tasks/galoy-oathkeeper-smoketest.sh)):
   ```
   host=localhost
   port=4455
@@ -145,12 +145,12 @@ Currently successfully brings up charts - no guarantee that everything is workin
     -H 'Accept: application/json' --data-binary \
     "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
 
+  # galoy-backend-middleware-routes
+  curl -LksSv -X GET "${host}:${port}/healthz"
+
   # admin-backend
   curl -LksSf  "${host}:${port}/admin/graphql" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
     "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
-
-  # galoy-backend-middleware-routes
-  curl -LksSv -X GET "${host}:${port}/healthz"
   ```

@@ -19,6 +19,10 @@ locals {
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
+
+  test_account_number = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].phone
+  code                = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].code
+  tag                 = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].username
 }
 
 data "kubernetes_secret" "network" {
@@ -221,6 +225,22 @@ resource "kubernetes_secret" "loop2_credentials" {
   data = data.kubernetes_secret.loop2_credentials.data
 }
 
+resource "kubernetes_secret" "test_accounts" {
+  metadata {
+    name      = "test-accounts"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+  data = {
+    json = jsonencode([
+      {
+        phone = local.test_account_number
+        code  = local.code
+        tag   = local.tag
+      }
+    ])
+  }
+}
+
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
@@ -239,6 +259,8 @@ resource "kubernetes_secret" "smoketest" {
     price_history_port     = 50052
     kratos_admin_endpoint  = local.kratos_admin_host
     kratos_admin_port      = 80
+
+    test_accounts = kubernetes_secret.test_accounts.data.json
   }
 }
 

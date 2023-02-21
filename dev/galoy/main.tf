@@ -12,6 +12,10 @@ locals {
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
+
+  test_account_number = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].phone
+  code                = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].code
+  tag                 = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].username
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -320,6 +324,22 @@ resource "random_password" "kratos_master_user_password" {
   special = false
 }
 
+resource "kubernetes_secret" "test_accounts" {
+  metadata {
+    name      = "test-accounts"
+    namespace = local.galoy_namespace
+  }
+  data = {
+    json = jsonencode([
+      {
+        phone = local.test_account_number
+        code  = local.code
+        tag   = local.tag
+      }
+    ])
+  }
+}
+
 resource "kubernetes_secret" "smoketest" {
   metadata {
     name      = "galoy-smoketest"
@@ -333,8 +353,7 @@ resource "kubernetes_secret" "smoketest" {
     kratos_admin_endpoint  = "galoy-kratos-admin.${local.galoy_namespace}.svc.cluster.local"
     kratos_admin_port      = 80
 
-    phone = "+59981730222"
-    code  = "111111"
+    test_accounts = kubernetes_secret.test_accounts.data.json
   }
 }
 
