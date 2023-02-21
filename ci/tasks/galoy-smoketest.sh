@@ -9,6 +9,8 @@ port=$(setting "galoy_port")
 
 phone=$(echo "$(setting "test_accounts")" | jq -r '.[0].phone')
 code=$(echo "$(setting "test_accounts")" | jq -r '.[0].code')
+admin_phone=$(echo "$(setting "admin_accounts")" | jq -r '.[0].phone')
+admin_code=$(echo "$(setting "admin_accounts")" | jq -r '.[0].code')
 
 function break_and_display_on_error_response() {
   if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
@@ -66,7 +68,7 @@ for i in {1..15}; do
   curl -LksSf  "${host}:${port}/admin/graphql" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
-    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${admin_phone}\",\"code\":\"${admin_code}\"}}}" \
     >response.json
   if [[ $? == 0 ]]; then
     if grep "null" >/dev/null <response.json; then
