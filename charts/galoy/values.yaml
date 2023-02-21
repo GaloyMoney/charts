@@ -705,14 +705,13 @@ oathkeeper:
           ]
         },
         {
-          "id": "admin-backend",
+          "id": "galoy-backend",
           "upstream": {
-            "url": "http://graphql-admin:4001",
-            "strip_path": "/admin"
+            "url": "http://api:4002"
           },
           "match": {
-            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
-            "methods": ["GET", "POST", "OPTIONS"]
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql<.*>",
+            "methods": [ "POST" ]
           },
           "authenticators": [
             {
@@ -728,7 +727,7 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+                "check_session_url": "http://api:4002/auth/validatetoken",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "sub"
@@ -736,32 +735,32 @@ oathkeeper:
             },
             { "handler": "anonymous" }
           ],
-          "authorizer": {
-            "handler": "allow"
-          },
+          "authorizer": { "handler": "allow" },
           "mutators": [
-            {
-              "handler": "id_token",
-              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
-            },
             {
               "handler": "header",
               "config": {
                 "headers": {
-                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
+                  "orgauthorization": "{{ .MatchContext.Header.Get \"Authorization\" }}"
                 }
+              }
+            },
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": "{\"sub\": \"{{ print .Subject }}\"}"
               }
             }
           ]
         },
         {
-          "id": "galoy-backend",
+          "id": "galoy-backend-middleware-routes",
           "upstream": {
             "url": "http://api:4002"
           },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(graphql|kratos|browser|healthz|metrics)(.*)>",
-            "methods": ["POST"]
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(kratos|browser)(.*)>",
+            "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [
             {
@@ -800,6 +799,56 @@ oathkeeper:
                   "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
                 }
               }
+            }
+          ]
+        },
+        {
+          "id": "admin-backend",
+          "upstream": {
+            "url": "http://graphql-admin:4001",
+            "strip_path": "/admin"
+          },
+          "match": {
+            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "sub"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": {
+            "handler": "allow"
+          },
+          "mutators": [
+            {
+              "handler": "header",
+              "config": {
+                "headers": {
+                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
+                }
+              }
+            },
+            {
+              "handler": "id_token",
+              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
             }
           ]
         }

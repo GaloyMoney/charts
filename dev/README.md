@@ -111,3 +111,42 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
   # access the service on http://localhost:$localport
   ```
+
+## Smoketests
+### run the automated run-galoy-smoketest used in github actions
+  ```
+  make run-galoy-smoketest
+  ```
+### to test manually:
+
+* forward the galoy-oathkeeper-proxy
+  ```
+  kubectl -n galoy-dev-galoy port-forward  svc/galoy-oathkeeper-proxy 4455:4455
+  ```
+* run the smoketest from another window (examples from the [galoy-smoketest.sh](/ci/tasks/galoy-smoketest.sh)):
+  ```
+  host=localhost
+  port=4455
+  phone='+59981730222'
+  code='111111'
+  
+  # decline-direct-access-validatetoken
+  curl -LksS -X GET "${host}:${port}/auth/validatetoken
+  
+  # apollo-playground-ui
+  curl -LksSf "${host}:${port}/graphql" \
+    -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' \
+    -H 'Origin: ${host}:${port}' --data-binary \
+    '{"query":"query btcPrice {\n btcPrice {\n base\n currencyUnit\n formattedAmount\n offset\n }\n }","variables":{}}'
+
+  # galoy-backend auth
+  curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' --data-binary \
+    "{\"query\":\"mutation login(\$input: UserLoginInput\!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}"
+  # admin-backend
+  curl -LksSf  "${host}:${port}/admin/graphql" \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' --data-binary \
+    "{\"query\":\"mutation login(\$input: UserLoginInput\!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+  ```
