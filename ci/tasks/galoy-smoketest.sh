@@ -7,6 +7,13 @@ source smoketest-settings/helpers.sh
 host=$(setting "galoy_endpoint")
 port=$(setting "galoy_port")
 
+phone=$(echo "$(setting "test_accounts")" | jq -r '.[0].phone')
+code=$(echo "$(setting "test_accounts")" | jq -r '.[0].code')
+
+admin_endpoint=$(setting "admin_api_endpoint")
+admin_phone=$(echo "$(setting "admin_accounts")" | jq -r '.[0].phone')
+admin_code=$(echo "$(setting "admin_accounts")" | jq -r '.[0].code')
+
 function break_and_display_on_error_response() {
   if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
     echo Smoketest failed! - Response:
@@ -24,6 +31,55 @@ for i in {1..15}; do
    --header 'Content-Type: application/json' \
    --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
   if [[ $? == 0 ]]; then success="true"; break; fi;
+  sleep 1
+done
+set -e
+
+break_and_display_on_error_response
+
+# galoy-backend auth
+#"url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql<.*>",
+#"methods": [ "POST" ]
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the galoy-backend auth"
+  curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' --data-binary \
+    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
+    >response.json
+  if [[ $? == 0 ]]; then
+    if grep "null" >/dev/null <response.json; then
+      cat response.json
+    else
+      success="true"
+      break
+    fi
+  fi
+  sleep 1
+done
+set -e
+
+break_and_display_on_error_response
+
+# admin-backend auth
+#"url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
+#"methods": ["GET", "POST", "OPTIONS"]
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl the admin-backend route"
+  curl -LksSf "${admin_endpoint}" \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' --data-binary \
+    "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${admin_phone}\",\"code\":\"${admin_code}\"}}}" \
+    >response.json
+  if [[ $? == 0 ]]; then
+    if grep "null" >/dev/null <response.json; then
+      cat response.json
+    else
+      success="true"
+      break
+    fi
+  fi
   sleep 1
 done
 set -e
