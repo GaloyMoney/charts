@@ -879,9 +879,10 @@ kratos:
     automigration:
       enabled: true
     config:
+      dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
+
       cookies:
         domain: localhost # var.root_domain
-      dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
       serve:
         public:
           base_url: http://galoy-kratos-public:80/
@@ -907,6 +908,7 @@ kratos:
           base_url: http://galoy-kratos-admin:80/
       selfservice:
         default_browser_return_url: http://localhost:3000/
+
         methods:
           oidc:
             enabled: false
@@ -921,6 +923,7 @@ kratos:
             config:
               # Defines how long the verification or the recovery code is valid for (default 1h)
               lifespan: 15m
+
         flows:
           registration:
             lifespan: 10m
@@ -949,8 +952,6 @@ kratos:
             #   password:
             #     hooks:
             #     - hook: require_verified_address
-          error:
-            ui_url: http://api:4002/error
           settings:
             ui_url: http://api:4002/settings
             privileged_session_max_age: 15m
@@ -978,12 +979,23 @@ kratos:
           recovery:
             enabled: true
             ui_url: http://api:4002/recovery
+
+          error:
+            ui_url: http://api:4002/error
           logout:
             after:
               default_browser_return_url: http://api:4002/login
+
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+      tracing: {}
+      identity:
+        schemas:
+          - id: phone_or_email_password_v0
+            url: file:///etc/config/identity.schema.json
+        default_schema_id: phone_or_email_password_v0
+
       session:
         lifespan: "720h" # 1 month
         earliest_possible_extend: "96h" # 4 days
@@ -999,11 +1011,7 @@ kratos:
         algorithm: bcrypt
         bcrypt:
           cost: 8
-      identity:
-        schemas:
-          - id: phone_or_email_password_v0
-            url: file:///etc/config/identity.schema.json
-        default_schema_id: phone_or_email_password_v0
+
     identitySchemas:
       "identity.schema.json": |
         {
@@ -1046,3 +1054,4 @@ kratos:
             }
           }
         }
+    emailTemplates: {}
