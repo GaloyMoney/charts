@@ -15,8 +15,9 @@ locals {
 
   galoy-oathkeeper-proxy-host = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
 
-  bankowner_phone = "+59981730222"
-  bankowner_code  = "111111"
+  test_account_number = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].phone
+  test_account_code   = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].code
+  test_account_tag    = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].username
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -284,9 +285,7 @@ resource "helm_release" "galoy" {
   namespace = kubernetes_namespace.galoy.metadata[0].name
 
   values = [
-    templatefile("${path.module}/galoy-values.yml.tmpl", {
-      bankowner_phone : local.bankowner_phone,
-      bankowner_code : local.bankowner_code,
+    templatefile("${path.module}/kratos-values.yml.tmpl", {
       kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
     file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
@@ -335,9 +334,9 @@ resource "kubernetes_secret" "test_accounts" {
   data = {
     json = jsonencode([
       {
-        phone = local.bankowner_phone
-        code  = local.bankowner_code
-        tag   = "bankowner"
+        phone = local.test_account_number
+        code  = local.test_account_code
+        tag   = local.test_account_tag
       }
     ])
   }
@@ -354,9 +353,9 @@ resource "kubernetes_secret" "smoketest" {
     price_history_endpoint = "galoy-price-history.${local.galoy_namespace}.svc.cluster.local"
     price_history_port     = 50052
 
-    test_accounts_list     = kubernetes_secret.test_accounts.data.json
-    admin_panel_users_list = kubernetes_secret.test_accounts.data.json
-    admin_api_endpoint     = "${local.galoy-oathkeeper-proxy-host}:4455/admin/graphql"
+    test_accounts      = kubernetes_secret.test_accounts.data.json
+    admin_accounts     = kubernetes_secret.test_accounts.data.json
+    admin_api_endpoint = "${local.galoy-oathkeeper-proxy-host}:4455/admin/graphql"
   }
 }
 
