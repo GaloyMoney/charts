@@ -42,7 +42,7 @@ break_and_display_on_error_response
 #"methods": [ "POST" ]
 set +e
 for i in {1..15}; do
-  echo "Attempt ${i} to curl the galoy-backend auth"
+  echo "Attempt ${i} to test login on the galoy-backend"
   curl -LksSf "${host}:${port}/graphql" -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
     "{\"query\":\"mutation login(\$input: UserLoginInput!) { userLogin(input: \$input) { authToken } }\",\"variables\":{\"input\":{\"phone\":\"${phone}\",\"code\":\"${code}\"}}}" \
@@ -50,6 +50,11 @@ for i in {1..15}; do
   if [[ $? == 0 ]]; then
     if grep "null" >/dev/null <response.json; then
       cat response.json
+      if [[ $i -eq 15 ]]; then
+        echo "Smoketest failed!"
+        echo "Failed to login after 15 attempts"
+        exit 1
+      fi
     else
       success="true"
       break
@@ -66,7 +71,7 @@ break_and_display_on_error_response
 #"methods": ["GET", "POST", "OPTIONS"]
 set +e
 for i in {1..15}; do
-  echo "Attempt ${i} to curl the admin-backend route"
+  echo "Attempt ${i} to test login on the admin-backend"
   curl -LksSf "${admin_endpoint}" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' --data-binary \
@@ -75,6 +80,11 @@ for i in {1..15}; do
   if [[ $? == 0 ]]; then
     if grep "null" >/dev/null <response.json; then
       cat response.json
+      if [[ $i -eq 15 ]]; then
+        echo "Smoketest failed!"
+        echo "Failed to login after 15 attempts"
+        exit 1
+      fi
     else
       success="true"
       break
