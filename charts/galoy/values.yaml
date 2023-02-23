@@ -26,7 +26,7 @@ galoy:
       decisionsApi: "http://galoy-oathkeeper-api:4456/decisions/"
     kratosConfig:
       publicApi: http://galoy-kratos-public.galoy-dev-galoy.svc.cluster.local
-      adminApi:  http://galoy-kratos-admin.galoy-dev-galoy.svc.cluster.local
+      adminApi: http://galoy-kratos-admin.galoy-dev-galoy.svc.cluster.local
       corsAllowedOrigins:
         - https://localhost:8080
     cronConfig:
@@ -43,11 +43,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:f6a8b90f2473c35aa3c95634805f5fbdbf52f3d7afce52d69ef453792b2e012a"
+      digest: "sha256:ebaf2050570de3e3851ab5a3597b582f3db1d5aa13deb800a3fb2ba245460e5d"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "0c5758c"
+      git_ref: "aa66780"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -56,7 +56,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:872103d47420995336543ee04efaef7fdd6c3887ce0a4e965cea343d4cc7dda7"
+      digest: "sha256:d5ec263316fe86cbed8e1a9c9dd363d07aaefc736b80961b7323ca88a97d5cc9"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -880,7 +880,6 @@ kratos:
       enabled: true
     config:
       dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
-
       cookies:
         domain: localhost # var.root_domain
       serve:
@@ -908,7 +907,6 @@ kratos:
           base_url: http://galoy-kratos-admin:80/
       selfservice:
         default_browser_return_url: http://localhost:3000/
-
         methods:
           oidc:
             enabled: false
@@ -923,7 +921,6 @@ kratos:
             config:
               # Defines how long the verification or the recovery code is valid for (default 1h)
               lifespan: 15m
-
         flows:
           registration:
             lifespan: 10m
@@ -979,13 +976,11 @@ kratos:
           recovery:
             enabled: true
             ui_url: http://api:4002/recovery
-
           error:
             ui_url: http://api:4002/error
           logout:
             after:
               default_browser_return_url: http://api:4002/login
-
       courier:
         smtp:
           connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
@@ -995,7 +990,6 @@ kratos:
           - id: phone_or_email_password_v0
             url: file:///etc/config/identity.schema.json
         default_schema_id: phone_or_email_password_v0
-
       session:
         lifespan: "720h" # 1 month
         earliest_possible_extend: "96h" # 4 days
@@ -1011,7 +1005,6 @@ kratos:
         algorithm: bcrypt
         bcrypt:
           cost: 8
-
     identitySchemas:
       "identity.schema.json": |
         {
