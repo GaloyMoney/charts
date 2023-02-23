@@ -23,7 +23,11 @@ galoy:
       feeAccountingEnabled: false
     cronConfig:
       swapEnabled: false
-
+    kratosConfig:
+      publicApi: http://galoy-kratos-public.galoy-sig-galoy.svc.cluster.local
+      adminApi:  http://galoy-kratos-admin.galoy-sig-galoy.svc.cluster.local
+      corsAllowedOrigins:
+        - https://localhost:8080
   bitcoind:
     dns: bitcoind.galoy-sig-bitcoin.svc.cluster.local
     port: 38332
