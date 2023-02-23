@@ -7,12 +7,12 @@ source smoketest-settings/helpers.sh
 host=$(setting "galoy_endpoint")
 port=$(setting "galoy_port")
 
-phone=$(echo "$(setting "test_accounts")" | jq -r '.[0].phone')
-code=$(echo "$(setting "test_accounts")" | jq -r '.[0].code')
+phone=$(echo "$(setting "test_accounts_list")" | jq -r '.[0].phone')
+code=$(echo "$(setting "test_accounts_list")" | jq -r '.[0].code')
 
 admin_endpoint=$(setting "admin_api_endpoint")
-admin_phone=$(echo "$(setting "admin_accounts")" | jq -r '.[0].phone')
-admin_code=$(echo "$(setting "admin_accounts")" | jq -r '.[0].code')
+admin_phone=$(echo "$(setting "admin_panel_users_list")" | jq -r '.[0].phone')
+admin_code=$(echo "$(setting "admin_panel_users_list")" | jq -r '.[0].code')
 
 function break_and_display_on_error_response() {
   if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
