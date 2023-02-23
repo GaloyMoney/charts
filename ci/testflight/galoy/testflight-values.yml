@@ -51,9 +51,3 @@ secrets:
 
 loop:
   enabled: false
-
-kratos:
-  kratos:
-    config:
-      # do not connect to postgres in testflight (creates an in memory sqlite db instead)
-      dsn: memory
