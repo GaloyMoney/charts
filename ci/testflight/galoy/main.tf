@@ -20,9 +20,8 @@ locals {
   postgres_username = "price-history"
   postgres_password = "price-history"
 
-  test_account_number = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].phone
-  test_account_code   = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].code
-  test_account_tag    = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].username
+  bankowner_phone = "+59981730222"
+  bankowner_code  = "824197"
 }
 
 data "kubernetes_secret" "network" {
@@ -233,9 +232,9 @@ resource "kubernetes_secret" "test_accounts" {
   data = {
     json = jsonencode([
       {
-        phone = local.test_account_number
-        code  = local.test_account_code
-        tag   = local.test_account_tag
+        phone = local.bankowner_phone
+        code  = local.bankowner_code
+        tag   = "bankowner"
       }
     ])
   }
@@ -337,7 +336,9 @@ resource "helm_release" "galoy" {
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    templatefile("${path.module}/kratos-values.yml.tmpl", {
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
+      bankowner_phone : local.bankowner_phone,
+      bankowner_code : local.bankowner_code,
       kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
   file("${path.module}/testflight-values.yml")]
