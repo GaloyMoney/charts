@@ -12,6 +12,12 @@ locals {
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
+
+  galoy-oathkeeper-proxy-host = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
+
+  test_account_number = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].phone
+  test_account_code   = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].code
+  test_account_tag    = yamldecode(file("${path.module}/galoy-${var.bitcoin_network}-values.yml")).galoy.config.test_accounts[0].username
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -320,18 +326,36 @@ resource "random_password" "kratos_master_user_password" {
   special = false
 }
 
+resource "kubernetes_secret" "test_accounts" {
+  metadata {
+    name      = "test-accounts"
+    namespace = local.galoy_namespace
+  }
+  data = {
+    json = jsonencode([
+      {
+        phone = local.test_account_number
+        code  = local.test_account_code
+        tag   = local.test_account_tag
+      }
+    ])
+  }
+}
+
 resource "kubernetes_secret" "smoketest" {
   metadata {
     name      = "galoy-smoketest"
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_endpoint         = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
+    galoy_endpoint         = local.galoy-oathkeeper-proxy-host
     galoy_port             = 4455
     price_history_endpoint = "galoy-price-history.${local.galoy_namespace}.svc.cluster.local"
     price_history_port     = 50052
-    kratos_admin_endpoint  = "galoy-kratos-admin.${local.galoy_namespace}.svc.cluster.local"
-    kratos_admin_port      = 80
+
+    test_accounts      = kubernetes_secret.test_accounts.data.json
+    admin_accounts     = kubernetes_secret.test_accounts.data.json
+    admin_api_endpoint = "${local.galoy-oathkeeper-proxy-host}:4455/admin/graphql"
   }
 }
 

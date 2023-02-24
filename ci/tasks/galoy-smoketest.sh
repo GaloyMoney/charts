@@ -4,9 +4,19 @@ set -eu
 
 source smoketest-settings/helpers.sh
 
-host=`setting "galoy_endpoint"`
-port=`setting "galoy_port"`
+host=$(setting "galoy_endpoint")
+port=$(setting "galoy_port")
 
+function break_and_display_on_error_response() {
+  if [[ $(jq -r '.errors' <./response.json) != "null" ]]; then
+    echo Smoketest failed! - Response:
+    cat response.json
+    echo Contains "errors" key
+    exit 1
+  fi
+}
+
+# galoy-backend unauthenticated
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl the public galoy API"
@@ -18,44 +28,9 @@ for i in {1..15}; do
 done
 set -e
 
-if [[ $(cat ./response.json | jq -r '.errors') != "null" ]]; then
-  echo Testflight failed! - Response:
-  cat response.json
-  echo Contains "errors" key
-  exit 1
-fi
+break_and_display_on_error_response
 
-set +e
-if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
-  setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
-  export KUBECONFIG=$(pwd)/kubeconfig.json
-  namespace=`setting "galoy_namespace"`
-  job_name="${namespace}-cronjob-smoketest"
-  kubectl -n ${namespace} delete job "${job_name}" || true
-  echo "Executing cronjob"
-  kubectl -n ${namespace} create job --from=cronjob/galoy-cronjob "${job_name}"
-  for i in {1..150}; do
-    kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
-    if [[ $? -eq 0 ]]; then
-      echo "Cronjob execution completed"
-      break
-    fi
-    if [[ $i -gt 30 ]]; then
-      echo "If cronjob is taking too long, consider closing channels with offline nodes"
-    fi
-    sleep 2
-  done
-  status="$(kubectl -n ${namespace} get job ${job_name} -o jsonpath='{.status.succeeded}')"
-  if [[ "${status}" != "1" ]]; then
-    echo "Cronjob failed!"
-    exit 1
-  else
-    echo "Cronjob succeeded!"
-  fi
-  kubectl -n ${namespace} delete job "${job_name}"
-fi
-set -e
-
+# price history server healthcheck
 # The following health.proto file has been copied from
 # https://github.com/GaloyMoney/price/blob/main/history/src/servers/protos/health.proto
 cat << EOF > health.proto
@@ -98,16 +73,34 @@ set -e
 
 if [[ "$price_history_healthz" != "true" ]]; then echo "Smoke test failed; price history server healthcheck failed" && exit 1; fi;
 
-host=`setting "kratos_admin_endpoint"`
-port=`setting "kratos_admin_port"`
-
+## cronjob
 set +e
-for i in {1..15}; do
-  echo "Attempt ${i} to curl kratos"
-  curl --location -f ${host}:${port}/admin/health/ready
-  if [[ $? == 0 ]]; then kratos_healthz="true"; break; fi;
-  sleep 1
-done
+if [[ `setting_exists "smoketest_kubeconfig"` != "null" ]]; then
+  setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
+  export KUBECONFIG=$(pwd)/kubeconfig.json
+  namespace=`setting "galoy_namespace"`
+  job_name="${namespace}-cronjob-smoketest"
+  kubectl -n ${namespace} delete job "${job_name}" || true
+  echo "Executing cronjob"
+  kubectl -n ${namespace} create job --from=cronjob/galoy-cronjob "${job_name}"
+  for i in {1..150}; do
+    kubectl -n ${namespace}  wait --for=condition=complete job "${job_name}"
+    if [[ $? -eq 0 ]]; then
+      echo "Cronjob execution completed"
+      break
+    fi
+    if [[ $i -gt 30 ]]; then
+      echo "If cronjob is taking too long, consider closing channels with offline nodes"
+    fi
+    sleep 2
+  done
+  status="$(kubectl -n ${namespace} get job ${job_name} -o jsonpath='{.status.succeeded}')"
+  if [[ "${status}" != "1" ]]; then
+    echo "Cronjob failed!"
+    exit 1
+  else
+    echo "Cronjob succeeded!"
+  fi
+  kubectl -n ${namespace} delete job "${job_name}"
+fi
 set -e
-
-if [[ "$kratos_healthz" != "true" ]]; then echo "Smoke test failed; kratos healthcheck failed" && exit 1; fi;

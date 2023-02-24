@@ -19,6 +19,10 @@ locals {
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
+
+  test_account_number = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].phone
+  test_account_code   = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].code
+  test_account_tag    = yamldecode(file("${path.module}/testflight-values.yml")).galoy.config.test_accounts[0].username
 }
 
 data "kubernetes_secret" "network" {
@@ -221,6 +225,22 @@ resource "kubernetes_secret" "loop2_credentials" {
   data = data.kubernetes_secret.loop2_credentials.data
 }
 
+resource "kubernetes_secret" "test_accounts" {
+  metadata {
+    name      = "test-accounts"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+  data = {
+    json = jsonencode([
+      {
+        phone = local.test_account_number
+        code  = local.test_account_code
+        tag   = local.test_account_tag
+      }
+    ])
+  }
+}
+
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
@@ -237,8 +257,10 @@ resource "kubernetes_secret" "smoketest" {
     galoy_port             = 4455
     price_history_endpoint = "galoy-price-history.${local.testflight_namespace}.svc.cluster.local"
     price_history_port     = 50052
-    kratos_admin_endpoint  = local.kratos_admin_host
-    kratos_admin_port      = 80
+
+    test_accounts      = kubernetes_secret.test_accounts.data.json
+    admin_accounts     = kubernetes_secret.test_accounts.data.json
+    admin_api_endpoint = "${local.testflight_api_host}:4455/admin/graphql"
   }
 }
 
@@ -292,7 +314,8 @@ resource "random_password" "kratos_master_user_password" {
 }
 
 resource "random_password" "kratos_callback_api_key" {
-  length = 32
+  length  = 32
+  special = false
 }
 
 resource "kubernetes_secret" "kratos_master_user_password" {
@@ -313,7 +336,11 @@ resource "helm_release" "galoy" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
-  values = [file("${path.module}/testflight-values.yml")]
+  values = [
+    templatefile("${path.module}/kratos-values.yml.tmpl", {
+      kratos_callback_api_key : random_password.kratos_callback_api_key.result
+    }),
+  file("${path.module}/testflight-values.yml")]
 
   depends_on = [
     kubernetes_secret.bitcoinrpc_password,

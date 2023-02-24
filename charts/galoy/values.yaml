@@ -24,6 +24,14 @@ galoy:
     oathkeeperConfig:
       urlJkws: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
       decisionsApi: "http://galoy-oathkeeper-api:4456/decisions/"
+    kratosConfig:
+      publicApi: http://galoy-kratos-public.galoy-dev-galoy.svc.cluster.local
+      adminApi: http://galoy-kratos-admin.galoy-dev-galoy.svc.cluster.local
+      corsAllowedOrigins:
+        - https://localhost:8080
+    cronConfig:
+      rebalanceEnabled: true
+      swapEnabled: true
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
@@ -35,11 +43,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:c5f1fe20c4bb152ea8d13fdaa7e75a732f18f4fe90f14ea4d21a3295d1d37204"
+      digest: "sha256:260db2ae5111bd0e5f55f6c37b40ae85bd6a26af1ba9a5728746d2890044df38"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "9fd703f"
+      git_ref: "5b969b1"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -48,7 +56,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:389e5f050f12571443048e9e9d37d9b23cca5c4e4c2fc6be804ab3f78fe32fae"
+      digest: "sha256:2eab8557290cfe440ed89defb3a1c9018b965c888bbf7c9e098195a5c883af81"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -705,14 +713,13 @@ oathkeeper:
           ]
         },
         {
-          "id": "admin-backend",
+          "id": "galoy-backend",
           "upstream": {
-            "url": "http://graphql-admin:4001",
-            "strip_path": "/admin"
+            "url": "http://api:4002"
           },
           "match": {
-            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
-            "methods": ["GET", "POST", "OPTIONS"]
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql<.*>",
+            "methods": [ "POST" ]
           },
           "authenticators": [
             {
@@ -728,7 +735,7 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+                "check_session_url": "http://api:4002/auth/validatetoken",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "sub"
@@ -736,32 +743,32 @@ oathkeeper:
             },
             { "handler": "anonymous" }
           ],
-          "authorizer": {
-            "handler": "allow"
-          },
+          "authorizer": { "handler": "allow" },
           "mutators": [
-            {
-              "handler": "id_token",
-              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
-            },
             {
               "handler": "header",
               "config": {
                 "headers": {
-                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
+                  "orgauthorization": "{{ .MatchContext.Header.Get \"Authorization\" }}"
                 }
+              }
+            },
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": "{\"sub\": \"{{ print .Subject }}\"}"
               }
             }
           ]
         },
         {
-          "id": "galoy-backend",
+          "id": "galoy-backend-middleware-routes",
           "upstream": {
             "url": "http://api:4002"
           },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(graphql|kratos|browser|healthz|metrics)(.*)>",
-            "methods": ["POST"]
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/<(kratos|browser)(.*)>",
+            "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [
             {
@@ -802,11 +809,64 @@ oathkeeper:
               }
             }
           ]
+        },
+        {
+          "id": "admin-backend",
+          "upstream": {
+            "url": "http://graphql-admin:4001",
+            "strip_path": "/admin"
+          },
+          "match": {
+            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "sub"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": {
+            "handler": "allow"
+          },
+          "mutators": [
+            {
+              "handler": "header",
+              "config": {
+                "headers": {
+                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
+                }
+              }
+            },
+            {
+              "handler": "id_token",
+              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
+            }
+          ]
         }
       ]
   maester:
     enabled: false
 kratos:
+  secret:
+    enabled: true
+    nameOverride: ""
   image:
     tag: v0.11.1
   ingress:
@@ -819,11 +879,9 @@ kratos:
     automigration:
       enabled: true
     config:
-      secrets:
-        default:
-          - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
-      version: v0.11.0
       dsn: postgresql://kratos-pg:kratos-pg@postgresql/kratos-pg
+      cookies:
+        domain: localhost # var.root_domain
       serve:
         public:
           base_url: http://galoy-kratos-public:80/
@@ -864,44 +922,6 @@ kratos:
               # Defines how long the verification or the recovery code is valid for (default 1h)
               lifespan: 15m
         flows:
-          error:
-            ui_url: http://api:4002/error
-          settings:
-            ui_url: http://api:4002/settings
-            privileged_session_max_age: 15m
-            required_aal: aal1
-            after:
-              profile:
-                hooks:
-                  - hook: web_hook
-                    config:
-                      # url: http://e2e-tests:4002/auth/after_settings_hooks
-                      url: http://invalid-because-we-dont-want-profile-to-be-updated
-                      method: POST
-                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ==
-                      auth:
-                        type: api_key
-                        config:
-                          name: Authorization
-                          value: callback_api_key
-                          in: header
-          recovery:
-            enabled: true
-            ui_url: http://api:4002/recovery
-          verification:
-            use: code
-            enabled: true
-          logout:
-            after:
-              default_browser_return_url: http://api:4002/login
-          login:
-            ui_url: http://localhost:3000/login
-            lifespan: 10m
-            # this below make phone authentication fails even if there is no email in the schema
-            # after:
-            #   password:
-            #     hooks:
-            #     - hook: require_verified_address
           registration:
             lifespan: 10m
             ui_url: http://localhost:3000/register
@@ -921,6 +941,60 @@ kratos:
                           value: callback_api_key
                           in: header
                   - hook: session
+          login:
+            ui_url: http://localhost:3000/login
+            lifespan: 10m
+            # this below make phone authentication fails even if there is no email in the schema
+            # after:
+            #   password:
+            #     hooks:
+            #     - hook: require_verified_address
+          settings:
+            ui_url: http://api:4002/settings
+            privileged_session_max_age: 15m
+            required_aal: aal1
+            after:
+              profile:
+                hooks:
+                  - hook: web_hook
+                    config:
+                      # url: http://e2e-tests:4002/auth/after_settings_hooks
+                      # url: http://api:4002/kratos/registration
+                      url: http://invalid-because-we-dont-want-profile-to-be-updated
+                      method: POST
+                      can_interrupt: true
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ==
+                      auth:
+                        type: api_key
+                        config:
+                          name: Authorization
+                          value: callback_api_key
+                          in: header
+          verification:
+            use: code # Defines which method is used, one of 'code' or 'link'.
+            enabled: true
+          recovery:
+            enabled: true
+            ui_url: http://api:4002/recovery
+          error:
+            ui_url: http://api:4002/error
+          logout:
+            after:
+              default_browser_return_url: http://api:4002/login
+      courier:
+        smtp:
+          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+      tracing: {}
+      identity:
+        schemas:
+          - id: phone_or_email_password_v0
+            url: file:///etc/config/identity.schema.json
+        default_schema_id: phone_or_email_password_v0
+      session:
+        lifespan: "720h" # 1 month
+        earliest_possible_extend: "96h" # 4 days
+        whoami:
+          required_aal: aal1
       log:
         level: debug
         format: json
@@ -931,19 +1005,6 @@ kratos:
         algorithm: bcrypt
         bcrypt:
           cost: 8
-      identity:
-        schemas:
-          - id: phone_or_email_password_v0
-            url: file:///etc/config/identity.schema.json
-        default_schema_id: phone_or_email_password_v0
-      courier:
-        smtp:
-          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
-      session:
-        lifespan: "720h" # 1 month
-        earliest_possible_extend: "96h" # 4 days
-        whoami:
-          required_aal: aal1
     identitySchemas:
       "identity.schema.json": |
         {
@@ -986,3 +1047,4 @@ kratos:
             }
           }
         }
+    emailTemplates: {}
