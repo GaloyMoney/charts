@@ -21,7 +21,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 ### Test
 
-#### Forward the graphl api ingress port:
+#### Forward the ingress nginx controller port:
 * Run and keep open:
   ```
   kubectl -n galoy-dev-ingress port-forward --address 0.0.0.0 svc/ingress-nginx-controller 4002:80
