@@ -62,8 +62,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 1. port forward the web wallet on 3000
     ```
-    web_wallet=$(kubectl -n galoy-dev-addons get pods | grep web-wallet-mobile | awk '{print $1}')
-    kubectl -n galoy-dev-addons port-forward --address 0.0.0.0 $web_wallet 3000:3000
+    kubectl -n galoy-dev-addons port-forward --address 0.0.0.0 svc/web-wallet-mobile 3000:80
     ```
 2. open http://localhost:3000
 
