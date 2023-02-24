@@ -21,10 +21,10 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 ### Test
 
-#### Forward the galoy API port:
+#### Forward the ingress nginx controller port:
 * Run and keep open:
   ```
-  kubectl -n galoy-dev-ingress port-forward svc/ingress-nginx-controller 8080:443
+  kubectl -n galoy-dev-ingress port-forward --address 0.0.0.0 svc/ingress-nginx-controller 4002:80
   ```
 #### Test the galoy-api
 
@@ -35,28 +35,44 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
     Example result:
     ```
-    "CrDr5orsnFLg3SL3Jpk9cH0wXENAWqbY"
+    "BxTc70FW7gL5MEueAFcxGE08nbWWsytE"
     ```
 2. query an authenticated endpoint (fill out the `session_token` from above)
     ```
-    session_token="CrDr5orsnFLg3SL3Jpk9cH0wXENAWqbY"
-    curl -k 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: bearer ${session_token}" --data-binary '{"query": "{ me { phone } }" }'
+    session_token="BxTc70FW7gL5MEueAFcxGE08nbWWsytE"
+    curl -k 'http://localhost:4002/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: bearer ${session_token}" --data-binary '{"query": "{ me { phone } }" }'
     ```
     Expected result:
     ```
-    {"data":{"me":{"phone":"+59981730222"}}}
+    {"data":{"me":{"phone":"+16505554321"}}}
     ```
 #### Test the graphql-admin api
 
 1. get session token
     ```
-    curl -ksS 'https://localhost:8080/admin/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}' | jq '.data.userLogin.authToken'
+    curl -ksS 'http://localhost:4002/admin/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+16505554321","code":"321321"}}}' | jq '.data.userLogin.authToken'
     ```
 
     Example result:
     ```
     "Beo2lGQZO4nZKzIyZRlVFIQ6jAeo9bNu"
     ```
+
+#### Test the web wallet
+
+1. port forward the web wallet on 3000
+    ```
+    kubectl -n galoy-dev-addons port-forward --address 0.0.0.0 svc/web-wallet-mobile 3000:80
+    ```
+2. open http://localhost:3000
+
+#### Test the admin panel
+
+1. port forward the web wallet on 3001
+    ```
+    kubectl -n galoy-dev-addons port-forward  --address 0.0.0.0 svc/admin-panel 3001:3000
+    ```
+2. open http://localhost:3001
 
 ## Signet
 

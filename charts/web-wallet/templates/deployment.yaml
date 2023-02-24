@@ -60,13 +60,13 @@ spec:
           value: {{ .Values.webWallet.walletName }}
         - name: SHARE_URL
           value: {{ .Values.webWallet.galoyPayEndpoint }}
+        - name: GALOY_AUTH_ENDPOINT
+          value: {{ .Values.webWallet.galoyAuthEndpoint }}
         {{- if eq .Values.webWallet.kratos.enabled true }}
         - name: KRATOS_API_URL
           value: {{ .Values.webWallet.kratos.apiUrl }}
         - name: KRATOS_BROWSER_URL
           value: {{ .Values.webWallet.kratos.browserUrl }}
-        - name: GALOY_AUTH_ENDPOINT
-          value: {{ .Values.webWallet.galoyAuthEndpoint }}
         - name: KRATOS_FEATURE_FLAG
           value: "true"
         {{- end }}

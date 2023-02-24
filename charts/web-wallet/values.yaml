@@ -18,11 +18,11 @@ webWallet:
   bitcoinNetwork: regtest
   authEndpoint: api/login
   graphqlUrl: http://localhost:4002/graphql
-  graphqlSubscriptionUrl: wss://localhost:4002/graphql
+  graphqlSubscriptionUrl: ws://localhost:4002/graphql
   supportEmail: support@galoy.io
   walletName: galoy
   galoyPayEndpoint: http://localhost:4000
-  galoyAuthEndpoint: http://localhost:4001/auth/browser
+  galoyAuthEndpoint: http://localhost:4002/auth
   kratos:
     enabled: false
     browserUrl: http://localhost:4433
