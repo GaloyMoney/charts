@@ -48,6 +48,9 @@ spec:
             - name: prometheus
               containerPort: {{ .Values.service.prometheus }}
               protocol: TCP
+          volumeMounts:
+            - name: custom-yaml
+              mountPath: "/var/yaml/"
           livenessProbe:
             exec:
               command: ["/bin/grpc_health_probe", "-addr=:50051"]
@@ -71,3 +74,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: custom-yaml
+          secret:
+            secretName: {{ include "price.fullname" . }}-config

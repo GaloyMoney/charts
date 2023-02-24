@@ -72,6 +72,9 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+config: {}
+
 history:
   valuesOverride: {}
   image:
