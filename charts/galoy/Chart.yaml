@@ -12,15 +12,15 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.9.11-dev
+version: 0.9.15-dev
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 0.5.186
+appVersion: 0.5.193
 dependencies:
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 17.8.0
+    version: 17.8.1
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
     version: 12.1.31
@@ -33,7 +33,7 @@ dependencies:
     condition: postgresql.enabled
   - name: oathkeeper
     repository: https://k8s.ory.sh/helm/charts
-    version: 0.27.1
+    version: 0.28.0
   - name: kratos
     repository: https://k8s.ory.sh/helm/charts
-    version: 0.27.0
+    version: 0.28.0
