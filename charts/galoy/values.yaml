@@ -584,9 +584,6 @@ postgresql:
 loop:
   enabled: true
 oathkeeper:
-  image:
-    repository: ntheile/oathkeeper
-    tag: v0.40.1
   replicaCount: 2
   oathkeeper:
     config:
