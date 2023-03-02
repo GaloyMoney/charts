@@ -1,7 +1,7 @@
 image:
   repository: us.gcr.io/galoy-org/admin-panel
-  digest: "sha256:06215c1cae28e0a3adc5783e532dbdc3cc9b29b1c38573a67743be9712e682e0"
-  git_ref: "42f0f38" # Not used by helm
+  digest: "sha256:640a0e3f6f47ee1c50566a4794f3d6a68b3d6601b80ac913cea20ae5c536f62c"
+  git_ref: "6cb1337" # Not used by helm
 ingress:
   enabled: false
 service:
