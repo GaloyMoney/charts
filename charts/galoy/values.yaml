@@ -242,6 +242,20 @@ galoy:
       ## TLS Secret Name
       ##
       tlsSecretName: graphql-admin-tls
+      ## Annotations for the Ingress
+      annotations:
+        nginx.ingress.kubernetes.io/use-regex: "true"
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      ## Ingress extra paths
+      extraPaths:
+      - path: /admin/?(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: graphql-admin
+            port:
+              number: 4001
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/

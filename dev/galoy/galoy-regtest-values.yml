@@ -61,18 +61,6 @@ galoy:
     ingress:
       enabled: true
       host: localhost
-      annotations:
-        nginx.ingress.kubernetes.io/use-regex: "true"
-        nginx.ingress.kubernetes.io/rewrite-target: /$1
-        nginx.ingress.kubernetes.io/ssl-redirect: "false"
-      extraPaths:
-      - path: /admin/?(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: graphql-admin
-            port:
-              number: 4001
 
 mongodb:
   architecture: standalone
