@@ -1,24 +1,6 @@
 galoy:
   network: regtest
   config:
-    test_accounts:
-      - ref: A
-        phone: "+59981730222"
-        code: "111111"
-        role: "bankowner"
-        username: "bankowner"
-        ref: "bankowner"
-        needUsdWallet: true
-      - ref: B
-        phone: "+16505554321"
-        code: "321321"
-        username: "tester"
-        needUsdWallet: true
-      - ref: C
-        phone: "+16505554332"
-        code: "321321"
-        role: "editor" # for admin panel login
-        username: "editor"
     apollo:
       playground: true
     swap:
