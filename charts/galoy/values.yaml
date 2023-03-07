@@ -25,8 +25,8 @@ galoy:
       urlJkws: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
       decisionsApi: "http://galoy-oathkeeper-api:4456/decisions/"
     kratosConfig:
-      publicApi: http://galoy-kratos-public.galoy-dev-galoy.svc.cluster.local
-      adminApi: http://galoy-kratos-admin.galoy-dev-galoy.svc.cluster.local
+      publicApi: http://galoy-kratos-public
+      adminApi: http://galoy-kratos-admin
       corsAllowedOrigins:
         - https://localhost:8080
     cronConfig:
