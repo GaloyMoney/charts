@@ -15,6 +15,7 @@ locals {
 
   testflight_api_host = "galoy-oathkeeper-proxy.${local.testflight_namespace}.svc.cluster.local"
   kratos_admin_host   = "galoy-kratos-admin.${local.testflight_namespace}.svc.cluster.local"
+  kratos_pg_host      = "postgresql.${local.testflight_namespace}.svc.cluster.local"
 
   postgres_database = "price-history"
   postgres_username = "price-history"
@@ -350,6 +351,7 @@ resource "helm_release" "galoy" {
     templatefile("${path.module}/testflight-values.yml.tmpl", {
       bankowner_phone : local.bankowner_phone,
       bankowner_code : local.bankowner_code,
+      kratos_pg_host : local.kratos_pg_host,
       kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
   file("${path.module}/testflight-values.yml")]
