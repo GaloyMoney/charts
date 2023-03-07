@@ -14,6 +14,7 @@ locals {
   postgres_password = "price-history"
 
   galoy-oathkeeper-proxy-host = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
+  kratos_pg_host              = "postgresql.${local.galoy_namespace}.svc.cluster.local"
 
   bankowner_phone = "+59981730222"
   bankowner_code  = "111111"
@@ -287,6 +288,7 @@ resource "helm_release" "galoy" {
     templatefile("${path.module}/galoy-values.yml.tmpl", {
       bankowner_phone : local.bankowner_phone,
       bankowner_code : local.bankowner_code,
+      kratos_pg_host : local.kratos_pg_host,
       kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
     file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
