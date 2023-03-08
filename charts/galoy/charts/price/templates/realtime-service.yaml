@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "price.realtime.fullname" . }}
+  labels:
+    {{- include "price.realtime.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.realtime.service.type }}
+  ports:
+    - port: {{ .Values.realtime.service.grpc }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+    - port: {{ .Values.realtime.service.prometheus }}
+      targetPort: prometheus
+      protocol: TCP
+      name: prometheus
+  selector:
+    {{- include "price.realtime.selectorLabels" . | nindent 4 }}
