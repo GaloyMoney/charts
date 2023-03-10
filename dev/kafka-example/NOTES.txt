@@ -23,6 +23,7 @@ kubectl -n galoy-dev-kafka exec kafka-kafka-0 -i -t -- bin/kafka-console-consume
 kubectl get KafkaConnector --selector strimzi.io/cluster=kafka-connect -o name
 
 # TODO
-* create a permanent docker image store- can be personal docker hub for etstimg
+* create a permanent docker image store - can be personal docker hub for testing
+* find a reliable way to test the data flow
 * introduce the mongodb source connector
 * introduce the bigquery sink connector
