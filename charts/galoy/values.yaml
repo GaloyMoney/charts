@@ -86,7 +86,7 @@ galoy:
     port: 4002
     ## Service type
     ##
-    serviceType: NodePort
+    serviceType: ClusterIP
     ## Ingress configuration.
     ## Ref: https://kubernetes.io/docs/user-guide/ingress/
     ##
@@ -224,7 +224,7 @@ galoy:
     port: 4001
     ## Service type
     ##
-    serviceType: NodePort
+    serviceType: ClusterIP
     ## Ingress configuration.
     ## Ref: https://kubernetes.io/docs/user-guide/ingress/
     ##
