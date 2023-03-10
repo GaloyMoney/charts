@@ -1,0 +1,19 @@
+# https://github.com/strimzi/strimzi-kafka-o                                                                                                                perator/blob/0.33.2/examples/connect/source-connector.yaml
+#{{- if (index .Values "strimzi-kafka-operator").enabled -}}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: kafka-source-connector
+  namespace: galoy-dev-kafka
+  labels:
+    strimzi.io/cluster: kafka-connect
+spec:
+  class: org.apache.kafka.connect.file.FileStreamSourceConnector # (3)
+  tasksMax: 2
+  autoRestart:
+    enabled: true
+  config:
+    # options: https://strimzi.io/docs/operators/latest/full/deploying.html#kafkaconnector-configs
+    file: "/opt/kafka/LICENSE"
+    topic: my-topic
+#{{- end -}}

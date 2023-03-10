@@ -24,6 +24,11 @@ destroy-services:
 	$(TF) destroy -var="bitcoin_network=regtest"	\
 				-var="name_prefix=galoy-dev" -auto-approve
 
+deploy-kafka-example:
+	$(TF) apply -target module.kafka_example \
+				-var="bitcoin_network=regtest" 	\
+				-var="name_prefix=galoy-dev" -auto-approve
+
 deploy:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve

@@ -1,0 +1,18 @@
+#{{- if (index .Values "strimzi-kafka-operator").enabled -}}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: kafka-sink-connector
+  namespace: galoy-dev-kafka
+  labels:
+    strimzi.io/cluster: kafka-connect
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  class: org.apache.kafka.connect.file.FileStreamSinkConnector
+  tasksMax: 2
+  config:
+    # options: https://strimzi.io/docs/operators/latest/full/deploying.html#kafkaconnector-configs
+    file: "/tmp/my-file"
+    topics: my-topic
+#{{- end -}}

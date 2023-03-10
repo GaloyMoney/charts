@@ -12,6 +12,10 @@ module "galoy_deps" {
   name_prefix = local.name_prefix
 }
 
+module "kafka_example" {
+  source = "./kafka-example"
+}
+
 module "infra_services" {
   source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/smoketest/gcp?ref=13b2ef9"
 

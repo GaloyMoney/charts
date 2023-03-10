@@ -1,0 +1,28 @@
+# deploying the kafka-example components
+
+# use this to build a new image - it builds and runs the kafka-conncet pod afterwards
+tf apply -target kubernetes_manifest.kafka_connect_build --auto-approve
+
+# use this when there is an image available already
+tf apply -target kubernetes_manifest.kafka_connect --auto-approve
+
+tf apply -target kubernetes_manifest.kafka_topic --auto-approve
+
+tf apply -target kubernetes_manifest.kafka_source_connector --auto-approve
+
+tf apply -target kubernetes_manifest.kafka_sink_connector --auto-approve
+
+
+# manually create events in the kafka pod
+bin/kafka-console-producer.sh --topic my-topic --bootstrap-server localhost:9093
+
+# check what data has kafka received
+kubectl -n galoy-dev-kafka exec kafka-kafka-0 -i -t -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-bootstrap.galoy-dev-kafka.svc.cluster.local:9093 --topic my-topic --from-beginning
+
+# list the KafkaConnector kinds (source and sink)
+kubectl get KafkaConnector --selector strimzi.io/cluster=kafka-connect -o name
+
+# TODO
+* create a permanent docker image store- can be personal docker hub for etstimg
+* introduce the mongodb source connector
+* introduce the bigquery sink connector
