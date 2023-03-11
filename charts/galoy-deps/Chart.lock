@@ -13,6 +13,6 @@ dependencies:
   version: 1.5.2
 - name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.49.2
-digest: sha256:800ae38c6b8c9d40e0c0ca6e40bff6c76ad81dc98bfd4f90e5fefb71145faa88
-generated: "2023-03-09T16:12:08.327961544Z"
+  version: 0.49.3
+digest: sha256:68d51cf06f8dd5bd421635ffce3632414100e5f6162e25faf273aeb30223cc1b
+generated: "2023-03-10T22:34:58.773308802Z"
