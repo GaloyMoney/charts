@@ -31,11 +31,12 @@ spec:
       # it should not happen that you pull someone else's container image. However, we
       # recommend changing this to your own container registry or using a different
       # image name for any other than demo purposes.
-      image: ttl.sh/strimzi-connect-example3-3.4.0:24h
+      image: docker.io/openoms/strimzi-connect-example-3.3.2:latest
+      pushSecret: regcred
     plugins:
       - name: kafka-connect-file
         artifacts:
           - type: maven
             group: org.apache.kafka
             artifact: connect-file
-            version: 3.4.0
+            version: 3.3.2

@@ -7,7 +7,7 @@ metadata:
     strimzi.io/use-connector-resources: "true"
 spec:
   version: 3.3.2
-  image: ttl.sh/strimzi-connect-example3-3.4.0
+  image: docker.io/openoms/strimzi-connect-example-3.3.2:latest
   replicas: 1
   bootstrapServers: kafka-kafka-bootstrap:9093
   tls:

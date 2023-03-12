@@ -2,9 +2,9 @@ resource "kubernetes_manifest" "kafka_connect_build" {
   manifest = yamldecode(file("${path.module}/kafka-connect-build.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_connect" {
-  manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
-}
+#resource "kubernetes_manifest" "kafka_connect" {
+#  manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
+#}
 
 resource "kubernetes_manifest" "kafka_topic" {
   manifest = yamldecode(file("${path.module}/kafka-topic.yaml"))
