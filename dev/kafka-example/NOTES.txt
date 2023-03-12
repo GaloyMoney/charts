@@ -11,6 +11,7 @@ tf apply -target kubernetes_manifest.kafka_connect_build --auto-approve
 tf apply -target kubernetes_manifest.kafka_connect --auto-approve
 
 tf apply -target kubernetes_manifest.kafka_topic --auto-approve
+k describe KafkaTopic -A
 
 tf apply -target kubernetes_manifest.kafka_source_connector --auto-approve
 
@@ -44,3 +45,14 @@ https://github.com/strimzi/strimzi-kafka-operator/blob/main/documentation/api/io
 * find a reliable way to test the data flow
 * introduce the mongodb source connector
 * introduce the bigquery sink connector
+
+
+
+## Current blocker:
+
+k -n galoy-dev-kafka logs -f $(kubectl -n galoy-dev-kafka get pods | grep connect | awk '{print $1}')
+
+
+WARN [kafka-sink-connector|task-1] [Consumer clientId=connector-consumer-kafka-sink-connector-1, groupId=connect-kafka-sink-connector] Error while fetching metadata with correlation id 1986 : {my-topic=UNKNOWN_TOPIC_OR_PARTITION} (org.apache.kafka.clients.NetworkClient) [task-thread-kafka-sink-connector-1]
+WARN [kafka-source-connector|task-0] [Producer clientId=connector-producer-kafka-source-connector-0] Error while fetching metadata with correlation id 1920 : {my-topic=UNKNOWN_TOPIC_OR_PARTITION} (org.apache.kafka.clients.NetworkClient) [kafka-producer-network-thread | connector-producer-kafka-source-connector-0]
+
