@@ -6,7 +6,7 @@ metadata:
   name: kafka-source-connector
   namespace: galoy-dev-kafka
   labels:
-    strimzi.io/cluster: kafka-connect
+    strimzi.io/cluster: kafka
 spec:
   class: org.apache.kafka.connect.file.FileStreamSourceConnector # (3)
   tasksMax: 2

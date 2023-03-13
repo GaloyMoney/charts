@@ -12,9 +12,6 @@ module "galoy_deps" {
   name_prefix = local.name_prefix
 }
 
-module "kafka_example" {
-  source = "./kafka-example"
-}
 
 module "infra_services" {
   source = "git::https://github.com/GaloyMoney/galoy-infra.git//modules/smoketest/gcp?ref=13b2ef9"
@@ -24,52 +21,57 @@ module "infra_services" {
   cluster_ca_cert  = "dummy"
 }
 
-module "bitcoin" {
-  source = "./bitcoin"
-
-  bitcoin_network = local.bitcoin_network
-  name_prefix     = local.name_prefix
-
-  depends_on = [
-    module.galoy_deps
-  ]
+module "kafka_example" {
+  source = "./kafka-example"
 }
 
-module "galoy" {
-  source = "./galoy"
-
-  bitcoin_network = local.bitcoin_network
-  name_prefix     = local.name_prefix
-
-  depends_on = [
-    module.bitcoin
-  ]
-}
-
-module "monitoring" {
-  source = "./monitoring"
-
-  name_prefix = local.name_prefix
-}
-
-module "addons" {
-  source = "./addons"
-
-  name_prefix = local.name_prefix
-
-  depends_on = [
-    module.galoy
-  ]
-}
-
-module "smoketest" {
-  source = "./smoketest"
-
-  name_prefix = local.name_prefix
-}
-
-provider "kubernetes" {
-  experiments {
-    manifest_resource = true
-  }
-}
+#module "bitcoin" {
+#  source = "./bitcoin"
+#
+#  bitcoin_network = local.bitcoin_network
+#  name_prefix     = local.name_prefix
+#
+#  depends_on = [
+#    module.galoy_deps
+#  ]
+#}
+#
+#module "galoy" {
+#  source = "./galoy"
+#
+#  bitcoin_network = local.bitcoin_network
+#  name_prefix     = local.name_prefix
+#
+#  depends_on = [
+#    module.bitcoin
+#  ]
+#}
+#
+#module "monitoring" {
+#  source = "./monitoring"
+#
+#  name_prefix = local.name_prefix
+#}
+#
+#module "addons" {
+#  source = "./addons"
+#
+#  name_prefix = local.name_prefix
+#
+#  depends_on = [
+#    module.galoy
+#  ]
+#}
+#
+#module "smoketest" {
+#  source = "./smoketest"
+#
+#  name_prefix = local.name_prefix
+#}
+#
+#provider "kubernetes" {
+#  experiments {
+#    manifest_resource = true
+#  }
+#}
+#

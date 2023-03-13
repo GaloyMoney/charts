@@ -5,7 +5,7 @@ metadata:
   name: kafka-sink-connector
   namespace: galoy-dev-kafka
   labels:
-    strimzi.io/cluster: kafka-connect
+    strimzi.io/cluster: kafka
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:

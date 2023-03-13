@@ -5,13 +5,16 @@ metadata:
   name: kafka
 spec:
   kafka:
-    version: 3.2.3
+    version: 3.3.2
+
     replicas: 3
     listeners:
       - name: plain
         port: 9092
         type: cluster-ip
         tls: false
+        configuration:
+          useServiceDnsDomain: true
       - name: tls
         port: 9093
         type: internal
@@ -22,8 +25,8 @@ spec:
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 1
       default.replication.factor: 3
-      min.insync.replicas: 3
-      inter.broker.protocol.version: "3.2"
+      min.insync.replicas: 2
+      inter.broker.protocol.version: "3.3"
     storage:
       type: ephemeral
   zookeeper:
