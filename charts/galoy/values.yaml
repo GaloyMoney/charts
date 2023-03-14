@@ -48,6 +48,19 @@ galoy:
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
       git_ref: "b81cd57"
+    ## Galoy Websocket Application Image details
+    ##
+    websocket:
+      ## Has the websocket server
+      ##
+      repository: us.gcr.io/galoy-org/galoy-app-websocket
+      ## Digest of the image
+      ##
+      digest: "sha256:f1a1a586e15150e66cd50f4287689baabcaa529ed67b3853b873a9783bb5cf5a"
+      ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
+      ## Reference for timestamping the corresponding docker image and used by internal CI.
+      ##
+      git_ref: "b81cd57"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -297,6 +310,60 @@ galoy:
         timeoutSeconds: 1
   balanceNotificationCron:
     enabled: false
+  ## Configuration values for Galoy Websocket components.
+  ##
+  websocket:
+    ## Override the components name (defaults to websocket).
+    ##
+    nameOverride:
+    ## Number of replicas.
+    ##
+    replicas: 1
+    ## Log Level
+    ##
+    logLevel: debug
+    ## Port on which Admin API Server is running
+    ##
+    port: 4000
+    ## Service type
+    ##
+    serviceType: ClusterIP
+    ## Ingress configuration.
+    ## Ref: https://kubernetes.io/docs/user-guide/ingress/
+    ##
+    ingress:
+      ## Enable Ingress.
+      ##
+      enabled: false
+      ## Ingress Host
+      ##
+      host: websocket.staging.galoy.io
+      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
+      ## Read More: https://cert-manager.io/docs/usage/ingress/
+      ##
+      clusterIssuer: letsencrypt-issuer
+      ## TLS Secret Name
+      ##
+      tlsSecretName: websocket-tls
+    ## Liveness/Readiness Probes Configuration
+    ## Determines if pod is healthy or if it should be killed.
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    ##
+    probes:
+      ## Enable/disable Admin API probes for healthcheck
+      enabled: true
+      ## If pod is starting up/healthy
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      ## When to expose the pod to the service
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
   ## Kratos
   kratos:
     existingSecret:

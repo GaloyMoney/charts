@@ -56,6 +56,21 @@ galoy:
             port:
               number: 4001
 
+  websocket:
+    ingress:
+      enabled: true
+      host: localhost
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      extraPaths:
+      - path: /(graphql|kratos|browser|healthz|metrics|auth)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: websocket
+            port:
+              number: 4000
+
 mongodb:
   architecture: standalone
   persistence:
