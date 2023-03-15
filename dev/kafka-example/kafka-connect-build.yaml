@@ -26,7 +26,7 @@ spec:
   build:
     output:
       type: docker
-      image: docker.io/openoms/strimzi-connect-example-3.3.2:latest
+      image: docker.io/openoms/strimzi-connect-mongo-bigquery:latest
       pushSecret: regcred
     plugins:
       - name: kafka-connect-file
@@ -35,3 +35,13 @@ spec:
             group: org.apache.kafka
             artifact: connect-file
             version: 3.3.2
+      - name: mongo-kafka-connector
+        artifacts:
+          - type: maven
+            group: org.mongodb.kafka
+            artifact: mongo-kafka-connect
+            version: 1.9.1
+      - name: bigquery-sink
+        artifacts:
+          - type: zip
+            url: https://repo1.maven.org/maven2/com/wepay/kcbq/kcbq-confluent/1.6.5/kcbq-confluent-1.6.5.zip

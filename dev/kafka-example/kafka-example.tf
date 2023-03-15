@@ -14,10 +14,10 @@ resource "kubernetes_manifest" "kafka_topic" {
   manifest = yamldecode(file("${path.module}/kafka-topic.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_source_connector" {
-  manifest = yamldecode(file("${path.module}/kafka-source-connector.yaml"))
+resource "kubernetes_manifest" "kafka_file_source_connector" {
+  manifest = yamldecode(file("${path.module}/kafka-file-source-connector.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_sink_connector" {
-  manifest = yamldecode(file("${path.module}/kafka-sink-connector.yaml"))
+resource "kubernetes_manifest" "kafka_file_sink_connector" {
+  manifest = yamldecode(file("${path.module}/kafka-file-sink-connector.yaml"))
 }

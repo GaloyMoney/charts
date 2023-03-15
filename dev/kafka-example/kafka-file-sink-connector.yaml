@@ -2,7 +2,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnector
 metadata:
-  name: kafka-sink-connector
+  name: kafka-file-sink-connector
   namespace: galoy-dev-kafka
   labels:
     strimzi.io/cluster: kafka
