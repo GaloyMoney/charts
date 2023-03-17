@@ -31,7 +31,7 @@ tf apply -target kubernetes_manifest.kafka_connect --auto-approve
 tf apply -target kubernetes_manifest.kafka_topic --auto-approve
 k describe KafkaTopic -A
 
-tf apply -target kubernetes_manifest.kafka_source_connector --auto-approve
+tf apply -target kubernetes_manifest.kafka_source_mongo --auto-approve
 
 tf apply -target kubernetes_manifest.kafka_sink_connector --auto-approve
 
@@ -60,14 +60,34 @@ bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-bootstrap:9092 \
 --topic my-topic --from-beginning
 ```
 ## plugins
-pkg:maven/org.apache.kafka/connect-file@3.4.0
-pkg:maven/org.mongodb.kafka/mongo-kafka-connect@1.9.1
+* pkg:maven/org.apache.kafka/connect-file@3.4.0
+* pkg:maven/org.mongodb.kafka/mongo-kafka-connect@1.9.1
 
-Mongo source:
-https://github.com/mongodb/mongo-kafka/blob/master/README.md
-https://docs.mongodb.com/kafka-connector/current/
-https://central.sonatype.com/artifact/org.mongodb.kafka/mongo-kafka-connect/1.9.1
+## Mongo source:
+* https://github.com/mongodb/mongo-kafka/blob/master/README.md
+* https://docs.mongodb.com/kafka-connector/current/
+* https://central.sonatype.com/artifact/org.mongodb.kafka/mongo-kafka-connect/1.9.1
+* https://www.mongodb.com/docs/kafka-connector/current/introduction/converters/
+* https://www.mongodb.com/docs/kafka-connector/current/tutorials/source-connector/#std-label-kafka-tutorial-source-connector
+```
+# mongosh
+k -n galoy-dev-galoy exec -it galoy-mongodb-0 -- mongosh
+use galoy
+db.auth('testGaloy','password')
+use admin
+db.auth('root','password')
+rs.status()
 
+# for Mongo Compass
+ssh k3d@dev_server_IP -L 27018:127.0.0.1:27017
+k -n galoy-dev-galoy port-forward svc/galoy-mongodb 27017:27017
+
+# helpers
+k -n galoy-dev-kafka get kt
+k -n galoy-dev-kafka describe KafkaConnector kafka-source-mongo
+kubectl -n galoy-dev-kafka logs -f deployment/kafka-connect 
+kubectl -n galoy-dev-kafka get KafkaConnector
+```
 
 Bigquery sink
 https://www.confluent.io/hub/wepay/kafka-connect-bigquery
@@ -80,6 +100,9 @@ https://infinitelambda.com/postgresql-bigquery-sync-pipeline-debezium-kafka/
 # TODO
 - [x] create a permanent docker image store - can be personal docker hub for testing
 - [x] find a reliable way to test the data flow
-- [ ] set up the mongodb source connector
+- [x] set up the mongodb source connector
 - [ ] set up the bigquery sink connector
 - [ ] set up the strimzi grafana dashboard
+
+
+

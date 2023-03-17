@@ -10,14 +10,22 @@ resource "kubernetes_manifest" "kafka_connect" {
   manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_topic" {
-  manifest = yamldecode(file("${path.module}/kafka-topic.yaml"))
+#resource "kubernetes_manifest" "kafka_topic" {
+#  manifest = yamldecode(file("${path.module}/kafka-topic.yaml"))
+#}
+
+resource "kubernetes_manifest" "kafka_source_file" {
+  manifest = yamldecode(file("${path.module}/kafka-source-file.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_file_source_connector" {
-  manifest = yamldecode(file("${path.module}/kafka-file-source-connector.yaml"))
+resource "kubernetes_manifest" "kafka_source_mongo" {
+  manifest = yamldecode(file("${path.module}/kafka-source-mongo.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_file_sink_connector" {
-  manifest = yamldecode(file("${path.module}/kafka-file-sink-connector.yaml"))
+resource "kubernetes_manifest" "kafka_sink_file" {
+  manifest = yamldecode(file("${path.module}/kafka-sink-file.yaml"))
+}
+
+resource "kubernetes_manifest" "kafka_sink_bigquery" {
+  manifest = yamldecode(file("${path.module}/kafka-sink-bigquery.yaml"))
 }

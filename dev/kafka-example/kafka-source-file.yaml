@@ -3,7 +3,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnector
 metadata:
-  name: kafka-file-source-connector
+  name: kafka-source-file
   namespace: galoy-dev-kafka
   labels:
     strimzi.io/cluster: kafka

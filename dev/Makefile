@@ -24,13 +24,20 @@ destroy-services:
 	$(TF) destroy -var="bitcoin_network=regtest"	\
 				-var="name_prefix=galoy-dev" -auto-approve
 
-deploy-kafka-example:
-	$(TF) apply -target module.kafka_example \
+
+redeploy-kafka:
+	-$(TF) destroy -target=module.galoy_deps.helm_release.kafka \
+				-var="bitcoin_network=regtest" 	\
+				-var="name_prefix=galoy-dev" -auto-approve
+	$(TF) apply -target=module.galoy_deps.helm_release.kafka \
 				-var="bitcoin_network=regtest" 	\
 				-var="name_prefix=galoy-dev" -auto-approve
 
-destroy-kafka-example:
-	$(TF) destroy -target module.kafka_example \
+redeploy-kafka-example:
+	-$(TF) destroy -target module.kafka_example \
+				-var="bitcoin_network=regtest" 	\
+				-var="name_prefix=galoy-dev" -auto-approve
+	$(TF) apply -target module.kafka_example \
 				-var="bitcoin_network=regtest" 	\
 				-var="name_prefix=galoy-dev" -auto-approve
 
