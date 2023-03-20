@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: mongodb-medici_journals
+  name: mongodb-medici-balances
   namespace: galoy-dev-kafka
   labels:
     strimzi.io/cluster: kafka

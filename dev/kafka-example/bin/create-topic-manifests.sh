@@ -1,17 +1,18 @@
 #!/bin/bash
 
+# no underlines are supported
 topics=(
   "mongodb-accounts"
   "mongodb-changelog"
   "mongodb-dbmetadatas"
   "mongodb-invoiceusers"
   "mongodb-lnpayments"
-  "mongodb-medici_balances"
-  "mongodb-medici_journals"
-  "mongodb-medici_locks"
-  "mongodb-medici_transaction_metadatas"
-  "mongodb-medici_transactions"
-  "mongodb-payment_flow_states"
+  "mongodb-medici-balances"
+  "mongodb-medici-journals"
+  "mongodb-medici-locks"
+  "mongodb-medici-transaction-metadatas"
+  "mongodb-medici-transactions"
+  "mongodb-payment-flow-states"
 )
 
 for topic in "${topics[@]}"; do

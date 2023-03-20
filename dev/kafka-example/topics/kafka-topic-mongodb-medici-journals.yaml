@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: mongodb-medici_locks
+  name: mongodb-medici-journals
   namespace: galoy-dev-kafka
   labels:
     strimzi.io/cluster: kafka

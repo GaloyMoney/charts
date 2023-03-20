@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: mongodb-medici_transaction_metadatas
+  name: mongodb-medici-locks
   namespace: galoy-dev-kafka
   labels:
     strimzi.io/cluster: kafka

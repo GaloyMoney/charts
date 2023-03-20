@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: mongodb-payment_flow_states
+  name: mongodb-medici-transaction-metadatas
   namespace: galoy-dev-kafka
   labels:
     strimzi.io/cluster: kafka
