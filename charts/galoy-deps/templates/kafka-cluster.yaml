@@ -20,7 +20,7 @@ spec:
         type: internal
         tls: true
     config:
-      auto.create.topics.enable: true
+      auto.create.topics.enable: false
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 1
@@ -30,15 +30,9 @@ spec:
     storage:
       type: ephemeral
   zookeeper:
-    replicas: 1
+    replicas: 3
     storage:
       type: ephemeral
   entityOperator:
-    template:
-      topicOperatorContainer:
-        env:
-        - name: STRIMZI_USE_ZOOKEEPER_TOPIC_STORE
-          value: "true"
-    topicOperator: {}
     userOperator: {}
 {{- end -}}

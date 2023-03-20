@@ -78,6 +78,13 @@ use admin
 db.auth('root','password')
 rs.status()
 
+# add values to mongodb
+db.changelog.insertOne({
+  field1: "value1",
+  field2: "value2",
+  field3: "value3"
+});
+
 # for Mongo Compass
 ssh k3d@dev_server_IP -L 27018:127.0.0.1:27017
 k -n galoy-dev-galoy port-forward svc/galoy-mongodb 27017:27017
@@ -88,7 +95,10 @@ k -n galoy-dev-kafka describe KafkaConnector kafka-source-mongo
 kubectl -n galoy-dev-kafka logs -f deployment/kafka-connect 
 kubectl -n galoy-dev-kafka get KafkaConnector
 ```
-
+```
+# create topics
+bash ./../bin/create-topic-manifests.sh
+```
 Bigquery sink
 https://www.confluent.io/hub/wepay/kafka-connect-bigquery
 https://docs.confluent.io/kafka-connectors/bigquery/current/overview.html#dead-letter-queue
@@ -103,6 +113,4 @@ https://infinitelambda.com/postgresql-bigquery-sync-pipeline-debezium-kafka/
 - [x] set up the mongodb source connector
 - [ ] set up the bigquery sink connector
 - [ ] set up the strimzi grafana dashboard
-
-
 

@@ -10,9 +10,35 @@ resource "kubernetes_manifest" "kafka_connect" {
   manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
 }
 
-#resource "kubernetes_manifest" "kafka_topic" {
-#  manifest = yamldecode(file("${path.module}/kafka-topic.yaml"))
-#}
+resource "kubernetes_manifest" "kafka_topic" {
+  manifest = yamldecode(file("${path.module}/kafka-topic.yaml"))
+}
+
+locals {
+  kafka_topics_files = [
+    "kafka-topic-mongodb-accounts.yaml",
+    "kafka-topic-mongodb-changelog.yaml",
+    "kafka-topic-mongodb-dbmetadatas.yaml",
+    "kafka-topic-mongodb-invoiceusers.yaml",
+    "kafka-topic-mongodb-lnpayments.yaml",
+    "kafka-topic-mongodb-medici_balances.yaml",
+    "kafka-topic-mongodb-medici_journals.yaml",
+    "kafka-topic-mongodb-medici_locks.yaml",
+    "kafka-topic-mongodb-medici_transaction_metadatas.yaml",
+    "kafka-topic-mongodb-medici_transactions.yaml",
+    "kafka-topic-mongodb-payment_flow_states.yaml"
+  ]
+  kafka_topics_content = flatten([
+    for file in local.kafka_topics_files : [
+      yamldecode(file("${path.module}/topics/${file}"))
+    ]
+  ])
+}
+
+resource "kubernetes_manifest" "kafka_topics_mongodb" {
+  for_each = { for obj in local.kafka_topics_content : "${obj.metadata.name}" => obj }
+  manifest = each.value
+}
 
 resource "kubernetes_manifest" "kafka_source_file" {
   manifest = yamldecode(file("${path.module}/kafka-source-file.yaml"))
