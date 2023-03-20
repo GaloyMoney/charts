@@ -55,3 +55,31 @@ resource "kubernetes_manifest" "kafka_sink_file" {
 resource "kubernetes_manifest" "kafka_sink_bigquery" {
   manifest = yamldecode(file("${path.module}/kafka-sink-bigquery.yaml"))
 }
+
+resource "kafka_topic" "kafka" {
+  name               = "kafka"
+  replication_factor = 3
+  partitions         = 5
+}
+
+data "external" "kafka_bootstrap_ip" {
+  program = ["${path.module}/bin/get_kafka_bootstrap_ip.sh"]
+}
+
+data "external" "kafka_bootstrap_nodeport" {
+  program = ["${path.module}/bin/get_kafka_bootstrap_nodeport.sh"]
+}
+
+provider "kafka" {
+  bootstrap_servers = ["${lookup(data.external.kafka_bootstrap_ip.result, "result")}:${lookup(data.external.kafka_bootstrap_nodeport.result, "result")}"]
+  tls_enabled      = false
+}
+
+terraform {
+  required_providers {
+    kafka = {
+      source  = "Mongey/kafka"
+      version = "0.5.2"
+    }
+  }
+}

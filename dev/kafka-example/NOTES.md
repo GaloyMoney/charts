@@ -115,3 +115,5 @@ https://infinitelambda.com/postgresql-bigquery-sync-pipeline-debezium-kafka/
 - [ ] set up the bigquery sink connector
 - [ ] set up the strimzi grafana dashboard
 
+bootstrap type options:
+"internal", "route", "loadbalancer", "nodeport", "ingress", "cluster-ip"

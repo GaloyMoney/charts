@@ -9,7 +9,7 @@ metadata:
 spec:
   version: 3.3.2
   replicas: 1
-  bootstrapServers: kafka-kafka-bootstrap:9093
+  bootstrapServers: kafka-kafka-tls-bootstrap:9093
   tls:
     trustedCertificates:
       - secretName: kafka-cluster-ca-cert

@@ -26,11 +26,9 @@ destroy-services:
 
 
 redeploy-kafka:
-	-$(TF) destroy -target=module.galoy_deps.helm_release.kafka \
-				-var="bitcoin_network=regtest" 	\
-				-var="name_prefix=galoy-dev" -auto-approve
+	-kubectl delete namespace galoy-dev-kafka --force
 	$(TF) apply -target=module.galoy_deps.helm_release.kafka \
-				-var="bitcoin_network=regtest" 	\
+				-var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
 redeploy-kafka-example:
