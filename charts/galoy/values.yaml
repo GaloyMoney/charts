@@ -593,7 +593,10 @@ oathkeeper:
         bearer_token:
           enabled: true
           config:
-            check_session_url: http://api:4002/auth/validatetoken
+            check_session_url: http://galoy-kratos-public:80/sessions/whoami
+            preserve_path: true
+            subject_from: identity.id
+            extra_from: identity.traits
         anonymous:
           enabled: true
           config:
@@ -636,17 +639,6 @@ oathkeeper:
     mutatorIdTokenJWKs: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
     accessRules: |
       [
-        {
-          "id": "decline-direct-access-validatetoken",
-          "upstream": { "url": "http://api:4002" },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/validatetoken",
-            "methods": ["GET", "POST"]
-          },
-          "authenticators": [{ "handler": "unauthorized" }],
-          "authorizer": { "handler": "allow" },
-          "mutators": [{ "handler": "noop" }]
-        },
         {
           "id": "cookie-anonymous-routes",
           "upstream": { "url": "http://api:4002" },
@@ -732,10 +724,11 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-                "check_session_url": "http://api:4002/auth/validatetoken",
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
-                "subject_from": "sub"
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
               }
             },
             { "handler": "anonymous" }
@@ -781,10 +774,11 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-                "check_session_url": "http://api:4002/auth/validatetoken",
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
-                "subject_from": "sub"
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
               }
             },
             { "handler": "anonymous" }
@@ -831,10 +825,11 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-                "check_session_url": "http://graphql-admin:4001/auth/validatetoken",
+               "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
-                "subject_from": "sub"
+                "subject_from": "identity.id",
+                "extra_from": "identity.traits"
               }
             },
             { "handler": "anonymous" }

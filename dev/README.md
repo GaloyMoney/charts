@@ -145,10 +145,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
   port=4455
   phone='+59981730222'
   code='111111'
-  
-  # decline-direct-access-validatetoken
-  curl -LksS -X GET "${host}:${port}/auth/validatetoken
-  
+
   # apollo-playground-ui
   curl -LksSf "${host}:${port}/graphql" \
     -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' \
