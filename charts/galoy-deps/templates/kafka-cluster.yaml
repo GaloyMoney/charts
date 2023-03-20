@@ -6,7 +6,7 @@ metadata:
 spec:
   kafka:
     version: 3.3.2
-
+    type: LoadBalancer
     replicas: 3
     listeners:
       - name: plain
@@ -17,7 +17,7 @@ spec:
           useServiceDnsDomain: true
       - name: tls
         port: 9093
-        type: internal
+        type: cluster-ip
         tls: true
     config:
       auto.create.topics.enable: false
@@ -34,5 +34,12 @@ spec:
     storage:
       type: ephemeral
   entityOperator:
+    template:
+      topicOperatorContainer:
+        env:
+        - name: STRIMZI_USE_ZOOKEEPER_TOPIC_STORE
+          value: "true"
+    topicOperator: {}
+    userOperator: {}
     userOperator: {}
 {{- end -}}

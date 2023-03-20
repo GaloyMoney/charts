@@ -1,0 +1,94 @@
+#To activate the Strimzi Grafana dashboard with Terraform, you need to follow these ste#ps:
+#
+#Install the Grafana Operator.
+#Create a Grafana instance.
+#Create a Grafana DataSource for Prometheus.
+#Create a GrafanaDashboard resource with the Strimzi dashboard JSON.
+#Here is an example of how to create the required resources using Terraform:
+resource "kubernetes_namespace" "grafana" {
+  metadata {
+    name = "grafana"
+  }
+}
+
+module "grafana_operator" {
+  source = "git::https://github.com/grafana-operator/terraform-operator.git"
+
+  grafana_operator_namespace = kubernetes_namespace.grafana.metadata[0].name
+}
+
+resource "kubernetes_manifest" "grafana_instance" {
+  manifest = {
+    "apiVersion" = "integreatly.org/v1alpha1"
+    "kind"       = "Grafana"
+    "metadata" = {
+      "name"      = "grafana"
+      "namespace" = kubernetes_namespace.grafana.metadata[0].name
+    }
+    "spec" = {
+      "config" = {
+        "log" = {
+          "mode"  = "console"
+          "level" = "warn"
+        }
+        "security" = {
+          "admin_user"     = "admin"
+          "admin_password" = "admin"
+        }
+      }
+      "ingress" = {
+        "enabled"     = true
+        "target_port" = "http"
+        "annotations" = {
+          "kubernetes.io/ingress.class" = "nginx"
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_manifest" "grafana_datasource" {
+  manifest = {
+    "apiVersion" = "integreatly.org/v1alpha1"
+    "kind"       = "GrafanaDataSource"
+    "metadata" = {
+      "name"      = "prometheus"
+      "namespace" = kubernetes_namespace.grafana.metadata[0].name
+    }
+    "spec" = {
+      "name" = "prometheus.yaml"
+      "datasources" = [
+        {
+          "access"    = "proxy"
+          "editable"  = true
+          "isDefault" = true
+          "jsonData"  = {}
+          "name"      = "Prometheus"
+          "type"      = "prometheus"
+          "url"       = "http://prometheus-service.monitoring.svc:9090"
+        }
+      ]
+    }
+  }
+}
+
+resource "kubernetes_manifest" "strimzi_grafana_dashboard" {
+  manifest = {
+    "apiVersion" = "integreatly.org/v1alpha1"
+    "kind"       = "GrafanaDashboard"
+    "metadata" = {
+      "name"      = "strimzi-dashboard"
+      "namespace" = kubernetes_namespace.grafana.metadata[0].name
+      "labels" = {
+        "grafana_dashboard" = "1"
+      }
+    }
+    "spec" = {
+      "json" = file("${path.module}/strimzi-dashboard.json")
+    }
+  }
+}
+
+#This example assumes you have the Strimzi dashboard JSON file in your Terraform module directory with the name strimzi-dashboard.json. You can download the Strimzi Grafana dashboard JSON file from the official Strimzi GitHub repository.
+#
+#Remember to adjust the url attribute in the grafana_datasource resource to point to your Prometheus

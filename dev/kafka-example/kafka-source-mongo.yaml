@@ -10,11 +10,19 @@ spec:
   tasksMax: 1
   config:
     connection.uri: mongodb://testGaloy:password@galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0
+
     database: galoy
     collection: accounts,changelog,dbmetadatas,invoiceusers,lnpayments,medici_balances,medici_journals,medici_locks,medici_transaction_metadatas,medici_transactions,payment_flow_states
-    pipeline: '[{"$match": {"operationType": "insert"}}, {"$addFields" : {"fullDocument.travel":"MongoDB Kafka Connector"}}]'
     topic.prefix: mongodb-
-    transforms: underscoreToHyphen
     transforms.underscoreToHyphen.type: org.apache.kafka.connect.transforms.RegexRouter
     transforms.underscoreToHyphen.regex: "mongodb-(.*)_(.*)"
     transforms.underscoreToHyphen.replacement: "mongodb-$1-$2"
+
+    # updates only
+    #pipeline: '[{"$match": {"operationType": "insert"}}, {"$addFields" : {"fullDocument.travel":"MongoDB Kafka Connector"}}]'
+    # backfill only
+    pipeline: '[{"$match": {"operationType": "insert", "fullDocument": "updateLookup"}}, {"$addFields" : {"fullDocument.travel":"MongoDB Kafka Connector"}}]'
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: false
+    transforms: underscoreToHyphen

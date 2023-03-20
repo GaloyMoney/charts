@@ -87,13 +87,14 @@ db.changelog.insertOne({
 
 # for Mongo Compass
 ssh k3d@dev_server_IP -L 27018:127.0.0.1:27017
-k -n galoy-dev-galoy port-forward svc/galoy-mongodb 27017:27017
+k -n galoy-dev-galoy port-forward svc/galoy-mongodb-headless 27017:27017
 
 # helpers
 k -n galoy-dev-kafka get kt
 k -n galoy-dev-kafka describe KafkaConnector kafka-source-mongo
 kubectl -n galoy-dev-kafka logs -f deployment/kafka-connect 
 kubectl -n galoy-dev-kafka get KafkaConnector
+kubectl -n galoy-dev-kafka get kafkaconnector kafka-source-mongo -o jsonpath='{.status}'
 ```
 ```
 # create topics

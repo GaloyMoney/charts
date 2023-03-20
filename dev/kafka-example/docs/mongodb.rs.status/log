@@ -1,0 +1,119 @@
+switched to db admin                                                                                                                                 
+rs0 [direct: primary] admin> db.auth('root','password')
+{ ok: 1 }      
+rs0 [direct: primary] admin> rs.status()                                                                                                             
+{                 
+  set: 'rs0',                                                             
+  date: ISODate("2023-03-17T07:55:21.483Z"),          
+  myState: 1,                                                             
+  term: Long("3"),                                                        
+  syncSourceHost: '',                                                                                                                                
+  syncSourceId: -1,                                                       
+  heartbeatIntervalMillis: Long("2000"),                                  
+  majorityVoteCount: 2,                                                   
+  writeMajorityCount: 2,                                                  
+  votingMembersCount: 3,                                                  
+  writableVotingMembersCount: 3,                                          
+  optimes: {            
+    lastCommittedOpTime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+    lastCommittedWallTime: ISODate("2023-03-17T07:55:20.695Z"),                                                                                      
+    readConcernMajorityOpTime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+    appliedOpTime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+    durableOpTime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },                 
+    lastAppliedWallTime: ISODate("2023-03-17T07:55:20.695Z"),
+    lastDurableWallTime: ISODate("2023-03-17T07:55:20.695Z")
+  },                        
+  lastStableRecoveryTimestamp: Timestamp({ t: 1679039690, i: 1 }),
+  electionCandidateMetrics: {                                             
+    lastElectionReason: 'electionTimeout',                                                                                                           
+    lastElectionDate: ISODate("2023-03-17T07:40:50.666Z"),
+    electionTerm: Long("3"),                                                                                                                         
+    lastCommittedOpTimeAtElection: { ts: Timestamp({ t: 0, i: 0 }), t: Long("-1") },
+    lastSeenOpTimeAtElection: { ts: Timestamp({ t: 1679038848, i: 1 }), t: Long("2") },
+    numVotesNeeded: 1,                                                    
+    priorityAtElection: 5,                                                
+    electionTimeoutMillis: Long("10000"),
+    newTermStartDate: ISODate("2023-03-17T07:40:50.671Z"),
+electionTimeoutMillis: Long("10000"),                                                                                                   [41/1814]
+newTermStartDate: ISODate("2023-03-17T07:40:50.671Z"),
+wMajorityWriteAvailabilityDate: ISODate("2023-03-17T07:40:50.678Z")                                                                              
+},                  
+members: [          
+{                  
+  _id: 0,      
+  name: 'galoy-mongodb-0.galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017',
+  health: 1,
+  state: 1,
+  stateStr: 'PRIMARY',                                                                                                                           
+  uptime: 872,
+  optime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+  optimeDate: ISODate("2023-03-17T07:55:20.000Z"),
+  lastAppliedWallTime: ISODate("2023-03-17T07:55:20.695Z"),
+  lastDurableWallTime: ISODate("2023-03-17T07:55:20.695Z"),        
+  syncSourceHost: '',                                                                                                                            
+  syncSourceId: -1,                                                   
+  infoMessage: '',                                                    
+  electionTime: Timestamp({ t: 1679038850, i: 1 }),        
+  electionDate: ISODate("2023-03-17T07:40:50.000Z"),       
+  configVersion: 7,                                                   
+  configTerm: 3,                                                      
+  self: true,       
+  lastHeartbeatMessage: '' 
+},                                                                                                                                               
+{                 
+  _id: 1,         
+  name: 'galoy-mongodb-1.galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017',
+  health: 1,   
+  state: 2,
+  stateStr: 'SECONDARY',
+  uptime: 816,
+  optime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+  optimeDurable: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+  optimeDate: ISODate("2023-03-17T07:55:20.000Z"),
+  optimeDurableDate: ISODate("2023-03-17T07:55:20.000Z"),                                                                                        
+  lastAppliedWallTime: ISODate("2023-03-17T07:55:20.695Z"),
+  lastDurableWallTime: ISODate("2023-03-17T07:55:20.695Z"),
+  lastHeartbeat: ISODate("2023-03-17T07:55:21.478Z"),
+  lastHeartbeatRecv: ISODate("2023-03-17T07:55:19.780Z"),
+  pingMs: Long("0"),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'galoy-mongodb-0.galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017',
+      syncSourceId: 0,
+      infoMessage: '',
+      configVersion: 7,
+      configTerm: 3
+    },
+    {
+      _id: 2,
+      name: 'galoy-mongodb-2.galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017',
+      health: 1,
+      state: 2,
+      stateStr: 'SECONDARY',
+      uptime: 786,
+      optime: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+      optimeDurable: { ts: Timestamp({ t: 1679039720, i: 1 }), t: Long("3") },
+      optimeDate: ISODate("2023-03-17T07:55:20.000Z"),
+      optimeDurableDate: ISODate("2023-03-17T07:55:20.000Z"),
+      lastAppliedWallTime: ISODate("2023-03-17T07:55:20.695Z"),
+      lastDurableWallTime: ISODate("2023-03-17T07:55:20.695Z"),
+      lastHeartbeat: ISODate("2023-03-17T07:55:21.478Z"),
+      lastHeartbeatRecv: ISODate("2023-03-17T07:55:19.531Z"),
+      pingMs: Long("0"),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'galoy-mongodb-1.galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017',
+      syncSourceId: 1,
+      infoMessage: '',
+      configVersion: 7,
+      configTerm: 3
+    }
+  ],
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1679039720, i: 1 }),
+    signature: {
+      hash: Binary(Buffer.from("23eff56f6df8963697461d6b644b3f4072cc1de5", "hex"), 0),
+      keyId: Long("7211416915103711238")
+    }
+  },
+  operationTime: Timestamp({ t: 1679039720, i: 1 })
+}
