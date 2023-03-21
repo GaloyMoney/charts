@@ -8,7 +8,7 @@ spec:
     version: 3.4.0
     replicas: 3
     listeners:
-      - name: nodeport
+      - name: plain
         port: 9092
         type: {{ index .Values "strimzi-kafka-operator" "kafka" "listener" "type" }}
         tls: false
