@@ -20,6 +20,10 @@ module "infra_services" {
   cluster_ca_cert  = "dummy"
 }
 
+module "kafka_connect" {
+  source = "./kafka-connect"
+}
+
 module "bitcoin" {
   source = "./bitcoin"
 

@@ -56,15 +56,6 @@ galoy:
             port:
               number: 4001
 
-mongodb:
-  architecture: standalone
-  persistence:
-    enabled: false
-  replicaCount: 1
-  metrics:
-    enabled: false
-  initDbScripts: {}
-
 redis:
   replica:
     replicaCount: 1
