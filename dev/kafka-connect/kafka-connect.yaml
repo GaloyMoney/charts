@@ -1,0 +1,22 @@
+# https://github.com/strimzi/strimzi-kafka-operator/blob/0.33.2/examples/security/tls-auth/connect.yaml
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: kafka
+  namespace: galoy-dev-kafka
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 3.3.2
+  image: docker.io/openoms/strimzi-connect-mongo-bigquery:latest
+  replicas: 1
+  bootstrapServers: kafka-kafka-nodeport-bootstrap:9092
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
