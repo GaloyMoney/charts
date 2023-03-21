@@ -7,10 +7,10 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
-  version: 3.3.2
+  version: 3.4.0
   image: docker.io/openoms/strimzi-connect-mongo-bigquery:latest
   replicas: 1
-  bootstrapServers: kafka-kafka-nodeport-bootstrap:9092
+  bootstrapServers: kafka-kafka-plain-bootstrap:9092
   config:
     group.id: connect-cluster
     offset.storage.topic: connect-cluster-offsets
