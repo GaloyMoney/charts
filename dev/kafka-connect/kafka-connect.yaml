@@ -8,7 +8,7 @@ metadata:
     strimzi.io/use-connector-resources: "true"
 spec:
   version: 3.4.0
-  image: docker.io/openoms/strimzi-connect-mongo-bigquery:latest
+  image: docker.io/openoms/strimzi-connect-mongo-bigquery:latest@sha256:ab9bf0a74c17c9e9ab006f302efb1f87641e4cfb9d80c9b0b799ca0d2b27c67c
   replicas: 1
   bootstrapServers: kafka-kafka-plain-bootstrap:9092
   config:
