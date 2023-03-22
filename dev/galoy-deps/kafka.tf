@@ -25,5 +25,4 @@ resource "helm_release" "kafka" {
   ]
 
   dependency_update = true
-
 }
