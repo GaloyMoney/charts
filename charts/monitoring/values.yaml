@@ -91,7 +91,7 @@ prometheus:
         - job_name: 'dealer'
 
           scrape_interval: 1m
-          scrape_timeout: 20s
+          scrape_timeout: 45s
 
           kubernetes_sd_configs:
             - role: pod
