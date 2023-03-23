@@ -1,11 +1,30 @@
+## CONNECT
 resource "kubernetes_manifest" "kafka_connect" {
   manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
 }
 
-resource "kubernetes_manifest" "kafka_source_mongo" {
-  manifest = yamldecode(file("${path.module}/kafka-source-mongo.yaml"))
+## SOURCE CONNECTORS
+resource "kubernetes_manifest" "kafka_source_mongo_medici-balances" {
+  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-balances.yaml"))
 }
 
+resource "kubernetes_manifest" "kafka_source_mongo_medici-journals" {
+  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-journals.yaml"))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-locks" {
+  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-locks.yaml"))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-transaction-metadatas" {
+  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-transaction-metadatas.yaml"))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-transactions" {
+  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-transactions.yaml"))
+}
+
+## TOPICS BY THE TERRAFORM PROVIDER
 data "external" "kafka_bootstrap_ip" {
   program = ["${path.module}/bin/get_kafka_bootstrap_ip.sh"]
 }
@@ -19,125 +38,34 @@ provider "kafka" {
   tls_enabled       = false
 }
 
-resource "kafka_topic" "mongodb-accounts" {
-  name               = "mongodb-accounts"
+resource "kafka_topic" "mongodb_galoy_medici_balances" {
+  name               = "mongodb_galoy_medici_balances"
   partitions         = 1
   replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
 }
 
-resource "kafka_topic" "mongodb-changelog" {
-  name               = "mongodb-changelog"
+resource "kafka_topic" "mongodb_galoy_medici_journals" {
+  name               = "mongodb_galoy_medici_journals"
   partitions         = 1
   replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
 }
 
-resource "kafka_topic" "mongodb-dbmetadatas" {
-  name               = "mongodb-dbmetadatas"
+resource "kafka_topic" "mongodb_galoy_medici_locks" {
+  name               = "mongodb_galoy_medici_locks"
   partitions         = 1
   replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
 }
 
-resource "kafka_topic" "mongodb-invoiceusers" {
-  name               = "mongodb-invoiceusers"
+resource "kafka_topic" "mongodb_galoy_medici_transaction_metadatas" {
+  name               = "mongodb_galoy_medici_transaction_metadatas"
   partitions         = 1
   replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
 }
 
-resource "kafka_topic" "mongodb-lnpayments" {
-  name               = "mongodb-lnpayments"
+resource "kafka_topic" "mongodb_galoy_medici_transactions" {
+  name               = "mongodb_galoy_medici_transactions"
   partitions         = 1
   replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
-}
-
-resource "kafka_topic" "mongodb-medici-balances" {
-  name               = "mongodb-medici-balances"
-  partitions         = 1
-  replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
-}
-
-resource "kafka_topic" "mongodb-medici-journals" {
-  name               = "mongodb-medici-journals"
-  partitions         = 1
-  replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
-}
-
-resource "kafka_topic" "mongodb-medici-locks" {
-  name               = "mongodb-medici-locks"
-  partitions         = 1
-  replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
-}
-
-resource "kafka_topic" "mongodb-medici-transaction-metadatas" {
-  name               = "mongodb-medici-transaction-metadatas"
-  partitions         = 1
-  replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
-}
-
-resource "kafka_topic" "mongodb-medici-transactions" {
-  name               = "mongodb-medici-transactions"
-  partitions         = 1
-  replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
-}
-
-resource "kafka_topic" "mongodb-payment-flow-states" {
-  name               = "mongodb-payment-flow-states"
-  partitions         = 1
-  replication_factor = 3
-  config = {
-    "retention.ms"        = "7200000"
-    "segment.bytes"       = "1073741824"
-    "min.insync.replicas" = "2"
-  }
 }
 
 terraform {

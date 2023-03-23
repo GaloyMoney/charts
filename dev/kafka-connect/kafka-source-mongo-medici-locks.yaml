@@ -1,0 +1,17 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: kafka-source-mongo-medici-locks
+  namespace: galoy-dev-kafka
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  class: com.mongodb.kafka.connect.MongoSourceConnector
+  tasksMax: 1
+  config:
+    startup.mode: copy_existing
+    connection.uri: mongodb://testGaloy:password@galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0
+    topic.prefix: mongodb
+    database: galoy
+    topic.separator: "_"
+    collection: medici_locks
