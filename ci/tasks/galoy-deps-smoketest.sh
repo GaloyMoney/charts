@@ -19,6 +19,7 @@ provider "kafka" {
     "${kafka_service_name_prefix}-1.${kafka_namespace}:9092",
     "${kafka_service_name_prefix}-2.${kafka_namespace}:9092"
   ]
+  tls_enabled = false
 }
 
 terraform {
