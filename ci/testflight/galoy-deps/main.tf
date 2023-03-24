@@ -58,9 +58,9 @@ resource "kubernetes_role" "smoketest" {
   }
 
   rule {
-    api_groups = ["kafka.strimzi.io"]
-    resources  = ["kafkatopics"]
-    verbs      = ["get", "create", "delete"]
+    api_groups = [""]
+    resources  = ["pods"]
+    verbs      = ["get"]
   }
 }
 

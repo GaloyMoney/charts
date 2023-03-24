@@ -40,6 +40,10 @@ EOF
 terraform init
 terraform apply -auto-approve
 
+kubectl -n $kafka_namespace wait --for=condition=Ready pod/kafka-kafka-0
+kubectl -n $kafka_namespace wait --for=condition=Ready pod/kafka-kafka-1
+kubectl -n $kafka_namespace wait --for=condition=Ready pod/kafka-kafka-2
+
 msg="kafka message"
 set +e
 for i in {1..15}; do
