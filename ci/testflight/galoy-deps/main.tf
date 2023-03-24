@@ -47,6 +47,7 @@ resource "kubernetes_secret" "smoketest" {
     kafka_broker_port     = 9092
     smoketest_kubeconfig  = local.smoketest_kubeconfig
     smoketest_topic       = "${local.testflight_namespace}-smoketest"
+    kafka_namespace       = local.testflight_namespace
   }
 }
 

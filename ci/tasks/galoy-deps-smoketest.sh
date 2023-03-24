@@ -14,9 +14,9 @@ export KUBECONFIG=$(pwd)/kubeconfig.json
 cat <<EOF > topic.tf
 provider "kafka" {
   bootstrap_servers = [
-    "${kafka_service_name_prefix}-0:9092",
-    "${kafka_service_name_prefix}-1:9092",
-    "${kafka_service_name_prefix}-2:9092"
+    "${kafka_service_name_prefix}-0.${kafka_namespace}:9092",
+    "${kafka_service_name_prefix}-1.${kafka_namespace}:9092",
+    "${kafka_service_name_prefix}-2.${kafka_namespace}:9092"
   ]
 }
 
