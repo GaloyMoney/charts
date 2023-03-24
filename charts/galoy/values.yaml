@@ -643,33 +643,10 @@ oathkeeper:
           "id": "cookie-anonymous-routes",
           "upstream": { "url": "http://api:4002" },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/clearCookies",
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout)>",
             "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [{ "handler": "anonymous" }],
-          "authorizer": { "handler": "allow" },
-          "mutators": [{ "handler": "noop" }]
-        },
-        {
-          "id": "cookie-auth-routes",
-          "upstream": { "url": "http://api:4002" },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(login|logout)>",
-            "methods": ["GET", "POST", "OPTIONS"]
-          },
-          "authenticators": [
-            {
-              "handler": "cookie_session",
-              "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "identity.traits"
-              }
-            },
-            { "handler": "anonymous" }
-          ],
           "authorizer": { "handler": "allow" },
           "mutators": [{ "handler": "noop" }]
         },
