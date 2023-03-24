@@ -37,6 +37,9 @@ resource "kafka_topic" "smoketest_topic" {
    partitions         = 3
 }
 EOF
+
+kubectl -n $kafka_namespace wait --for=condition=Ready pod -l strimzi.io/component-type=kafka
+
 terraform init
 terraform apply -auto-approve
 
