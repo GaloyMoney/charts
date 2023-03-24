@@ -40,9 +40,7 @@ EOF
 terraform init
 terraform apply -auto-approve
 
-kubectl -n $kafka_namespace wait --for=condition=Ready pod/kafka-kafka-0
-kubectl -n $kafka_namespace wait --for=condition=Ready pod/kafka-kafka-1
-kubectl -n $kafka_namespace wait --for=condition=Ready pod/kafka-kafka-2
+kubectl -n $kafka_namespace wait --for=condition=Ready pod -l strimzi.io/component-type=kafka
 
 msg="kafka message"
 set +e
