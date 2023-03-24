@@ -8,6 +8,7 @@ kafka_broker_host=`setting "kafka_broker_endpoint"`
 kafka_broker_port=`setting "kafka_broker_port"`
 kafka_topic=`setting "smoketest_topic"`
 kafka_service_name_prefix="kafka-kafka-plain"
+kafka_namespace=`setting "kafka_namespace"`
 setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
 export KUBECONFIG=$(pwd)/kubeconfig.json
 
