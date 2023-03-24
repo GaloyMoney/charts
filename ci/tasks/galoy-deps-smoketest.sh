@@ -6,27 +6,37 @@ source smoketest-settings/helpers.sh
 
 kafka_broker_host=`setting "kafka_broker_endpoint"`
 kafka_broker_port=`setting "kafka_broker_port"`
-kafka_topic="smoketest-topic"
-kafka_cluster=`setting "kafka_cluster"`
-kafka_namespace=`setting "kafka_namespace"`
+kafka_topic=`setting "smoketest_topic"`
+kafka_service_name_prefix="kafka-kafka-plain"
 setting "smoketest_kubeconfig" | base64 --decode > kubeconfig.json
 export KUBECONFIG=$(pwd)/kubeconfig.json
 
-cat << EOF > topic.yaml
-apiVersion: kafka.strimzi.io/v1beta2
-kind: KafkaTopic
-metadata:
-  name: $kafka_topic
-  labels:
-    strimzi.io/cluster: $kafka_cluster
-spec:
-  partitions: 3
-  replicas: 3
-EOF
+cat <<EOF > topic.tf
+provider "kafka" {
+  bootstrap_servers = [
+    "${kafka_service_name_prefix}-0:9092",
+    "${kafka_service_name_prefix}-1:9092",
+    "${kafka_service_name_prefix}-2:9092"
+  ]
+}
 
-# Clean kafka topic if already exists, could be leftover from previous failed jobs
-kubectl -n $kafka_namespace delete kafkatopics.kafka.strimzi.io $kafka_topic || true
-kubectl -n $kafka_namespace apply -f topic.yaml
+terraform {
+  required_providers {
+    kafka = {
+      source  = "Mongey/kafka"
+      version = "0.5.2"
+    }
+  }
+}
+
+resource "kafka_topic" "smoketest_topic" {
+   name               = "${kafka_topic}"
+   replication_factor = 3
+   partitions         = 3
+}
+EOF
+terraform init
+terraform apply -auto-approve
 
 msg="kafka message"
 set +e
@@ -38,7 +48,7 @@ for i in {1..15}; do
   sleep 1
 done
 
-kubectl -n $kafka_namespace delete kafkatopics.kafka.strimzi.io $kafka_topic
+terraform destroy -auto-approve
 
 if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi;
 
