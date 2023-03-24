@@ -45,9 +45,8 @@ resource "kubernetes_secret" "smoketest" {
   data = {
     kafka_broker_endpoint = "kafka-kafka-brokers.${local.testflight_namespace}.svc.cluster.local"
     kafka_broker_port     = 9092
-    kafka_namespace       = local.testflight_namespace
-    kafka_cluster         = "kafka"
     smoketest_kubeconfig  = local.smoketest_kubeconfig
+    smoketest_topic       = "${local.testflight_namespace}-smoketest"
   }
 }
 
