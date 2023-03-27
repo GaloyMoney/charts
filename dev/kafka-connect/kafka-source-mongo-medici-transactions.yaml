@@ -10,6 +10,8 @@ spec:
   tasksMax: 1
   config:
     startup.mode: copy_existing
+    output.format.value: schema
+    output.schema.infer.value: true
     connection.uri: {{ MONGODB_CONNECTION_URI }}
     topic.prefix: mongodb
     database: galoy
