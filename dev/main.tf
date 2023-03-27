@@ -22,6 +22,8 @@ module "infra_services" {
 
 module "kafka_connect" {
   source = "./kafka-connect"
+
+  name_prefix = local.name_prefix
 }
 
 module "bitcoin" {
