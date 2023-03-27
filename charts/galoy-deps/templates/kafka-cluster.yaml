@@ -10,24 +10,19 @@ spec:
     listeners:
       - name: plain
         port: 9092
-        type: cluster-ip
+        type: {{ index .Values "strimzi-kafka-operator" "kafka" "listener" "type" }}
         tls: false
-      - name: tls
-        port: 9093
-        type: internal
-        tls: true
     config:
       auto.create.topics.enable: false
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 1
       default.replication.factor: 3
-      min.insync.replicas: 3
-      inter.broker.protocol.version: "3.2"
+      min.insync.replicas: 2
     storage:
       type: ephemeral
   zookeeper:
-    replicas: 1
+    replicas: 3
     storage:
       type: ephemeral
   entityOperator:

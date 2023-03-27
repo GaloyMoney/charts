@@ -11,3 +11,6 @@ strimzi-kafka-operator:
 %{ for namespace in watch_namespaces ~}
   - "${namespace}"
 %{ endfor ~}
+  kafka:
+    listener:
+      type: nodeport
