@@ -15,3 +15,10 @@ spec:
     database: galoy
     topic.separator: "_"
     collection: medici_journals
+    output.format.key: schema
+    output.format.value: schema
+    output.schema.infer.value: true
+    key.converter.schemas.enable: true
+    value.converter.schemas.enable: true
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
