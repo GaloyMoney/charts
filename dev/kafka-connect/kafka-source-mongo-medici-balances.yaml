@@ -10,7 +10,7 @@ spec:
   tasksMax: 1
   config:
     startup.mode: copy_existing
-    connection.uri: mongodb://testGaloy:password@galoy-mongodb-headless.galoy-dev-galoy.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0
+    connection.uri: {{ MONGODB_CONNECTION_URI }}
     topic.prefix: mongodb
     database: galoy
     topic.separator: "_"

@@ -1,27 +1,16 @@
+variable "name_prefix" {}
+
+locals {
+  kafka_namespace        = "${var.name_prefix}-kafka"
+  galoy_namespace        = "${var.name_prefix}-galoy"
+  mongodb_password       = "password" # data.kubernetes_secret.mongodb_creds.data["mongodb-password"]
+  mongodb_connection_uri = "mongodb://testGaloy:${local.mongodb_password}@galoy-mongodb-headless.${local.galoy_namespace}.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0"
+}
+
+
 ## CONNECT
 resource "kubernetes_manifest" "kafka_connect" {
   manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
-}
-
-## SOURCE CONNECTORS
-resource "kubernetes_manifest" "kafka_source_mongo_medici-balances" {
-  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-balances.yaml"))
-}
-
-resource "kubernetes_manifest" "kafka_source_mongo_medici-journals" {
-  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-journals.yaml"))
-}
-
-resource "kubernetes_manifest" "kafka_source_mongo_medici-locks" {
-  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-locks.yaml"))
-}
-
-resource "kubernetes_manifest" "kafka_source_mongo_medici-transaction-metadatas" {
-  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-transaction-metadatas.yaml"))
-}
-
-resource "kubernetes_manifest" "kafka_source_mongo_medici-transactions" {
-  manifest = yamldecode(file("${path.module}/kafka-source-mongo-medici-transactions.yaml"))
 }
 
 ## TOPICS BY THE TERRAFORM PROVIDER
@@ -75,4 +64,25 @@ terraform {
       version = "0.5.2"
     }
   }
+}
+
+## SOURCE CONNECTORS
+resource "kubernetes_manifest" "kafka_source_mongo_medici-balances" {
+  manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-balances.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-journals" {
+  manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-journals.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-locks" {
+  manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-locks.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-transaction-metadatas" {
+  manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-transaction-metadatas.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
+}
+
+resource "kubernetes_manifest" "kafka_source_mongo_medici-transactions" {
+  manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-transactions.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
 }
