@@ -1,0 +1,55 @@
+[
+    {
+      "name": "_id",
+      "type": "RECORD",
+      "fields": [
+        {
+          "name": "_data",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "clusterTime",
+      "type": "TIMESTAMP"
+    },
+    {
+      "name": "documentKey",
+      "type": "RECORD",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "fullDocument",
+      "type": "RECORD",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "ns",
+      "type": "RECORD",
+      "fields": [
+        {
+          "name": "coll",
+          "type": "STRING"
+        },
+        {
+          "name": "db",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "operationType",
+      "type": "STRING"
+    }
+  ]
+  

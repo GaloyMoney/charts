@@ -1,0 +1,55 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: kafka-sink-bigquery
+  namespace: galoy-dev-kafka
+  labels:
+    strimzi.io/cluster: kafka
+  annotations: {}
+spec:
+  class: com.wepay.kafka.connect.bigquery.BigQuerySinkConnector
+  tasksMax: 1
+  config:
+    # https://github.com/wepay/kafka-connect-bigquery/wiki/Connector-Configuration
+    name: kafka-sink-bigquery
+    tasks.max: 1
+    topics: mongodb_galoy_medici_balances
+    #,mongodb_galoy_medici_journals,mongodb_galoy_medici_locks,mongodb_galoy_medici_transaction_metadatas,mongodb_galoy_medici_transactions
+    project: galoy-reporting
+    #defaultDataset: dataform_oms
+    # form of <topic regex>=<dataset>
+    datasets: .*=dataform_oms
+    #,mongodb_galoy_medici_journals=dataform_oms,mongodb_galoy_medici_locks=dataform_oms,mongodb_galoy_medici_transaction_metadatas=dataform_oms,mongodb_galoy_medici_transactions=dataform_oms
+    keyfile: {{ GOOGLE_CREDENTIALS }}
+    keySource: JSON
+    # The tables will be created by simply replacing “.” with “_”. BigQuery might not like some of the characters in there, so this option will ensure the topic names are valid for BigQuery in order to avoid errors while creating tables.
+    sanitizeTopics: true
+    # Similarly to the once above, is makes sure field names play well with BigQuery.
+    sanitizeFieldNames: true
+    # Automatically create BigQuery tables if they don't already exist. Needs schemaRegistryLocation - The base URL of the Schema Registry instance to use
+    autoCreateTables: false
+    # If a column does not exist while inserting a record, the sink will create it. This is also required for schema change support.
+    allowNewBigQueryFields: true
+    # This will allow required fields to become nullable, which is necessary in order to support schema evolution (i.e. dropping columns)
+    allowBigQueryRequiredFieldRelaxation: true
+    #Use the last record in a batch to compute whether updates to the target table are required. To increase success rates, set it to true if you are getting errors.
+    allowSchemaUnionization: false
+    # Update events will cause such records to be updated in the target table, maintaining the sync with the source table. This is only possible for tables with a primary key.
+    upsertEnabled: true
+    # This will cause deleted records in the source table to be deleted in the target table as well. This will only work for tables with a primary key. Setting to false will enable soft deletes and the __deleted field will be set to true instead.
+    deleteEnabled: true
+    bigQueryRetry: 5  
+    bigQueryRetryWait: 15000
+    config.action.reload: restart
+    timestamp: UTC
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: true
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: true
+    # optional below
+    errors.tolerance: all
+    errors.log.enable: true
+    errors.log.include.messages: true
+    errors.deadletterqueue.context.headers.enable: true
+    errors.deadletterqueue.topic.name: dlq_bigquery_sink
+    errors.deadletterqueue.topic.replication.factor: 1
