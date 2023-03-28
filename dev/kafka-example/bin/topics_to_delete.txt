@@ -1,0 +1,7 @@
+mongodb_galoy_accounts
+mongodb_galoy_changelog
+mongodb_galoy_dbmetadatas
+mongodb_galoy_medici_journals
+mongodb_galoy_medici_transactions
+mongodb_galoy_users
+mongodb_galoy_wallets

@@ -50,14 +50,14 @@ https://strimzi.io/quickstarts/
 * add messages
 ```
 kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- \
-bin/kafka-console-producer.sh --bootstrap-server kafka-kafka-bootstrap:9092 \
---topic my-topic
+bin/kafka-console-producer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 \
+--topic mongodb-accounts
 ```
 * read messages
 ```
 kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- \
-bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-bootstrap:9092 \
---topic my-topic --from-beginning
+bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 \
+--topic mongodb-accounts --from-beginning
 ```
 ## plugins
 * pkg:maven/org.apache.kafka/connect-file@3.4.0
@@ -74,6 +74,9 @@ bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-bootstrap:9092 \
 k -n galoy-dev-galoy exec -it galoy-mongodb-0 -- mongosh
 use galoy
 db.auth('testGaloy','password')
+db.accounts.find().pretty()
+db.changelog.find().pretty()
+db.changelog.watch()
 use admin
 db.auth('root','password')
 rs.status()
@@ -85,28 +88,51 @@ db.changelog.insertOne({
   field3: "value3"
 });
 
-# for Mongo Compass
-ssh k3d@dev_server_IP -L 27018:127.0.0.1:27017
-k -n galoy-dev-galoy port-forward svc/galoy-mongodb-headless 27017:27017
-
-# helpers
-k -n galoy-dev-kafka get kt
-k -n galoy-dev-kafka describe KafkaConnector kafka-source-mongo
-kubectl -n galoy-dev-kafka logs -f deployment/kafka-connect 
-kubectl -n galoy-dev-kafka get KafkaConnector
-kubectl -n galoy-dev-kafka get kafkaconnector kafka-source-mongo -o jsonpath='{.status}'
-```
+db.changelog.insertOne({
+  "field1": "value1",
+  "field2": "value2",
+  "updateLookup": {
+    "someField": "someValue"
+  }
+})
 ```
 # create topics
 bash ./../bin/create-topic-manifests.sh
 ```
-Bigquery sink
-https://www.confluent.io/hub/wepay/kafka-connect-bigquery
-https://docs.confluent.io/kafka-connectors/bigquery/current/overview.html#dead-letter-queue
-https://github.com/confluentinc/kafka-connect-bigquery
-https://cloud.google.com/dataflow/docs/kafka-dataflow
-https://docs.aiven.io/docs/products/kafka/kafka-connect/howto/gcp-bigquery-sink
-https://infinitelambda.com/postgresql-bigquery-sync-pipeline-debezium-kafka/
+
+bootstrap type options:
+"internal", "route", "loadbalancer", "nodeport", "ingress", "cluster-ip"
+
+
+galoy-staging-kafka           kafka-kafka-plain-bootstrap             NodePort       192.168.106.211   <none>                 9092:31885/TCP  
+
+
+kubectl -n galoy-staging-kafka get pods
+* add messages
+```
+kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- \
+bin/kafka-console-producer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 \
+--topic mongodb-accounts
+```
+* read messages
+```
+kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- \
+bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 \
+--topic mongodb-accounts --from-beginning
+```
+
+staging:
+192.168.99.132:32569
+
+
+kubectl -n galoy-staging-kafka port-forward  svc/kafka-kafka-plain-bootstrap 32569
+
+https://github.com/strimzi/strimzi-kafka-operator/blob/main/install/topic-operator/04-Crd-kafkatopic.yaml
+
+
+kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_locks --from-beginning
+
+k -n galoy-dev-kafka get  KafkaConnector -w
 
 # TODO
 - [x] create a permanent docker image store - can be personal docker hub for testing
@@ -115,5 +141,36 @@ https://infinitelambda.com/postgresql-bigquery-sync-pipeline-debezium-kafka/
 - [ ] set up the bigquery sink connector
 - [ ] set up the strimzi grafana dashboard
 
-bootstrap type options:
-"internal", "route", "loadbalancer", "nodeport", "ingress", "cluster-ip"
+Bigquery sink
+https://www.confluent.io/hub/wepay/kafka-connect-bigquery
+https://docs.confluent.io/kafka-connectors/bigquery/current/overview.html#dead-letter-queue
+https://github.com/confluentinc/kafka-connect-bigquery
+https://cloud.google.com/dataflow/docs/kafka-dataflow
+https://docs.aiven.io/docs/products/kafka/kafka-connect/howto/gcp-bigquery-sink
+https://infinitelambda.com/postgresql-bigquery-sync-pipeline-debezium-kafka/
+
+# Create google credentials
+gcloud auth application-default login
+cat ~/.config/gcloud/application_default_credentials.json
+kubectl -n galoy-dev-kafka create secret generic google-cred \
+    --from-file=application_default_credentialsjson=$HOME/.config/gcloud/application_default_credentials.json \
+    --type=kubernetes.io/application_default_credentialsjson
+kubectl -n galoy-dev-kafka get secret google-cred --output=yaml
+
+ # Test
+
+# for Mongo Compass
+ssh k3d@dev_server_IP -L 27018:127.0.0.1:27017
+k -n galoy-dev-galoy port-forward svc/galoy-mongodb-headless 27017:27017
+
+# helpers
+```
+kubectl -n galoy-dev-kafka logs -f deployment/kafka-connect -f
+atch kubectl -n galoy-dev-kafka get pods
+k -n galoy-dev-kafka get  KafkaConnector -w
+make redeploy-kafka-connect
+kubectl -n galoy-dev-kafka describe  kafkaconnector kafka-sink-bigquery
+kubectl -n galoy-dev-kafka describe  kafkaconnector kafka-source-mongo-medici-balances
+kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_balances --from-beginning
+watch kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --list
+```

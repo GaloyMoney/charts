@@ -1,0 +1,45 @@
+## Create Docker credentials
+# docker login
+# cat ~/.docker/config.json
+# kubectl -n galoy-dev-kafka create secret generic regcred \
+#    --from-file=.dockerconfigjson=$HOME/.docker/config.json \
+#    --type=kubernetes.io/dockerconfigjson
+# kubectl -n galoy-dev-kafka get secret regcred --output=yaml
+
+# https://github.com/strimzi/strimzi-kafka-operator/blob/0.34.0/examples/connect/kafka-connect-build.yaml
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: kafka
+  namespace: galoy-dev-kafka
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 3.4.0
+  replicas: 1
+  bootstrapServers: kafka-kafka-plain-bootstrap:9092
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
+  build:
+    output:
+      type: docker
+      image: docker.io/openoms/strimzi-connect-mongo-bigquery:latest
+      pushSecret: regcred
+    plugins:
+      - name: mongo-kafka-connector
+        artifacts:
+          - type: maven
+            group: org.mongodb.kafka
+            artifact: mongo-kafka-connect
+            version: 1.9.1
+      - name: bigquery-sink
+        artifacts:
+          - type: zip
+            url: https://repo1.maven.org/maven2/com/wepay/kcbq/kcbq-confluent/1.6.5/kcbq-confluent-1.6.5.zip
