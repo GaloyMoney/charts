@@ -6,6 +6,9 @@ strimzi-kafka-operator:
   enabled: true
   nameOverride: kafka
   watchNamespaces: []
+  kafka:
+    listener:
+      type: cluster-ip
 
 kubemonkey:
   enabled: true
