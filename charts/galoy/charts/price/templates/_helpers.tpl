@@ -10,7 +10,7 @@ Create a default fully qualified price realtime pod name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "price.realtime.fullname" -}}
-{{- $name := default "realtime" .Values.realtime.nameOverride -}}
+{{- $name := default "price-realtime" .Values.realtime.nameOverride -}}
 {{- if .Values.fullnameOverride -}}
 {{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -23,7 +23,7 @@ Create a default fully qualified price history pod name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "price.history.fullname" -}}
-{{- $name := default "history" .Values.history.nameOverride -}}
+{{- $name := default "price-history" .Values.history.nameOverride -}}
 {{- if .Values.fullnameOverride -}}
 {{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
