@@ -9,7 +9,11 @@ resource "google_bigquery_table" "mongodb_galoy_medici_balances" {
   time_partitioning {
     type = "DAY"
   }
-  schema = file("${path.module}/schema-mongo-medici.json")
+  schema = file("${path.module}/bigquery-schema-mongo-medici-balances.json")
+
+  lifecycle {
+    create_before_destroy = false
+  }
 }
 
 resource "google_bigquery_table" "mongodb_galoy_medici_journals" {
@@ -18,16 +22,11 @@ resource "google_bigquery_table" "mongodb_galoy_medici_journals" {
   time_partitioning {
     type = "DAY"
   }
-  schema = file("${path.module}/schema-mongo-medici.json")
-}
+  schema = file("${path.module}/bigquery-schema-mongo-medici-journals.json")
 
-resource "google_bigquery_table" "mongodb_galoy_medici_locks" {
-  dataset_id = "dataform_oms"
-  table_id   = "mongodb_galoy_medici_locks"
-  time_partitioning {
-    type = "DAY"
+  lifecycle {
+    create_before_destroy = false
   }
-  schema = file("${path.module}/schema-mongo-medici.json")
 }
 
 resource "google_bigquery_table" "mongodb_galoy_medici_transaction_metadatas" {
@@ -36,7 +35,11 @@ resource "google_bigquery_table" "mongodb_galoy_medici_transaction_metadatas" {
   time_partitioning {
     type = "DAY"
   }
-  schema = file("${path.module}/schema-mongo-medici.json")
+  schema = file("${path.module}/bigquery-schema-mongo-medici-transaction-metadatas.json")
+
+  lifecycle {
+    create_before_destroy = false
+  }
 }
 
 resource "google_bigquery_table" "mongodb_galoy_medici_transactions" {
@@ -45,5 +48,9 @@ resource "google_bigquery_table" "mongodb_galoy_medici_transactions" {
   time_partitioning {
     type = "DAY"
   }
-  schema = file("${path.module}/schema-mongo-medici.json")
+  schema = file("${path.module}/bigquery-schema-mongo-medici-transactions.json")
+
+  lifecycle {
+    create_before_destroy = false
+  }
 }
