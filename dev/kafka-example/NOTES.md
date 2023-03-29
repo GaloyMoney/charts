@@ -174,3 +174,28 @@ kubectl -n galoy-dev-kafka describe  kafkaconnector kafka-source-mongo-medici-ba
 kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_balances --from-beginning
 watch kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --list
 ```
+
+
+## Mongodb
+mongoexport --host=127.0.0.1 --port=27019 --username=testGaloy --password=${galo_mongodb_password} --authenticationDatabase=galoy --db=galoy --collection=medici_journals --out=medici_journals.json
+
+mongodb://testGaloy:${galo_mongodb_password}@127.0.0.1:27018/?authSource=galoy&readPreference=primary&ssl=false&directConnection=true
+
+kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --list
+
+## extract mongodb collection schemas for bigquery
+Collectons:
+medici_balances
+medici_journals
+medici_transactions
+medici_transaction_metadatas
+
+kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_journals --from-beginning | grep schema | tail -n1
+
+GPT-4:
+create a bigquery schema from this data:
+Use: "type": "TIMESTAMP" instead of: "type": "INT64"
+and: "type": "STRING" instead of: "type": "ARRAY"
+and: "type": "INTEGER" instead of: "type": "INT32"
+
+for the medici_transactions: fullDocument.account_path is an array of strings, you should use "type": "STRING" and "mode": "REPEATED".
