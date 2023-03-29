@@ -4,7 +4,7 @@ nameOverride: ""
 bria:
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: edge
+    digest: "sha256:ffea0a3380589be53ea9029174f25c3b89e90b88cdc4941da20313572e1d6a81"
 
   replicas: 2
   config: ""
@@ -23,5 +23,22 @@ bria:
 
   secrets:
     create: true
+    pgCon: ""
     annotations:
-    pgCon: postgres://user:password@127.0.0.1:5432/pg
+
+  bitcoind:
+    host: bitcoind.default.svc.cluster.local
+  
+  lnd:
+    host: lnd1.default.svc.cluster.local
+  
+  electrum:
+    host: fulcrum.default.svc.cluster.local
+
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: bria
+    password: bria
+    database: bria
