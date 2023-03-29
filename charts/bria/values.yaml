@@ -1,0 +1,27 @@
+fullnameOverride: ""
+nameOverride: ""
+
+bria:
+  image:
+    repository: us.gcr.io/galoy-org/bria
+    digest: edge
+
+  replicas: 2
+  config: ""
+
+  annotations:
+
+  admin:
+    service:
+      type: ClusterIP
+      port: 2743
+
+  api:
+    service:
+      type: ClusterIP
+      port: 2742
+
+  secrets:
+    create: true
+    annotations:
+    pgCon: postgres://user:password@127.0.0.1:5432/pg

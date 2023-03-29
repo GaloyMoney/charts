@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "bria.fullname" . }}-admin
+  labels:
+    app: {{ template "bria.fullname" . }}-admin
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  type: {{ .Values.bria.admin.service.type }}
+  ports:
+  - port: {{ .Values.bria.admin.service.port }}
+    targetPort: {{ .Values.bria.admin.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ template "bria.fullname" . }}

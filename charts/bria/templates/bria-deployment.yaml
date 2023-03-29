@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "bria.fullname" . }}
+  labels:
+    app: {{ template "bria.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "bria.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.bria.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "bria.fullname" . }}
+        release: "{{ .Release.Name }}"
+      {{- with .Values.bria.annotations }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.bria.image.repository }}@{{ .Values.bria.image.digest }}"
+        ports:
+        - name: api
+          containerPort: {{ .Values.bria.api.service.port }}
+          protocol: TCP
+        - name: admin
+          containerPort: {{ .Values.bria.admin.service.port }}
+          protocol: TCP
+        args:
+        - bria
+        - daemon
+        volumeMounts:
+        - name: "config"
+          mountPath: "/bria.yml"
+          subPath: "bria.yml"
+        env:
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "bria.fullname" . }}
+              key: "pg-con"
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "bria.fullname" . }}-price
