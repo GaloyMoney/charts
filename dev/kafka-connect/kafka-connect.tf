@@ -75,10 +75,6 @@ resource "kubernetes_manifest" "kafka_source_mongo_medici-journals" {
   manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-journals.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
 }
 
-resource "kubernetes_manifest" "kafka_source_mongo_medici-locks" {
-  manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-locks.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
-}
-
 resource "kubernetes_manifest" "kafka_source_mongo_medici-transaction-metadatas" {
   manifest = yamldecode(replace(file("${path.module}/kafka-source-mongo-medici-transaction-metadatas.yaml"), "{{ MONGODB_CONNECTION_URI }}", local.mongodb_connection_uri))
 }
