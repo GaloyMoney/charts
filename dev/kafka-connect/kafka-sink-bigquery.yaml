@@ -13,8 +13,7 @@ spec:
     # https://github.com/wepay/kafka-connect-bigquery/wiki/Connector-Configuration
     name: kafka-sink-bigquery
     tasks.max: 1
-    topics: mongodb_galoy_medici_balances
-    #,mongodb_galoy_medici_journals,mongodb_galoy_medici_locks,mongodb_galoy_medici_transaction_metadatas,mongodb_galoy_medici_transactions
+    topics: mongodb_galoy_medici_balances,mongodb_galoy_medici_journals,mongodb_galoy_medici_transaction_metadatas,mongodb_galoy_medici_transactions
     project: galoy-reporting
     #defaultDataset: dataform_oms
     # form of <topic regex>=<dataset>
