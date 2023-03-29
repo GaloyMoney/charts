@@ -38,9 +38,6 @@ resource "kafka_topic" "smoketest_topic" {
 }
 EOF
 
-# Kafka cluster needs time to spin up
-sleep 10
-
 kubectl -n $kafka_namespace wait --for=condition=Ready pod -l strimzi.io/component-type=kafka
 
 terraform init

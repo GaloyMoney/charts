@@ -60,7 +60,7 @@ resource "kubernetes_role" "smoketest" {
   rule {
     api_groups = [""]
     resources  = ["pods"]
-    verbs      = ["get", "list"]
+    verbs      = ["get", "list", "watch"]
   }
 }
 
