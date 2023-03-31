@@ -41,12 +41,6 @@ spec:
         env:
         - name: BRIA_CONFIG
           value: "/bria.yml"
-        - name: BITCOIND_HOST
-          value: {{ .Values.bria.bitcoind.host }}
-        - name: LND_HOST
-          value: {{ .Values.bria.lnd.host }}
-        - name: ELECTRUM_HOST
-          value: {{ .Values.bria.electrum.host }}
         - name: PG_CON
           valueFrom:
             secretKeyRef:

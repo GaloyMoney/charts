@@ -9,6 +9,7 @@ bria:
 
   blockchain:
     network: regtest
+    electrumUrl: fulcrum.default.svc.cluster.local
 
   wallets:
     syncAllWalletsDelay: 10 #seconds
@@ -36,15 +37,6 @@ bria:
     create: true
     pgCon: ""
     annotations:
-
-  bitcoind:
-    host: bitcoind.default.svc.cluster.local
-  
-  lnd:
-    host: lnd1.default.svc.cluster.local
-  
-  electrum:
-    host: fulcrum.default.svc.cluster.local
 
 postgresql:
   enabled: true
