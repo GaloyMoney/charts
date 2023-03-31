@@ -5,7 +5,7 @@ resource "kubernetes_secret" "bria_secrets" {
   }
 
   data = {
-    "pg-con" = "postgres://bria:bria@bria-postgresql.${kubernetes_namespace.bitcoin.metadata[0].name}.cluster.svc.local:5432/bria"
+    "pg-con" = "postgres://bria:bria@bria-postgresql:5432/bria"
   }
 }
 

@@ -4,7 +4,7 @@ nameOverride: ""
 bria:
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:ffea0a3380589be53ea9029174f25c3b89e90b88cdc4941da20313572e1d6a81"
+    digest: "sha256:b348d4a379b869a90498ecce26b0c9a17fbf5f43db3c07ec1c00b2064d3d2e17"
 
   replicas: 2
   config: ""
