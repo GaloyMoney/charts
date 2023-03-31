@@ -2,14 +2,17 @@ fullnameOverride: ""
 nameOverride: ""
 
 bria:
-  image:
-    repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:b348d4a379b869a90498ecce26b0c9a17fbf5f43db3c07ec1c00b2064d3d2e17"
+  tracing:
+    jaegarHost: localhost
+    port: 6831
+    serviceName: bria-dev
 
-  replicas: 2
-  config: ""
+  blockchain:
+    network: regtest
 
-  annotations:
+  wallets:
+    syncAllWalletsDelay: 10 #seconds
+    processAllBatchGroupsDelay: 2 #seconds
 
   admin:
     service:
@@ -20,6 +23,14 @@ bria:
     service:
       type: ClusterIP
       port: 2742
+
+  image:
+    repository: us.gcr.io/galoy-org/bria
+    digest: "sha256:b348d4a379b869a90498ecce26b0c9a17fbf5f43db3c07ec1c00b2064d3d2e17"
+
+  replicas: 2
+
+  annotations:
 
   secrets:
     create: true

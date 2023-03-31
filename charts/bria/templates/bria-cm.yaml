@@ -4,4 +4,17 @@ metadata:
   name: {{ include "bria.fullname" . }}-config
 data:
   bria.yml: |-
-    {{ .Values.bria.config | nindent 4 }}
+    migrate_on_start: true
+    blockchain:
+      network: {{ .Values.bria.blockchain.network }}
+    wallets:
+      sync_all_wallets_delay: {{ .Values.bria.wallets.syncAllWalletsDelay }}
+      process_all_batch_groups_delay: {{ .Values.bria.wallets.processAllBatchGroupsDelay }}
+    tracing:
+      host: {{ .Values.bria.tracing.jaegarHost }}
+      port: {{ .Values.bria.tracing.port }}
+      service_name: {{ .Values.bria.tracing.serviceName }}
+    admin:
+      listen_port: {{ .Values.bria.admin.service.port }}
+    api:
+      listen_port: {{ .Values.bria.api.service.port }}
