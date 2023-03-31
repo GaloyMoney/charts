@@ -4,8 +4,8 @@
 replicaCount: 1
 image:
   repository: us.gcr.io/galoy-org/price
-  digest: "sha256:168fc3fcc68ed64594855c055a5278cac931ce1a7fa79026cc6bdf0245811cf3"
-  git_ref: "edcb474"
+  digest: "sha256:d6e84f29bc17bd1485c0a08d44ca329e57d3810be3e5d98ae58b4e38819a9b4c"
+  git_ref: "2dbc14c"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -77,12 +77,12 @@ history:
   valuesOverride: {}
   image:
     repository: us.gcr.io/galoy-org/price-history
-    digest: "sha256:c752533827cc497d84b2b8762e94b048ad77c150e7c5b038eb5663a4b0050188"
+    digest: "sha256:34c46bb135f888a69acaf7762460bf37bc95d6b6e0168685807e7a1db24a26c1"
   service:
     type: ClusterIP
     prometheus: 9464
     grpc: 50052
   migrateImage:
     repository: us.gcr.io/galoy-org/price-history-migrate
-    digest: sha256:1adb838385b0c20495b723a4737ead89e18d6d534fa9617fc686d880ad8cefa2
+    digest: sha256:48a156c0f69b3f9cfe8ecbe3d40a0d42e047f34a1f0f3326136d469a2905d757
   postgresqlHost: postgresql
