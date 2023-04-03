@@ -8,9 +8,6 @@ data:
     blockchain:
       network: {{ .Values.bria.blockchain.network }}
       electrum_url: {{ .Values.bria.blockchain.electrumUrl }}
-    wallets:
-      sync_all_wallets_delay: {{ .Values.bria.wallets.syncAllWalletsDelay }}
-      process_all_batch_groups_delay: {{ .Values.bria.wallets.processAllBatchGroupsDelay }}
     tracing:
       host: {{ .Values.bria.tracing.jaegarHost }}
       port: {{ .Values.bria.tracing.port }}

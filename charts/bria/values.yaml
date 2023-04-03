@@ -11,10 +11,6 @@ bria:
     network: regtest
     electrumUrl: fulcrum.default.svc.cluster.local
 
-  wallets:
-    syncAllWalletsDelay: 10 #seconds
-    processAllBatchGroupsDelay: 2 #seconds
-
   admin:
     service:
       type: ClusterIP
