@@ -568,8 +568,6 @@ tracing:
   ##
   prefix: galoy-dev
 price:
-  host: galoy-price-history
-  port: 50052
   history:
     postgresqlHost: galoy-postgresql
     host: galoy-price-history

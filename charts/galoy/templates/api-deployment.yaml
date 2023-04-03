@@ -111,9 +111,9 @@ spec:
               key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
 
         - name: PRICE_HISTORY_HOST
-          value: {{ .Values.price.host | quote }}
+          value: {{ .Values.price.history.host | quote }}
         - name: PRICE_HISTORY_PORT
-          value: {{ .Values.price.port | quote }}
+          value: {{ .Values.price.history.port | quote }}
 
         - name: PRICE_SERVER_HOST
           value: {{ .Values.galoy.dealer.host | quote }}
