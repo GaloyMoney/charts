@@ -39,7 +39,7 @@ resource "helm_release" "bria" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    file("${path.module}/tesflight-values.yml")
+    file("${path.module}/testflight-values.yml")
   ]
 
   depends_on = [kubernetes_secret.bria]
