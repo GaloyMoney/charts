@@ -11,7 +11,7 @@ data:
     ws = 0.0.0.0:{{ .Values.service.ports.ws }}
     wss = 0.0.0.0:{{ .Values.service.ports.wss }}
     stats = 0.0.0.0:{{ .Values.service.ports.stats }}
-    bitcoind = bitcoind:{{ .Values.bitcoindRpcPort }}
+    bitcoind = {{ .Values.bitcoindRpcHost }}:{{ .Values.bitcoindRpcPort }}
     key = /.fulcrum/tls.key
     cert = /.fulcrum/tls.cert
   {{- if .Values.fulcrumGenericConfig }}

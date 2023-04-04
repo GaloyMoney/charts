@@ -63,6 +63,7 @@ persistence:
 
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
 bitcoindRpcPort: 8332
+bitcoindRpcHost: bitcoind
 
 fulcrumGenericConfig:
   # https://github.com/cculianu/Fulcrum/blob/master/doc/fulcrum-example-config.conf
