@@ -39,7 +39,9 @@ resource "helm_release" "bria" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    file("${path.module}/testflight-values.yml")
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
+      bitcoin_namespace : local.bitcoin_namespace
+    })
   ]
 
   depends_on = [kubernetes_secret.bria]
