@@ -38,6 +38,7 @@ resource "kubernetes_secret" "smoketest" {
   }
   data = {
     fulcrum_api_endpoint = "fulcrum.${local.testflight_namespace}.svc.cluster.local"
+    fulcrum_stats_port   = 8080
   }
 }
 
