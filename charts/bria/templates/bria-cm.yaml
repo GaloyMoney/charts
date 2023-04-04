@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bria.fullname" . }}-config
+data:
+  bria.yml: |-
+    migrate_on_start: true
+    blockchain:
+      network: {{ .Values.bria.blockchain.network }}
+      electrum_url: {{ .Values.bria.blockchain.electrumUrl }}
+    tracing:
+      host: {{ .Values.bria.tracing.jaegerHost }}
+      port: {{ .Values.bria.tracing.port }}
+      service_name: {{ .Values.bria.tracing.serviceName }}
+    admin:
+      listen_port: {{ .Values.bria.admin.service.port }}
+    api:
+      listen_port: {{ .Values.bria.api.service.port }}

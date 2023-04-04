@@ -1,0 +1,8 @@
+bria:
+  provisionAdmin: true
+
+  blockchain:
+    electrumUrl: fulcrum.galoy-dev-bitcoin.svc.cluster.local
+  
+  secrets:
+    create: false

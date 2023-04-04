@@ -111,6 +111,13 @@ jobs:
             CHART=dealer ./dev-smoketest-settings.sh && \
             ./dealer-smoketest.sh && \
             rm -rf smoketest-settings"
+      - name: Bria Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=bria ./dev-smoketest-settings.sh && \
+            ./bria-smoketest.sh && \
+            rm -rf smoketest-settings"
       - name: Clean Up
         if: always()
         run: |

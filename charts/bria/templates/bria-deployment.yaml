@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "bria.fullname" . }}
+  labels:
+    app: {{ template "bria.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "bria.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.bria.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "bria.fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: "{{ .Release.Name }}"
+    spec:
+      {{ if .Values.bria.provisionAdmin }}
+      serviceAccountName: {{ template "bria.fullname" . }}
+      {{ end }}
+      initContainers:
+      - name: wait-for-postgresql
+        image: postgres
+        command:
+          - "bash"
+          - "-c"
+          - |
+            while ! pg_isready -d $PG_CON > /dev/null 2>&1
+            do
+              echo "waiting for postgres to come up"
+              sleep 5
+            done
+        env:
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "bria.fullname" . }}
+              key: "pg-con"
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.bria.image.repository }}@{{ .Values.bria.image.digest }}"
+        ports:
+        - name: api
+          containerPort: {{ .Values.bria.api.service.port }}
+          protocol: TCP
+        - name: admin
+          containerPort: {{ .Values.bria.admin.service.port }}
+          protocol: TCP
+        args:
+        - bria
+        - daemon
+        volumeMounts:
+        - name: "config"
+          mountPath: "/bria.yml"
+          subPath: "bria.yml"
+        env:
+        - name: BRIA_CONFIG
+          value: "/bria.yml"
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "bria.fullname" . }}
+              key: "pg-con"
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+
+      {{ if .Values.bria.provisionAdmin }}
+      - name: provision-admin-api-key
+        image: "{{ .Values.bria.provisionAdminSidecarImage.repository }}@{{ .Values.bria.provisionAdminSidecarImage.digest }}"
+        command:
+        - "bash"
+        - "-c"
+        - |
+          sleep 5 # for bria daemon to be up
+          bria admin bootstrap
+
+          if [ -f ".bria/admin-api-key" ]; then
+            echo "Admin API Key exists, saving to kubernetes secret."
+
+            export BRIA_ADMIN_KEY=$(cat .bria/admin-api-key)
+            kubectl create secret generic {{ template "bria.fullname" . }}-admin-api-key --from-literal=admin-api-key=$BRIA_ADMIN_KEY
+          fi
+
+          while true; do sleep 2s; done
+        env:
+        - name: BRIA_ADMIN_API_URL
+          value: http://{{ template "bria.fullname" . }}-admin:{{ .Values.bria.admin.service.port }}
+      {{ end }}
+
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "bria.fullname" . }}-config
