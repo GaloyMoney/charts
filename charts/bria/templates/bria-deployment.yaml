@@ -78,6 +78,7 @@ spec:
         - "bash"
         - "-c"
         - |
+          sleep 5 # for bria daemon to be up
           bria admin bootstrap
 
           if [ -f ".bria/admin-api-key" ]; then

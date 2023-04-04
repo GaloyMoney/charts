@@ -1,10 +1,8 @@
 bria:
-  bitcoind:
-    host: bitcoind.galoy-dev-bitcoin.svc.cluster.local
-  lnd:
-    host: lnd1.galoy-dev-bitcoin.svc.cluster.local
-  electrum:
-    host: fulcrum.galoy-dev-bitcoin.svc.cluster.local
+  provisionAdmin: true
+
+  blockchain:
+    electrumUrl: fulcrum.galoy-dev-bitcoin.svc.cluster.local
   
   secrets:
     create: false
