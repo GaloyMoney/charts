@@ -10,6 +10,12 @@ locals {
   testflight_namespace = var.testflight_namespace
 }
 
+resource "kubernetes_namespace" "testflight" {
+  metadata {
+    name = local.testflight_namespace
+  }
+}
+
 resource "random_password" "postgresql" {
   length  = 20
   special = false

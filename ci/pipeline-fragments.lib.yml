@@ -180,6 +180,7 @@ source:
   - #@ "charts/" + chart_name + "/*"
   - #@ "charts/" + chart_name + "/**/*"
   - #@ "ci/tasks/" + chart_name + "-smoketest.sh"
+  - #@ "ci/testflight/" + chart_name + "/*"
   - #@ "ci/tasks/get-smoketest-settings.sh"
   uri: #@ data.values.git_uri
   branch: #@ data.values.git_branch
