@@ -54,7 +54,7 @@ resource "helm_release" "fulcrum" {
   ]
 
   depends_on = [
-    kubernetes_secret.bitcoinrpc_password
+    kubernetes_secret.bitcoindrpc_password
   ]
 }
 
