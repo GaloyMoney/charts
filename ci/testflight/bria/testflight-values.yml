@@ -1,0 +1,5 @@
+postgresql:
+  auth:
+    existingSecret: bria
+    secretKeys:
+      userPasswordKey: "pg-user-pw"
