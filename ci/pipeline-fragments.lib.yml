@@ -36,7 +36,7 @@ source:
 #@   return chart + "-chart"
 #@ end
 
-#@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter", "bria"]
+#@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter", "bria", "fulcrum"]
 
 #@ addons_charts = ["admin-panel", "dealer", "galoy-pay", "web-wallet"]
 
