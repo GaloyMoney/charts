@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
-data "kubernetes_secret" "bitcoin_rpcpassword" {
+data "kubernetes_secret" "bitcoind_rpcpassword" {
   metadata {
     name      = "bitcoind-rpcpassword"
     namespace = "galoy-staging-bitcoin"
@@ -54,7 +54,7 @@ resource "helm_release" "fulcrum" {
   ]
 
   depends_on = [
-    kubernetes_secret.bitcoindrpc_password
+    kubernetes_secret.bitcoind_rpcpassword
   ]
 }
 
