@@ -49,30 +49,12 @@ resource "helm_release" "bria" {
   dependency_update = true
 }
 
-resource "time_sleep" "wait_10_seconds" {
-  depends_on      = [helm_release.bria]
-  create_duration = "10s"
-}
-
-data "kubernetes_secret" "bria_admin_api_key" {
-  metadata {
-    name      = "bria-admin-api-key"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  depends_on = [time_sleep.wait_10_seconds]
-}
-
 resource "kubernetes_secret" "smoketest" {
   metadata {
     name      = local.testflight_namespace
     namespace = local.smoketest_namespace
   }
-  data = {
-    "bria_admin_api_key" : data.kubernetes_secret.bria_admin_api_key.data["admin-api-key"]
-    "bria_admin_api_endpoint" : "bria-admin.${local.testflight_namespace}.svc.cluster.local:2743"
-    "bria_api_endpoint" : "bria-api.${local.testflight_namespace}.svc.cluster.local:2742"
-  }
+  data = {}
 }
 
 data "google_container_cluster" "primary" {
