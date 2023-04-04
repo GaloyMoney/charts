@@ -3,3 +3,4 @@ persistence:
   size: 1Gi
 
 bitcoindRpcPort: 38332
+bitcoindRpcHost: bitcoind.galoy-staging-bitcoin
