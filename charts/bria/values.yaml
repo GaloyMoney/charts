@@ -2,8 +2,10 @@ fullnameOverride: ""
 nameOverride: ""
 
 bria:
+  provisionAdmin: true
+
   tracing:
-    jaegarHost: localhost
+    jaegerHost: localhost
     port: 6831
     serviceName: bria-dev
 
@@ -23,7 +25,11 @@ bria:
 
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:b348d4a379b869a90498ecce26b0c9a17fbf5f43db3c07ec1c00b2064d3d2e17"
+    digest: "sha256:9ee4362e4435f97e83761d1bcbce5a67ada409aaeebbe43d7116bc0807368fd6"
+
+  provisionAdminSidecarImage:
+    repository: us.gcr.io/galoy-org/bria-provision-admin-sidecar
+    digest: "sha256:f9c2f215af70715f941fcd6ac6c6218123057b521a81f4ec91ee26117c0c2767"
 
   replicas: 2
 

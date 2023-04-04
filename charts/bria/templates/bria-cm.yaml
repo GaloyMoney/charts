@@ -9,7 +9,7 @@ data:
       network: {{ .Values.bria.blockchain.network }}
       electrum_url: {{ .Values.bria.blockchain.electrumUrl }}
     tracing:
-      host: {{ .Values.bria.tracing.jaegarHost }}
+      host: {{ .Values.bria.tracing.jaegerHost }}
       port: {{ .Values.bria.tracing.port }}
       service_name: {{ .Values.bria.tracing.serviceName }}
     admin:

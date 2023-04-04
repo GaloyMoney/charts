@@ -16,11 +16,30 @@ spec:
     metadata:
       labels:
         app: {{ template "bria.fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         release: "{{ .Release.Name }}"
-      {{- with .Values.bria.annotations }}
-        {{ toYaml . | nindent 8 }}
-      {{- end }}
     spec:
+      {{ if .Values.bria.provisionAdmin }}
+      serviceAccountName: {{ template "bria.fullname" . }}
+      {{ end }}
+      initContainers:
+      - name: wait-for-postgresql
+        image: postgres
+        command:
+          - "bash"
+          - "-c"
+          - |
+            while ! pg_isready -d $PG_CON > /dev/null 2>&1
+            do
+              echo "waiting for postgres to come up"
+              sleep 5
+            done
+        env:
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "bria.fullname" . }}
+              key: "pg-con"
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.bria.image.repository }}@{{ .Values.bria.image.digest }}"
@@ -51,6 +70,29 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+
+      {{ if .Values.bria.provisionAdmin }}
+      - name: provision-admin-api-key
+        image: "{{ .Values.bria.provisionAdminSidecarImage.repository }}@{{ .Values.bria.provisionAdminSidecarImage.digest }}"
+        command:
+        - "bash"
+        - "-c"
+        - |
+          bria admin bootstrap
+
+          if [ -f ".bria/admin-api-key" ]; then
+            echo "Admin API Key exists, saving to kubernetes secret."
+
+            export BRIA_ADMIN_KEY=$(cat .bria/admin-api-key)
+            kubectl create secret generic {{ template "bria.fullname" . }}-admin-api-key --from-literal=admin-api-key=$BRIA_ADMIN_KEY
+          fi
+
+          while true; do sleep 2s; done
+        env:
+        - name: BRIA_ADMIN_API_URL
+          value: http://{{ template "bria.fullname" . }}-admin:{{ .Values.bria.admin.service.port }}
+      {{ end }}
+
       volumes:
       - name: config
         configMap:
