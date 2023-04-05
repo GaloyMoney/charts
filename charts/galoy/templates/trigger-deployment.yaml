@@ -102,6 +102,9 @@ spec:
         - name: PRICE_SERVER_PORT
           value: {{ .Values.galoy.dealer.port | quote }}
 
+        - name: PRICE_HOST
+          value: {{ .Values.price.realtime.host | quote }}
+
         {{ if .Values.galoy.trigger.backups.gcs.enabled }}
         - name: GCS_APPLICATION_CREDENTIALS
           value: "/var/secret/cloud.google.com/gcs-sa-key.json"
