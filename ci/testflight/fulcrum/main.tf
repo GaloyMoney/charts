@@ -33,6 +33,7 @@ resource "kubernetes_secret" "bitcoind_rpcpassword" {
 
 resource "helm_release" "bitcoind" {
   name       = "bitcoind"
+  chart      = "bitcoind"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
