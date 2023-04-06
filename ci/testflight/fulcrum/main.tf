@@ -46,16 +46,6 @@ resource "helm_release" "bitcoind" {
   ]
 }
 
-resource "null_resource" "bitcoind_block_generator" {
-
-  provisioner "local-exec" {
-    command     = "${path.module}/generateBlock.sh ${local.testflight_namespace}"
-    interpreter = ["sh", "-c"]
-  }
-
-  depends_on = [helm_release.bitcoind]
-}
-
 resource "helm_release" "fulcrum" {
   name       = "fulcrum"
   chart      = "${path.module}/chart"
@@ -69,7 +59,7 @@ resource "helm_release" "fulcrum" {
   ]
 
   depends_on = [
-    null_resource.bitcoind_block_generator
+    helm_release.bitcoind
   ]
 }
 
