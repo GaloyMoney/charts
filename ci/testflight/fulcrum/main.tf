@@ -69,8 +69,7 @@ resource "helm_release" "fulcrum" {
   ]
 
   depends_on = [
-    kubernetes_secret.bitcoind_rpcpassword,
-    helm_release.bitcoind
+    null_resource.bitcoind_block_generator
   ]
 }
 
