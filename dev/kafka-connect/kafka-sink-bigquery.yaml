@@ -33,10 +33,8 @@ spec:
     allowBigQueryRequiredFieldRelaxation: true
     #Use the last record in a batch to compute whether updates to the target table are required. To increase success rates, set it to true if you are getting errors.
     allowSchemaUnionization: false
-    # Update events will cause such records to be updated in the target table, maintaining the sync with the source table. This is only possible for tables with a primary key.
-    upsertEnabled: true
-    # This will cause deleted records in the source table to be deleted in the target table as well. This will only work for tables with a primary key. Setting to false will enable soft deletes and the __deleted field will be set to true instead.
-    deleteEnabled: true
+    # Caused by: org.apache.kafka.common.config.ConfigException: Cannot specify automatic table creation without a schema retriever 
+    autoUpdateSchemas: false
     bigQueryRetry: 5  
     bigQueryRetryWait: 15000
     config.action.reload: restart
