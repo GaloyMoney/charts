@@ -49,15 +49,3 @@ Selector labels
 app.kubernetes.io/name: {{ .Chart.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "fulcrum.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "fulcrum.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
