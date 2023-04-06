@@ -1,0 +1,23 @@
+global:
+  network: regtest
+  service:
+    ports:
+      rpc: 18443
+
+secrets:
+  create: false
+
+persistence:
+  enabled: false
+
+service:
+  type: ClusterIP
+  ports:
+    zmqpubrawtx: 28333
+    zmqpubrawblock: 28332
+    p2p: 18444
+
+bitcoindCustomConfig:
+  bind: 0.0.0.0
+  rpcbind: 0.0.0.0
+  rpcallowip: 0.0.0.0/0

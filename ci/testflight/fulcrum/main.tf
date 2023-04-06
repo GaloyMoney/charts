@@ -15,11 +15,9 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
-data "kubernetes_secret" "bitcoind_rpcpassword" {
-  metadata {
-    name      = "bitcoind-rpcpassword"
-    namespace = "galoy-staging-bitcoin"
-  }
+resource "random_password" "bitcoind_rpcpassword" {
+  length  = 20
+  special = false
 }
 
 resource "kubernetes_secret" "bitcoind_rpcpassword" {
@@ -28,18 +26,34 @@ resource "kubernetes_secret" "bitcoind_rpcpassword" {
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = data.kubernetes_secret.bitcoind_rpcpassword.data
+  data = {
+    password = random_password.bitcoind_rpcpassword.result
+  }
 }
 
-resource "kubernetes_secret" "smoketest" {
-  metadata {
-    name      = local.testflight_namespace
-    namespace = local.smoketest_namespace
+resource "helm_release" "bitcoind" {
+  name       = "bitcoind"
+  chart      = "${path.module}/chart"
+  repository = "https://galoymoney.github.io/charts/"
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    file("${path.module}/bitcoind-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.bitcoind_rpcpassword
+  ]
+}
+
+resource "null_resource" "bitcoind_block_generator" {
+
+  provisioner "local-exec" {
+    command     = "${path.module}/generateBlock.sh ${local.testflight_namespace}"
+    interpreter = ["sh", "-c"]
   }
-  data = {
-    fulcrum_endpoint   = "fulcrum.${local.testflight_namespace}.svc.cluster.local"
-    fulcrum_stats_port = 8080
-  }
+
+  depends_on = [helm_release.bitcoind]
 }
 
 resource "helm_release" "fulcrum" {
@@ -55,8 +69,20 @@ resource "helm_release" "fulcrum" {
   ]
 
   depends_on = [
-    kubernetes_secret.bitcoind_rpcpassword
+    kubernetes_secret.bitcoind_rpcpassword,
+    helm_release.bitcoind
   ]
+}
+
+resource "kubernetes_secret" "smoketest" {
+  metadata {
+    name      = local.testflight_namespace
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    fulcrum_endpoint   = "fulcrum.${local.testflight_namespace}.svc.cluster.local"
+    fulcrum_stats_port = 8080
+  }
 }
 
 data "google_container_cluster" "primary" {
