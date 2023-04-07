@@ -26,6 +26,15 @@ spec:
     spec:
       serviceAccountName: {{ template "fulcrum.fullname" . }}
       initContainers:
+        {{- if .Values.autoGenerateBlocks }}
+        - name: generate-blocks
+          image: "{{ .Values.generateBlocksImage.repository }}:{{ .Values.generateBlocksImage.tag }}"
+          imagePullPolicy: {{ .Values.generateBlocksImage.pullPolicy }}
+          command:
+          - 'sh'
+          - '-c'
+          - kubectl -n {{ .Release.Namespace }} exec -it bitcoind-0 -- bitcoin-cli generatetoaddress 1 bcrt1qxcpz7ytf3nwlhjay4n04nuz8jyg3hl4ud02t9t
+        {{- end }}
         - name: copy-fulcrum-config
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
