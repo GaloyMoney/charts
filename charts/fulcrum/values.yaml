@@ -8,7 +8,7 @@ image:
 
 # If true, generate blocks to the bitcoind node. Will fail if bitcoind is not in regtest mode.
 # The bitcoind installation should be in the same namespace as the fulcrum installation.
-autoGenerateBlocks: true
+autoGenerateBlocks: false
 
 generateBlocksImage:
   repository: bitnami/kubectl
