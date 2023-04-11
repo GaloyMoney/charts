@@ -26,6 +26,7 @@ bria:
   image:
     repository: us.gcr.io/galoy-org/bria
     digest: "sha256:9ee4362e4435f97e83761d1bcbce5a67ada409aaeebbe43d7116bc0807368fd6"
+    git_ref: ""
 
   provisionAdminSidecarImage:
     repository: us.gcr.io/galoy-org/bria-provision-admin-sidecar
