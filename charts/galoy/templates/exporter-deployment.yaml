@@ -109,9 +109,6 @@ spec:
         - name: PRICE_SERVER_PORT
           value: {{ .Values.galoy.dealer.port | quote }}
 
-        - name: PRICE_HOST
-          value: {{ .Values.price.realtime.host | quote }}
-
         {{ if .Values.galoy.exporter.probes.enabled }}
         livenessProbe:
           httpGet:
