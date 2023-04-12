@@ -6,22 +6,30 @@ Expand the name of the chart.
 {{- end }}
 
 {{/*
-Create a default fully qualified app name.
+Create a default fully qualified price realtime pod name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
 */}}
-{{- define "price.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
+{{- define "price.realtime.fullname" -}}
+{{- $name := default "price-realtime" .Values.realtime.nameOverride -}}
+{{- if .Values.fullnameOverride -}}
+{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified price history pod name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "price.history.fullname" -}}
+{{- $name := default "price-history" .Values.history.nameOverride -}}
+{{- if .Values.fullnameOverride -}}
+{{- printf "%s-%s" .Values.fullnameOverride $name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.
@@ -33,18 +41,18 @@ Create chart name and version as used by the chart label.
 {{/*
 Common labels
 */}}
-{{- define "price.labels" -}}
+{{- define "price.realtime.labels" -}}
 helm.sh/chart: {{ include "price.chart" . }}
-{{ include "price.selectorLabels" . }}
+{{ include "price.realtime.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{- define "priceHistory.labels" -}}
+{{- define "price.history.labels" -}}
 helm.sh/chart: {{ include "price.chart" . }}
-{{ include "priceHistory.selectorLabels" . }}
+{{ include "price.history.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -54,23 +62,12 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "price.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "price.name" . }}
+{{- define "price.realtime.selectorLabels" -}}
+app.kubernetes.io/name: price-realtime
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "priceHistory.selectorLabels" -}}
+{{- define "price.history.selectorLabels" -}}
 app.kubernetes.io/name: price-history
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "price.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "price.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
 {{- end }}

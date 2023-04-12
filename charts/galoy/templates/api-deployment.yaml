@@ -120,6 +120,9 @@ spec:
         - name: PRICE_SERVER_PORT
           value: {{ .Values.galoy.dealer.port | quote }}
 
+        - name: PRICE_HOST
+          value: {{ .Values.price.realtime.host | quote }}
+
         {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-service-account/service-account.json"
