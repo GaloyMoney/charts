@@ -568,8 +568,6 @@ tracing:
   ##
   prefix: galoy-dev
 price:
-  realtime:
-    host: galoy-price-realtime
   history:
     postgresqlHost: galoy-postgresql
     host: galoy-price-history

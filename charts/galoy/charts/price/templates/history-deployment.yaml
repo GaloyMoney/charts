@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "price.history.fullname" . }}
+  name: {{ include "price.fullname" . }}-history
   labels:
-    {{- include "price.history.labels" . | nindent 4 }}
+    {{- include "priceHistory.labels" . | nindent 4 }}
     kube-monkey/enabled: enabled
     kube-monkey/identifier: priceHistory
     kube-monkey/kill-mode: fixed
@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "price.history.selectorLabels" . | nindent 6 }}
+      {{- include "priceHistory.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -21,7 +21,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "price.history.selectorLabels" . | nindent 8 }}
+        {{- include "priceHistory.selectorLabels" . | nindent 8 }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: priceHistory
     spec:
@@ -41,17 +41,17 @@ spec:
           - name: DB_PWD
             valueFrom:
               secretKeyRef:
-                name: {{ include "price.history.fullname" . }}-postgres-creds
+                name: {{ include "price.fullname" . }}-history-postgres-creds
                 key: password
           - name: DB_USER
             valueFrom:
               secretKeyRef:
-                name: {{ include "price.history.fullname" . }}-postgres-creds
+                name: {{ include "price.fullname" . }}-history-postgres-creds
                 key: username
           - name: DB_DB
             valueFrom:
               secretKeyRef:
-                name: {{ include "price.history.fullname" . }}-postgres-creds
+                name: {{ include "price.fullname" . }}-history-postgres-creds
                 key: database
           volumeMounts:
             - name: custom-yaml
@@ -70,4 +70,4 @@ spec:
       volumes:
       - name: custom-yaml
         secret:
-          secretName: {{ include "price.history.fullname" . }}-config
+          secretName: {{ include "price.fullname" . }}-history-config

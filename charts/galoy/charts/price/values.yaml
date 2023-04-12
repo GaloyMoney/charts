@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
+image:
+  repository: us.gcr.io/galoy-org/price
+  digest: "sha256:3541a5255dd19fa7e8ba8779bc713665a92b1b85ecddaea344c790119a15384c"
+  git_ref: "2b9d9e5"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -13,6 +17,12 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "9464"
+  prometheus.io/scrape: "true"
+podSecurityContext: {}
+# fsGroup: 2000
 
 securityContext:
   # capabilities:
@@ -21,6 +31,26 @@ securityContext:
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   runAsUser: 1000
+service:
+  type: ClusterIP
+  prometheus: 9464
+  grpc: 50051
+ingress:
+  enabled: false
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          backend:
+            serviceName: chart-example.local
+            servicePort: 80
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 resources: {}
 # We usually recommend not to specify default resources and to leave this as a conscious
 # choice for the user. This also increases chances charts run on environments with little
@@ -33,24 +63,16 @@ resources: {}
 #   cpu: 100m
 #   memory: 128Mi
 
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 nodeSelector: {}
 tolerations: []
 affinity: {}
 config: {}
-realtime:
-  image:
-    repository: us.gcr.io/galoy-org/price
-    digest: "sha256:3541a5255dd19fa7e8ba8779bc713665a92b1b85ecddaea344c790119a15384c"
-    git_ref: "2b9d9e5"
-  service:
-    type: ClusterIP
-    prometheus: 9464
-    grpc: 50051
-  podAnnotations:
-    prometheus.io/path: /metrics
-    prometheus.io/port: "9464"
-    prometheus.io/scrape: "true"
-
 history:
   valuesOverride: {}
   image:
