@@ -22,7 +22,7 @@ bria:
     service:
       type: ClusterIP
       port: 2742
-      staticIp: ""
+      staticIP: ""
       annotations: {}
 
   image:
