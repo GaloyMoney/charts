@@ -1,0 +1,27 @@
+## SINK CONNECTOR
+## to use the sink connector locally
+## run: gcloud auth application-default login to create the file ~/.config/gcloud/application_default_credentials.json
+resource "kubernetes_secret" "google_cred" {
+  metadata {
+    name      = "google-cred"
+    namespace = local.kafka_namespace
+  }
+
+  data = {
+    application_default_credentialsjson = file(pathexpand("~/.config/gcloud/application_default_credentials.json"))
+  }
+
+  type = "kubernetes.io/application_default_credentialsjson"
+}
+
+
+data "kubernetes_secret" "google_cred" {
+  metadata {
+    name      = "google-cred"
+    namespace = local.kafka_namespace
+  }
+}
+
+resource "kubernetes_manifest" "kafka_sink_bigquery" {
+  manifest = yamldecode(replace(file("${path.module}/kafka-sink-bigquery.yaml"), "{{ GOOGLE_CREDENTIALS }}", jsonencode(data.kubernetes_secret.google_cred.data["application_default_credentialsjson"])))
+}

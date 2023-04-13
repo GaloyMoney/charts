@@ -181,7 +181,6 @@ mongoexport --host=127.0.0.1 --port=27019 --username=testGaloy --password=${galo
 
 mongodb://testGaloy:${galo_mongodb_password}@127.0.0.1:27018/?authSource=galoy&readPreference=primary&ssl=false&directConnection=true
 
-kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --list
 
 ## extract mongodb collection schemas for bigquery
 Collectons:
@@ -199,3 +198,14 @@ and: "type": "STRING" instead of: "type": "ARRAY"
 and: "type": "INTEGER" instead of: "type": "INT32"
 
 for the medici_transactions: fullDocument.account_path is an array of strings, you should use "type": "STRING" and "mode": "REPEATED".
+
+
+# Check topics on staging:
+kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --list
+
+
+kubectl -n galoy-staging-kafka logs -f deployment/kafka-connect -f
+
+kubectl -n galoy-staging-kafka describe  kafkaconnector kafka-source-mongo-medici-balances
+
+kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_balances --from-beginning
