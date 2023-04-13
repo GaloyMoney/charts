@@ -12,8 +12,8 @@ metadata:
   {{ end }}
 spec:
   type: {{ .Values.bria.api.service.type }}
-  {{ if and (eq .Values.bria.api.service.type "LoadBalancer") .Values.bria.api.service.staticIp }}
-  loadBalancerIP: {{ .Values.bria.api.service.staticIp }}
+  {{ if and (eq .Values.bria.api.service.type "LoadBalancer") .Values.bria.api.service.staticIP }}
+  loadBalancerIP: {{ .Values.bria.api.service.staticIP }}
   {{ end }}
   ports:
   - port: {{ .Values.bria.api.service.port }}
