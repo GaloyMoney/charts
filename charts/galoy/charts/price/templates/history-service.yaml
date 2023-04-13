@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "price.fullname" . }}-history
+  name: {{ include "price.history.fullname" . }}
   labels:
-    {{- include "priceHistory.labels" . | nindent 4 }}
+    {{- include "price.history.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.history.service.type }}
   ports:
@@ -16,4 +16,4 @@ spec:
       protocol: TCP
       name: prometheus
   selector:
-    {{- include "priceHistory.selectorLabels" . | nindent 4 }}
+    {{- include "price.history.selectorLabels" . | nindent 4 }}
