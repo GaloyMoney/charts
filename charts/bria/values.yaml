@@ -22,6 +22,8 @@ bria:
     service:
       type: ClusterIP
       port: 2742
+      staticIp: ""
+      annotations:
 
   image:
     repository: us.gcr.io/galoy-org/bria
