@@ -23,7 +23,7 @@ bria:
       type: ClusterIP
       port: 2742
       staticIp: ""
-      annotations:
+      annotations: {}
 
   image:
     repository: us.gcr.io/galoy-org/bria
