@@ -6,8 +6,15 @@ metadata:
     app: {{ template "bria.fullname" . }}-admin
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+  {{ with .Values.bria.admin.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 -}}
+  {{ end }}
 spec:
   type: {{ .Values.bria.admin.service.type }}
+  {{ if and (eq .Values.bria.admin.service.type "LoadBalancer") .Values.bria.admin.service.staticIP }}
+  loadBalancerIP: {{ .Values.bria.admin.service.staticIP }}
+  {{ end }}
   ports:
   - port: {{ .Values.bria.admin.service.port }}
     targetPort: {{ .Values.bria.admin.service.port }}
