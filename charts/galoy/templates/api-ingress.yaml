@@ -15,6 +15,9 @@ metadata:
 
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "5s"
+    nginx.ingress.kubernetes.io/proxy-next-upstream: "error timeout"
+    nginx.ingress.kubernetes.io/proxy-next-upstream-tries: "3"
 
     nginx.ingress.kubernetes.io/limit-rpm: "60"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
