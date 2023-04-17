@@ -56,6 +56,9 @@ spec:
             - name: TRACING_SERVICE_NAME
               value: "{{ .Values.tracing.prefix }}-{{ template "galoy.cron.jobname" . }}"
 
+            - name: PRICE_HOST
+              value: {{ .Values.price.realtime.host | quote }}
+
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 12 }}
 {{ include "galoy.redis.env" . | indent 12 }}
