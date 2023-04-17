@@ -1,4 +1,5 @@
 {{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+{{ $exportChecksum := include (print $.Template.BasePath "/export-secrets-configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -24,6 +25,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ $checksum }}
+        checksum/exportSecrets: {{ $exportChecksum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
