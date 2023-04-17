@@ -21,11 +21,11 @@ bria:
       annotations: {}
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:4c772e76df6a600ad7b5b914ad74addcd5641b85b319e302025e3cfec0dc3f5d"
-    git_ref: "ea272b7"
+    digest: "sha256:1e20a798cca661993ecaa58cd6987ad478692e6adb0c82aada4ae4c9b7182414"
+    git_ref: "1599a92"
   provisionAdminSidecarImage:
     repository: us.gcr.io/galoy-org/bria-provision-admin-sidecar
-    digest: "sha256:fb2697da704c51f8ff02f030afa1655898eb200b31f7298e79b8ff974c89aacd"
+    digest: "sha256:0fd21a9e97dc757a6588da8c818790872c81b6544f0de7fbdd5bb31670e3723d"
   replicas: 2
   annotations:
   secrets:
