@@ -18,6 +18,8 @@ spec:
         app: {{ template "bria.fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         release: "{{ .Release.Name }}"
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/bria-cm.yaml") . | sha256sum }}
     spec:
       {{ if .Values.bria.provisionAdmin }}
       serviceAccountName: {{ template "bria.fullname" . }}
