@@ -3546,6 +3546,36 @@ entries:
       version: 0.1.0
   galoy:
     - apiVersion: v2
+      appVersion: 0.6.39
+      created: "2023-04-17T21:40:37.627890213Z"
+      dependencies:
+        - name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 17.9.3
+        - name: mongodb
+          repository: https://charts.bitnami.com/bitnami
+          version: 12.1.31
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.2.4
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.13
+        - name: oathkeeper
+          repository: https://k8s.ory.sh/helm/charts
+          version: 0.28.2
+        - name: kratos
+          repository: https://k8s.ory.sh/helm/charts
+          version: 0.28.2
+      description: A Helm chart for galoy servers
+      digest: 2ef9ee6b3d58f54ebd0f895700909f1a09d2c8372662a260efca603183dae85a
+      name: galoy
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-v0.10.22/galoy-0.10.22.tgz
+      version: 0.10.22
+    - apiVersion: v2
       appVersion: 0.6.37
       created: "2023-04-13T21:09:40.294695912Z"
       dependencies:
@@ -14113,4 +14143,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.0/galoy-deps-0.1.0.tgz
       version: 0.1.0
-generated: "2023-04-17T18:42:36.917221436Z"
+generated: "2023-04-17T21:40:37.627911498Z"
