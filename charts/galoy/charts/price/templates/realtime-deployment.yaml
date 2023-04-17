@@ -1,53 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "price.fullname" . }}
+  name: {{ include "price.realtime.fullname" . }}
   labels:
-    {{- include "price.labels" . | nindent 4 }}
+    {{- include "price.realtime.labels" . | nindent 4 }}
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: price
+    kube-monkey/identifier: priceRealtime
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "8"
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  strategy:
-    type: Recreate
-  {{- end }}
   selector:
     matchLabels:
-      {{- include "price.selectorLabels" . | nindent 6 }}
+      {{- include "price.realtime.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/config-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/realtime-config-secret.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "price.selectorLabels" . | nindent 8 }}
+        {{- include "price.realtime.selectorLabels" . | nindent 8 }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: price
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "price.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: realtime
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ $.Values.image.repository }}@{{ $.Values.image.digest }}"
+          image: "{{ $.Values.realtime.image.repository }}@{{ $.Values.realtime.image.digest }}"
           ports:
             - name: grpc
-              containerPort: {{ .Values.service.grpc }}
+              containerPort: {{ .Values.realtime.service.grpc }}
               protocol: TCP
             - name: prometheus
-              containerPort: {{ .Values.service.prometheus }}
+              containerPort: {{ .Values.realtime.service.prometheus }}
               protocol: TCP
           volumeMounts:
             - name: custom-yaml
@@ -63,19 +51,19 @@ spec:
             timeoutSeconds: 2
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.realtime.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.realtime.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.realtime.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
         - name: custom-yaml
           secret:
-            secretName: {{ include "price.fullname" . }}-config
+            secretName: {{ include "price.realtime.fullname" . }}-config

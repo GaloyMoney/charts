@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "price.fullname" . }}-history-postgres-migrate-{{ .Release.Revision }}
+  name: {{ include "price.history.fullname" . }}-postgres-migrate-{{ .Release.Revision }}
 spec:
   backoffLimit: 3
   template:
@@ -15,16 +15,16 @@ spec:
         - name: DB_PWD
           valueFrom:
             secretKeyRef:
-              name: {{ include "price.fullname" . }}-history-postgres-creds
+              name: {{ include "price.history.fullname" . }}-postgres-creds
               key: password
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: {{ include "price.fullname" . }}-history-postgres-creds
+              name: {{ include "price.history.fullname" . }}-postgres-creds
               key: username
         - name: DB_DB
           valueFrom:
             secretKeyRef:
-              name: {{ include "price.fullname" . }}-history-postgres-creds
+              name: {{ include "price.history.fullname" . }}-postgres-creds
               key: database
       restartPolicy: Never

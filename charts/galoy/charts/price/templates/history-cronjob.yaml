@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "price.fullname" . }}-history-cronjob
+  name: {{ include "price.history.fullname" . }}-cronjob
   labels:
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -22,17 +22,17 @@ spec:
             - name: DB_PWD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "price.fullname" . }}-history-postgres-creds
+                  name: {{ include "price.history.fullname" . }}-postgres-creds
                   key: password
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "price.fullname" . }}-history-postgres-creds
+                  name: {{ include "price.history.fullname" . }}-postgres-creds
                   key: username
             - name: DB_DB
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "price.fullname" . }}-history-postgres-creds
+                  name: {{ include "price.history.fullname" . }}-postgres-creds
                   key: database
             volumeMounts:
             - name: custom-yaml
@@ -40,5 +40,5 @@ spec:
           volumes:
           - name: custom-yaml
             secret:
-              secretName: {{ include "price.fullname" . }}-history-config
+              secretName: {{ include "price.history.fullname" . }}-config
           restartPolicy: OnFailure
