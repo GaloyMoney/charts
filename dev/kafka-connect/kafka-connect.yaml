@@ -11,11 +11,19 @@ spec:
   replicas: 1
   bootstrapServers: kafka-kafka-plain-bootstrap:9092
   config:
+    #config.providers: secrets,configmaps
+    #config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
+    #config.providers.configmaps.class: io.strimzi.kafka.KubernetesConfigMapConfigProvider 
     group.id: connect-cluster
     offset.storage.topic: connect-cluster-offsets
     config.storage.topic: connect-cluster-configs
     status.storage.topic: connect-cluster-status
-    # -1 means it will use the default replication factor configured in the broker
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
+  externalConfiguration:
+    volumes:
+    - name: kafka-sa-key-secret
+      secret:
+        secretName: kafka-sa-key-secret
+
