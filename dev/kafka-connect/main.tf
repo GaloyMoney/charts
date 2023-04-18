@@ -29,6 +29,31 @@ provider "kafka" {
   tls_enabled       = false
 }
 
+
+locals {
+  google_credentials = file(pathexpand("~/.config/gcloud/application_default_credentials.json"))
+}
+
+#data "google_service_account" "kafka_sa" {
+#  account_id = local.kafka_sa
+#}
+#
+#resource "google_service_account_key" "kafka_sa_key" {
+#  service_account_id = data.google_service_account.kafka_sa.id
+#}
+
+resource "kubernetes_secret" "kafka_sa_key_secret" {
+  metadata {
+    name      = "kafka-sa-key-secret"
+    namespace = local.kafka_namespace
+  }
+
+  data = {
+    keyfile = local.google_credentials
+  }
+}
+
+
 ## CONNECT
 resource "kubernetes_manifest" "kafka_connect" {
   manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
