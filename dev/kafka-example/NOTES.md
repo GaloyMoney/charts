@@ -209,3 +209,7 @@ kubectl -n galoy-staging-kafka logs -f deployment/kafka-connect -f
 kubectl -n galoy-staging-kafka describe  kafkaconnector kafka-source-mongo-medici-balances
 
 kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_balances --from-beginning
+
+Strimzi does not support any Schema Registry.
+https://stackoverflow.com/questions/47989233/how-to-install-schema-registry
+https://docs.confluent.io/platform/current/schema-registry/installation/index.html#installing-and-configuring-sr
