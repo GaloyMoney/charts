@@ -16,6 +16,10 @@ kubemonkey:
 
 opentelemetry-collector:
   enabled: true
+  resources:
+    limits:
+      cpu: 256m
+      memory: 512Mi
   mode: deployment
   config:
     exporters:
