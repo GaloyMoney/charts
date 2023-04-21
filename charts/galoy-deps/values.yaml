@@ -18,8 +18,8 @@ opentelemetry-collector:
   enabled: true
   resources:
     limits:
-      cpu: 256m
-      memory: 512Mi
+      cpu: 512m
+      memory: 2048Mi
   mode: deployment
   config:
     exporters:
