@@ -172,6 +172,7 @@ cert-manager:
 ingress-nginx:
   enabled: true
   controller:
+    replicaCount: 2
     ingressClassResource:
       default: true
       watchIngressWithoutClass: true
