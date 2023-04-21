@@ -77,6 +77,9 @@ opentelemetry-collector:
         - key: code.function.params.value
           action: update
           value: "<redacted>"
+        - key: args
+          action: update
+          value: "<redacted>"
       # If set to null, will be overridden with values based on k8s resource limits
       memory_limiter: null
       resourcedetection:
