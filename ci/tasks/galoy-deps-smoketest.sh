@@ -38,13 +38,24 @@ resource "kafka_topic" "smoketest_topic" {
 }
 EOF
 
-kubectl -n $kafka_namespace wait --for=condition=Ready pod -l strimzi.io/component-type=kafka
+set +e
+for i in 1 2 3
+do
+  kubectl -n $kafka_namespace wait --for=condition=Ready pod -l strimzi.io/component-type=kafka && break
+  sleep 5
+done
+set -e
 
 terraform init
-terraform apply -auto-approve
+
+set +e
+for i in 1 2 3
+do
+  terraform apply -auto-approve && break
+  sleep 5
+done
 
 msg="kafka message"
-set +e
 for i in {1..15}; do
   echo "Attempt ${i} to produce and consume from kafka"
   echo $msg | kafkacat -P -b $kafka_broker_host:$kafka_broker_port -t $kafka_topic
