@@ -844,6 +844,11 @@ kratos:
     public:
       enabled: false
   replicaCount: 2
+  deployment:
+    livenessProbe:
+      failureThreshold: 5
+      initialDelaySeconds: 45
+      periodSeconds: 1
   kratos:
     automigration:
       enabled: true
