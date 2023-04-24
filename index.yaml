@@ -2543,6 +2543,21 @@ entries:
       version: 0.1.0
   galoy-pay:
     - apiVersion: v2
+      appVersion: 0.5.34
+      created: "2023-04-24T11:33:41.470353617Z"
+      dependencies:
+        - condition: galoy-nostr.enabled
+          name: galoy-nostr
+          repository: ""
+          version: x.x.x
+      description: A Helm chart for the admin panel addon to Galoy
+      digest: f4c5c33a3009787d6ef48db742fea2ab418cb3a8c8746f5df06e540a4f2ed47b
+      name: galoy-pay
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-pay-v0.3.26/galoy-pay-0.3.26.tgz
+      version: 0.3.26
+    - apiVersion: v2
       appVersion: 0.5.31
       created: "2023-04-21T08:30:28.111883054Z"
       dependencies:
@@ -14479,4 +14494,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.0/galoy-deps-0.1.0.tgz
       version: 0.1.0
-generated: "2023-04-24T11:30:12.015419528Z"
+generated: "2023-04-24T11:33:41.470368286Z"
