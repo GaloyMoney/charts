@@ -904,7 +904,8 @@ kratos:
                     config:
                       url: http://api:4002/kratos/registration
                       method: POST
-                      can_interrupt: true
+                      response:
+                        parse: false
                       body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ=="
                       auth:
                         type: api_key
