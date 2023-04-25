@@ -81,3 +81,4 @@ fulcrumGenericConfig:
   - bitcoind_clients = 1
   - peering = false
   - announce = false
+  - fast-sync = 1024
