@@ -89,11 +89,10 @@ spec:
             periodSeconds: 2
           readinessProbe:
             tcpSocket:
-              port: ssl
-            initialDelaySeconds: 2
+              port: stats
+            initialDelaySeconds: 20
             periodSeconds: 5
-            # allow 10h for initial sync
-            failureThreshold: 7200
+            failureThreshold: 2
           livenessProbe:
             tcpSocket:
               port: ssl
