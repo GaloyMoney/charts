@@ -50,6 +50,12 @@ opentelemetry-collector:
         - key: code.function.params.code
           action: update
           value: "<redacted>"
+        - key: code.function.params.token
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.cookie
+          action: update
+          value: "<redacted>"
         - key: code.function.params.twoFASecret
           action: update
           value: "<redacted>"
