@@ -2,7 +2,7 @@ global:
   network: mainnet
 image:
   repository: lightninglabs/lnd
-  tag: v0.16.0-beta
+  tag: v0.16.1-beta
   pullPolicy: IfNotPresent
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
