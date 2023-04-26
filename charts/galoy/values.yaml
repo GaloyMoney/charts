@@ -621,11 +621,6 @@ oathkeeper:
           config:
             jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
             issuer_url: "galoy.io"
-        header:
-          enabled: true
-          config:
-            headers:
-              orgauthorization: '{{ .MatchContext.Header.Get "Authorization" }}' # tmp during migration of LegacyJWT
       errors:
         fallback:
           - json
@@ -662,14 +657,6 @@ oathkeeper:
           "authenticators": [{ "handler": "anonymous" }],
           "authorizer": { "handler": "allow" },
           "mutators": [
-            {
-              "handler": "header",
-              "config": {
-                "headers": {
-                  "orgauthorization": "{{ .MatchContext.Header.Get \"Authorization\" }}"
-                }
-              }
-            },
             {
               "handler": "id_token",
               "config": {
@@ -712,14 +699,6 @@ oathkeeper:
           ],
           "authorizer": { "handler": "allow" },
           "mutators": [
-            {
-              "handler": "header",
-              "config": {
-                "headers": {
-                  "orgauthorization": "{{ .MatchContext.Header.Get \"Authorization\" }}"
-                }
-              }
-            },
             {
               "handler": "id_token",
               "config": {
@@ -767,14 +746,6 @@ oathkeeper:
             {
               "handler": "id_token",
               "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
-            },
-            {
-              "handler": "header",
-              "config": {
-                "headers": {
-                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
-                }
-              }
             }
           ]
         },
@@ -815,14 +786,6 @@ oathkeeper:
             "handler": "allow"
           },
           "mutators": [
-            {
-              "handler": "header",
-              "config": {
-                "headers": {
-                  "orgauthorization": '{{ .MatchContext.Header.Get "Authorization" }}'
-                }
-              }
-            },
             {
               "handler": "id_token",
               "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
