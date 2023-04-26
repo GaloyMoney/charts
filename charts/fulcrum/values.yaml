@@ -58,3 +58,5 @@ fulcrumGenericConfig:
   - peering = false
   - announce = false
   - fast-sync = 1024
+  - worker_threads = 1
+  - bitcoind_throttle = 25 10 2
