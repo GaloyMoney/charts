@@ -619,7 +619,7 @@ oathkeeper:
         id_token:
           enabled: true
           config:
-            jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
+            jwks_url: "file:///etc/secrets/mutator.id_token.jwks.jsn"
             issuer_url: "galoy.io"
       errors:
         fallback:
