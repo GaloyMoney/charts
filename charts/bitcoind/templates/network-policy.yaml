@@ -1,7 +1,7 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: allow-to-bitcoind
+  name: allow-to-{{ .Release.Name }}
 spec:
   podSelector:
     matchLabels:
@@ -13,4 +13,4 @@ spec:
       - namespaceSelector: {}
         podSelector:
           matchLabels:
-            allow-to-bitcoind: "true"
+            allow-to-{{ .Release.Name }}: "true"
