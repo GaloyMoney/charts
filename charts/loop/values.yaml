@@ -6,7 +6,7 @@ global:
 
 image:
   repository: lightninglabs/loop
-  tag: v0.20.1-beta
+  tag: v0.23.0-beta
   pullPolicy: IfNotPresent
 
 sidecarImage:
