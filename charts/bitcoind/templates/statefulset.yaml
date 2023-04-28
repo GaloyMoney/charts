@@ -1,3 +1,4 @@
+{{ $checksum := include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -20,6 +21,7 @@ spec:
     {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        checksum/config: {{ $checksum }}
         prometheus.io/path: /metrics
         prometheus.io/port: {{ $.Values.service.ports.metrics | quote }}
         prometheus.io/scrape: "true"
