@@ -74,6 +74,7 @@ lndGeneralConfig:
   - bitcoind.rpcuser=rpcuser
   - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
   - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+  - bitcoind.txpollinginterval=1m
   - tlsextradomain=lnd
   - accept-keysend=1
   - allow-circular-route=1
