@@ -2,7 +2,7 @@ global:
   network: mainnet
 image:
   repository: lightninglabs/lnd
-  tag: v0.16.1-beta
+  tag: v0.16.2-beta
   pullPolicy: IfNotPresent
 sidecarImage:
   repository: us.gcr.io/galoy-org/lnd-sidecar
@@ -74,7 +74,6 @@ lndGeneralConfig:
   - bitcoind.rpcuser=rpcuser
   - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
   - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
-  - bitcoind.txpollinginterval=1m
   - tlsextradomain=lnd
   - accept-keysend=1
   - allow-circular-route=1
