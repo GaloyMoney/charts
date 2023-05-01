@@ -46,9 +46,9 @@ persistence:
   accessMode: ReadWriteOnce
   size: 200Gi
 
-bitcoindRpcPassSecretName: bitcoind-rpcpassword
+bitcoindRpcPassSecretName: bitcoind-onchain-rpcpassword
 bitcoindRpcPort: 8332
-bitcoindRpcHost: bitcoind
+bitcoindRpcHost: bitcoind-onchain
 
 fulcrumGenericConfig:
   # https://github.com/cculianu/Fulcrum/blob/master/doc/fulcrum-example-config.conf
