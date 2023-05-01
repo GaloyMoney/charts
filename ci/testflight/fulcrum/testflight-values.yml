@@ -1,6 +1,8 @@
 persistence:
   enabled: false
 
+bitcoindRpcPassSecretName: bitcoind-rpcpassword
 bitcoindRpcPort: 18443
+bitcoindRpcHost: bitcoind
 
 autoGenerateBlocks: true
