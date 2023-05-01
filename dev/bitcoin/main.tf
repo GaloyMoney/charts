@@ -39,6 +39,9 @@ resource "kubernetes_secret" "bitcoind_smoketest" {
     bitcoind_endpoint    = "bitcoind.${local.bitcoin_namespace}.svc.cluster.local"
     bitcoind_port        = 18443
     bitcoind_user        = "rpcuser"
+
+    bitcoind_onchain_rpcpassword = local.bitcoind_rpcpassword
+    bitcoind_onchain_endpoint    = "bitcoind.${local.bitcoin_namespace}.svc.cluster.local"
   }
 }
 

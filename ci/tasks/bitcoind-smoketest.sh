@@ -14,3 +14,15 @@ bitcoin-cli -${1:-signet} \
   -getinfo
 
 curl ${host}:3000/metrics
+
+# bitcoind-onchain smoketest
+host=`setting "bitcoind_onchain_endpoint"`
+bitcoin-cli -version
+bitcoin-cli -${1:-signet} \
+  -rpcuser=`setting "bitcoind_user"` \
+  -rpcpassword=`setting "bitcoind_onchain_rpcpassword"` \
+  -rpcport=`setting "bitcoind_port"` \
+  -rpcconnect=${host}\
+  -getinfo
+
+curl ${host}:3000/metrics

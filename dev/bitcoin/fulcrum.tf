@@ -11,6 +11,6 @@ resource "helm_release" "fulcrum" {
 
   depends_on = [
     kubernetes_secret.bitcoind,
-    helm_release.bitcoind
+    helm_release.bitcoind_onchain
   ]
 }

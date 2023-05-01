@@ -14,6 +14,11 @@ resource "random_password" "bitcoind_rpcpassword" {
   special = false
 }
 
+resource "random_password" "bitcoind_onchain_rpcpassword" {
+  length  = 20
+  special = false
+}
+
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
@@ -41,6 +46,9 @@ resource "kubernetes_secret" "smoketest" {
     bitcoind_endpoint    = "bitcoind.${local.testflight_namespace}.svc.cluster.local"
     bitcoind_port        = 38332
     bitcoind_user        = "rpcuser"
+
+    bitcoind_onchain_rpcpassword = random_password.bitcoind_onchain_rpcpassword.result
+    bitcoind_onchain_endpoint    = "bitcoind.${local.testflight_namespace}.svc.cluster.local"
   }
 }
 
@@ -56,6 +64,31 @@ resource "helm_release" "bitcoind" {
 
   depends_on = [
     kubernetes_secret.testflight
+  ]
+}
+
+resource "kubernetes_secret" "testflight_bitcoind_onchain" {
+  metadata {
+    name      = "bitcoind-onchain-rpcpassword"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    password = random_password.bitcoind_onchain_rpcpassword.result
+  }
+}
+
+resource "helm_release" "bitcoind_onchain" {
+  name      = "bitcoind-onchain"
+  chart     = "${path.module}/../../charts/bitcoind"
+  namespace = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    file("${path.module}/testflight-values.yml")
+  ]
+
+  depends_on = [
+    kubernetes_secret.testflight_bitcoind_onchain
   ]
 }
 
