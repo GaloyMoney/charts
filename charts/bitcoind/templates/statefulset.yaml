@@ -69,6 +69,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: MALLOC_ARENA_MAX
+            value: "1"
           ports:
             - name: rpc
               containerPort: {{ .Values.global.service.ports.rpc }}
@@ -90,7 +93,7 @@ spec:
               - bitcoin-cli
               - -conf=/data/.bitcoin/bitcoin.conf
               {{- if ne .Values.global.network "mainnet" }}
-              - -{{.Values.global.network}}  
+              - -{{.Values.global.network}}
               {{- end }}
               - getblockchaininfo
             initialDelaySeconds: 120
@@ -101,7 +104,7 @@ spec:
               - bitcoin-cli
               - -conf=/data/.bitcoin/bitcoin.conf
               {{- if ne .Values.global.network "mainnet" }}
-              - -{{.Values.global.network}}  
+              - -{{.Values.global.network}}
               {{- end }}
               - getblockchaininfo
             periodSeconds: 4
