@@ -7,7 +7,7 @@ dependencies:
   version: 12.1.31
 - name: common
   repository: https://charts.bitnami.com/bitnami
-  version: 2.2.4
+  version: 2.2.5
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.9.13
@@ -17,5 +17,5 @@ dependencies:
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.31.0
-digest: sha256:59747d7714a1568a9054215f8a45b23983d4f7a7bc84386c94b75ba8ea635b83
-generated: "2023-04-25T08:24:50.652938076Z"
+digest: sha256:56b8ce047d592e00de7b8717bbec807f16a7ab1b5d509cdc1bfe5a6994bebc43
+generated: "2023-05-02T10:24:46.069080956Z"
