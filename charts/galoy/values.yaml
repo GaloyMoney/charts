@@ -453,9 +453,9 @@ mongodb:
     enabled: false
   initdbScripts:
     grant_user_admin_role.sh: |
-      isMaster=$(mongo admin -u root -p "$MONGODB_ROOT_PASSWORD" --eval "rs.isMaster().ismaster" | tail -1 | tr -d '\n')
+      isMaster=$(mongosh admin -u root -p "$MONGODB_ROOT_PASSWORD" --eval "rs.isMaster().ismaster" | tail -1 | tr -d '\n')
       if [ "$isMaster" == "true" ]; then
-      mongo admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
+      mongosh admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
         use admin;
         db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
       EOF
@@ -470,21 +470,6 @@ mongodb:
   podLabels:
     kube-monkey/enabled: enabled
     kube-monkey/identifier: mongodb
-  # Probes
-  readinessProbe:
-    enabled: false
-  customReadinessProbe:
-    exec:
-      command:
-        - mongo
-        - --disableImplicitSessions
-        - --eval
-        - "db.adminCommand('ping')"
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
   # Prometheus metrics
   metrics:
     enabled: true
