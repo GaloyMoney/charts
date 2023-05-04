@@ -4,7 +4,7 @@ secrets:
 image:
   repository: cculianu/fulcrum
   pullPolicy: IfNotPresent
-  tag: v1.9.0
+  tag: v1.9.1
 
 # If true, generate blocks to the bitcoind node. Will fail if bitcoind is not in regtest mode.
 # The bitcoind installation should be in the same namespace as the fulcrum installation.
@@ -13,7 +13,7 @@ autoGenerateBlocks: false
 generateBlocksImage:
   repository: bitnami/kubectl
   pullPolicy: IfNotPresent
-  tag: 1.23
+  tag: 1.24.12
 
 serviceAccount:
   create: true
