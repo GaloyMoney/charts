@@ -1411,6 +1411,20 @@ entries:
   rtl:
     - apiVersion: v2
       appVersion: 0.13.3
+      created: "2023-05-08T08:56:01.368004375Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.2.5
+      description: A Helm chart for Kubernetes
+      digest: 8e4f99d4068bb5fa3472a30656fb05205b02a567045e8fe37058f78df63c3db2
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.1.13/rtl-0.1.13.tgz
+      version: 0.1.13
+    - apiVersion: v2
+      appVersion: 0.13.3
       created: "2023-03-10T09:33:44.71515372Z"
       dependencies:
         - name: common
@@ -15088,4 +15102,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.0/galoy-deps-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-08T08:54:12.414478592Z"
+generated: "2023-05-08T08:56:01.368022134Z"
