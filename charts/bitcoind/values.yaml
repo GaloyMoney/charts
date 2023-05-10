@@ -120,7 +120,6 @@ podLabels: {}
 #   - kube-monkey/enabled: enabled
 #   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
 
-
 # TODO: Document the usage of generic and custom config to instruct where to put specific flags
 
 bitcoindGenericConfig:
@@ -139,3 +138,7 @@ bitcoindCustomConfig:
   bind: 0.0.0.0
   rpcbind: 0.0.0.0
   rpcallowip: 0.0.0.0/0
+
+descriptor:
+  secretName: ""
+  secretKey: ""

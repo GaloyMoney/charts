@@ -111,6 +111,47 @@ spec:
             successThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        {{- if and .Values.descriptor.secretName .Values.descriptor.secretKey }}
+        - name: descriptor-import
+          image: lncm/bitcoind:v24.0.1
+          command: ['/bin/sh']
+          args:
+          - '-c'
+          - | 
+            echo "# Waiting for bitcoind to finish syncing"
+            while ! bitcoin-cli getblockchaininfo | grep '"initialblockdownload": false'; do
+              sleep 30
+            done
+            echo "# Checking for the default wallet"
+            if ! bitcoin-cli listwallets | grep "default"; then
+              if ! bitcoin-cli loadwallet "default"; then
+                echo "# Creating the default wallet"
+                bitcoin-cli createwallet "default" || exit 1
+              fi
+            fi
+            echo "# Checking for the bitcoind-signer-descriptor"
+            descriptorjson=$(base64 -d </data/descriptors/base64descriptorjson)
+            # extract the descriptor from the descriptorjson
+            desc=$(echo "${descriptorjson}" | cut -d'"' -f 6)
+            # derive the first address from the descriptor without importing it
+            derived_address=$(bitcoin-cli deriveaddresses "$desc" 0 | sed -n '2p' | cut -d'"' -f2)
+            # check if the address is already known to the default wallet
+            if ! bitcoin-cli -rpcwallet=default getaddressinfo "$derived_address" | grep '"ismine": true'; then
+              echo "# Importing the bitcoind-signer-descriptor"
+              bitcoin-cli -rpcwallet=default importdescriptors "$descriptorjson" || exit 1
+            fi
+            echo "# The bitcoind-signer-descriptor is present in the default wallet"
+            trap "echo shutting down; exit 0" SIGTERM
+            while true; do sleep 100; done
+          volumeMounts:
+            - name: bitcoind-signer-descriptor
+              mountPath: /data/descriptors
+            - name: data
+              mountPath: /data/.bitcoin
+            - name: config
+              mountPath: /data/.bitcoin/bitcoin.conf
+              subPath: bitcoin.conf
+        {{- end }}
         - name: exporter
           image: jvstein/bitcoin-prometheus-exporter:v0.6.0
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -155,6 +196,14 @@ spec:
             claimName: {{ .Values.persistence.existingClaim | default (include "bitcoind.fullname" .) }}
         {{- else }}
           emptyDir: {}
+        {{- end -}}
+        {{- if and .Values.descriptor.secretName .Values.descriptor.secretKey }}
+        - name: bitcoind-signer-descriptor
+          secret:
+            secretName: {{ .Values.descriptor.secretName }}
+            items:
+            - key: {{ .Values.descriptor.secretKey }}
+              path: base64descriptorjson
         {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:

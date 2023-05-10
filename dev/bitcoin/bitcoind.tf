@@ -23,6 +23,17 @@ resource "helm_release" "bitcoind" {
   ]
 }
 
+resource "kubernetes_secret" "bitcoind_signer_descriptor" {
+  metadata {
+    name      = "bitcoind-signer-descriptor"
+    namespace = kubernetes_namespace.bitcoin.metadata[0].name
+  }
+
+  data = {
+    descriptorjson = base64encode(file("${path.module}/bitcoind_signers_descriptors.json"))
+  }
+}
+
 resource "kubernetes_secret" "bitcoind_onchain" {
   metadata {
     name      = "bitcoind-onchain-rpcpassword"
@@ -40,10 +51,12 @@ resource "helm_release" "bitcoind_onchain" {
   namespace = kubernetes_namespace.bitcoin.metadata[0].name
 
   values = [
-    file("${path.module}/bitcoind-${var.bitcoin_network}-values.yml")
+    file("${path.module}/bitcoind-${var.bitcoin_network}-values.yml"),
+    file("${path.module}/bitcoind-onchain-values.yml")
   ]
 
   depends_on = [
-    kubernetes_secret.bitcoind_onchain
+    kubernetes_secret.bitcoind_onchain,
+    kubernetes_secret.bitcoind_signer_descriptor
   ]
 }
