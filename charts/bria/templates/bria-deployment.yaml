@@ -55,6 +55,7 @@ spec:
         args:
         - bria
         - daemon
+        - run
         volumeMounts:
         - name: "config"
           mountPath: "/bria.yml"
