@@ -14558,6 +14558,38 @@ entries:
   galoy-deps:
     - apiVersion: v2
       appVersion: 0.1.0
+      created: "2023-05-10T07:32:27.0098765Z"
+      dependencies:
+        - condition: cert-manager.enabled
+          name: cert-manager
+          repository: https://charts.jetstack.io
+          version: v1.11.1
+        - condition: ingress-nginx.enabled
+          name: ingress-nginx
+          repository: https://kubernetes.github.io/ingress-nginx
+          version: 4.6.0
+        - condition: strimzi-kafka-operator.enabled
+          name: strimzi-kafka-operator
+          repository: https://strimzi.io/charts/
+          version: 0.34.0
+        - alias: kubemonkey
+          condition: kubemonkey.enabled
+          name: kube-monkey
+          repository: https://asobti.github.io/kube-monkey/charts/repo
+          version: 1.5.2
+        - condition: opentelemetry-collector.enabled
+          name: opentelemetry-collector
+          repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+          version: 0.56.0
+      description: A Helm chart for Kubernetes
+      digest: 840870404068813b5d74e66cadbd1caa2fbb4710cbf692c58fd48ee54fa09a4a
+      name: galoy-deps
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.20/galoy-deps-0.1.20.tgz
+      version: 0.1.20
+    - apiVersion: v2
+      appVersion: 0.1.0
       created: "2023-05-05T08:03:04.742673315Z"
       dependencies:
         - condition: cert-manager.enabled
@@ -15196,4 +15228,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.0/galoy-deps-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-09T22:37:33.005516508Z"
+generated: "2023-05-10T07:32:27.009899464Z"
