@@ -1,3 +1,3 @@
 descriptor:
   secretName: bitcoind-signer-descriptor
-  secretKey: descriptorjson
+  secretKey: descriptor_json_base64

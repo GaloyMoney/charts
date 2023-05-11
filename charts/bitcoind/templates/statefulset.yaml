@@ -130,7 +130,7 @@ spec:
               fi
             fi
             echo "# Checking for the bitcoind-signer-descriptor"
-            descriptor_json=$(base64 -d </data/descriptors/base64descriptorjson)
+            descriptor_json=$(base64 -d </data/descriptors/descriptor_json_base64)
             # extract the descriptor from the descriptor_json
             desc=$(echo "${descriptor_json}" | cut -d'"' -f 6)
             # derive the first address from the descriptor without importing it
@@ -203,7 +203,7 @@ spec:
             secretName: {{ .Values.descriptor.secretName }}
             items:
             - key: {{ .Values.descriptor.secretKey }}
-              path: base64descriptorjson
+              path: descriptor_json_base64
         {{- end -}}
       {{- with .Values.nodeSelector }}
       nodeSelector:

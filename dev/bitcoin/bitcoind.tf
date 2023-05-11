@@ -30,7 +30,7 @@ resource "kubernetes_secret" "bitcoind_signer_descriptor" {
   }
 
   data = {
-    descriptorjson = base64encode(file("${path.module}/bitcoind_signers_descriptors.json"))
+    descriptor_json_base64 = base64encode(file("${path.module}/bitcoind_signers_descriptors.json"))
   }
 }
 
