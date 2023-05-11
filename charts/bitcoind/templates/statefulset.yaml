@@ -130,15 +130,15 @@ spec:
               fi
             fi
             echo "# Checking for the bitcoind-signer-descriptor"
-            descriptorjson=$(base64 -d </data/descriptors/base64descriptorjson)
-            # extract the descriptor from the descriptorjson
-            desc=$(echo "${descriptorjson}" | cut -d'"' -f 6)
+            descriptor_json=$(base64 -d </data/descriptors/base64descriptorjson)
+            # extract the descriptor from the descriptor_json
+            desc=$(echo "${descriptor_json}" | cut -d'"' -f 6)
             # derive the first address from the descriptor without importing it
             derived_address=$(bitcoin-cli deriveaddresses "$desc" 0 | sed -n '2p' | cut -d'"' -f2)
             # check if the address is already known to the default wallet
             if ! bitcoin-cli -rpcwallet=default getaddressinfo "$derived_address" | grep '"ismine": true'; then
               echo "# Importing the bitcoind-signer-descriptor"
-              bitcoin-cli -rpcwallet=default importdescriptors "$descriptorjson" || exit 1
+              bitcoin-cli -rpcwallet=default importdescriptors "$descriptor_json" || exit 1
             fi
             echo "# The bitcoind-signer-descriptor is present in the default wallet"
             trap "echo shutting down; exit 0" SIGTERM
