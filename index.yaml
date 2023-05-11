@@ -2582,6 +2582,16 @@ entries:
       version: 0.1.0
   admin-panel:
     - apiVersion: v2
+      appVersion: 0.1.34
+      created: "2023-05-11T15:01:52.043103896Z"
+      description: A Helm chart for the admin panel addon to Galoy
+      digest: 6576e5eb418688a6e6604b4c7df8c3e60d2d75df6a5bbc987ef379c9c80f1710
+      name: admin-panel
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/admin-panel-v0.2.10/admin-panel-0.2.10.tgz
+      version: 0.2.10
+    - apiVersion: v2
       appVersion: 0.1.33
       created: "2023-05-05T08:46:32.534883226Z"
       description: A Helm chart for the admin panel addon to Galoy
@@ -15287,4 +15297,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.0/galoy-deps-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-11T11:46:32.288034663Z"
+generated: "2023-05-11T15:01:52.043121308Z"
