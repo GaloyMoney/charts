@@ -1,7 +1,7 @@
 global:
   network: regtest
   service:
-    ports: 
+    ports:
       rpc: 18443
 
 secrets:
@@ -21,4 +21,5 @@ bitcoindCustomConfig:
   bind: 0.0.0.0
   rpcbind: 0.0.0.0
   rpcallowip: 0.0.0.0/0
-  #fallbackfee: 0.0002
+  dbcache: 450
+  maxmempool: 300
