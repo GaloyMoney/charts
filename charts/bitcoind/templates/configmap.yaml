@@ -10,13 +10,13 @@ data:
     {{ . }}
   {{- end }}
   {{- range $k, $v := $.Values.bitcoindCustomConfig }}
-    {{ printf "%s=%s" $k $v}}
+    {{ printf "%s=%v" $k $v }}
   {{- end }}
   {{ .Values.global.network | indent 2 }}=1
   {{- $sections := splitList "," "test,regtest,signet" }}
   {{- range $sections }}
     {{printf "[%s]" . }}
     {{- range $k, $v := $.Values.bitcoindCustomConfig }}
-    {{ printf "%s=%s" $k $v}}
+    {{ printf "%s=%v" $k $v }}
     {{- end }}
   {{- end}}
