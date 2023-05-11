@@ -4,7 +4,7 @@ dependencies:
   version: 17.10.3
 - name: mongodb
   repository: https://charts.bitnami.com/bitnami
-  version: 12.1.31
+  version: 13.9.4
 - name: common
   repository: https://charts.bitnami.com/bitnami
   version: 2.2.5
@@ -13,9 +13,9 @@ dependencies:
   version: 11.9.13
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
-  version: 0.31.0
+  version: 0.33.1
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.31.0
-digest: sha256:c98e8e98ce41e5d1d1de04faed5d616ce5675047f19cd2e15a6a194b34e4d2ce
-generated: "2023-05-09T14:54:42.327324594Z"
+digest: sha256:0e856050133d2de002ad47991e433ccf6cc27726fc0b406fec9debdfe839f9bb
+generated: "2023-05-11T10:11:35.516648807Z"
