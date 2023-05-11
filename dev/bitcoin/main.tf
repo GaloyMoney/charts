@@ -25,7 +25,10 @@ resource "null_resource" "bitcoind_block_generator" {
     interpreter = ["sh", "-c"]
   }
 
-  depends_on = [helm_release.bitcoind]
+  depends_on = [
+    helm_release.bitcoind,
+    helm_release.bitcoind_onchain
+  ]
 }
 
 resource "kubernetes_secret" "bitcoind_smoketest" {
