@@ -19,6 +19,7 @@ bria:
       port: 2742
       staticIP: ""
       annotations: {}
+  labels: {}
   image:
     repository: us.gcr.io/galoy-org/bria
     digest: "sha256:d9fae726680560ac5f6f9f31d5a781d9261df26b123b70b5efa787b47d9f7091"
