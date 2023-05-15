@@ -9,7 +9,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
 securityContext:
   # capabilities:
   #   drop:
@@ -36,8 +35,8 @@ realtime:
   config: {}
   image:
     repository: us.gcr.io/galoy-org/price
-    digest: "sha256:f69ce5cd409254e5d37be1e5fc0d957545333d57bf7892a084cb6f3d6934bbea"
-    git_ref: "705dd6a"
+    digest: "sha256:25002fde85b6c3a7fa55640bbfc74ecd0eb67c5716e437f9d47ea997fe5e143c"
+    git_ref: "069740b"
   service:
     type: ClusterIP
     prometheus: 9464
@@ -46,17 +45,16 @@ realtime:
     prometheus.io/path: /metrics
     prometheus.io/port: "9464"
     prometheus.io/scrape: "true"
-
 history:
   valuesOverride: {}
   image:
     repository: us.gcr.io/galoy-org/price-history
-    digest: "sha256:dbd53f48e97e6b662da47fbe1f61ec8cd2044d122f4465bd7f2b2a45d98a5f9e"
+    digest: "sha256:7ab9e9b58ddf5cccddce381dcdebe6de944cf419b34af3dc895db447a17400c0"
   service:
     type: ClusterIP
     prometheus: 9464
     grpc: 50052
   migrateImage:
     repository: us.gcr.io/galoy-org/price-history-migrate
-    digest: sha256:a30f0f4375a60341151f1c7f3adcdf51879f202b834f18ded7db858b85c9b8cf
+    digest: sha256:864b3cd24d0fd06b107f360dfc3320377686e694f44e70718ec8c678c1888ac1
   postgresqlHost: postgresql
