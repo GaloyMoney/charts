@@ -35,6 +35,7 @@ bria:
   secrets:
     create: true
     pgCon: ""
+    signerEncryptionKey: ""
     annotations:
 postgresql:
   enabled: true
