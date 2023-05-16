@@ -55,6 +55,13 @@ jobs:
             CHART=fulcrum ./dev-smoketest-settings.sh && \
             ./fulcrum-smoketest.sh && \
             rm -rf smoketest-settings"
+      - name: Mempool Smoketest
+        run: |
+          pushd dev && source ./.envrc
+          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+            CHART=mempool ./dev-smoketest-settings.sh && \
+            ./mempool-smoketest.sh && \
+            rm -rf smoketest-settings"
       - name: Loop Smoketest
         run: |
           pushd dev && source ./.envrc
