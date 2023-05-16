@@ -6,9 +6,12 @@ bria:
     jaegerHost: localhost
     port: 6831
     serviceName: bria-dev
-  blockchain:
-    network: regtest
-    electrumUrl: fulcrum.default.svc.cluster.local
+  app: 
+    blockchain:
+      network: regtest
+      electrumUrl: fulcrum.default.svc.cluster.local
+  db: 
+    pool_size: 20
   admin:
     service:
       type: ClusterIP
