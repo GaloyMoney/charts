@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ template "mempool.fullname" . }}
+roleRef:
+  kind: Role
+  name: {{ template "mempool.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "mempool.fullname" . }}
+    namespace: {{ .Release.Namespace }}

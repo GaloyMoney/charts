@@ -1,0 +1,37 @@
+image:
+  repository: mempool/backend
+  pullPolicy: IfNotPresent
+  tag: v2.5.0
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+service:
+  type: ClusterIP
+  ports:
+    http: 8999
+
+resources: {}
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 2Gi
+
+bitcoindRpcHost: bitcoind
+bitcoindRpcPort: 8332
+bitcoindRpcUser: rpcuser
+bitcoindRpcPassSecretName: bitcoind-rpcpassword
+
+mariadb:
+  auth:
+    database: "mempool"
+    username: "mempool"
+    password: "mempool"
+  primary:
+    persistence:
+      enabled: true

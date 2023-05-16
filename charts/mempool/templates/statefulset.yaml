@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mempool.fullname" . }}
+  labels:
+    {{- include "mempool.labels" . | nindent 4 }}
+    kube-monkey/identifier: {{ .Release.Name }}
+    {{- if .Values.labels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: {{ include "mempool.fullname" . }}
+  terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+  selector:
+    matchLabels:
+      app: {{ template "mempool.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        {{- include "mempool.selectorLabels" . | nindent 8 }}
+        app: {{ template "mempool.fullname" . }}
+        release: "{{ .Release.Name }}"
+        allow-to-{{ .Values.bitcoindRpcHost }}: "true"
+    spec:
+      serviceAccountName: {{ template "mempool.fullname" . }}
+      containers:
+        - name: mempool-backend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          # options: https://github.com/mempool/mempool/blob/master/docker/backend/start.sh
+          - name: MEMPOOL_BACKEND
+            value: "none"
+          - name: CORE_RPC_HOST
+            value: "{{ .Values.bitcoindRpcHost }}"
+          - name: CORE_RPC_PORT
+            value: "{{ .Values.bitcoindRpcPort }}"
+          - name: CORE_RPC_USERNAME
+            value: "{{ .Values.bitcoindRpcUser }}"
+          - name: CORE_RPC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.bitcoindRpcPassSecretName }}
+                key: password
+          - name: DATABASE_HOST
+            value: "{{ include "mempool.fullname" . }}-mariadb"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.ports.http }}
+          startupProbe:
+            httpGet:
+              path: /api/v1/fees/recommended
+              port: http
+            failureThreshold: 10
+            periodSeconds: 2
+          readinessProbe:
+            httpGet:
+              path: /api/v1/fees/recommended
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            failureThreshold: 2
+          livenessProbe:
+            httpGet:
+              path: /api/v1/fees/recommended
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 2
+          # Define the resources to be created
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      # Define the volumes to be used by the container
+      volumes:
+        - name: mempool-storage
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "mempool.fullname" $) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
