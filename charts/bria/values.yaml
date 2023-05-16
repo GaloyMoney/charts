@@ -11,7 +11,7 @@ bria:
       network: regtest
       electrumUrl: fulcrum.default.svc.cluster.local
   db: 
-    pool_size: 20
+    poolSize: 20
   admin:
     service:
       type: ClusterIP
