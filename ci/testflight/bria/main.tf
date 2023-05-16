@@ -8,6 +8,7 @@ locals {
   smoketest_namespace  = "galoy-staging-smoketest"
   bitcoin_namespace    = "galoy-staging-bitcoin"
   testflight_namespace = var.testflight_namespace
+
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -33,8 +34,8 @@ resource "kubernetes_secret" "bria" {
 
   data = {
     pg-user-pw : random_password.postgresql.result
-    pg-con = "postgres://bria:${random_password.postgresql.result}@bria-postgresql:5432/bria"
-    signer-encryption-key = random_id.signer_encryption_key.hex
+    pg-con : "postgres://bria:${random_password.postgresql.result}@bria-postgresql:5432/bria"
+    signer-encryption-key : random_id.signer_encryption_key.hex
   }
 }
 
