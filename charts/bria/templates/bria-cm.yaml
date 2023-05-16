@@ -10,7 +10,7 @@ data:
         electrum_url: {{ .Values.bria.app.blockchain.electrumUrl }}
     db:
       migrate_on_start: true
-      pool_size: {{ .Values.bria.db.pool_size }}
+      pool_size: {{ .Values.bria.db.poolSize }}
     tracing:
       host: {{ .Values.bria.tracing.jaegerHost }}
       port: {{ .Values.bria.tracing.port }}
