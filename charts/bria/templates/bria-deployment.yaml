@@ -71,6 +71,11 @@ spec:
             secretKeyRef:
               name: {{ template "bria.fullname" . }}
               key: "pg-con"
+        - name: SIGNER_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "bria.fullname" . }}
+              key: "signer-encryption-key"
         - name: KUBE_NODE_NAME
           valueFrom:
             fieldRef:

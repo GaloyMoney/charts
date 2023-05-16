@@ -4,10 +4,13 @@ metadata:
   name: {{ include "bria.fullname" . }}-config
 data:
   bria.yml: |-
-    migrate_on_start: true
-    blockchain:
-      network: {{ .Values.bria.blockchain.network }}
-      electrum_url: {{ .Values.bria.blockchain.electrumUrl }}
+    app: 
+      blockchain:
+        network: {{ .Values.bria.app.blockchain.network }}
+        electrum_url: {{ .Values.bria.app.blockchain.electrumUrl }}
+    db:
+      migrate_on_start: true
+      pool_size: {{ .Values.bria.db.poolSize }}
     tracing:
       host: {{ .Values.bria.tracing.jaegerHost }}
       port: {{ .Values.bria.tracing.port }}
