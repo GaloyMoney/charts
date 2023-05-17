@@ -67,15 +67,6 @@ spec:
           # Define the resources to be created
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      # Define the volumes to be used by the container
-      volumes:
-        - name: mempool-storage
-        {{- if .Values.persistence.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "mempool.fullname" $) }}
-        {{- else }}
-          emptyDir: {}
-        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

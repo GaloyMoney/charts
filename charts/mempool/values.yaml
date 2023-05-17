@@ -8,11 +8,6 @@ service:
   ports:
     http: 8999
 
-persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 2Gi
-
 bitcoindRpcHost: bitcoind
 bitcoindRpcPort: 8332
 bitcoindRpcUser: rpcuser
