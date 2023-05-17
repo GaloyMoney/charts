@@ -48,20 +48,20 @@ spec:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            failureThreshold: 20
-            periodSeconds: 2
+            failureThreshold: 48 # 4min
+            periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            initialDelaySeconds: 20
+            initialDelaySeconds: 240 # 4min
             periodSeconds: 5
             failureThreshold: 2
           livenessProbe:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            initialDelaySeconds: 40
+            initialDelaySeconds: 250 # 4min 10sec
             periodSeconds: 10
             failureThreshold: 2
           # Define the resources to be created
