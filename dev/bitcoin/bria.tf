@@ -1,3 +1,7 @@
+resource "random_id" "signer_encryption_key" {
+  byte_length = 32
+}
+
 resource "kubernetes_secret" "bria_secrets" {
   metadata {
     name      = "bria"
@@ -5,7 +9,8 @@ resource "kubernetes_secret" "bria_secrets" {
   }
 
   data = {
-    "pg-con" = "postgres://bria:bria@bria-postgresql:5432/bria"
+    pg-con : "postgres://bria:bria@bria-postgresql:5432/bria"
+    signer-encryption-key : random_id.signer_encryption_key.hex
   }
 }
 
