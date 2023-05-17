@@ -3,19 +3,10 @@ image:
   pullPolicy: IfNotPresent
   tag: v2.5.0
 
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-
 service:
   type: ClusterIP
   ports:
     http: 8999
-
-resources: {}
 
 persistence:
   enabled: true

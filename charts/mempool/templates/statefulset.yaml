@@ -4,10 +4,6 @@ metadata:
   name: {{ include "mempool.fullname" . }}
   labels:
     {{- include "mempool.labels" . | nindent 4 }}
-    kube-monkey/identifier: {{ .Release.Name }}
-    {{- if .Values.labels }}
-    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
-    {{- end }}
 spec:
   serviceName: {{ include "mempool.fullname" . }}
   terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
@@ -24,7 +20,6 @@ spec:
         release: "{{ .Release.Name }}"
         allow-to-{{ .Values.bitcoindRpcHost }}: "true"
     spec:
-      serviceAccountName: {{ template "mempool.fullname" . }}
       containers:
         - name: mempool-backend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

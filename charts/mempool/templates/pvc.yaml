@@ -6,10 +6,7 @@ metadata:
   annotations:
     "helm.sh/resource-policy": keep
   labels:
-    app: "{{ .Chart.Name }}"
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    {{- include "mempool.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode | quote }}
