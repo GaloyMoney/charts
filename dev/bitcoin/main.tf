@@ -60,6 +60,17 @@ resource "kubernetes_secret" "fulcrum_smoketest" {
   }
 }
 
+resource "kubernetes_secret" "mempool_smoketest" {
+  metadata {
+    name      = "mempool-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {
+    mempool_endpoint = "mempool.${local.bitcoin_namespace}.svc.cluster.local"
+    mempool_port     = 8999
+  }
+}
+
 resource "kubernetes_secret" "lnd_smoketest" {
   metadata {
     name      = "lnd-smoketest"

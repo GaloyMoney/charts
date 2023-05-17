@@ -1,0 +1,14 @@
+image:
+  repository: mempool/backend
+  pullPolicy: IfNotPresent
+  tag: v2.5.0
+
+service:
+  type: ClusterIP
+  ports:
+    http: 8999
+
+bitcoindRpcHost: bitcoind
+bitcoindRpcPort: 8332
+bitcoindRpcUser: rpcuser
+bitcoindRpcPassSecretName: bitcoind-rpcpassword
