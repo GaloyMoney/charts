@@ -121,5 +121,5 @@ jobs:
       - name: Clean Up
         if: always()
         run: |
-          sudo rm -rf ci/tasks/smoketest-settings
+          rm -rf ci/tasks/smoketest-settings
           k3d cluster delete --all
