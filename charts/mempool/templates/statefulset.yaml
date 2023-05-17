@@ -33,6 +33,8 @@ spec:
           # options: https://github.com/mempool/mempool/blob/master/docker/backend/start.sh
           - name: MEMPOOL_BACKEND
             value: "none"
+          - name: DATABASE_ENABLED
+            value: "false"
           - name: CORE_RPC_HOST
             value: "{{ .Values.bitcoindRpcHost }}"
           - name: CORE_RPC_PORT
@@ -44,8 +46,6 @@ spec:
               secretKeyRef:
                 name: {{ .Values.bitcoindRpcPassSecretName }}
                 key: password
-          - name: DATABASE_HOST
-            value: "{{ include "mempool.fullname" . }}-mariadb"
           ports:
             - name: http
               containerPort: {{ .Values.service.ports.http }}

@@ -26,12 +26,3 @@ bitcoindRpcHost: bitcoind
 bitcoindRpcPort: 8332
 bitcoindRpcUser: rpcuser
 bitcoindRpcPassSecretName: bitcoind-rpcpassword
-
-mariadb:
-  auth:
-    database: "mempool"
-    username: "mempool"
-    password: "mempool"
-  primary:
-    persistence:
-      enabled: true

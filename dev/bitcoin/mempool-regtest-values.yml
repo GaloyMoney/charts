@@ -2,8 +2,3 @@ persistence:
   enabled: false
 
 bitcoindRpcPort: 18443
-
-mariadb:
-  primary:
-    persistence:
-      enabled: false
