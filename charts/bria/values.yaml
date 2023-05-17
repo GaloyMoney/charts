@@ -6,11 +6,11 @@ bria:
     jaegerHost: localhost
     port: 6831
     serviceName: bria-dev
-  app: 
+  app:
     blockchain:
       network: regtest
       electrumUrl: fulcrum.default.svc.cluster.local
-  db: 
+  db:
     poolSize: 20
   admin:
     service:
@@ -25,11 +25,11 @@ bria:
   labels: {}
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:9f1ad10029e6aabbe70a8dc1d8b2aa14d8f3b56507568b878a873183f514f455"
-    git_ref: "9c51a20"
+    digest: "sha256:2b9cb99a442b0902a1f1c99aec1edb1c37a8730b4c3c086ec987cb5330fd79a0"
+    git_ref: "11bee9b"
   provisionAdminSidecarImage:
     repository: us.gcr.io/galoy-org/bria-provision-admin-sidecar
-    digest: "sha256:bd625dfbfa476da267fb6266e7ae6931e466aad25b47255c372c6392625e01da"
+    digest: "sha256:69a784286040207934505ee10a5f9aa376f504af20d958d60dd818d1aa2a2978"
   replicas: 2
   annotations:
   secrets:
