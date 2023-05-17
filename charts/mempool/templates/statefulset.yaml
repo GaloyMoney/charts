@@ -18,7 +18,7 @@ spec:
         {{- include "mempool.selectorLabels" . | nindent 8 }}
         app: {{ template "mempool.fullname" . }}
         release: "{{ .Release.Name }}"
-        allow-to-{{ .Values.bitcoindRpcHost }}: "true"
+        allow-to-bitcoind: "true"
     spec:
       containers:
         - name: mempool-backend
@@ -48,7 +48,7 @@ spec:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            failureThreshold: 10
+            failureThreshold: 20
             periodSeconds: 2
           readinessProbe:
             httpGet:
@@ -61,7 +61,7 @@ spec:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            initialDelaySeconds: 20
+            initialDelaySeconds: 40
             periodSeconds: 10
             failureThreshold: 2
           # Define the resources to be created
