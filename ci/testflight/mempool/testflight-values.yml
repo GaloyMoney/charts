@@ -1,1 +1,2 @@
-bitcoindRpcPort: 18443
+bitcoindRpcHost: bitcoind.galoy-staging-bitcoin.svc.cluster.local
+bitcoindRpcPort: 38332
