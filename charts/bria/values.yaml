@@ -1,6 +1,7 @@
 fullnameOverride: ""
 nameOverride: ""
 bria:
+  resources: {}
   provisionAdmin: true
   tracing:
     jaegerHost: localhost

@@ -81,6 +81,8 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+        resources:
+        {{- toYaml .Values.bria.resources | nindent 10 }}
 
       {{ if .Values.bria.provisionAdmin }}
       - name: provision-admin-api-key
