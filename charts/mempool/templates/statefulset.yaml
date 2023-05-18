@@ -66,7 +66,7 @@ spec:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            initialDelaySeconds: 60 # 10min to allow sync from bitcoind
+            initialDelaySeconds: 72 # 12min to allow sync from bitcoind
             periodSeconds: 10
             failureThreshold: 2
           # Define the resources to be created
