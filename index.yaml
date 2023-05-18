@@ -3576,6 +3576,20 @@ entries:
   dealer:
     - apiVersion: v2
       appVersion: 0.1.60
+      created: "2023-05-18T19:23:21.067513456Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.3.0
+      description: A Helm chart for Kubernetes
+      digest: 0bcbfd3ad156f787d3d7d2c0cbad36af97375ab7ca98bdd5ab06da743dda2f0a
+      name: dealer
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/dealer-v0.1.36/dealer-0.1.36.tgz
+      version: 0.1.36
+    - apiVersion: v2
+      appVersion: 0.1.60
       created: "2023-05-15T11:02:51.379087502Z"
       dependencies:
         - name: common
@@ -15646,4 +15660,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bria-v0.1.0/bria-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-18T19:21:37.80582202Z"
+generated: "2023-05-18T19:23:21.067531433Z"
