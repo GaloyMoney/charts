@@ -22,7 +22,7 @@ spec:
         {{- include "fulcrum.selectorLabels" . | nindent 8 }}
         app: {{ template "fulcrum.fullname" . }}
         release: "{{ .Release.Name }}"
-        allow-to-{{ .Values.bitcoindRpcHost }}: "true"
+        allow-to-bitcoind-onchain: "true"
     spec:
       serviceAccountName: {{ template "fulcrum.fullname" . }}
       initContainers:
