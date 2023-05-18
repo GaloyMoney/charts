@@ -28,7 +28,7 @@ resource "kubernetes_secret" "testflight" {
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
-  data = data.kubernetes_secret.bitcoin_rpcpassword.data
+  data = data.kubernetes_secret.bitcoind_onchain_rpcpassword.data
 }
 
 resource "kubernetes_secret" "smoketest" {
