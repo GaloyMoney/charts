@@ -1,5 +1,5 @@
 persistence:
   enabled: false
 
-bitcoindRpcHost: bitcoind.galoy-staging-bitcoin.svc.cluster.local
+bitcoindRpcHost: bitcoind-onchain.galoy-staging-bitcoin.svc.cluster.local
 bitcoindRpcPort: 38332

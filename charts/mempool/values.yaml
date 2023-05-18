@@ -13,7 +13,7 @@ persistence:
   accessMode: ReadWriteOnce
   size: 1Gi
 
-bitcoindRpcHost: bitcoind
+bitcoindRpcHost: bitcoind-onchain
 bitcoindRpcPort: 8332
 bitcoindRpcUser: rpcuser
-bitcoindRpcPassSecretName: bitcoind-rpcpassword
+bitcoindRpcPassSecretName: bitcoind-onchain-rpcpassword
