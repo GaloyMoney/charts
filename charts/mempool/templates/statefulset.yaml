@@ -51,13 +51,13 @@ spec:
               mountPath: /cache
           startupProbe:
             httpGet:
-              path: /api/v1/mempool
+              path: /api/mempool
               port: http
             failureThreshold: 10
             periodSeconds: 2
           readinessProbe:
             httpGet:
-              path: /api/v1/mempool
+              path: /api/mempool
               port: http
             initialDelaySeconds: 20
             periodSeconds: 5
