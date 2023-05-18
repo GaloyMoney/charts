@@ -10,7 +10,7 @@ port=$(setting "mempool_port")
 set +e
 for i in {1..15}; do
   echo "Attempt ${i} to curl mempool"
-  curl -sSf ${host}:${port}/api/v1/fees/recommended | grep -P '"fastestFee":.*"halfHourFee":.*"hourFee":.*"economyFee":.*"minimumFee":'
+  curl -sSf ${host}:${port}/api/v1/mempool
   if [[ $? == 0 ]]; then
     success="true"
     break
