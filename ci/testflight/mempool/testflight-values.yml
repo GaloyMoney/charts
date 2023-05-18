@@ -1,2 +1,5 @@
-bitcoindRpcHost: bitcoind.galoy-staging-bitcoin.svc.cluster.local
+persistence:
+  enabled: false
+
+bitcoindRpcHost: bitcoind-onchain.galoy-staging-bitcoin.svc.cluster.local
 bitcoindRpcPort: 38332

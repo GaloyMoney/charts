@@ -18,7 +18,7 @@ spec:
         {{- include "mempool.selectorLabels" . | nindent 8 }}
         app: {{ template "mempool.fullname" . }}
         release: "{{ .Release.Name }}"
-        allow-to-bitcoind: "true"
+        allow-to-bitcoind-onchain: "true"
     spec:
       containers:
         - name: mempool-backend
@@ -26,6 +26,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           # options: https://github.com/mempool/mempool/blob/master/docker/backend/start.sh
+          - name: MEMPOOL_CACHE_DIR
+            value: "/cache"
           - name: MEMPOOL_BACKEND
             value: "none"
           - name: DATABASE_ENABLED
@@ -44,29 +46,41 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.service.ports.http }}
+          volumeMounts:
+            - name: mempool-cache
+              mountPath: /cache
           startupProbe:
             httpGet:
-              path: /api/v1/fees/recommended
+              path: /api/v1/mempool
               port: http
-            failureThreshold: 48 # 4min
-            periodSeconds: 5
+            failureThreshold: 10
+            periodSeconds: 2
           readinessProbe:
             httpGet:
-              path: /api/v1/fees/recommended
+              path: /api/v1/mempool
               port: http
-            initialDelaySeconds: 240 # 4min
+            initialDelaySeconds: 20
             periodSeconds: 5
             failureThreshold: 2
           livenessProbe:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            initialDelaySeconds: 250 # 4min 10sec
+            initialDelaySeconds: 60 # 10min to allow sync from bitcoind
             periodSeconds: 10
             failureThreshold: 2
           # Define the resources to be created
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      # Define the volumes to be used by the container
+      volumes:
+        - name: mempool-cache
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "mempool.fullname" $) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

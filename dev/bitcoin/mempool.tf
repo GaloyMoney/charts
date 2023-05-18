@@ -10,7 +10,7 @@ resource "helm_release" "mempool" {
   ]
 
   depends_on = [
-    kubernetes_secret.bitcoind,
-    helm_release.bitcoind
+    kubernetes_secret.bitcoind_onchain,
+    helm_release.bitcoind_onchain
   ]
 }

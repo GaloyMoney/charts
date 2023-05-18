@@ -8,7 +8,12 @@ service:
   ports:
     http: 8999
 
-bitcoindRpcHost: bitcoind
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+bitcoindRpcHost: bitcoind-onchain
 bitcoindRpcPort: 8332
 bitcoindRpcUser: rpcuser
-bitcoindRpcPassSecretName: bitcoind-rpcpassword
+bitcoindRpcPassSecretName: bitcoind-onchain-rpcpassword

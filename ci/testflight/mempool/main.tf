@@ -15,16 +15,16 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
-data "kubernetes_secret" "bitcoin_rpcpassword" {
+data "kubernetes_secret" "bitcoind_onchain_rpcpassword" {
   metadata {
-    name      = "bitcoind-rpcpassword"
+    name      = "bitcoind-onchain-rpcpassword"
     namespace = "galoy-staging-bitcoin"
   }
 }
 
 resource "kubernetes_secret" "testflight" {
   metadata {
-    name      = "bitcoind-rpcpassword"
+    name      = "bitcoind-onchain-rpcpassword"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
 
