@@ -3,17 +3,14 @@ grafana:
     enabled: true
   ingress:
     enabled: false
-
+  resources: {}
   deploymentStrategy:
     type: Recreate
-
   plugins:
     - https://github.com/doitintl/bigquery-grafana/archive/master.zip;doit-bigquery-datasource
-
   grafana.ini:
     plugins:
       allow_loading_unsigned_plugins: "doitintl-bigquery-datasource"
-
   datasources:
     datasources.yaml:
       apiVersion: 1
@@ -26,7 +23,6 @@ grafana:
 prometheus:
   alertmanager:
     enabled: false
-
   ## kube-state-metrics sub-chart configurable values
   ## Please see https://github.com/helm/charts/tree/master/stable/kube-state-metrics
   ##
@@ -39,7 +35,7 @@ prometheus:
   server:
     statefulSet:
       enabled: true
-
+    resources: {}
     retention: "365d"
 
   prometheus-pushgateway:
