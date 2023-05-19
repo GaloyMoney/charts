@@ -70,6 +70,8 @@ spec:
         - name: KRATOS_FEATURE_FLAG
           value: "true"
         {{- end }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
 {{- if .Values.webWallet.additionalEnvVars }}
 {{ toYaml .Values.webWallet.additionalEnvVars | indent 8 }}
 {{- end }}
