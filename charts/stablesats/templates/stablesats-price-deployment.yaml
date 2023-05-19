@@ -67,7 +67,7 @@ spec:
               apiVersion: v1
               fieldPath: spec.nodeName
         resources:
-          {{- toYaml .Values.priceDeployment.resources | nindent 10 }}
+          {{- toYaml .Values.stablesats.priceDeployment.resources | nindent 10 }}
       volumes:
       - name: config
         configMap:
