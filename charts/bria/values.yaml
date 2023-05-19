@@ -45,3 +45,4 @@ postgresql:
     username: bria
     password: bria
     database: bria
+resources: {}
