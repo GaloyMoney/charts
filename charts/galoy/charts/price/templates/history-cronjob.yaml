@@ -16,6 +16,8 @@ spec:
             image: "{{ .Values.history.image.repository }}@{{ .Values.history.image.digest }}"
             args:
             - "servers/history/cron.js"
+            resources:
+              {{ toYaml .Values.history.cron.resources | nindent 14 }}
             env:
             - name: DB_HOST
               value: {{ .Values.history.postgresqlHost }}
