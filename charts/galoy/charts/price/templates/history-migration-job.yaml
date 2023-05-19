@@ -9,6 +9,8 @@ spec:
       containers:
       - name: migrate
         image: "{{ .Values.history.migrateImage.repository }}@{{ .Values.history.migrateImage.digest }}"
+        resources:
+          {{ toYaml .Values.history.migrationJob.resources | nindent 10 }}
         env:
         - name: DB_HOST
           value: {{ .Values.history.postgresqlHost }}

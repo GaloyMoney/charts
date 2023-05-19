@@ -36,3 +36,4 @@ secrets:
   create: false
   ## cookieSession keys
   sessionKeys: "session-keys"
+resources: {}

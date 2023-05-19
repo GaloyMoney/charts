@@ -39,6 +39,8 @@ spec:
       containers:
       - name: mongodb-migrate
         image: "{{ .Values.galoy.images.mongodbMigrate.repository }}@{{ .Values.galoy.images.mongodbMigrate.digest }}"
+        resources:
+          {{ toYaml .Values.galoy.migrationJob.resources | nindent 10 }}
         env:
 {{ include "galoy.mongodb.env" . | indent 8 }}
       restartPolicy: Never

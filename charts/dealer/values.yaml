@@ -36,3 +36,4 @@ fakeGaloyApi:
   image:
     digest: sha256:3d7125a0b3996b8692197f9dd6ccf26b96a3267f165e1a1c0cc22deb914de703
     git_ref: "5138c7f"
+resources: {}

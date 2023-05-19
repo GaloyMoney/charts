@@ -10,3 +10,4 @@ service:
 adminPanel:
   graphqlUrl: http://localhost:4002/graphql
   galoyAuthEndpoint: http://localhost:4002/auth
+resources: {}

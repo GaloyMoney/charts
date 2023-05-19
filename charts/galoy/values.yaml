@@ -87,6 +87,8 @@ galoy:
     ## Service type
     ##
     serviceType: ClusterIP
+    ## Resource configuration
+    resources: {}
     ## Ingress configuration.
     ## Ref: https://kubernetes.io/docs/user-guide/ingress/
     ##
@@ -153,6 +155,8 @@ galoy:
     ## Service type
     ##
     serviceType: ClusterIP
+    ## Resource configuration
+    resources: {}
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -276,6 +280,8 @@ galoy:
     ## Port on which Exporter Server is running
     ##
     port: 3000
+    ## Resource configuration
+    resources: {}
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -295,8 +301,15 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  mongoBackupCron:
+    resources: {}
+  galoyCron:
+    resources: {}
   balanceNotificationCron:
+    resources: {}
     enabled: false
+  migrationJob:
+    resources: {}
   ## Kratos
   kratos:
     existingSecret:

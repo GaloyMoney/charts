@@ -55,13 +55,8 @@ spec:
         - "-r"
         - "/app/lib/services/tracing.js"
         - "lib/servers/exporter.js"
-
         resources:
-          requests:
-            cpu: 100m
-          limits:
-            cpu: 1000m
-
+          {{ toYaml .Values.resources | nindent 10 }}
         ports:
         - name: http
           containerPort: {{ .Values.galoy.exporter.port }}

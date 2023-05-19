@@ -39,7 +39,8 @@ spec:
             - "-r"
             - "/app/lib/services/tracing.js"
             - "lib/servers/cron.js"
-
+            resources:
+              {{ toYaml .Values.galoy.galoyCron.resources | nindent 14 }}
             env:
             - name: HELMREVISION
               value: {{ .Release.Revision | quote }}

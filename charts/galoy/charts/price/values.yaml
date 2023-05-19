@@ -58,3 +58,7 @@ history:
     repository: us.gcr.io/galoy-org/price-history-migrate
     digest: sha256:a621d98be4838e93193ada9a18fb7f155ec6f5d990b41f42da09c57cc1a9030c
   postgresqlHost: postgresql
+  cron:
+    resources: {}
+  migrationJob:
+    resources: {}

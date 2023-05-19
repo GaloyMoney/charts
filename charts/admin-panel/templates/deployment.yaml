@@ -31,3 +31,5 @@ spec:
           value: {{ .Values.adminPanel.graphqlUrl }}
         - name: NEXT_PUBLIC_GALOY_AUTH_ENDPOINT
           value: {{ .Values.adminPanel.galoyAuthEndpoint }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}

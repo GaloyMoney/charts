@@ -27,7 +27,8 @@ spec:
             - "/bin/sh"
             - "-c"
             - "/var/backup.sh"
-
+            resources:
+              {{ toYaml .Values.galoy.mongoBackupCron.resources | nindent 14 }}
             env:
             - name: NETWORK
               value: {{ .Values.galoy.network }}

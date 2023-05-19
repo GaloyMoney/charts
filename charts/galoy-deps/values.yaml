@@ -9,17 +9,16 @@ strimzi-kafka-operator:
   kafka:
     listener:
       type: cluster-ip
+  resources: {}
 
 kubemonkey:
   enabled: true
   fullnameOverride: kubemonkey
+  resources: {}
 
 opentelemetry-collector:
   enabled: true
-  resources:
-    limits:
-      cpu: 256m
-      memory: 512Mi
+  resources: {}
   mode: deployment
   config:
     exporters:
@@ -177,10 +176,12 @@ opentelemetry-collector:
 cert-manager:
   enabled: true
   installCRDs: true
+  resources: {}
 
 ingress-nginx:
   enabled: true
   controller:
+    resources: {}
     replicaCount: 2
     ingressClassResource:
       default: true

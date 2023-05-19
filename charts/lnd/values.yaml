@@ -20,10 +20,7 @@ podAnnotations:
   prometheus.io/port: "9092"
   prometheus.io/scrape: "true"
 terminationGracePeriodSeconds: 600
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
+resources: {}
 apiService:
   # On google cloud, static ip can be created using `gcloud compute addresses create`
   staticIP: ""

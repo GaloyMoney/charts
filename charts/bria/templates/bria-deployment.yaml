@@ -63,6 +63,8 @@ spec:
         - name: "config"
           mountPath: "/bria.yml"
           subPath: "bria.yml"
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
         env:
         - name: BRIA_CONFIG
           value: "/bria.yml"
