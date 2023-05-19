@@ -41,7 +41,7 @@ spec:
             - "/app/lib/services/tracing.js"
             - "lib/servers/daily-balance-notification.js"
             resources:
-              {{ toYaml .Values.resources | nindent 14 }}
+              {{ toYaml .Values.galoy.balanceNotificationCron.resources | nindent 14 }}
             env:
             - name: HELMREVISION
               value: {{ .Release.Revision | quote }}

@@ -301,8 +301,15 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  mongoBackupCron:
+    resources: {}
+  galoyCron:
+    resources: {}
   balanceNotificationCron:
+    resources: {}
     enabled: false
+  migrationJob:
+    resources: {}
   ## Kratos
   kratos:
     existingSecret:
