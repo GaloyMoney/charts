@@ -5,10 +5,12 @@ secrets:
   okexPassphrase: ""
   galoyPhoneCode: ""
 stablesats:
-  priceReplicas: 2
-  priceResources: {}
-  dealerReplicas: 1
-  dealerResources: {}
+  priceDeployment:
+    replicas: 2
+    resources: {}
+  dealerDeployment:
+    replicas: 0
+    resources: {}
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
     digest: "sha256:5acbf7b5e7ef3e71b0bf8915995d86c2273707926259c640d117cd40cd92d358"

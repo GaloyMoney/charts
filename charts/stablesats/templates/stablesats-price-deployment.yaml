@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: {{ template "stablesats.fullname" . }}-price
       release: {{ .Release.Name }}
-  replicas: {{ .Values.stablesats.priceReplicas }}
+  replicas: {{ .Values.stablesats.priceDeployment.replicas }}
   template:
     metadata:
       labels:
@@ -67,7 +67,7 @@ spec:
               apiVersion: v1
               fieldPath: spec.nodeName
         resources:
-          {{ toYaml .Values.priceResources | nindent 10 }}
+          {{ toYaml .Values.priceDeployment.resources | nindent 10 }}
       volumes:
       - name: config
         configMap:
