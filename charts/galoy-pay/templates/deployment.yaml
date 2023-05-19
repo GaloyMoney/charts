@@ -46,3 +46,5 @@ spec:
           value: {{.Values.redis.redis1Dns}}
         - name: REDIS_2_DNS
           value: {{.Values.redis.redis2Dns}}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}

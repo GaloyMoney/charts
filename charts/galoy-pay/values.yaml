@@ -20,3 +20,4 @@ redis:
   auth:
     existingSecret: galoy-redis-pw
     existingSecretPasswordKey: redis-password
+resources: {}
