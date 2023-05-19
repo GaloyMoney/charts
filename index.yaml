@@ -214,6 +214,26 @@ entries:
   lnd:
     - apiVersion: v2
       appVersion: 0.16.1
+      created: "2023-05-19T15:40:02.249714759Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.3.0
+      description: LND helm chart
+      digest: dd23e2fa7490f7f2cb133388da73110fa41ce97df3437246bf632f7c8b485787
+      keywords:
+        - lnd
+      maintainers:
+        - email: krtk6160@galoy.io
+          name: krtk6160
+        - email: nb@galoy.io
+          name: nicolasburtey
+      name: lnd
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.4.11/lnd-0.4.11.tgz
+      version: 0.4.11
+    - apiVersion: v2
+      appVersion: 0.16.1
       created: "2023-05-16T19:42:29.484641671Z"
       dependencies:
         - name: common
@@ -15704,4 +15724,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bria-v0.1.0/bria-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-19T15:18:40.624278322Z"
+generated: "2023-05-19T15:40:02.249741308Z"
