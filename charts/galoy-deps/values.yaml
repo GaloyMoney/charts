@@ -180,8 +180,8 @@ cert-manager:
 
 ingress-nginx:
   enabled: true
-  resources: {}
   controller:
+    resources: {}
     replicaCount: 2
     ingressClassResource:
       default: true
