@@ -13602,6 +13602,25 @@ entries:
       version: 0.1.0
   stablesats:
     - apiVersion: v2
+      appVersion: 0.9.7
+      created: "2023-05-19T15:18:40.624265749Z"
+      dependencies:
+        - condition: redis.enabled
+          name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 17.10.3
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.6
+      description: A Helm chart for Kubernetes
+      digest: 7e8ed98a8983724ee4724415ccb0c7d61d18955829e1c8fc7555764ca89e0870
+      name: stablesats
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.9.10/stablesats-0.9.10.tgz
+      version: 0.9.10
+    - apiVersion: v2
       appVersion: 0.9.6
       created: "2023-05-15T10:59:28.597725562Z"
       dependencies:
@@ -15685,4 +15704,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bria-v0.1.0/bria-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-18T19:26:46.724508048Z"
+generated: "2023-05-19T15:18:40.624278322Z"
