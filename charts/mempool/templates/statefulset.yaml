@@ -69,7 +69,6 @@ spec:
             initialDelaySeconds: 60 # 10min to allow sync from bitcoind
             periodSeconds: 10
             failureThreshold: 2
-          # Define the resources to be created
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       # Define the volumes to be used by the container
