@@ -9,7 +9,7 @@ stablesats:
     replicas: 2
     resources: {}
   dealerDeployment:
-    replicas: 0
+    replicas: 1
     resources: {}
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
