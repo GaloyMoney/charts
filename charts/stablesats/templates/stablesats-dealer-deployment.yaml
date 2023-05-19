@@ -93,6 +93,8 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
       volumes:
       - name: config
         configMap:

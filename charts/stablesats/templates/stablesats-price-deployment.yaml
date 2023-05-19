@@ -66,6 +66,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+        resources: {}
       volumes:
       - name: config
         configMap:
