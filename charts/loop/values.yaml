@@ -34,13 +34,9 @@ service:
   type: ClusterIP
   port:
     rest: 8081
-    grpc: 11010 
+    grpc: 11010
 
-resources:
-  limits:
-    cpu: 200m
-  requests:
-    cpu: 1m
+resources: {}
 
 nodeSelector: {}
 
