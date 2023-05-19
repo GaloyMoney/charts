@@ -89,6 +89,8 @@ spec:
             secretKeyRef:
               name: dealer-creds
               key: code
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
       volumes:
       - name: "custom-yaml"
         secret:
