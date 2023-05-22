@@ -1750,6 +1750,19 @@ entries:
   specter:
     - apiVersion: v2
       appVersion: 1.10.5
+      created: "2023-05-22T14:52:18.304117355Z"
+      description: A Helm chart for Kubernetes
+      digest: 23cce5e7386fc0e183a2ca507a9fd2b63be49b7a8e94b60378e6d052f95c2c5a
+      maintainers:
+        - email: dev@galoy.io
+          name: Galoy
+      name: specter
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/specter-v0.3.0/specter-0.3.0.tgz
+      version: 0.3.0
+    - apiVersion: v2
+      appVersion: 1.10.5
       created: "2022-11-21T08:16:18.943394809Z"
       description: A Helm chart for Kubernetes
       digest: d2c4be50ab8874f67e6e76e04410cca897e863b8c02a280e04f50c7c052f533e
@@ -15903,4 +15916,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bria-v0.1.0/bria-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-22T14:50:37.245688841Z"
+generated: "2023-05-22T14:52:18.304132022Z"
