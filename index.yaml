@@ -1501,6 +1501,20 @@ entries:
   rtl:
     - apiVersion: v2
       appVersion: 0.13.3
+      created: "2023-05-22T14:49:02.108832987Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.3.0
+      description: A Helm chart for Kubernetes
+      digest: 0cbe9c77c23d516e7e6292bb1710964db949f42b55afb8c005cdc38fd08276e3
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.1.15/rtl-0.1.15.tgz
+      version: 0.1.15
+    - apiVersion: v2
+      appVersion: 0.13.3
       created: "2023-05-16T19:44:31.826511629Z"
       dependencies:
         - name: common
@@ -15879,4 +15893,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bria-v0.1.0/bria-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-22T14:47:09.50811048Z"
+generated: "2023-05-22T14:49:02.108849935Z"
