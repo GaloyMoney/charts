@@ -1,0 +1,32 @@
+{{- if  .Values.galoy.api.autoscaling }}
+  {{- if .Values.galoy.api.autoscaling.maxReplicas }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+
+metadata:
+  name: {{ template "galoy.api.fullname" . }}
+  labels:
+    app: {{ template "galoy.api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+
+spec:
+  minReplicas: {{ .Values.galoy.api.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.galoy.api.autoscaling.maxReplicas }}
+  {{- if .Values.galoy.api.autoscaling.behavior }}
+  behavior: {{ toYaml .Values.galoy.api.autoscaling.behavior | indent 4 }}
+  {{- end }}
+  metrics:
+    {{- if .Values.galoy.api.autoscaling.builtInMetrics }}
+    {{ toYaml .Values.galoy.api.autoscaling.builtInMetrics | indent 4 }}
+    {{- end }}
+    {{- if .Values.galoy.api.autoscaling.customMetrics }}
+    {{ toYaml .Values.galoy.api.autoscaling.customMetrics | indent 4 }}
+    {{- end }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment 
+    name: {{ template "galoy.api.fullName" . }}
+  {{- end }}
+{{- end }}
