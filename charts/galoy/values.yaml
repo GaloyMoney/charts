@@ -600,6 +600,15 @@ oathkeeper:
       log:
         level: debug
       authenticators:
+        jwt:
+          enabled: true
+          config:
+            trusted_issuers:
+              - https://firebaseappcheck.googleapis.com/72279297366
+            target_audience:
+              - projects/72279297366
+            jwks_urls:
+              - https://firebaseappcheck.googleapis.com/v1beta/jwks
         bearer_token:
           enabled: true
           config:
@@ -626,11 +635,26 @@ oathkeeper:
       mutators:
         noop:
           enabled: true
+        hydrator:
+          enabled: true
+          config:
+            api:
+              url: http://api:4002/kratos/subjectToUserId
+              auth:
+                basic:
+                  username: oathkeeper
+                  password: callback_api_key
+              retry:
+                give_up_after: 2s
+                max_delay: 100ms
+            cache:
+              ttl: 60s
         id_token:
           enabled: true
           config:
             jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
             issuer_url: "galoy.io"
+            claims: '{"sub": "{{ print .Subject }}", "userId": "{{ print .Extra.userId }}"}'
       errors:
         fallback:
           - json
@@ -686,6 +710,14 @@ oathkeeper:
           },
           "authenticators": [
             {
+              "handler": "jwt",
+              "config": {
+                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/72279297366" ],
+                "target_audience": [ "projects/72279297366" ],
+                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ]
+              }
+            },
+            {
               "handler": "cookie_session",
               "config": {
                 "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
@@ -710,9 +742,30 @@ oathkeeper:
           "authorizer": { "handler": "allow" },
           "mutators": [
             {
+              "handler": "hydrator",
+              "config": {
+                "api": {
+                  "url": "http://api:4002/kratos/subjectToUserId",
+                  "auth": {
+                    "basic": {
+                      "username": "oathkeeper",
+                      "password": callback_api_key
+                    }
+                    "retry": {
+                      "give_up_after": "2s",
+                      "max_delay": "100ms"
+                    }
+                  }
+                },
+                "cache": {
+                  "ttl": "60s"
+                }
+              }
+            },
+            {
               "handler": "id_token",
               "config": {
-                "claims": "{\"sub\": \"{{ print .Subject }}\"}"
+                "claims": "{\"sub\": \"{{ print .Subject }}\", \"userId\": \"{{ print .Extra.userId }}\"}"
               }
             }
           ]
@@ -879,7 +932,7 @@ kratos:
                       method: POST
                       response:
                         parse: false
-                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ=="
+                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBkZXZpY2VJZDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZGV2aWNlSWQiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZGV2aWNlSWQgZWxzZSBudWxsLAogICAgZW1haWw6IGlmIHN0ZC5vYmplY3RIYXMoY3R4LmlkZW50aXR5LnRyYWl0cywgImVtYWlsIikgdGhlbiBjdHguaWRlbnRpdHkudHJhaXRzLmVtYWlsIGVsc2UgbnVsbCwKICAgIHNjaGVtYV9pZDogY3R4LmlkZW50aXR5LnNjaGVtYV9pZCwKICAgIGZsb3dfaWQ6IGN0eC5mbG93LmlkLAogICAgZmxvd190eXBlOiBjdHguZmxvdy50eXBlCn0="
                       auth:
                         type: api_key
                         config:
@@ -909,7 +962,7 @@ kratos:
                       url: http://invalid-because-we-dont-want-profile-to-be-updated
                       method: POST
                       can_interrupt: true
-                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ==
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBkZXZpY2VJZDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZGV2aWNlSWQiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZGV2aWNlSWQgZWxzZSBudWxsLAogICAgZW1haWw6IGlmIHN0ZC5vYmplY3RIYXMoY3R4LmlkZW50aXR5LnRyYWl0cywgImVtYWlsIikgdGhlbiBjdHguaWRlbnRpdHkudHJhaXRzLmVtYWlsIGVsc2UgbnVsbCwKICAgIHNjaGVtYV9pZDogY3R4LmlkZW50aXR5LnNjaGVtYV9pZCwKICAgIGZsb3dfaWQ6IGN0eC5mbG93LmlkLAogICAgZmxvd190eXBlOiBjdHguZmxvdy50eXBlCn0=
                       auth:
                         type: api_key
                         config:
