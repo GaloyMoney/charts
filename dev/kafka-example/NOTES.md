@@ -97,17 +97,16 @@ db.changelog.insertOne({
 })
 ```
 # create topics
-bash ./../bin/create-topic-manifests.sh
 ```
+bash ./../bin/create-topic-manifests.sh
 
 bootstrap type options:
 "internal", "route", "loadbalancer", "nodeport", "ingress", "cluster-ip"
 
-
 galoy-staging-kafka           kafka-kafka-plain-bootstrap             NodePort       192.168.106.211   <none>                 9092:31885/TCP  
 
-
 kubectl -n galoy-staging-kafka get pods
+```
 * add messages
 ```
 kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- \
@@ -177,12 +176,14 @@ watch kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh -
 
 
 ## Mongodb
+```
 mongoexport --host=127.0.0.1 --port=27019 --username=testGaloy --password=${galo_mongodb_password} --authenticationDatabase=galoy --db=galoy --collection=medici_journals --out=medici_journals.json
 
 mongodb://testGaloy:${galo_mongodb_password}@127.0.0.1:27018/?authSource=galoy&readPreference=primary&ssl=false&directConnection=true
-
+```
 
 ## extract mongodb collection schemas for bigquery
+```
 Collectons:
 medici_balances
 medici_journals
@@ -209,6 +210,7 @@ kubectl -n galoy-staging-kafka logs -f deployment/kafka-connect -f
 kubectl -n galoy-staging-kafka describe  kafkaconnector kafka-source-mongo-medici-balances
 
 kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --topic mongodb_galoy_medici_balances --from-beginning
+```
 
 Strimzi does not support any Schema Registry.
 https://stackoverflow.com/questions/47989233/how-to-install-schema-registry
