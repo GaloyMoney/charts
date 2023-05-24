@@ -120,10 +120,6 @@ bin/kafka-console-consumer.sh --bootstrap-server kafka-kafka-plain-bootstrap:909
 --topic mongodb-accounts --from-beginning
 ```
 
-staging:
-192.168.99.132:32569
-
-
 kubectl -n galoy-staging-kafka port-forward  svc/kafka-kafka-plain-bootstrap 32569
 
 https://github.com/strimzi/strimzi-kafka-operator/blob/main/install/topic-operator/04-Crd-kafkatopic.yaml
@@ -165,7 +161,7 @@ k -n galoy-dev-galoy port-forward svc/galoy-mongodb-headless 27017:27017
 # helpers
 ```
 kubectl -n galoy-dev-kafka logs -f deployment/kafka-connect -f
-atch kubectl -n galoy-dev-kafka get pods
+watch kubectl -n galoy-dev-kafka get pods
 k -n galoy-dev-kafka get  KafkaConnector -w
 make redeploy-kafka-connect
 kubectl -n galoy-dev-kafka describe  kafkaconnector kafka-sink-bigquery
@@ -215,3 +211,8 @@ kubectl -n galoy-staging-kafka exec -it kafka-kafka-0 -- bin/kafka-console-consu
 Strimzi does not support any Schema Registry.
 https://stackoverflow.com/questions/47989233/how-to-install-schema-registry
 https://docs.confluent.io/platform/current/schema-registry/installation/index.html#installing-and-configuring-sr
+
+List topics:
+kubectl -n galoy-dev-kafka exec -it kafka-kafka-0 -- bin/kafka-topics.sh --bootstrap-server kafka-kafka-plain-bootstrap:9092 --list
+
+kubectl -n galoy-dev-kafka describe  kafkaconnector kafka-source-postgres

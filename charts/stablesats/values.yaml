@@ -69,3 +69,6 @@ postgresql:
     username: stablesats
     password: stablesats
     database: stablesats
+  primary:
+    extendedConfiguration: |-
+      wal_level = logical

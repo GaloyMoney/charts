@@ -34,7 +34,7 @@ spec:
       #   --type=kubernetes.io/dockerconfigjson
       #kubectl -n galoy-dev-kafka get secret regcred --output=yaml
       type: docker
-      image: docker.io/openoms/strimzi-connect-mongo-postgres-bigquery:latest
+      image: docker.io/openoms/strimzi-connect-mongo-postgres-bigquery:0.0.2
       pushSecret: regcred
     plugins:
       - name: mongo-kafka-connector
@@ -47,13 +47,14 @@ spec:
       - name: postgres-kafka-connector
         #https://central.sonatype.com/artifact/io.debezium/debezium-connector-postgres
         artifacts:
-          - type: maven
-            group: io.debezium
-            artifact: debezium-connector-postgres
-            version: 2.2.1.Final
+          - type: tgz
+            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.2.1.Final/debezium-connector-postgres-2.2.1.Final-plugin.tar.gz
+        #  - type: maven
+        #    group: io.debezium
+        #    artifact: debezium-connector-postgres
+        #    version: 2.2.1.Final
       - name: bigquery-sink
         #https://central.sonatype.com/artifact/com.wepay.kcbq/kcbq-confluent
         artifacts:
           - type: zip
             url: https://repo1.maven.org/maven2/com/wepay/kcbq/kcbq-confluent/1.6.5/kcbq-confluent-1.6.5.zip
-

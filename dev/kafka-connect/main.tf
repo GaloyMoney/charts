@@ -63,7 +63,8 @@ resource "kubernetes_manifest" "kafka_connect" {
     }
     spec = {
       version          = "3.4.0"
-      image            = "index.docker.io/openoms/strimzi-connect-mongo-postgres-bigquery@sha256:5d9992106cb9c71057be3a79391f9cc0f60197a0e8a8386d0ca262a673fe09d6"
+      #image            = "docker.io/openoms/strimzi-connect-mongo-postgres-bigquery@sha256:5d9992106cb9c71057be3a79391f9cc0f60197a0e8a8386d0ca262a673fe09d6"
+      image            = "docker.io/openoms/strimzi-connect-mongo-postgres-bigquery@sha256:3e7b46022e4ee2ba3d3e8650d08b3c6e93b75085d946c61a162023c57da4b593"
       replicas         = 1
       bootstrapServers = "kafka-kafka-plain-bootstrap:9092"
       config = {

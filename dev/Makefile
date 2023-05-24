@@ -78,6 +78,15 @@ redeploy-monitoring:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
+redeploy-stablesats:
+	-kubectl delete namespace galoy-dev-stablesats --force
+	cd stablesats
+	$(TF) apply -var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev"\
+				-var="galoy_phone_code=111111" -var="galoy_phone_number=+59981730222" \
+	-var="okex_api_key=" -var="okex_passphrase=" \
+	-var="okex_secret_key=" -auto-approve
+
 redeploy-smoketest:
 	-kubectl delete namespace galoy-dev-smoketest --force
 	cd smoketest
