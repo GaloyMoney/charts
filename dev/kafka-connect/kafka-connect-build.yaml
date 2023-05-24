@@ -1,0 +1,59 @@
+# https://github.com/strimzi/strimzi-kafka-operator/blob/main/examples/connect/kafka-connect-build.yaml
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: kafka
+  namespace: galoy-dev-kafka
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 3.4.0
+  replicas: 1
+  bootstrapServers: kafka-kafka-tls-bootstrap:9093
+  tls:
+    trustedCertificates:
+      - secretName: kafka-cluster-ca-cert
+        certificate: ca.crt
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
+  build:
+    output:
+      ## Create Docker credentials:
+      ##https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+      #docker login
+      #cat ~/.docker/config.json
+      #kubectl -n galoy-dev-kafka create secret generic regcred \
+      #   --from-file=.dockerconfigjson=$HOME/.docker/config.json \
+      #   --type=kubernetes.io/dockerconfigjson
+      #kubectl -n galoy-dev-kafka get secret regcred --output=yaml
+      type: docker
+      image: docker.io/openoms/strimzi-connect-mongo-postgres-bigquery:latest
+      pushSecret: regcred
+    plugins:
+      - name: mongo-kafka-connector
+        #https://central.sonatype.com/artifact/org.mongodb.kafka/mongo-kafka-connect
+        artifacts:
+          - type: maven
+            group: org.mongodb.kafka
+            artifact: mongo-kafka-connect
+            version: 1.10.1
+      - name: postgres-kafka-connector
+        #https://central.sonatype.com/artifact/io.debezium/debezium-connector-postgres
+        artifacts:
+          - type: maven
+            group: io.debezium
+            artifact: debezium-connector-postgres
+            version: 2.2.1.Final
+      - name: bigquery-sink
+        #https://central.sonatype.com/artifact/com.wepay.kcbq/kcbq-confluent
+        artifacts:
+          - type: zip
+            url: https://repo1.maven.org/maven2/com/wepay/kcbq/kcbq-confluent/1.6.5/kcbq-confluent-1.6.5.zip
+

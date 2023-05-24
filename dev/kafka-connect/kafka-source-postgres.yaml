@@ -1,0 +1,35 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: kafka-source-postgres
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    tasks.max: 1
+    database.hostname: postgres
+    database.port: 5432
+    database.user: ${secrets:debezium-example/debezium-secret:username}
+    database.password: ${secrets:debezium-example/debezium-secret:password}
+    database.server.name: postgres
+    database.dbname: postgres
+    schema.include.list: inventory
+    config.action.reload: restart
+    # Only create publications for tables matching the filter above
+    publication.autocreate.mode: all_tables
+    database.history.kafka.bootstrap.servers: kafka-kafka-plain-bootstrap:9092
+    # Format settings
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: true
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: true
+    header.converter: org.apache.kafka.connect.json.JsonConverter
+    # Transformation: unwrap data to replicate the schema
+    transforms: unwrap
+    transforms.unwrap.add.fields: op,table,source.ts_ms
+    transforms.unwrap.delete.handling.mode: rewrite
+    transforms.unwrap.drop.tombstones: false
+    transforms.unwrap.type: io.debezium.transforms.ExtractNewRecordState
+    message.key.columns: inventory.no_pk:created_at

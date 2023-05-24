@@ -7,15 +7,6 @@ locals {
   #  mongodb_connection_uri = "mongodb://testGaloy:${local.mongodb_password}@galoy-mongodb-headless.${local.galoy_namespace}.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0"
 }
 
-terraform {
-  required_providers {
-    kafka = {
-      source  = "Mongey/kafka"
-      version = "0.5.2"
-    }
-  }
-}
-
 data "external" "kafka_bootstrap_ip" {
   program = ["${path.module}/bin/get_kafka_bootstrap_ip.sh"]
 }
@@ -44,7 +35,7 @@ locals {
 
 resource "kubernetes_secret" "kafka_sa_key_secret" {
   metadata {
-    name      = "kafka-sa-key-secret"
+    name      = "kafka-sa-creds"
     namespace = local.kafka_namespace
   }
 
@@ -55,37 +46,49 @@ resource "kubernetes_secret" "kafka_sa_key_secret" {
 
 
 ## CONNECT
+#resource "kubernetes_manifest" "kafka_connect_build" {
+#  manifest = yamldecode(file("${path.module}/kafka-connect-build.yaml"))
+#}
+
 resource "kubernetes_manifest" "kafka_connect" {
-  manifest = yamldecode(file("${path.module}/kafka-connect.yaml"))
+  manifest = {
+    apiVersion = "kafka.strimzi.io/v1beta2"
+    kind       = "KafkaConnect"
+    metadata = {
+      name      = "kafka"
+      namespace = local.kafka_namespace
+      annotations = {
+        "strimzi.io/use-connector-resources" = "true"
+      }
+    }
+    spec = {
+      version          = "3.4.0"
+      image            = "index.docker.io/openoms/strimzi-connect-mongo-postgres-bigquery@sha256:5d9992106cb9c71057be3a79391f9cc0f60197a0e8a8386d0ca262a673fe09d6"
+      replicas         = 1
+      bootstrapServers = "kafka-kafka-plain-bootstrap:9092"
+      config = {
+        "group.id"             = "connect-cluster"
+        "offset.storage.topic" = "connect-cluster-offsets"
+        "config.storage.topic" = "connect-cluster-configs"
+        "status.storage.topic" = "connect-cluster-status"
+        # -1 means it will use the default replication factor configured in the broker
+        "config.storage.replication.factor" = -1
+        "offset.storage.replication.factor" = -1
+        "status.storage.replication.factor" = -1
+      }
+      externalConfiguration = {
+        volumes = [
+          {
+            name = "kafka-sa-creds"
+            secret = {
+              secretName = "kafka-sa-creds"
+            }
+          }
+        ]
+      }
+    }
+  }
 }
-
-## TOPICS BY THE TERRAFORM PROVIDER
-
-resource "kafka_topic" "mongodb_galoy_medici_balances" {
-  name               = "mongodb_galoy_medici_balances"
-  partitions         = 1
-  replication_factor = 3
-}
-
-resource "kafka_topic" "mongodb_galoy_medici_journals" {
-  name               = "mongodb_galoy_medici_journals"
-  partitions         = 1
-  replication_factor = 3
-}
-
-
-resource "kafka_topic" "mongodb_galoy_medici_transaction_metadatas" {
-  name               = "mongodb_galoy_medici_transaction_metadatas"
-  partitions         = 1
-  replication_factor = 3
-}
-
-resource "kafka_topic" "mongodb_galoy_medici_transactions" {
-  name               = "mongodb_galoy_medici_transactions"
-  partitions         = 1
-  replication_factor = 3
-}
-
 
 ## SOURCE CONNECTORS
 #resource "kubernetes_manifest" "kafka_source_mongo_medici-balances" {
