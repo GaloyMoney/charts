@@ -9,7 +9,7 @@ strimzi-kafka-operator:
   kafka:
     listener:
       type: cluster-ip
-      resources: {}
+    resources: {}
   zookeeper:
     resources: {}
   resources: {}
