@@ -18,14 +18,14 @@ spec:
       {{- include "bitcoind.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
         checksum/config: {{ $checksum }}
         prometheus.io/path: /metrics
         prometheus.io/port: {{ $.Values.service.ports.metrics | quote }}
         prometheus.io/scrape: "true"
-    {{- end }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         {{- include "bitcoind.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
