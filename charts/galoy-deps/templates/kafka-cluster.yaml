@@ -27,7 +27,7 @@ spec:
     storage:
       type: ephemeral
     resources: 
-     {{ toYaml (index .Values "strimzi-kafka-operator" "kafka" "resources") | nindent 6 }}
+      {{ toYaml (index .Values "strimzi-kafka-operator" "kafka" "resources") | nindent 6 }}
   zookeeper:
     replicas: 3
     storage:
