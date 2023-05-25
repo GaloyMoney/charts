@@ -27,13 +27,13 @@ spec:
     storage:
       type: ephemeral
     resources: 
-      {{- toYaml .Values.strimzi-kafka-operator.kafka.resources | nindent 6 }}
+      {{ toYaml .Values.strimzi-kafka-operator.kafka.resources | nindent 6 }}
   zookeeper:
     replicas: 3
     storage:
       type: ephemeral
     resources: 
-      {{- toYaml .Values.strimzi-kafka-operator.zookeeper.resources | nindent 6 }}
+      {{ toYaml .Values.strimzi-kafka-operator.zookeeper.resources | nindent 6 }}
   entityOperator:
     userOperator: {}
 {{- end -}}
