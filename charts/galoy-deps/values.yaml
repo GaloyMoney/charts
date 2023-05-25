@@ -9,6 +9,9 @@ strimzi-kafka-operator:
   kafka:
     listener:
       type: cluster-ip
+    resources: {}
+  zookeeper:
+    resources: {}
   resources: {}
 
 kubemonkey:

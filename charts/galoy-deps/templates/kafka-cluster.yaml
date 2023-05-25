@@ -26,10 +26,14 @@ spec:
       log.retention.check.interval.ms: 300000 # 5 minutes
     storage:
       type: ephemeral
+    resources: 
+      {{ toYaml (index .Values "strimzi-kafka-operator" "kafka" "resources") | nindent 6 }}
   zookeeper:
     replicas: 3
     storage:
       type: ephemeral
+    resources: 
+      {{ toYaml (index .Values "strimzi-kafka-operator" "zookeeper" "resources") | nindent 6 }}
   entityOperator:
     userOperator: {}
 {{- end -}}
