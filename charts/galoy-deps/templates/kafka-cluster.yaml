@@ -24,6 +24,8 @@ spec:
       log.retention.hours: 72 # 3 days
       log.segment.bytes: 100000000 # 100 MB
       log.retention.check.interval.ms: 300000 # 5 minutes
+    resources:
+       {{ toYaml .Values.strimzi-kafka-operator.kafka.resources | nindent 10 }}
     storage:
       type: ephemeral
   zookeeper:
