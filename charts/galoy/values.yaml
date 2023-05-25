@@ -750,7 +750,7 @@ oathkeeper:
                     "basic": {
                       "username": "oathkeeper",
                       "password": callback_api_key
-                    }
+                    },
                     "retry": {
                       "give_up_after": "2s",
                       "max_delay": "100ms"
