@@ -125,6 +125,7 @@ podLabels: {}
 bitcoindGenericConfig:
 - debug=mempool
 - debug=rpc
+- shrinkdebugfile=1
 - server=1
 - txindex=1
 - printtoconsole=1
