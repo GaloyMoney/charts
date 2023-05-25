@@ -55,7 +55,7 @@ resource "kubernetes_manifest" "kafka-source-postgres" {
         "database.user": "stablesats", 
         "database.password": data.kubernetes_secret.stablesats.data["pg-user-pw"], 
         "database.dbname" : "stablesats", 
-        "topic.prefix": "fulfillment", 
+        "topic.prefix": "stablesats", 
         "table.include.list": "public.inventory" 
 
 #        "database_server_name"                     = "postgres"
