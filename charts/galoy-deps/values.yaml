@@ -13,7 +13,7 @@ strimzi-kafka-operator:
   zookeeper:
     resources: {}
   resources: {}
-  
+
 kubemonkey:
   enabled: true
   fullnameOverride: kubemonkey
