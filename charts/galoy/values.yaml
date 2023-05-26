@@ -36,6 +36,10 @@ galoy:
       hotWalletName: dev
       queueNames:
         fast: fast
+    appcheckConfig:
+      audience: projects/72279297366
+      issuer: https://firebaseappcheck.googleapis.com/72279297366
+      jwksUri: https://firebaseappcheck.googleapis.com/v1beta/jwks
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
@@ -644,11 +648,6 @@ oathkeeper:
                 basic:
                   username: oathkeeper
                   password: callback_api_key
-              retry:
-                give_up_after: 2s
-                max_delay: 100ms
-            cache:
-              ttl: 60s
         id_token:
           enabled: true
           config:
@@ -749,16 +748,9 @@ oathkeeper:
                   "auth": {
                     "basic": {
                       "username": "oathkeeper",
-                      "password": callback_api_key
-                    },
-                    "retry": {
-                      "give_up_after": "2s",
-                      "max_delay": "100ms"
+                      "password": "callback_api_key"
                     }
                   }
-                },
-                "cache": {
-                  "ttl": "60s"
                 }
               }
             },
@@ -961,7 +953,8 @@ kratos:
                       # url: http://api:4002/kratos/registration
                       url: http://invalid-because-we-dont-want-profile-to-be-updated
                       method: POST
-                      can_interrupt: true
+                      response:
+                        parse: false
                       body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBkZXZpY2VJZDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZGV2aWNlSWQiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZGV2aWNlSWQgZWxzZSBudWxsLAogICAgZW1haWw6IGlmIHN0ZC5vYmplY3RIYXMoY3R4LmlkZW50aXR5LnRyYWl0cywgImVtYWlsIikgdGhlbiBjdHguaWRlbnRpdHkudHJhaXRzLmVtYWlsIGVsc2UgbnVsbCwKICAgIHNjaGVtYV9pZDogY3R4LmlkZW50aXR5LnNjaGVtYV9pZCwKICAgIGZsb3dfaWQ6IGN0eC5mbG93LmlkLAogICAgZmxvd190eXBlOiBjdHguZmxvdy50eXBlCn0=
                       auth:
                         type: api_key
@@ -986,9 +979,11 @@ kratos:
       tracing: {}
       identity:
         schemas:
-          - id: phone_or_email_password_v0
+          - id: phone_no_password_v0
             url: file:///etc/config/identity.schema.json
-        default_schema_id: phone_or_email_password_v0
+          - id: device_account_v0
+            url: file:///etc/config/identity.schema.json
+        default_schema_id: phone_no_password_v0
       session:
         lifespan: "720h" # 1 month
         earliest_possible_extend: "96h" # 4 days
@@ -1033,6 +1028,20 @@ kratos:
                   "type": "string",
                   "format": "email",
                   "minLength": 3,
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    }
+                  }
+                },
+                "deviceId": {
+                  "type": "string",
+                  "format": "string",
+                  "title": "deviceId",
+                  "minLength": 10,
+                  "maxLength": 100,
                   "ory.sh/kratos": {
                     "credentials": {
                       "password": {
