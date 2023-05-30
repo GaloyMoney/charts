@@ -14,7 +14,7 @@ jobs:
         with:
           cluster-name: "k3s-default"
           args: >-
-            --image rancher/k3s:v1.23.14-k3s1
+            --image rancher/k3s:v1.24.13-k3s1
             -v "$(pwd):/charts"
             --k3s-arg --disable=traefik@server:0
             --k3s-arg --disable=servicelb@server:0
