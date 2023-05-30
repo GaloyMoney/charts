@@ -11,6 +11,9 @@ bria:
     blockchain:
       network: regtest
       electrumUrl: fulcrum.default.svc.cluster.local
+    fees:
+      mempoolSpace:
+        url: https://mempool.space
   db:
     poolSize: 20
   admin:
@@ -26,11 +29,11 @@ bria:
   labels: {}
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:a9917c3f1f68211a5280027f363dc73fe014bd6289a7488eeedf6e808ab45704"
-    git_ref: "b24ab01"
+    digest: "sha256:6f6b09259779aac5a5e90365807ca89abe28b33919203d2cfd71e883dfa1c81a"
+    git_ref: "4c2638a"
   provisionAdminSidecarImage:
     repository: us.gcr.io/galoy-org/bria-provision-admin-sidecar
-    digest: "sha256:50c8e41e9dea802791b8aeafdc4903fc3e05a2aa8626511f8c5f9413207ff9df"
+    digest: "sha256:72efdb416d8be8ba36c1955b019e14acc060168ef9e3e420e64d09fb0499b0ae"
   replicas: 2
   annotations:
   secrets:

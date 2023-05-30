@@ -83,6 +83,12 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+        startupProbe:
+          grpc:
+            port: {{ .Values.bria.api.service.port }}
+        livenessProbe:
+          grpc:
+            port: {{ .Values.bria.api.service.port }}
         resources:
         {{- toYaml .Values.bria.resources | nindent 10 }}
 

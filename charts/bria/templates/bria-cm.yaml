@@ -8,6 +8,9 @@ data:
       blockchain:
         network: {{ .Values.bria.app.blockchain.network }}
         electrum_url: {{ .Values.bria.app.blockchain.electrumUrl }}
+      fees:
+        mempool_space:
+          url: {{ .Values.bria.app.fees.mempoolSpace.url }}
     db:
       migrate_on_start: true
       pool_size: {{ .Values.bria.db.poolSize }}
