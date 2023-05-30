@@ -11,6 +11,9 @@ bria:
     blockchain:
       network: regtest
       electrumUrl: fulcrum.default.svc.cluster.local
+    fees:
+      mempoolSpace:
+        url: https://mempool.space
   db:
     poolSize: 20
   admin:
