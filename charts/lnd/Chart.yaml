@@ -14,4 +14,4 @@ engine: gotpl
 dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
-    version: 2.3.0
+    version: 2.4.0
