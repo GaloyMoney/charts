@@ -6,14 +6,14 @@ galoy:
     app:
       ## Has api, trigger and exporter
       ##
-      repository: ntheile/galoy-test:0.0.21
+      repository: ntheile/galoy-test:0.0.22
       ## Digest of the image
       ##
-      digest: "sha256:eb1860546da868196525e7090554b990945cf20f17b8ce04d8e9d3c86bfe7517"
+      digest: "sha256:6dd50200057f1d70556210b1027e4df15efc58a9cbbc9ec5c8b99839759c05fb"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "eb18605"
+      git_ref: "6dd502"
   config:
     apollo:
       playground: true
