@@ -31,8 +31,6 @@ spec:
         app: {{ template "galoy.exporter.fullname" . }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ template "galoy.exporter.fullname" . }}
-        allow-to-bitcoind: "true"
-
       annotations:
         prometheus.io/path: /metrics
         prometheus.io/port: {{ .Values.galoy.exporter.port | quote }}

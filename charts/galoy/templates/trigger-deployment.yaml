@@ -31,8 +31,6 @@ spec:
         app: {{ template "galoy.trigger.fullname" . }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ template "galoy.trigger.fullname" . }}
-        allow-to-bitcoind: "true"
-
     spec:
       serviceAccountName: {{ template "galoy.name" . }}
 

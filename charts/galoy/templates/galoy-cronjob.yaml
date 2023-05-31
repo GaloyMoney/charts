@@ -19,8 +19,6 @@ spec:
       template:
         metadata:
           labels:
-            allow-to-bitcoind: "true"
-
         spec:
           serviceAccountName: {{ template "galoy.name" . }}
           restartPolicy: OnFailure

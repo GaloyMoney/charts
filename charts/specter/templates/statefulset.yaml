@@ -17,7 +17,6 @@ spec:
     {{- end }}
       labels:
         {{- include "specter.selectorLabels" . | nindent 8 }}
-        allow-to-bitcoind: "true"
         network/allow-nginx-ingress: "true"
         network/allow-dns: "true"
     spec:
@@ -65,7 +64,7 @@ spec:
           - name: BTC_RPC_PORT
             value: "18443"
           - name: BTC_RPC_PROTOCOL
-            value: http            
+            value: http
       volumes:
         - name: data
         {{- if .Values.persistence.enabled }}
