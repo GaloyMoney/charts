@@ -407,13 +407,5 @@ terraform {
       source  = "bluemill/jose"
       version = "1.0.0"
     }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "4.66.0"
-    }
-    google = {
-      source  = "hashicorp/google"
-      version = "4.66.0"
-    }
   }
 }
