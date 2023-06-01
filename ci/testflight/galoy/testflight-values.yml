@@ -23,6 +23,9 @@ galoy:
   lnd2:
     dns: lnd2.galoy-staging-bitcoin.svc.cluster.local
 
+  bria:
+    host: bria.galoy-staging-bitcoin.svc.cluster.local
+
   dealer:
     host: dealer-price.galoy-staging-addons.svc.cluster.local
 
