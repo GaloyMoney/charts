@@ -15362,6 +15362,38 @@ entries:
   galoy-deps:
     - apiVersion: v2
       appVersion: 0.1.0
+      created: "2023-06-01T08:25:48.964659997Z"
+      dependencies:
+        - condition: cert-manager.enabled
+          name: cert-manager
+          repository: https://charts.jetstack.io
+          version: v1.11.1
+        - condition: ingress-nginx.enabled
+          name: ingress-nginx
+          repository: https://kubernetes.github.io/ingress-nginx
+          version: 4.6.1
+        - condition: strimzi-kafka-operator.enabled
+          name: strimzi-kafka-operator
+          repository: https://strimzi.io/charts/
+          version: 0.34.0
+        - alias: kubemonkey
+          condition: kubemonkey.enabled
+          name: kube-monkey
+          repository: https://asobti.github.io/kube-monkey/charts/repo
+          version: 1.5.2
+        - condition: opentelemetry-collector.enabled
+          name: opentelemetry-collector
+          repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+          version: 0.59.1
+      description: A Helm chart for Kubernetes
+      digest: 2d9f52c874e60fa2eeaaabc48154d4717459f6773e57c98877f95e881d7e3937
+      name: galoy-deps
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.1.24/galoy-deps-0.1.24.tgz
+      version: 0.1.24
+    - apiVersion: v2
+      appVersion: 0.1.0
       created: "2023-05-24T07:22:16.399009553Z"
       dependencies:
         - condition: cert-manager.enabled
@@ -16309,4 +16341,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/bria-v0.1.0/bria-0.1.0.tgz
       version: 0.1.0
-generated: "2023-05-31T14:36:51.504603053Z"
+generated: "2023-06-01T08:25:48.964675453Z"
