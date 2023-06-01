@@ -957,8 +957,6 @@ kratos:
         schemas:
           - id: phone_no_password_v0
             url: file:///etc/config/identity.schema.json
-          - id: device_account_v0
-            url: file:///etc/config/identity.schema.json
         default_schema_id: phone_no_password_v0
       session:
         lifespan: "720h" # 1 month
