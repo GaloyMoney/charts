@@ -47,11 +47,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:2a1bfa935e3277bd0fbe82a5ed7fe66d8383b665b161f1e63dc44e50a6565682"
+      digest: "sha256:cc8357471b649297483620f3090f3743d3c1fd5b59208010ef8d8083f7e74e6f"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "26306b7"
+      git_ref: "9c76883"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -60,7 +60,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:8efb266c5ac3be0ab7cd5eb6b970dfdaf8051abbc07c3d5412b33856ae375085"
+      digest: "sha256:1955cd05f1d3d6780f1d4a44e0c8ec9069e6968f2d2a9c51df1441e955d98503"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -399,14 +399,12 @@ galoy:
       name: bitcoind-rpcpassword
       ## Secret Key
       key: password
-
   bria:
     host: bria-api.default.svc.cluster.local
     port: 2742
     apiKeyExistingSecret:
       name: bria-api-key
       key: api-key
-
   ## Dealer Service Connection details
   ##
   dealer:
