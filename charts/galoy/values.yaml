@@ -308,7 +308,7 @@ galoy:
   balanceNotificationCron:
     resources: {}
     enabled: false
-  migrationJob:
+  mongoMigrationJob:
     resources: {}
   ## Kratos
   kratos:

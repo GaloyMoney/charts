@@ -51,7 +51,7 @@ spec:
         - "/app/lib/services/tracing.js"
         - "lib/servers/graphql-main-server.js"
         resources:
-          {{ toYaml .Values.resources | nindent 10 }}
+          {{ toYaml .Values.galoy.api.resources | nindent 10 }}
         ports:
         - name: api
           containerPort: {{ .Values.galoy.api.port }}

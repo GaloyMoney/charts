@@ -51,7 +51,7 @@ spec:
         - "/app/lib/services/tracing.js"
         - "lib/servers/trigger.js"
         resources:
-          {{ toYaml .Values.resources | nindent 10 }}
+          {{ toYaml .Values.galoy.trigger.resources | nindent 10 }}
         ports:
         - name: http
           containerPort: {{ .Values.galoy.trigger.port }}

@@ -56,7 +56,7 @@ spec:
         - "/app/lib/services/tracing.js"
         - "lib/servers/exporter.js"
         resources:
-          {{ toYaml .Values.resources | nindent 10 }}
+          {{ toYaml .Values.galoy.exporter.resources | nindent 10 }}
         ports:
         - name: http
           containerPort: {{ .Values.galoy.exporter.port }}
