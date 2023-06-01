@@ -41,17 +41,6 @@ resource "kubernetes_secret" "network" {
   data = data.kubernetes_secret.network.data
 }
 
-resource "kubernetes_secret" "bria" {
-  metadata {
-    name      = "bria-api-key"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = {
-    api-key = ""
-  }
-}
-
 resource "kubernetes_secret" "gcs_sa_key" {
   metadata {
     name      = "gcs-sa-key"
