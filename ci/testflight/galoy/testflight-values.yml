@@ -12,6 +12,8 @@ galoy:
   config:
     funder: "GaloyFunder"
     name: "Galoy Wallet"
+    bria:
+      hotWalletName: galoy-staging-hot
   
   bitcoind:
     dns: bitcoind.galoy-staging-bitcoin.svc.cluster.local
@@ -24,7 +26,7 @@ galoy:
     dns: lnd2.galoy-staging-bitcoin.svc.cluster.local
 
   bria:
-    host: bria.galoy-staging-bitcoin.svc.cluster.local
+    host: bria-api.galoy-staging-bitcoin.svc.cluster.local
 
   dealer:
     host: dealer-price.galoy-staging-addons.svc.cluster.local

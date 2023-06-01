@@ -236,6 +236,22 @@ resource "kubernetes_secret" "loop2_credentials" {
   data = data.kubernetes_secret.loop2_credentials.data
 }
 
+data "kubernetes_secret" "bria_credentials" {
+  metadata {
+    name      = "galoy-bria-creds"
+    namespace = local.bitcoin_namespace
+  }
+}
+
+resource "kubernetes_secret" "bria_credentials" {
+  metadata {
+    name      = "bria-api-key"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = data.kubernetes_secret.bria_credentials.data
+}
+
 resource "kubernetes_secret" "test_accounts" {
   metadata {
     name      = "test-accounts"

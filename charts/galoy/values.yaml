@@ -401,7 +401,7 @@ galoy:
       key: password
 
   bria:
-    host: bria.default.svc.cluster.local
+    host: bria-api.default.svc.cluster.local
     port: 2742
     apiKeyExistingSecret:
       name: bria-api-key
