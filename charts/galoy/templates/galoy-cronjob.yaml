@@ -68,6 +68,7 @@ spec:
 {{ include "galoy.bitcoind.env" . | indent 12 }}
 {{ include "galoy.lnd1.env" . | indent 12 }}
 {{ include "galoy.lnd2.env" . | indent 12 }}
+{{ include "galoy.bria.env" . | indent 12 }}
 
 {{ include "galoy.jwt.env" . | indent 12 }}
 

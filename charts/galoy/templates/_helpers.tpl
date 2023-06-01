@@ -195,6 +195,18 @@ Return Galoy environment variables for LND 2 configuration
 {{ end }}
 {{- end -}}
 
+{{- define "galoy.bria.env" -}}
+- name: BRIA_HOST
+  value: {{ .Values.galoy.bria.host | quote }}
+- name: BRIA_PORT
+  value: {{ .Values.galoy.bria.port | quote }}
+- name: BRIA_PROFILE_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.bria.apiKeyExistingSecret.name | quote }}
+      key: {{ .Values.galoy.bria.apiKeyExistingSecret.key | quote }}
+{{- end -}}
+
 {{/*
 Return Galoy environment variables for Redis configuration
 */}}

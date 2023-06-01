@@ -32,6 +32,10 @@ galoy:
     cronConfig:
       rebalanceEnabled: true
       swapEnabled: true
+    bria:
+      hotWalletName: dev
+      queueNames:
+        fast: fast
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
@@ -395,6 +399,14 @@ galoy:
       name: bitcoind-rpcpassword
       ## Secret Key
       key: password
+
+  bria:
+    host: bria.default.svc.cluster.local
+    port: 2742
+    apiKeyExistingSecret:
+      name: bria-api-key
+      key: api-key
+
   ## Dealer Service Connection details
   ##
   dealer:
@@ -553,6 +565,8 @@ secrets:
   lnd2LoopMacaroon:
   lnd2LoopTls:
   lnd2PubKey:
+  ## Secrets for Bria
+  briaApiKey:
   ## Secret for Galoy app
   kratosMasterUserPassword:
   kratosCallbackApiKey:

@@ -53,6 +53,17 @@ resource "kubernetes_secret" "jwt_secret" {
   }
 }
 
+resource "kubernetes_secret" "bria" {
+  metadata {
+    name      = "bria-api-key"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    key = ""
+  }
+}
+
 resource "kubernetes_secret" "gcs_sa_key" {
   metadata {
     name      = "gcs-sa-key"
