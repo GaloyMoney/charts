@@ -819,7 +819,22 @@ kratos:
     public:
       enabled: false
   replicaCount: 2
+  statefulset:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 75Mi
+      limits:
+        cpu: 30m
+        memory: 200Mi
   deployment:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 150Mi
+      limits:
+        cpu: 50m
+        memory: 250Mi
     livenessProbe:
       periodSeconds: 1
   kratos:
