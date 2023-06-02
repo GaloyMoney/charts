@@ -60,7 +60,7 @@ resource "kubernetes_secret" "bria" {
   }
 
   data = {
-    api-key = ""
+    api-key = "bria_dev_000000000000000000000"
   }
 }
 

@@ -24,9 +24,8 @@ resource "helm_release" "bria" {
   ]
 
   depends_on = [
-    helm_release.bitcoind,
+    helm_release.bitcoind_onchain,
     helm_release.fulcrum,
-    helm_release.lnd,
     kubernetes_secret.bria_secrets
   ]
 
