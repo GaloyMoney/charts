@@ -1,19 +1,5 @@
 galoy:
   network: regtest
-  images:
-    ## Galoy Application Image details
-    ##
-    app:
-      ## Has api, trigger and exporter
-      ##
-      repository: ntheile/galoy-test:0.0.25
-      ## Digest of the image
-      ##
-      digest: "sha256:b34a474a2521e6b1345f99868b69045d490229dc0b83406110d2e32e74c2be28"
-      ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
-      ## Reference for timestamping the corresponding docker image and used by internal CI.
-      ##
-      git_ref: "b34a474"
   config:
     apollo:
       playground: true
