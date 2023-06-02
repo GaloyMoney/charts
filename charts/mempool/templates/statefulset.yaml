@@ -18,7 +18,6 @@ spec:
         {{- include "mempool.selectorLabels" . | nindent 8 }}
         app: {{ template "mempool.fullname" . }}
         release: "{{ .Release.Name }}"
-        allow-to-bitcoind-onchain: "true"
     spec:
       containers:
         - name: mempool-backend

@@ -31,7 +31,6 @@ spec:
       {{- end }}
       labels:
         {{- include "lnd.selectorLabels" . | nindent 8 }}
-        allow-to-bitcoind: "true"
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ .Release.Name }}
