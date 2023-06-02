@@ -271,3 +271,15 @@ Return Galoy environment variables for JWT Secret
       name: {{ .Values.galoy.jwtSecretExistingSecret.name }}
       key: {{ .Values.galoy.jwtSecretExistingSecret.key }}
 {{- end -}}
+
+{{/*
+Return Galoy environment variables for App Check
+*/}}
+{{- define "galoy.appcheck.env" -}}
+- name: APPCHECK_AUDIENCE
+  value: {{ .Values.galoy.config.appcheckConfig.audience | quote }}
+- name: APPCHECK_ISSUER
+  value: {{ .Values.galoy.config.appcheckConfig.issuer | quote }}
+- name: APPCHECK_JWKSURI
+  value: {{ .Values.galoy.config.appcheckConfig.jwksUri | quote }}
+{{- end -}}
