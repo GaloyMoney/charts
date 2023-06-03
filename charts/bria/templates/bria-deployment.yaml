@@ -58,7 +58,16 @@ spec:
         args:
         - bria
         - daemon
+        {{ if .Values.bria.devDaemon.enabled }}
+        - dev
+        - -x
+        - tpubDDDDGYiFda8HfJRc2AHFJDxVzzEtBPrKsbh35EaW2UGd5qfzrF2G87ewAgeeRyHEz4iB3kvhAYW1sH6dpLepTkFUzAktumBN8AXeXWE9nd1
+        - -d
+        - m/84h/0h/0h
+        {{ else }}
         - run
+        {{ end }}
+
         volumeMounts:
         - name: "config"
           mountPath: "/bria.yml"
@@ -83,6 +92,10 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+        {{ if .Values.bria.devDaemon.enabled }}
+        - name: BITCOIND_SIGNER_ENDPOINT
+          value: {{ .Values.bria.devDaemon.bitcoindSignerHost }}
+        {{ end }}
         startupProbe:
           grpc:
             port: {{ .Values.bria.api.service.port }}
@@ -91,30 +104,6 @@ spec:
             port: {{ .Values.bria.api.service.port }}
         resources:
         {{- toYaml .Values.bria.resources | nindent 10 }}
-
-      {{ if .Values.bria.provisionAdmin }}
-      - name: provision-admin-api-key
-        image: "{{ .Values.bria.provisionAdminSidecarImage.repository }}@{{ .Values.bria.provisionAdminSidecarImage.digest }}"
-        command:
-        - "bash"
-        - "-c"
-        - |
-          sleep 5 # for bria daemon to be up
-          bria admin bootstrap
-
-          if [ -f ".bria/admin-api-key" ]; then
-            echo "Admin API Key exists, saving to kubernetes secret."
-
-            export BRIA_ADMIN_KEY=$(cat .bria/admin-api-key)
-            kubectl create secret generic {{ template "bria.fullname" . }}-admin-api-key --from-literal=admin-api-key=$BRIA_ADMIN_KEY
-          fi
-
-          while true; do sleep 2s; done
-        env:
-        - name: BRIA_ADMIN_API_URL
-          value: http://{{ template "bria.fullname" . }}-admin:{{ .Values.bria.admin.service.port }}
-      {{ end }}
-
       volumes:
       - name: config
         configMap:

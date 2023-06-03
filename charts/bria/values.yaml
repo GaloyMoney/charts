@@ -1,8 +1,10 @@
 fullnameOverride: ""
 nameOverride: ""
 bria:
+  devDaemon:
+    enabled: false
+    bitcoindSignerEndpoint: https://bitcoind-onchain.default.svc.cluster.local:18543
   resources: {}
-  provisionAdmin: true
   tracing:
     jaegerHost: localhost
     port: 6831
@@ -31,9 +33,6 @@ bria:
     repository: us.gcr.io/galoy-org/bria
     digest: "sha256:e42b35482a042c64af02911ddc959cd4624f313f6720703cf03f97336da1e1a2"
     git_ref: "7e9faf8"
-  provisionAdminSidecarImage:
-    repository: us.gcr.io/galoy-org/bria-provision-admin-sidecar
-    digest: "sha256:155fa7f3c30cbbd59df6e211b42da925690fc52312cd543d79ee4f6be8823a73"
   replicas: 2
   annotations:
   secrets:
