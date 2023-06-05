@@ -50,6 +50,7 @@ resource "kubernetes_secret" "kafka_sa_key_secret" {
 #  manifest = yamldecode(file("${path.module}/kafka-connect-build.yaml"))
 #}
 
+
 resource "kubernetes_manifest" "kafka_connect" {
   manifest = {
     apiVersion = "kafka.strimzi.io/v1beta2"
