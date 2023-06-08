@@ -88,6 +88,12 @@ opentelemetry-collector:
         - key: args
           action: update
           value: "<redacted>"
+        - key: graphql.variables.input.jwt
+          action: update
+          value: "<redacted>"
+        - key: code.function.params.jwt
+          action: update
+          value: "<redacted>"
       # If set to null, will be overridden with values based on k8s resource limits
       memory_limiter: null
       resourcedetection:

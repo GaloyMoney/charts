@@ -69,6 +69,7 @@ spec:
 {{ include "galoy.bria.env" . | indent 12 }}
 
 {{ include "galoy.jwt.env" . | indent 12 }}
+{{ include "galoy.appcheck.env" . | indent 12 }}
 
             {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
             - name: DROPBOX_ACCESS_TOKEN

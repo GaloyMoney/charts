@@ -85,6 +85,7 @@ spec:
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
 {{ include "galoy.jwt.env" . | indent 8 }}
+{{ include "galoy.appcheck.env" . | indent 8 }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.history.host | quote }}

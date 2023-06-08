@@ -36,6 +36,10 @@ galoy:
       hotWalletName: dev
       queueNames:
         fast: fast
+    appcheckConfig:
+      audience: projects/72279297366
+      issuer: https://firebaseappcheck.googleapis.com/72279297366
+      jwksUri: https://firebaseappcheck.googleapis.com/v1beta/jwks
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
@@ -600,6 +604,15 @@ oathkeeper:
       log:
         level: debug
       authenticators:
+        jwt:
+          enabled: true
+          config:
+            trusted_issuers:
+              - https://firebaseappcheck.googleapis.com/72279297366
+            target_audience:
+              - projects/72279297366
+            jwks_urls:
+              - https://firebaseappcheck.googleapis.com/v1beta/jwks
         bearer_token:
           enabled: true
           config:
@@ -685,6 +698,14 @@ oathkeeper:
             "methods": [ "POST" ]
           },
           "authenticators": [
+            {
+              "handler": "jwt",
+              "config": {
+                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/72279297366" ],
+                "target_audience": [ "projects/72279297366" ],
+                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ]
+              }
+            },
             {
               "handler": "cookie_session",
               "config": {
@@ -879,7 +900,7 @@ kratos:
                       method: POST
                       response:
                         parse: false
-                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ=="
+                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICB0cmFuc2llbnRfcGF5bG9hZDogaWYgc3RkLm9iamVjdEhhcyhjdHguZmxvdywgInRyYW5zaWVudF9wYXlsb2FkIikgdGhlbiBjdHguZmxvdy50cmFuc2llbnRfcGF5bG9hZCBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9"
                       auth:
                         type: api_key
                         config:
@@ -908,8 +929,9 @@ kratos:
                       # url: http://api:4002/kratos/registration
                       url: http://invalid-because-we-dont-want-profile-to-be-updated
                       method: POST
-                      can_interrupt: true
-                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBlbWFpbDogaWYgc3RkLm9iamVjdEhhcyhjdHguaWRlbnRpdHkudHJhaXRzLCAiZW1haWwiKSB0aGVuIGN0eC5pZGVudGl0eS50cmFpdHMuZW1haWwgZWxzZSBudWxsLAogICAgc2NoZW1hX2lkOiBjdHguaWRlbnRpdHkuc2NoZW1hX2lkLAogICAgZmxvd19pZDogY3R4LmZsb3cuaWQsCiAgICBmbG93X3R5cGU6IGN0eC5mbG93LnR5cGUKfQ==
+                      response:
+                        parse: false
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICB0cmFuc2llbnRfcGF5bG9hZDogaWYgc3RkLm9iamVjdEhhcyhjdHguZmxvdywgInRyYW5zaWVudF9wYXlsb2FkIikgdGhlbiBjdHguZmxvdy50cmFuc2llbnRfcGF5bG9hZCBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9
                       auth:
                         type: api_key
                         config:
@@ -933,9 +955,9 @@ kratos:
       tracing: {}
       identity:
         schemas:
-          - id: phone_or_email_password_v0
+          - id: phone_no_password_v0
             url: file:///etc/config/identity.schema.json
-        default_schema_id: phone_or_email_password_v0
+        default_schema_id: phone_no_password_v0
       session:
         lifespan: "720h" # 1 month
         earliest_possible_extend: "96h" # 4 days
@@ -991,6 +1013,10 @@ kratos:
               },
               "additionalProperties": false
             }
+          },
+          "transient_payload": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
     emailTemplates: {}
