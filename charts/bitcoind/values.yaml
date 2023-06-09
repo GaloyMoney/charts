@@ -143,3 +143,6 @@ bitcoindCustomConfig:
 descriptor:
   secretName: ""
   secretKey: ""
+
+startupProbe:
+  failureThreshold: 90

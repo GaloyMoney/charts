@@ -96,7 +96,7 @@ spec:
               - -{{.Values.global.network}}
               {{- end }}
               - getblockchaininfo
-            failureThreshold: 90
+            failureThreshold: {{.Values.startupProbe.failureThreshold}}
             periodSeconds: 10
           livenessProbe:
             exec:
