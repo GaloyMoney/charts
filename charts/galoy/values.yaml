@@ -809,8 +809,6 @@ kratos:
   secret:
     enabled: true
     nameOverride: ""
-  image:
-    tag: v0.13.0
   ingress:
     admin:
       enabled: false
