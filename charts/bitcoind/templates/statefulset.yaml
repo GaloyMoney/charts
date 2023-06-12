@@ -87,6 +87,17 @@ spec:
             - name: config
               mountPath: /data/.bitcoin/bitcoin.conf
               subPath: bitcoin.conf
+          startupProbe:
+            exec:
+              command:
+              - bitcoin-cli
+              - -conf=/data/.bitcoin/bitcoin.conf
+              {{- if ne .Values.global.network "mainnet" }}
+              - -{{.Values.global.network}}
+              {{- end }}
+              - getblockchaininfo
+            failureThreshold: {{.Values.startupProbe.failureThreshold}}
+            periodSeconds: 10
           livenessProbe:
             exec:
               command:
@@ -117,7 +128,7 @@ spec:
           command: ['/bin/sh']
           args:
           - '-c'
-          - | 
+          - |
             echo "# Waiting for bitcoind to finish syncing"
             while ! bitcoin-cli getblockchaininfo | grep '"initialblockdownload": false'; do
               sleep 30
