@@ -165,10 +165,11 @@ resource "kubernetes_manifest" "kafka_sink_bigquery" {
         "tasks.max" = 1
         "topics"    = "mongodb_galoy_medici_balances,mongodb_galoy_medici_journals,mongodb_galoy_medici_transaction_metadatas,mongodb_galoy_medici_transactions"
         "project"   = "galoy-reporting"
-        "datasets"  = ".*=dataform_galoy-staging"
+        "datasets"  = ".*=dataform_oms="
+        #"datasets"  = ".*=dataform_galoy-staging"
         #"keyfile"                              = "/etc/kafka-sa-key/keyfile.json"
-        #"keyfile"                              = base64decode(kubernetes_secret.kafka_sa_key_secret.data["keyfile"], sensitive = true)
-        "keyfile"                              = "/opt/kafka/external-configuration/kafka-sa-key-secret/keyfile",
+        "keyfile"                              = base64decode(kubernetes_secret.kafka_sa_key_secret.data["keyfile"], sensitive = true)
+        #"keyfile"                              = "/opt/kafka/external-configuration/kafka-sa-key-secret/keyfile",
         "keySource"                            = "FILE"
         "sanitizeTopics"                       = true
         "sanitizeFieldNames"                   = true
