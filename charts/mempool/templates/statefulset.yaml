@@ -52,22 +52,22 @@ spec:
             httpGet:
               path: /api/v1/mempool
               port: http
-            failureThreshold: 10
-            periodSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 30
           readinessProbe:
             httpGet:
               path: /api/v1/mempool
               port: http
             initialDelaySeconds: 20
             periodSeconds: 5
-            failureThreshold: 2
+            failureThreshold: 6
           livenessProbe:
             httpGet:
               path: /api/v1/fees/recommended
               port: http
-            initialDelaySeconds: 60 # 10min to allow sync from bitcoind
+            initialDelaySeconds: 300 # 5min to allow sync from bitcoind
             periodSeconds: 10
-            failureThreshold: 2
+            failureThreshold: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       # Define the volumes to be used by the container
