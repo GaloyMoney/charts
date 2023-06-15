@@ -15,4 +15,4 @@ gh pr create \
   --base ${BRANCH} \
   --head ${BOT_BRANCH} \
   --label galoybot \
-  --label helm
+  --label helm || true
