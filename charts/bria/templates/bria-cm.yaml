@@ -12,7 +12,7 @@ data:
         mempool_space:
           url: {{ .Values.bria.app.fees.mempoolSpace.url }}
       security:
-        blocked_addresses: {{ .Values.bria.app.security.blockedAddresses }}
+        blocked_addresses: {{ toYaml .Values.bria.app.security.blockedAddresses | nindent 8 }}
     db:
       migrate_on_start: true
       pool_size: {{ .Values.bria.db.poolSize }}
