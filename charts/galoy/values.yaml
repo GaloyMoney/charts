@@ -613,6 +613,8 @@ oathkeeper:
               - projects/72279297366
             jwks_urls:
               - https://firebaseappcheck.googleapis.com/v1beta/jwks
+            token_from:
+              header: Appcheck
         bearer_token:
           enabled: true
           config:
@@ -669,6 +671,31 @@ oathkeeper:
           "mutators": [{ "handler": "noop" }]
         },
         {
+          "id": "device-login-routes",
+          "upstream": {
+            "url": "http://api:4002"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/create/device-account",
+            "methods": ["POST"]
+          },
+          "authenticators": [
+            {
+              "handler": "jwt",
+              "config": {
+                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/72279297366" ],
+                "target_audience": [ "projects/72279297366" ],
+                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ],
+                "token_from": {
+                  "header": "Appcheck"
+                }
+              }
+            },
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
           "id": "apollo-playground-ui",
           "upstream": {
             "url": "http://api:4002"
@@ -698,14 +725,6 @@ oathkeeper:
             "methods": [ "POST" ]
           },
           "authenticators": [
-            {
-              "handler": "jwt",
-              "config": {
-                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/72279297366" ],
-                "target_audience": [ "projects/72279297366" ],
-                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ]
-              }
-            },
             {
               "handler": "cookie_session",
               "config": {
@@ -898,7 +917,7 @@ kratos:
                       method: POST
                       response:
                         parse: false
-                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICB0cmFuc2llbnRfcGF5bG9hZDogaWYgc3RkLm9iamVjdEhhcyhjdHguZmxvdywgInRyYW5zaWVudF9wYXlsb2FkIikgdGhlbiBjdHguZmxvdy50cmFuc2llbnRfcGF5bG9hZCBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9"
+                      body: "base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9"
                       auth:
                         type: api_key
                         config:
@@ -927,7 +946,7 @@ kratos:
                       # url: http://api:4002/kratos/registration
                       url: http://invalid-because-we-dont-want-profile-to-be-updated
                       method: POST
-                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICB0cmFuc2llbnRfcGF5bG9hZDogaWYgc3RkLm9iamVjdEhhcyhjdHguZmxvdywgInRyYW5zaWVudF9wYXlsb2FkIikgdGhlbiBjdHguZmxvdy50cmFuc2llbnRfcGF5bG9hZCBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9
                       auth:
                         type: api_key
                         config:
@@ -953,6 +972,8 @@ kratos:
         schemas:
           - id: phone_no_password_v0
             url: file:///etc/config/identity.schema.json
+          - id: username_password_deviceid_v0
+            url: file:///etc/config/username_password_deviceid_v0.identity.schema.json
         default_schema_id: phone_no_password_v0
       session:
         lifespan: "720h" # 1 month
@@ -1009,10 +1030,32 @@ kratos:
               },
               "additionalProperties": false
             }
-          },
-          "transient_payload": {
-            "type": "object",
-            "additionalProperties": true
+          }
+        }
+      "username_password_deviceid_v0.identity.schema.json": |
+        {
+          "$id": "https://schemas.ory.sh/presets/kratos/quickstart/username-password-deviceid/identity.schema.json",
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "UsernamePasswordDeviceId",
+          "type": "object",
+          "properties": {
+            "traits": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
     emailTemplates: {}
