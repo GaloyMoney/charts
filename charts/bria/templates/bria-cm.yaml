@@ -11,6 +11,8 @@ data:
       fees:
         mempool_space:
           url: {{ .Values.bria.app.fees.mempoolSpace.url }}
+      security:
+        blocked_addresses: {{ .Values.bria.app.security.blockedAddresses }}
     db:
       migrate_on_start: true
       pool_size: {{ .Values.bria.db.poolSize }}

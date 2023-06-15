@@ -16,6 +16,8 @@ bria:
     fees:
       mempoolSpace:
         url: https://mempool.space
+    security:
+      blockedAddresses: []
   db:
     poolSize: 20
   admin:
