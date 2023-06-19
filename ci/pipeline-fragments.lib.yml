@@ -16,6 +16,10 @@
 #@   return data.values.docker_registry + "/mongo-backup"
 #@ end
 
+#@ def kafka_connect_image():
+#@   return data.values.docker_registry + "/kafka-connect"
+#@ end
+
 #@ def task_image_config():
 type: registry-image
 source:

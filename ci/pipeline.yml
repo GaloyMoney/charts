@@ -82,6 +82,7 @@ groups:
   - bump-lnd-sidecar-image-in-chart
   - build-mongo-backup-image
   - bump-mongo-backup-image-in-chart
+  - build-kafka-connect-image
 
 jobs:
 #@ for chart in bitcoin_charts:
@@ -285,6 +286,30 @@ jobs:
       run:
         path: pipeline-tasks/ci/tasks/open-image-bump-pr.sh
 
+- name: build-kafka-connect-image
+  serial: true
+  plan:
+  - {get: kafka-connect-image-def, trigger: true}
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: kafka-connect-image-def
+      outputs:
+      - name: image
+      params:
+        CONTEXT: kafka-connect-image-def/images/kafka-connect
+      run:
+        path: build
+  - put: kafka-connect-image
+    params:
+      image: image/image.tar
+
 resources:
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
@@ -398,6 +423,22 @@ resources:
   source:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_mongo_backup_bot_branch
+    private_key: #@ data.values.github_private_key
+
+- name: kafka-connect-image
+  type: registry-image
+  source:
+    tag: latest
+    username: #@ data.values.docker_registry_user
+    password: #@ data.values.docker_registry_password
+    repository: #@ kafka_connect_image()
+
+- name: kafka-connect-image-def
+  type: git
+  source:
+    paths: [images/kafka-connect/Dockerfile]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
 resource_types:
