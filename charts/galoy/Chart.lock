@@ -1,7 +1,7 @@
 dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 17.11.4
+  version: 17.11.6
 - name: mongodb
   repository: https://charts.bitnami.com/bitnami
   version: 13.15.1
@@ -17,5 +17,5 @@ dependencies:
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.33.1
-digest: sha256:f8a484cd1a81fa147455cc87394342644ebe58de9a313ac02db35142edfc667e
-generated: "2023-06-14T08:34:23.453687134Z"
+digest: sha256:73ef48cc4a64ffdeb48f0b22e6a5838500abd205391b6f32b98ae4f97c97c240
+generated: "2023-06-20T13:46:19.337622154Z"
