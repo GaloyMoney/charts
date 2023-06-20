@@ -16,4 +16,14 @@ for i in {1..15}; do
 done
 set -e
 
+set +e
+for i in {1..15}; do
+  echo "Attempt ${i} to curl lnurlp endpoint"
+  response=$(curl --location -fs ${host}/.well-known/lnurlp/test)
+  is_response_valid=$(echo $response | jq -r 'has("callback") and has("minSendable") and has("maxSendable") and has("metadata") and has("tag")')
+  if [[ "$is_response_valid" == "true" ]]; then success="true"; break; fi;
+  sleep 1
+done
+set -e
+
 if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi;
