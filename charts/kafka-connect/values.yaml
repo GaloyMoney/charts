@@ -1,5 +1,6 @@
 image:
   repository: us.gcr.io/galoy-org/kafka-connect
   digest: "sha256:536348d31fdc138012a93b5ad54761c45075952e7c8d31508e629215e000de18"
+smoketestNameSpace: "galoy-dev-smoketest"
 secretName: ""
 resources: {}
