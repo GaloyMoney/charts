@@ -1,0 +1,51 @@
+{{- if .Values.galoy.websocket.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "galoy.websocket.fullname" . }}
+  labels:
+    app: {{ template "galoy.websocket.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.galoy.websocket.ingress.clusterIssuer }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "1s"
+    nginx.ingress.kubernetes.io/proxy-next-upstream: "error timeout"
+    nginx.ingress.kubernetes.io/proxy-next-upstream-tries: "3"
+    nginx.ingress.kubernetes.io/limit-rpm: "60"
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
+    nginx.ingress.kubernetes.io/limit-connections: "80"
+    nginx.ingress.kubernetes.io/auth-url: "http://galoy-oathkeeper-api.{{ .Release.Namespace }}.svc.cluster.local:4456/decisions"
+    nginx.ingress.kubernetes.io/auth-method: GET
+    nginx.ingress.kubernetes.io/auth-response-headers: "Authorization, orgauthorization, Set-Cookie"
+    nginx.ingress.kubernetes.io/auth-forward-cookie: "*"
+    nginx.ingress.kubernetes.io/auth-snippet: |
+      proxy_set_header X-Original-URL $request_uri;
+      proxy_set_header X-Forwarded-Method $request_method;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header X-Forwarded-Uri $request_uri;
+    {{- with .Values.galoy.websocket.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.galoy.websocket.ingress.host }}
+    secretName: {{ .Values.galoy.websocket.ingress.tlsSecretName }}
+  rules:
+  - host: {{ .Values.galoy.websocket.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: {{ template "galoy.websocket.fullname" . }}
+            port:
+              number: {{ .Values.galoy.websocket.port }}
+{{- end -}}

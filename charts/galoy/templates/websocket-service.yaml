@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "galoy.websocket.fullname" . }}
+  labels:
+    app: {{ template "galoy.websocket.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: {{ .Values.galoy.websocket.serviceType }}
+  ports:
+    - port: {{ .Values.galoy.websocket.port }}
+      targetPort: {{ .Values.galoy.websocket.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "galoy.websocket.fullname" . }}
