@@ -1,4 +1,3 @@
-# allow kafka-connect to be accessed from the smoketest namespace
 {{- if .Values.smoketestNameSpace }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
