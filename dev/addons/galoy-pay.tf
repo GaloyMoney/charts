@@ -14,8 +14,8 @@ resource "kubernetes_secret" "galoy_pay_smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    galoy_pay_endpoint = "galoy-pay.${local.addons_namespace}.svc.cluster.local"
-    galoy_pay_port     = 80
+    galoy_pay_endpoints = jsonencode(["galoy-pay.${local.addons_namespace}.svc.cluster.local"])
+    galoy_pay_port      = 80
   }
 }
 
