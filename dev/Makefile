@@ -116,6 +116,11 @@ run-galoy-smoketest:
     ./galoy-smoketest.sh && \
     rm -rf smoketest-settings response.json"
 
+run-kafka-connect-smoketest:
+	kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+    CHART=kafka-connect ./dev-smoketest-settings.sh && \
+    ./kafka-connect-smoketest.sh && \
+    rm -rf smoketest-settings response.json"
 
 fmt:
 	cd ..
