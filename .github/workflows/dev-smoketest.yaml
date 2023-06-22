@@ -3,6 +3,10 @@ on:
   pull_request:
     branches: [main]
 
+concurrency: 
+  group: dev-smoketest-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   smoketest:
     name: Hit smoketests against Charts in Dev Setup
