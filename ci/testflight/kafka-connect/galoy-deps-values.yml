@@ -1,5 +1,7 @@
 strimzi-kafka-operator:
-  createGlobalResources: false
+  kafka:
+    listener:
+      type: nodeport
 kubemonkey:
   enabled: false
 opentelemetry-collector:
