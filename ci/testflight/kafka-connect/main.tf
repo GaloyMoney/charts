@@ -26,9 +26,10 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
-resource "helm_release" "kafka" {
-  name      = "kafka"
-  chart     = "${path.module}/../../charts/galoy-deps"
+resource "helm_release" "galoy-deps" {
+  name       = "galoy-deps"
+  chart      = "${path.module}/chart"
+  repository = "https://galoymoney.github.io/charts/galoy-deps"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
