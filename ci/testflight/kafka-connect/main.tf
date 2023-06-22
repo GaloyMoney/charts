@@ -47,10 +47,6 @@ resource "helm_release" "kafka_connect" {
 
   dependency_update = true
 
-  values = [
-    file("${path.module}/testflight-values.yml")
-  ]
-
   depends_on = [
     helm_release.galoy_deps
   ]
