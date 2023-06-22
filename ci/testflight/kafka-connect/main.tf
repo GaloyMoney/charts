@@ -52,6 +52,8 @@ resource "helm_release" "kafka_connect" {
   ]
 }
 
+
+
 data "google_container_cluster" "primary" {
   project  = local.gcp_project
   name     = local.cluster_name

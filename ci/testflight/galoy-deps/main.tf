@@ -48,6 +48,9 @@ resource "kubernetes_secret" "smoketest" {
     smoketest_kubeconfig  = local.smoketest_kubeconfig
     smoketest_topic       = "${local.testflight_namespace}-smoketest"
     kafka_namespace       = local.testflight_namespace
+    
+    kafka_connect_api_host = "kafka-connect-api.${local.testflight_namespace}.svc.cluster.local"
+    kafka_connect_api_port = 8083
   }
 }
 

@@ -1,6 +1,0 @@
-apiVersion: v2
-name: kafka-connect
-description: A Helm chart for Kafka Connect
-type: application
-version: 0.1.0
-appVersion: 3.4.0
