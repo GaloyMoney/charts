@@ -1,7 +1,5 @@
 strimzi-kafka-operator:
-  kafka:
-    listener:
-      type: nodeport
+  generateNetworkPolicy: false
 kubemonkey:
   enabled: false
 opentelemetry-collector:
