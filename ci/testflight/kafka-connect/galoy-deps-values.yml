@@ -1,5 +1,3 @@
-strimzi-kafka-operator:
-  generateNetworkPolicy: false
 kubemonkey:
   enabled: false
 opentelemetry-collector:
