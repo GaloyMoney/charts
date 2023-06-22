@@ -40,6 +40,8 @@ source:
 #@   return chart + "-chart"
 #@ end
 
+#@ monitoring_charts = ["monitoring", "kafka-connect"]
+
 #@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter", "bria", "fulcrum", "mempool"]
 
 #@ addons_charts = ["admin-panel", "dealer", "galoy-pay", "web-wallet"]
