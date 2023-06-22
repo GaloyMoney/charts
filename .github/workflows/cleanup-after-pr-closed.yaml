@@ -1,0 +1,16 @@
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  cancel-runs:
+    name: 'Cleanup after PR closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cancel build runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          ignore_sha: true
+          workflow_id: dev-smoketest.yaml
