@@ -26,6 +26,16 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
+resource "helm_release" "kafka" {
+  name      = "galoy-deps"
+  chart     = "${path.module}/chart"
+  namespace = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    file("${path.module}/galoy-deps-values.yml")
+  ]
+}
+
 resource "helm_release" "kafka_connect" {
   name       = "kafka-connect"
   chart      = "${path.module}/chart"
@@ -35,6 +45,8 @@ resource "helm_release" "kafka_connect" {
   values = [
     file("${path.module}/testflight-values.yml")
   ]
+
+  depends_on = [helm_release.kafka]
 }
 
 data "google_container_cluster" "primary" {
