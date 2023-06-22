@@ -9,6 +9,7 @@ locals {
   bitcoin_namespace    = "galoy-staging-bitcoin"
   galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
+  graphql_hostname     = "api.${local.galoy_namespace}.svc.cluster.local"
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -35,7 +36,9 @@ resource "helm_release" "galoy_pay" {
 
   values = [
     templatefile("${path.module}/testflight-values.yml.tmpl", {
-      redis_namespace : "${local.galoy_namespace}"
+      redis_namespace : "${local.galoy_namespace}",
+      graphql_hostname : local.graphql_hostname,
+      graphql_hostname_internal : local.graphql_hostname,
     })
   ]
 }
