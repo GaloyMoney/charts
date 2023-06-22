@@ -26,7 +26,7 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
-resource "helm_release" "galoy-deps" {
+resource "helm_release" "galoy_deps" {
   name       = "galoy-deps"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
@@ -51,7 +51,7 @@ resource "helm_release" "kafka_connect" {
     file("${path.module}/testflight-values.yml")
   ]
 
-  depends_on = [helm_release.kafka]
+  depends_on = [helm_release.galoy_deps]
 }
 
 data "google_container_cluster" "primary" {
