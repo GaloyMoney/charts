@@ -29,7 +29,7 @@ resource "kubernetes_secret" "smoketest" {
 resource "helm_release" "kafka" {
   name      = "kafka"
   chart     = "${path.module}/../../charts/galoy-deps"
-  namespace = kubernetes_namespace.kafka.metadata[0].name
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
     file("${path.module}/galoy-deps-values.yml")
