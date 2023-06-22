@@ -127,3 +127,7 @@ review:
 delete:
 	kubectl delete namespace $(ns) --force
 
+helm-dep-updates:
+	for dir in $$(ls ../charts); do \
+		cd ../charts/$$dir && helm dependency update && cd -; \
+	done
