@@ -2,7 +2,6 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: kafka
-  namespace: {{ .Release.Namespace }}
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
@@ -19,7 +18,7 @@ spec:
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
   resources:
-    {{ toYaml (.Values.resources) | nindent 6 }}
+    {{ toYaml .Values.resources | nindent 6 }}
 {{- if .Values.secretName }}
   externalConfiguration:
     volumes:
