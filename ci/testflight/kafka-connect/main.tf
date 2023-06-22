@@ -26,16 +26,6 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
-resource "helm_release" "kafka" {
-  name      = "galoy-deps"
-  chart     = "${path.module}/chart"
-  namespace = kubernetes_namespace.testflight.metadata[0].name
-
-  values = [
-    file("${path.module}/galoy-deps-values.yml")
-  ]
-}
-
 resource "helm_release" "kafka_connect" {
   name       = "kafka-connect"
   chart      = "${path.module}/chart"
