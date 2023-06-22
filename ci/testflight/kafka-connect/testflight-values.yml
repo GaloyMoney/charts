@@ -1,1 +1,2 @@
+generateNetworkPolicy: false
 smoketestNameSpace: "galoy-staging-smoketest"
