@@ -6,7 +6,7 @@ git_lnd_sidecar_bot_branch: bot-bump-lnd-sidecar-image
 git_mongo_backup_bot_branch: bot-bump-mongo-backup-image
 git_org_uri: git@github.com:GaloyMoney
 git_uri: git@github.com:GaloyMoney/charts.git
-git_branch: main
+git_branch: kafka-connect-testflight
 gates_branch: cepler-gates
 github_private_key: ((github.private_key))
 github_token: ((github.api_token))

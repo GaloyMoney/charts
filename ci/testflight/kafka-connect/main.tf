@@ -35,6 +35,8 @@ resource "helm_release" "kafka_connect" {
   values = [
     file("${path.module}/testflight-values.yml")
   ]
+
+  dependency_update = true
 }
 
 data "google_container_cluster" "primary" {
