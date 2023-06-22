@@ -35,8 +35,6 @@ resource "helm_release" "kafka_connect" {
   values = [
     file("${path.module}/testflight-values.yml")
   ]
-
-  depends_on = [helm_release.kafka]
 }
 
 data "google_container_cluster" "primary" {
