@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: kafka-connect-egress
-#  namespace: {{ .Release.Namespace }} # assuming that kafka-connect is in this namespace
+  namespace: galoy-staging-kafka
 spec:
   podSelector:
     matchLabels:

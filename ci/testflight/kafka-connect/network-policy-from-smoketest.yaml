@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: kafka-connect-smoketest
-#  namespace: {{ .Release.Namespace }}
+  namespace: galoy-staging-kafka
 spec:
   podSelector:
     matchLabels:
