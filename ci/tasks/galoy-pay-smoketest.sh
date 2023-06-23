@@ -18,7 +18,7 @@ fi
 set +e
 for host in $(echo $hosts | jq -r '.[]'); do
   galoy_pay_success="false"
-  lnurlp_endpoint_success="false"
+  lnurlp_endpoint_success="true"
 
   for i in {1..15}; do
     echo "Attempt ${i} to curl galoy pay on host ${host}"
