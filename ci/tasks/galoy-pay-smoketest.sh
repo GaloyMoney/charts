@@ -8,7 +8,7 @@ hosts=`setting "galoy_pay_endpoints"`
 port=`setting "galoy_pay_port"`
 
 # Check if lnurl_check setting exists and set lnurl_check_disabled accordingly
-if [[ $(settings_exists "lnurl_check_disabled") == "null" ]]; then
+if [[ $(setting_exists "lnurl_check_disabled") == "null" ]]; then
   lnurl_check_disabled="false"
 else
   lnurl_check_disabled=`setting "lnurl_check_disabled"`
