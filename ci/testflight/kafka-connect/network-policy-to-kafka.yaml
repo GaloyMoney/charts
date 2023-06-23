@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kafka-connect-egress
+#  namespace: {{ .Release.Namespace }} # assuming that kafka-connect is in this namespace
+spec:
+  podSelector:
+    matchLabels:
+      strimzi.io/cluster: kafka
+      strimzi.io/kind: KafkaConnect
+      strimzi.io/name: kafka-connect
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          # This label should match the namespace galoy-staging-kafka
+          name: galoy-staging-kafka 
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: kafka
+          strimzi.io/cluster: kafka
+          strimzi.io/component-type: kafka
+          strimzi.io/name: kafka-kafka
+    ports:
+    - protocol: TCP
+      port: 9092
