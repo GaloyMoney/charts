@@ -110,7 +110,6 @@ EOF
     - get: helm-${dep}-resource
       trigger: true
     - get: charts-repo
-      trigger: true
     - get: pipeline-tasks
   - task: update-task
     config:
