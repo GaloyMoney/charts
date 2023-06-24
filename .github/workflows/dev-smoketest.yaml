@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
 
-concurrency: 
+concurrency:
   group: dev-smoketest-${{ github.head_ref }}
   cancel-in-progress: true
 
@@ -12,7 +12,7 @@ jobs:
     name: Hit smoketests against Charts in Dev Setup
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: AbsaOSS/k3d-action@v2
         name: "Create Single Cluster"
         with:
