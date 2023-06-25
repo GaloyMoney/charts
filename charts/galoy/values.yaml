@@ -575,9 +575,9 @@ secrets:
 ## Tracing details
 ##
 tracing:
-  ## Jaeger Tracing Host
+  ## Otlp Tracing Host
   ##
-  jaegerHost: localhost
+  otlpHost: localhost
   ## Prefix for tracing
   ##
   prefix: galoy-dev
