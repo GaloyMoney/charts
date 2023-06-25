@@ -50,8 +50,8 @@ spec:
             - name: NETWORK
               value: {{ .Values.galoy.network }}
 
-            - name: OTLP_HOST
-              value: {{ .Values.tracing.otlpHost | quote }}
+            - name: JAEGER_HOST
+              value: {{ .Values.tracing.jaegerHost | quote }}
             - name: TRACING_SERVICE_NAME
               value: "{{ .Values.tracing.prefix }}-{{ template "galoy.cron.jobname" . }}"
 
