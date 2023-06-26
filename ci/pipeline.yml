@@ -13,6 +13,7 @@
 #@   "bump_in_deployments_job_name",
 #@   "chart_resource_name",
 #@   "slack_resource",
+#@   "monitoring_charts",
 #@   "bitcoin_charts",
 #@   "addons_charts",
 #@   "task_image_config",
@@ -40,8 +41,10 @@ groups:
   - bump-galoy-in-deployments
 - name: monitoring
   jobs:
-  - monitoring-testflight
-  - bump-monitoring-in-deployments
+#@ for chart in monitoring_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
 - name: bitcoin
   jobs:
 #@ for chart in bitcoin_charts:
@@ -58,8 +61,10 @@ groups:
   jobs:
   - galoy-testflight
   - bump-galoy-in-deployments
-  - monitoring-testflight
-  - bump-monitoring-in-deployments
+#@ for chart in monitoring_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
 #@ for chart in bitcoin_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
@@ -86,6 +91,10 @@ groups:
   - build-kafka-connect-image
 
 jobs:
+#@ for chart in monitoring_charts:
+- #@ testflight_job(chart, "monitoring")
+- #@ bump_in_deployments_job(chart)
+#@ end
 #@ for chart in bitcoin_charts:
 - #@ testflight_job(chart, "bitcoin")
 - #@ bump_in_deployments_job(chart)
@@ -96,8 +105,6 @@ jobs:
 #@ end
 - #@ testflight_job("galoy", "galoy", galoy_chart_vars())
 - #@ bump_in_deployments_job("galoy")
-- #@ testflight_job("monitoring", "monitoring")
-- #@ bump_in_deployments_job("monitoring")
 - #@ testflight_job("stablesats", "stablesats", stablesats_chart_vars())
 - #@ bump_in_deployments_job("stablesats")
 - #@ testflight_job("galoy-deps", "galoy-deps", galoy_deps_chart_vars())
@@ -312,6 +319,12 @@ jobs:
       image: image/image.tar
 
 resources:
+#@ for chart in monitoring_charts:
+- #@ chart_repo_resource(chart)
+- #@ testflight_tf_resource(chart)
+#@ end
+- #@ slack_resource("monitoring")
+
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
@@ -327,10 +340,6 @@ resources:
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
 - #@ slack_resource("galoy")
-
-- #@ chart_repo_resource("monitoring")
-- #@ testflight_tf_resource("monitoring")
-- #@ slack_resource("monitoring")
 
 - #@ repo_resource("dealer")
 

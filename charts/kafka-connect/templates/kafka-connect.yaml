@@ -1,0 +1,32 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: kafka
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 3.4.0
+  image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+  replicas: 1
+  {{- if .Values.bootstrapNamespace }}
+  bootstrapServers: "kafka-kafka-plain-bootstrap.{{ .Values.bootstrapNamespace }}.svc.cluster.local:9092"
+  {{- else }}
+  bootstrapServers: "kafka-kafka-plain-bootstrap:9092"
+  {{- end }}
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
+  resources:
+    {{ toYaml .Values.resources | nindent 6 }}
+{{- if .Values.secretName }}
+  externalConfiguration:
+    volumes:
+      - name: kafka-sa-creds
+        secret:
+          secretName: {{ .Values.secretName }}
+{{- end }}

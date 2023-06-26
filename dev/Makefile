@@ -30,6 +30,9 @@ redeploy-kafka:
 	$(TF) apply -target=module.galoy_deps.helm_release.kafka \
 				-var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
+	$(TF) apply -target=module.kafka_connect.helm_release.kafka_connect \
+				-var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
 
 deploy:
 	$(TF) apply -var="bitcoin_network=regtest" \
@@ -113,6 +116,11 @@ run-galoy-smoketest:
     ./galoy-smoketest.sh && \
     rm -rf smoketest-settings response.json"
 
+run-kafka-connect-smoketest:
+	kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+    CHART=kafka-connect ./dev-smoketest-settings.sh && \
+    ./kafka-connect-smoketest.sh && \
+    rm -rf smoketest-settings response.json"
 
 fmt:
 	cd ..
