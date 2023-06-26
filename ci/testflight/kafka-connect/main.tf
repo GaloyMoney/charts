@@ -26,30 +26,17 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
-resource "helm_release" "galoy_deps" {
-  name       = "galoy-deps"
-  chart      = "${path.module}/chart"
-  repository = "https://galoymoney.github.io/charts/"
-  namespace  = kubernetes_namespace.testflight.metadata[0].name
-
-  values = [
-    file("${path.module}/galoy-deps-values.yml")
-  ]
-
-  dependency_update = true
-}
-
 resource "helm_release" "kafka_connect" {
   name       = "kafka-connect"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
-  dependency_update = true
-
-  depends_on = [
-    helm_release.galoy_deps
+  values = [
+    file("${path.module}/kafka-connect-values.yml")
   ]
+
+  dependency_update = true
 }
 
 data "google_container_cluster" "primary" {

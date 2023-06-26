@@ -1,8 +1,0 @@
-kubemonkey:
-  enabled: false
-opentelemetry-collector:
-  enabled: false
-cert-manager:
-  enabled: false
-ingress-nginx:
-  enabled: false
