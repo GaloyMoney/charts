@@ -8,7 +8,11 @@ spec:
   version: 3.4.0
   image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
   replicas: 1
-  bootstrapServers: {{ .Values.bootstrapServers }}
+  {{- if .Values.bootstrapNamespace }}
+  bootstrapServers: "kafka-kafka-plain-bootstrap.{{ .Values.bootstrapNamespace }}.svc.cluster.local:9092"
+  {{- else }}
+  bootstrapServers: "kafka-kafka-plain-bootstrap:9092"
+  {{- end }}
   config:
     group.id: connect-cluster
     offset.storage.topic: connect-cluster-offsets

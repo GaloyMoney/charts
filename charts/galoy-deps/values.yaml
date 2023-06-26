@@ -6,7 +6,6 @@ strimzi-kafka-operator:
   enabled: true
   nameOverride: kafka
   watchNamespaces: []
-  generateNetworkPolicy: false
   kafka:
     listener:
       type: cluster-ip

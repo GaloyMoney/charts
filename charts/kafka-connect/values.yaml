@@ -3,8 +3,11 @@ image:
   repository: us.gcr.io/galoy-org/kafka-connect
   digest: "sha256:536348d31fdc138012a93b5ad54761c45075952e7c8d31508e629215e000de18"
 
+## The pods from this namespace are allowed to access the Kafka Connect API
+smoketestNamespace: "galoy-dev-smoketest"
+
 # Edit when connecting to a Kafka cluster in a different namespace
-bootstrapServers: "kafka-kafka-bootstrap:9092"
+bootstrapNamespace: ""
 
 ## The contents of secret can be used by the Kafka connectors running in the pod
 ## Mounted to: /opt/kafka/external-configuration/<secretName>/<data.value>

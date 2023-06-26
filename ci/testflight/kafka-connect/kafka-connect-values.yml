@@ -1,1 +1,2 @@
-bootstrapServers: "kafka-kafka-bootstrap.galoy-staging-kafka.svc.cluster.local:9092"
+smoketestNamespace: "galoy-staging-smoketest"
+bootstrapNamespace: "galoy-staging-kafka"
