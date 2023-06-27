@@ -1,13 +1,13 @@
 ## The image is built with the Dockerfile in /images/kafka-connect
 image:
   repository: us.gcr.io/galoy-org/kafka-connect
-  digest: "sha256:536348d31fdc138012a93b5ad54761c45075952e7c8d31508e629215e000de18"
+  digest: sha256:536348d31fdc138012a93b5ad54761c45075952e7c8d31508e629215e000de18
+
+# Change to allow multiple kafka-connect instances
+metadataName: kafka
 
 ## The pods from this namespace are allowed to access the Kafka Connect API
-smoketestNamespace: "galoy-dev-smoketest"
-
-# Edit when connecting to a Kafka cluster in a different namespace
-bootstrapNamespace: ""
+smoketestNamespace: galoy-dev-smoketest
 
 ## The contents of secret can be used by the Kafka connectors running in the pod
 ## Mounted to: /opt/kafka/external-configuration/<secretName>/<data.value>
