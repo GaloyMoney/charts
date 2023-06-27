@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
-  name: {{ .Values.metadataName }}
+  name: {{ .Values.kafkaConnectInstanceName }}
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
