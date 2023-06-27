@@ -5,7 +5,7 @@ variable "name_prefix" {
 locals {
   kafka_namespace     = "${var.name_prefix}-kafka"
   smoketest_namespace = "${var.name_prefix}-smoketest"
-  testflight_kafka    = "testflight-kafka"
+  testflight_kafka    = "testflight458736"
 }
 
 resource "kubernetes_secret" "kafka_connect_smoketest" {
@@ -14,7 +14,7 @@ resource "kubernetes_secret" "kafka_connect_smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    kafka_connect_api_host = "testflight-kafka-connect-api.${local.kafka_namespace}.svc.cluster.local"
+    kafka_connect_api_host = "${local.testflight_kafka}-kafka-connect-api.${local.kafka_namespace}.svc.cluster.local"
     kafka_connect_api_port = 8083
   }
 }
@@ -33,7 +33,9 @@ resource "helm_release" "kafka_connect_test" {
   namespace = local.kafka_namespace
 
   values = [
-    file("${path.module}/kafka-values.yml")
+    templatefile("${path.module}/kafka-values.yml.tmpl", {
+      metadata_name = "${local.testflight_kafka}-kafka"
+    })
   ]
 
   dependency_update = true
