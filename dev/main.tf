@@ -26,10 +26,12 @@ module "kafka_connect" {
   name_prefix = local.name_prefix
 
   depends_on = [
-    module.galoy_deps
+    module.galoy_deps,
+    module.infra_services
   ]
 }
 
+/*
 module "bitcoin" {
   source = "./bitcoin"
 
@@ -67,7 +69,7 @@ module "addons" {
     module.galoy
   ]
 }
-
+*/
 module "smoketest" {
   source = "./smoketest"
 
