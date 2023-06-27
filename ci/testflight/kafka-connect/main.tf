@@ -6,6 +6,7 @@ locals {
   gcp_project      = "galoy-staging"
 
   kafka_namespace      = "galoy-staging-kafka"
+  kafka_namespace      = "galoy-staging-kafka"
   smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
@@ -33,9 +34,9 @@ resource "helm_release" "kafka_connect" {
   repository = "https://galoymoney.github.io/charts/"
   namespace  = local.kafka_namespace
 
-  templatevalues = [
-    file("${path.module}/testflight-values.yml.tmpl", {
-      metada_name : "${local.testflight_namespace}-kafka"
+  values = [
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
+      metadata_name : "${local.testflight_namespace}-kafka",
       smoketest_namespace : local.smoketest_namespace
     })
   ]
