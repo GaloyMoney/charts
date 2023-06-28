@@ -345,7 +345,7 @@ galoy:
       enabled: false
       ## Ingress Host
       ##
-      host: websocket.staging.galoy.io
+      hosts: [ws.staging.galoy.io]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
