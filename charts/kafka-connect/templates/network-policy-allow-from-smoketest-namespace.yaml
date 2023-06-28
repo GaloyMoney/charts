@@ -7,7 +7,6 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/cluster: {{ .Values.kafkaConnectInstanceName }}
       strimzi.io/kind: KafkaConnect
       strimzi.io/name: {{ .Values.kafkaConnectInstanceName }}-connect
   policyTypes:
