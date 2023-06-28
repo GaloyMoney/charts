@@ -1,4 +1,4 @@
-{{- if .Values.smoketestNamespace }}
+{{- if .Values.allowedNamespace }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -15,7 +15,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: {{ .Values.smoketestNamespace }}
+          kubernetes.io/metadata.name: {{ .Values.allowedNamespace }}
     ports:
     - protocol: TCP
       port: 8083

@@ -7,7 +7,7 @@ image:
 kafkaConnectInstanceName: kafka
 
 ## The pods from this namespace are allowed to access the Kafka Connect API
-smoketestNamespace: galoy-dev-smoketest
+allowedNamespace: ""
 
 ## The contents of secret can be used by the Kafka connectors running in the pod
 ## Mounted to: /opt/kafka/external-configuration/<secretName>/<data.value>
