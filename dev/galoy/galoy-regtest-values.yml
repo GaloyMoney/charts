@@ -42,7 +42,7 @@ galoy:
   admin:
     ingress:
       enabled: true
-      host: localhost
+      hosts: [localhost]
       annotations:
         nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /$1
