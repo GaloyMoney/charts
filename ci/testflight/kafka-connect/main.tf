@@ -28,7 +28,7 @@ resource "kubernetes_secret" "smoketest" {
 }
 
 resource "helm_release" "kafka_connect" {
-  name       = "kafka-connect"
+  name       = local.testflight_namespace
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = local.kafka_namespace
