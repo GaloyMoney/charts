@@ -1,22 +1,21 @@
-{{- if .Values.smoketestNamespace }}
+{{- if .Values.allowedNamespace }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: kafka-connect-allow-from-smoketest-namespace
+  name: "{{ .Values.kafkaConnectInstanceName }}-connect-allow-from-smoketest-namespace"
   namespace: {{ .Release.Namespace }}
 spec:
   podSelector:
     matchLabels:
-      strimzi.io/cluster: kafka
       strimzi.io/kind: KafkaConnect
-      strimzi.io/name: kafka-connect
+      strimzi.io/name: {{ .Values.kafkaConnectInstanceName }}-connect
   policyTypes:
   - Ingress
   ingress:
   - from:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: {{ .Values.smoketestNamespace }}
+          kubernetes.io/metadata.name: {{ .Values.allowedNamespace }}
     ports:
     - protocol: TCP
       port: 8083

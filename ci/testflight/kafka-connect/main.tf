@@ -5,6 +5,7 @@ locals {
   cluster_location = "us-east1"
   gcp_project      = "galoy-staging"
 
+  kafka_namespace      = "galoy-staging-kafka"
   smoketest_namespace  = "galoy-staging-smoketest"
   testflight_namespace = var.testflight_namespace
 }
@@ -21,7 +22,7 @@ resource "kubernetes_secret" "smoketest" {
     namespace = local.smoketest_namespace
   }
   data = {
-    kafka_connect_api_host = "kafka-connect-api.${local.testflight_namespace}.svc.cluster.local"
+    kafka_connect_api_host = "${local.testflight_namespace}-kafka-connect-api.${local.kafka_namespace}.svc.cluster.local"
     kafka_connect_api_port = 8083
   }
 }
@@ -30,10 +31,13 @@ resource "helm_release" "kafka_connect" {
   name       = "kafka-connect"
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
-  namespace  = kubernetes_namespace.testflight.metadata[0].name
+  namespace  = local.kafka_namespace
 
   values = [
-    file("${path.module}/kafka-connect-values.yml")
+    templatefile("${path.module}/testflight-values.yml.tmpl", {
+      kafka_connect_instance_name : "${local.testflight_namespace}-kafka",
+      allowed_namespace : local.smoketest_namespace
+    })
   ]
 
   dependency_update = true

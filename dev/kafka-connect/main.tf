@@ -23,5 +23,11 @@ resource "helm_release" "kafka_connect" {
   chart     = "${path.module}/../../charts/kafka-connect"
   namespace = local.kafka_namespace
 
+  values = [
+    templatefile("${path.module}/kafka-values.yml.tmpl", {
+      allowed_namespace = local.smoketest_namespace
+    })
+  ]
+
   dependency_update = true
 }

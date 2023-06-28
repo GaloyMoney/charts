@@ -30,8 +30,8 @@ redeploy-kafka:
 	$(TF) apply -target=module.galoy_deps.helm_release.kafka \
 				-var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
-	$(TF) apply -target=module.kafka_connect.helm_release.kafka_connect \
-				-var="bitcoin_network=regtest" \
+	cd kafka-connect
+	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
 deploy:
