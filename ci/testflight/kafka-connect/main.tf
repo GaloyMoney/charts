@@ -37,7 +37,7 @@ resource "helm_release" "kafka_connect" {
   values = [
     templatefile("${path.module}/testflight-values.yml.tmpl", {
       metadata_name : "${local.testflight_namespace}-kafka",
-      smoketest_namespace : local.smoketest_namespace
+      allowed_namespace : local.smoketest_namespace
     })
   ]
 
