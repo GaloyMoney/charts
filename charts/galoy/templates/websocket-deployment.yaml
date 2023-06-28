@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoy.websocket.fullname" . }}
+  labels:
+    app: {{ template "galoy.websocket.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ template "galoy.websocket.fullname" . }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+spec:
+  replicas: {{ .Values.galoy.websocket.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "galoy.websocket.fullname" . }}
+  template:
+    metadata:
+      name: {{ template "galoy.websocket.fullname" . }}
+      labels:
+        app: {{ template "galoy.websocket.fullname" . }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ template "galoy.websocket.fullname" . }}
+        allow-to-bitcoind: "true"
+    spec:
+      serviceAccountName: {{ template "galoy.name" . }}
+      initContainers:
+      - name: wait-for-mongodb-migrate
+        image: "groundnuty/k8s-wait-for:v1.5.1"
+        args:
+        - job-wr
+        - {{ template "galoy.migration.jobname" . }}
+      containers:
+      - name: websocket
+        image: "{{ .Values.galoy.images.websocket.repository }}@{{ .Values.galoy.images.websocket.digest }}"
+        args:
+        - "-r"
+        - "/app/lib/services/tracing.js"
+        - "lib/servers/ws-server.js"
+        resources:
+          {{ toYaml .Values.galoy.websocket.resources | nindent 10 }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.galoy.websocket.port }}
+          protocol: TCP
+        env:
+        - name: HELMREVISION
+          value: {{ .Release.Revision | quote }}
+        - name: NODE_ENV
+          value: "production"
+        - name: LOGLEVEL
+          value: {{ .Values.galoy.websocket.logLevel | quote }}
+        - name: NETWORK
+          value: {{ .Values.galoy.network }}
+        - name: GALOY_API_PORT
+          value: {{ .Values.galoy.api.port | quote }}
+        - name: GALOY_ADMIN_PORT
+          value: {{ .Values.galoy.admin.port | quote }}
+        - name: WEBSOCKET_PORT
+          value: {{ .Values.galoy.websocket.port | quote }}
+        - name: JAEGER_HOST
+          value: {{ .Values.tracing.jaegerHost | quote }}
+        - name: TRACING_SERVICE_NAME
+          value: "{{ .Values.tracing.prefix }}-{{ template "galoy.websocket.fullname" . }}"
+{{/* Databases */}}
+{{ include "galoy.mongodb.env" . | indent 8 }}
+{{ include "galoy.redis.env" . | indent 8 }}
+
+{{/* Bitcoin/LND */}}
+{{ include "galoy.bitcoind.env" . | indent 8 }}
+{{ include "galoy.lnd1.env" . | indent 8 }}
+{{ include "galoy.lnd2.env" . | indent 8 }}
+
+{{/* API Specifics */}}
+{{ include "galoy.twilio.env" . | indent 8 }}
+{{ include "galoy.geetest.env" . | indent 8 }}
+{{ include "galoy.jwt.env" . | indent 8 }}
+
+        - name: KRATOS_MASTER_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.kratos.existingSecret.name }}
+              key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
+        - name: KRATOS_CALLBACK_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.kratos.existingSecret.name }}
+              key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
+        - name: PRICE_HISTORY_HOST
+          value: {{ .Values.price.host | quote }}
+        - name: PRICE_HISTORY_PORT
+          value: {{ .Values.price.port | quote }}
+        - name: PRICE_SERVER_HOST
+          value: {{ .Values.galoy.dealer.host | quote }}
+        - name: PRICE_SERVER_PORT
+          value: {{ .Values.galoy.dealer.port | quote }}
+
+        - name: PRICE_HOST
+          value: {{ .Values.price.realtime.host | quote }}
+
+        {{ if .Values.galoy.websocket.firebaseNotifications.enabled }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/tmp/firebase-service-account/service-account.json"
+        {{ end }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.galoy.websocket.port }}
+          initialDelaySeconds: {{ .Values.galoy.websocket.probes.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.galoy.websocket.probes.liveness.periodSeconds }}
+          failureThreshold: {{ .Values.galoy.websocket.probes.liveness.failureThreshold }}
+          timeoutSeconds: {{ .Values.galoy.websocket.probes.liveness.timeoutSeconds }}
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.galoy.websocket.port }}
+          initialDelaySeconds: {{ .Values.galoy.websocket.probes.readiness.initialDelaySeconds }}
+          failureThreshold: {{ .Values.galoy.websocket.probes.readiness.failureThreshold }}
+          successThreshold: {{ .Values.galoy.websocket.probes.readiness.successThreshold }}
+          timeoutSeconds: {{ .Values.galoy.websocket.probes.readiness.timeoutSeconds }}
+        volumeMounts:
+        {{ if .Values.galoy.api.firebaseNotifications.enabled }}
+        - name: firebase-notifications-service-account
+          mountPath: /tmp/firebase-service-account/
+          readOnly: true
+        {{ end }}
+        - name: custom-yaml
+          mountPath: "/var/yaml/"
+      volumes:
+      {{ if .Values.galoy.api.firebaseNotifications.enabled }}
+      - name: firebase-notifications-service-account
+        secret:
+          secretName: {{ .Values.galoy.api.firebaseNotifications.existingSecret.name }}
+          items:
+          - key: {{ .Values.galoy.api.firebaseNotifications.existingSecret.key }}
+            path: service-account.json
+      {{ end }}
+      - name: custom-yaml
+        secret:
+          secretName: "{{ template "galoy.config.name" . }}"

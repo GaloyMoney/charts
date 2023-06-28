@@ -56,6 +56,13 @@ galoy:
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
       git_ref: "f7cc18f"
+    websocket:
+      ## Has websocket
+      ##
+      repository: us.gcr.io/galoy-org/galoy-app-websocket
+      ## Digest of the image
+      ##
+      digest: "sha256:51e06e89c8b8b5da10b859a154bf8ffe9ee6138a66f385aafe8b1361e56fdcc1"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -297,6 +304,69 @@ galoy:
     probes:
       ## Enable/disable Admin API probes for healthcheck
       enabled: true
+      ## If pod is starting up/healthy
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      ## When to expose the pod to the service
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+  ## Configuration values for Galoy Websocket components.
+  ##
+  websocket:
+    ## Override the components name (defaults to websocket).
+    ##
+    nameOverride:
+    ## Number of replicas.
+    ##
+    replicas: 1
+    ## Log Level
+    ##
+    logLevel: debug
+    ## Port on which websocket server is running
+    ##
+    port: 4000
+    ## Service type
+    ##
+    serviceType: ClusterIP
+    ## Resource configuration
+    resources: {}
+    ## Ingress configuration.
+    ## Ref: https://kubernetes.io/docs/user-guide/ingress/
+    ##
+    ingress:
+      ## Enable Ingress.
+      ##
+      enabled: false
+      ## Ingress Host
+      ##
+      hosts: [ws.staging.galoy.io]
+      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
+      ## Read More: https://cert-manager.io/docs/usage/ingress/
+      ##
+      clusterIssuer: letsencrypt-issuer
+      ## TLS Secret Name
+      ##
+      tlsSecretName: websocket-tls
+    ## Liveness/Readiness Probes Configuration
+    ## Determines if pod is healthy or if it should be killed.
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    ##
+    firebaseNotifications:
+      # Enable/disable notifications on the app
+      enabled: false
+      # Firebase Notifications Service Account must be injected via a secret
+      existingSecret:
+        ## Secret Name of the Service Account JSON
+        name: galoyapp-firebase-serviceaccount
+        # Secret Key
+        key: galoyapp-firebase-serviceaccount.json
+    probes:
       ## If pod is starting up/healthy
       liveness:
         initialDelaySeconds: 60
