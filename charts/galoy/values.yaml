@@ -106,14 +106,11 @@ galoy:
       enabled: false
       ## Ingress Host
       ##
-      host: api.staging.galoy.io
+      hosts: ["api.staging.galoy.io"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
       clusterIssuer: letsencrypt-issuer
-      ## TLS Secret Name
-      ##
-      tlsSecretName: api-ingress-tls
     ## Firebase Notifications Configuration
     ## It would need a Firebase Service Account to send out notifications
     ##
