@@ -10,3 +10,5 @@ function setting_exists() {
   cat smoketest-settings/data.json | jq -r ".\$1 // null"
 }
 EOF
+
+chmod -R 777 smoketest-settings
