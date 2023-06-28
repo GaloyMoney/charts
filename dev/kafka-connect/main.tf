@@ -5,7 +5,7 @@ variable "name_prefix" {
 locals {
   kafka_namespace     = "${var.name_prefix}-kafka"
   smoketest_namespace = "${var.name_prefix}-smoketest"
-  testflight_kafka    = "testflight458736"
+  testflight_kafka    = "kafka-connect-testflight-93c70ba"
 }
 
 resource "kubernetes_secret" "kafka_connect_smoketest" {
@@ -28,13 +28,13 @@ resource "helm_release" "kafka_connect" {
 }
 
 resource "helm_release" "kafka_connect_test" {
-  name      = "kafka-connect-testflight"
+  name      = local.testflight_kafka
   chart     = "${path.module}/../../charts/kafka-connect"
   namespace = local.kafka_namespace
 
   values = [
     templatefile("${path.module}/kafka-values.yml.tmpl", {
-      metadata_name = "${local.testflight_kafka}-kafka",
+      metadata_name     = "${local.testflight_kafka}-kafka",
       allowed_namespace = local.smoketest_namespace
     })
   ]
