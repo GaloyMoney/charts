@@ -75,6 +75,8 @@ spec:
 {{ include "galoy.lnd2.env" . | indent 8 }}
 
 {{/* API Specifics */}}
+{{ include "galoy.twilio.env" . | indent 8 }}
+{{ include "galoy.geetest.env" . | indent 8 }}
 {{ include "galoy.jwt.env" . | indent 8 }}
 
         - name: KRATOS_MASTER_USER_PASSWORD
@@ -95,6 +97,9 @@ spec:
           value: {{ .Values.galoy.dealer.host | quote }}
         - name: PRICE_SERVER_PORT
           value: {{ .Values.galoy.dealer.port | quote }}
+
+        - name: PRICE_HOST
+          value: {{ .Values.price.realtime.host | quote }}
 
         {{ if .Values.galoy.websocket.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
