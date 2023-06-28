@@ -44,9 +44,9 @@ spec:
     - host: {{ . }}
       http:
         paths:
-            {{- if $.Values.galoy.websocket.ingress.extraPaths }}
-            {{- toYaml $.Values.galoy.websocket.ingress.extraPaths | nindent 10 }}
-            {{- end }}
+          {{- if $.Values.galoy.websocket.ingress.extraPaths }}
+          {{- toYaml $.Values.galoy.websocket.ingress.extraPaths | nindent 10 }}
+          {{- end }}
           - pathType: ImplementationSpecific
             path: /
             backend:
