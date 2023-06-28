@@ -34,18 +34,25 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - {{ .Values.galoy.websocket.ingress.host }}
-    secretName: {{ .Values.galoy.websocket.ingress.tlsSecretName }}
+    {{- range .Values.galoy.websocket.ingress.hosts }}
+    - hosts:
+      - {{ . }}
+      secretName: {{ printf "%s-tls" . }}
+    {{- end }}
   rules:
-  - host: {{ .Values.galoy.websocket.ingress.host }}
-    http:
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: {{ template "galoy.websocket.fullname" . }}
-            port:
-              number: {{ .Values.galoy.websocket.port }}
+  {{- range .Values.galoy.websocket.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+            {{- if $.Values.galoy.websocket.ingress.extraPaths }}
+            {{- toYaml $.Values.galoy.websocket.ingress.extraPaths | nindent 10 }}
+            {{- end }}
+          - pathType: ImplementationSpecific
+            path: /
+            backend:
+              service:
+                name: {{ template "galoy.websocket.fullname" $ }}
+                port:
+                  number: {{ $.Values.galoy.websocket.port }}
+  {{- end -}}
 {{- end -}}
