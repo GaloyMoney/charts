@@ -31,7 +31,7 @@ module "kafka_connect" {
   ]
 }
 
-/*module "bitcoin" {
+module "bitcoin" {
   source = "./bitcoin"
 
   bitcoin_network = local.bitcoin_network
@@ -73,7 +73,7 @@ module "smoketest" {
   source = "./smoketest"
 
   name_prefix = local.name_prefix
-} */
+}
 
 provider "kubernetes" {
   experiments {

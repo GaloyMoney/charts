@@ -9,14 +9,7 @@ locals {
     "public.galoy_transactions",
     "public.okex_orders",
     "public.okex_transfers",
-    "public.sqlx_ledger_accounts",
     "public.sqlx_ledger_balances",
-    "public.sqlx_ledger_current_balances",
-    "public.sqlx_ledger_entries",
-    "public.sqlx_ledger_events",
-    "public.sqlx_ledger_journals",
-    "public.sqlx_ledger_transactions",
-    "public.sqlx_ledger_tx_templates",
     "public.user_trades"
   ]
 }
@@ -36,8 +29,9 @@ resource "kubernetes_secret" "stablesats" {
 # create topics for kafka_source_postgres
 resource "kafka_topic" "kafka_source_postgres" {
   for_each = toset(local.tables)
-
-  name               = "stablesats.${each.value}"
+  # use underscores in the topic names for consistency
+  # naming convention: "<database>_<runtime>_<table>"
+  name               = replace("pg_stablesats_${each.value}", ".", "_")
   partitions         = 1
   replication_factor = 3
 }
@@ -58,12 +52,14 @@ resource "kubernetes_manifest" "kafka-source-postgres" {
       class    = "io.debezium.connector.postgresql.PostgresConnector"
       tasksMax = 1
       config = {
-        "database.hostname" : kubernetes_secret.stablesats_creds.data["pg-host"]
+        # options: https://debezium.io/documentation/reference/stable/connectors/postgresql.html#postgresql-connector-properties
+        "database.hostname" : kubernetes_secret.stablesats.data["pg-host"]
         "database.port" : 5432
         "database.user" : "stablesats-replicator"
         "database.password" : kubernetes_secret.stablesats.data["pg-replicator-password"]
         "database.dbname" : "stablesats"
-        "topic.prefix" : "stablesats"
+        "topic.prefix" : "pg_stablesats"
+        "topic.delimiter" : "_"
         "table.include.list" : join(",", local.tables)
         #"snapshot.mode" : "always"
         #"table.include.list": "public.inventory" 
