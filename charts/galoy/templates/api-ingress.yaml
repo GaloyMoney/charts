@@ -1,7 +1,6 @@
 {{- if .Values.galoy.api.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
-
 metadata:
   name: {{ template "galoy.api.fullname" . }}
   labels:
@@ -9,20 +8,16 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: Helm
-
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.galoy.api.ingress.clusterIssuer }}
-
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "1s"
     nginx.ingress.kubernetes.io/proxy-next-upstream: "error timeout"
     nginx.ingress.kubernetes.io/proxy-next-upstream-tries: "3"
-
     nginx.ingress.kubernetes.io/limit-rpm: "60"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "40"
     nginx.ingress.kubernetes.io/limit-connections: "80"
-
     nginx.ingress.kubernetes.io/auth-url: "http://galoy-oathkeeper-api.{{ .Release.Namespace }}.svc.cluster.local:4456/decisions"
     nginx.ingress.kubernetes.io/auth-method: GET
     nginx.ingress.kubernetes.io/auth-response-headers: "Authorization, orgauthorization, Set-Cookie"
@@ -33,29 +28,31 @@ metadata:
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header X-Forwarded-Uri $request_uri;
-
     {{- with .Values.galoy.api.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - {{ .Values.galoy.api.ingress.host }}
-    secretName: {{ .Values.galoy.api.ingress.tlsSecretName }}
+    {{- range .Values.galoy.api.ingress.hosts }}
+    - hosts:
+      - {{ . }}
+      secretName: {{ printf "%s-tls" . }}
+    {{- end }}
   rules:
-  - host: {{ .Values.galoy.api.ingress.host }}
-    http:
-      paths:
-      {{- if .Values.galoy.api.ingress.extraPaths }}
-      {{- toYaml .Values.galoy.api.ingress.extraPaths | nindent 6 }}
-      {{- end }}
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: {{ template "galoy.api.fullname" . }}
-            port:
-              number: {{ .Values.galoy.api.port }}
+  {{- range .Values.galoy.api.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          {{- if $.Values.galoy.api.ingress.extraPaths }}
+          {{- toYaml $.Values.galoy.api.ingress.extraPaths | nindent 10 }}
+          {{- end }}
+          - pathType: ImplementationSpecific
+            path: /
+            backend:
+              service:
+                name: {{ template "galoy.api.fullname" $ }}
+                port:
+                  number: {{ $.Values.galoy.api.port }}
+  {{- end -}}
 {{- end -}}

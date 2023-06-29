@@ -28,7 +28,7 @@ galoy:
   api:
     ingress:
       enabled: true
-      host: localhost
+      hosts: [localhost]
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
       extraPaths:
