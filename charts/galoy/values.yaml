@@ -62,7 +62,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-websocket
       ## Digest of the image
       ##
-      digest: "sha256:51e06e89c8b8b5da10b859a154bf8ffe9ee6138a66f385aafe8b1361e56fdcc1"
+      digest: "sha256:41d804d9301f375292ceb2000910655bfa5dbca3c63559630bae3527812de08b"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
