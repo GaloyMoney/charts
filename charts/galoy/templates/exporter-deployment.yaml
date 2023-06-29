@@ -74,7 +74,7 @@ spec:
           value: {{ .Values.galoy.exporter.port | quote }}
 
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: {{ .Values.tracing.otel_exporter_otlp_endpoint | quote }}
+          value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.exporter.fullname" . }}"
 

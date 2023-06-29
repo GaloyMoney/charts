@@ -61,8 +61,8 @@ spec:
           value: {{ .Values.galoy.admin.port | quote }}
         - name: WEBSOCKET_PORT
           value: {{ .Values.galoy.websocket.port | quote }}
-        - name: JAEGER_HOST
-          value: {{ .Values.tracing.jaegerHost | quote }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.websocket.fullname" . }}"
 {{/* Databases */}}
