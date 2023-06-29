@@ -65,19 +65,16 @@ spec:
           value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.api.logLevel | quote }}
-
         - name: NETWORK
           value: {{ .Values.galoy.network }}
         - name: GALOY_API_PORT
           value: {{ .Values.galoy.api.port | quote }}
         - name: GALOY_ADMIN_PORT
           value: {{ .Values.galoy.admin.port | quote }}
-
-        - name: JAEGER_HOST
-          value: {{ .Values.tracing.jaegerHost | quote }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.tracing.otel_exporter_otlp_endpoint | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.api.fullname" . }}"
-
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 8 }}
 {{ include "galoy.redis.env" . | indent 8 }}

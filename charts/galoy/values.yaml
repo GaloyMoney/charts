@@ -575,9 +575,9 @@ secrets:
 ## Tracing details
 ##
 tracing:
-  ## Jaeger Tracing Host
+  ## OTEL Exporter OTLP Endpoint
   ##
-  jaegerHost: localhost
+  otelExporterOtlpEndpoint: localhost
   ## Prefix for tracing
   ##
   prefix: galoy-dev

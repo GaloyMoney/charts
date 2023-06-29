@@ -73,8 +73,8 @@ spec:
         - name: GALOY_API_PORT
           value: {{ .Values.galoy.exporter.port | quote }}
 
-        - name: JAEGER_HOST
-          value: {{ .Values.tracing.jaegerHost | quote }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.tracing.otel_exporter_otlp_endpoint | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.exporter.fullname" . }}"
 
