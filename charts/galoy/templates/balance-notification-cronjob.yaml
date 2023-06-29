@@ -51,8 +51,8 @@ spec:
             - name: NETWORK
               value: {{ .Values.galoy.network }}
 
-            - name: JAEGER_HOST
-              value: {{ .Values.tracing.jaegerHost | quote }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.tracing.otel_exporter_otlp_endpoint | quote }}
             - name: TRACING_SERVICE_NAME
               value: "{{ .Values.tracing.prefix }}-{{ template "galoy.balanceNotificationCron.jobname" . }}"
 
