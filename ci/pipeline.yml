@@ -89,6 +89,7 @@ groups:
   - build-mongo-backup-image
   - bump-mongo-backup-image-in-chart
   - build-kafka-connect-image
+  - bump-kafka-connect-image-in-chart
 
 jobs:
 #@ for chart in monitoring_charts:
@@ -318,6 +319,62 @@ jobs:
     params:
       image: image/image.tar
 
+- name: bump-kafka-connect-image-in-chart
+  plan:
+  - in_parallel:
+    - get: kafka-connect-image
+      trigger: true
+      passed: [build-kafka-connect-image]
+      params: { skip_download: true }
+    - get: kafka-connect-image-def
+      trigger: true
+      passed: [build-kafka-connect-image]
+    - get: charts-repo
+      params: { skip_download: true }
+    - get: pipeline-tasks
+  - task: bump-image-digest-in-values
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: kafka-connect-image
+        path: image
+      - name: kafka-connect-image-def
+        path: image-def
+      - name: pipeline-tasks
+      - name: charts-repo
+      outputs:
+      - name: charts-repo
+      params:
+        BRANCH: #@ data.values.git_branch
+        IMAGE_KEY_PATH: image
+        IMAGE: kafka-connect
+        CHART: kafka-connect
+      run:
+        path: pipeline-tasks/ci/tasks/bump-image-digest.sh
+  - put: kafka-connect-bot-branch
+    params:
+      repository: charts-repo
+      force: true
+  - task: open-charts-pr
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: kafka-connect-image
+        path: image
+      - name: charts-repo
+      params:
+        GH_TOKEN: #@ data.values.github_token
+        BRANCH: #@ data.values.git_branch
+        BOT_BRANCH: #@ data.values.git_kafka_connect_bot_branch
+        IMAGE_KEY_PATH: image
+        IMAGE: kafka-connect
+        CHART: kafka-connect
+      run:
+        path: pipeline-tasks/ci/tasks/open-image-bump-pr.sh
+
 resources:
 #@ for chart in monitoring_charts:
 - #@ chart_repo_resource(chart)
@@ -449,6 +506,13 @@ resources:
     paths: [images/kafka-connect/Dockerfile]
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: kafka-connect-bot-branch
+  type: git
+  source:
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_kafka_connect_bot_branch
     private_key: #@ data.values.github_private_key
 
 resource_types:
