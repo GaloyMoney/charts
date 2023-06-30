@@ -10,7 +10,7 @@ locals {
   galoy_namespace      = "galoy-staging-galoy"
   testflight_namespace = var.testflight_namespace
   graphql_hostname     = "api.${local.galoy_namespace}.svc.cluster.local"
-  websocket_url   = "wss://ws.${local.galoy_namespace}.svc.cluster.local/graphql"
+  websocket_url        = "wss://ws.${local.galoy_namespace}.svc.cluster.local/graphql"
 }
 
 resource "kubernetes_namespace" "testflight" {
