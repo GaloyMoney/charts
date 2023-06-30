@@ -31,6 +31,8 @@ spec:
           value: "{{ .Values.graphqlHostname }}"
         - name: GRAPHQL_HOSTNAME_INTERNAL
           value: "{{ .Values.graphqlHostnameInternal }}"
+        - name: WEBSOCKET_HOSTNAME
+          value: "{{ .Values.websocketHostname }}"
         - name: NOSTR_PUBKEY
           value: "{{ .Values.nostrPubkey }}"
         - name: REDIS_MASTER_NAME
