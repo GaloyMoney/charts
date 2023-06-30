@@ -41,7 +41,7 @@ resource "helm_release" "galoy_pay" {
       redis_namespace : "${local.galoy_namespace}",
       graphql_hostname : local.graphql_hostname,
       graphql_hostname_internal : local.graphql_hostname,
-      websocket_hostname: local.websocket_hostname,
+      websocket_hostname : local.websocket_hostname,
     })
   ]
 }
