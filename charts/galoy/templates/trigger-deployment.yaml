@@ -100,6 +100,9 @@ spec:
         - name: PRICE_HOST
           value: {{ .Values.price.realtime.host | quote }}
 
+        - name: MATTERMOST_WEBHOOK_URL
+          value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
+
         {{ if .Values.galoy.trigger.backups.gcs.enabled }}
         - name: GCS_APPLICATION_CREDENTIALS
           value: "/var/secret/cloud.google.com/gcs-sa-key.json"

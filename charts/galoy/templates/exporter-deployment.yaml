@@ -106,6 +106,9 @@ spec:
         - name: PRICE_HOST
           value: {{ .Values.price.realtime.host | quote }}
 
+        - name: MATTERMOST_WEBHOOK_URL
+          value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
+
         {{ if .Values.galoy.exporter.probes.enabled }}
         livenessProbe:
           httpGet:

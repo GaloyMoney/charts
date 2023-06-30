@@ -510,6 +510,8 @@ galoy:
     account_sid_key: TWILIO_ACCOUNT_SID
     # Twilio Authentication Token
     auth_token_key: TWILIO_AUTH_TOKEN
+  ## Mattermost webhook url
+  mattermostWebhookUrl: ""
 # Configuration values for the mongodb dependency.
 # Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
 #
