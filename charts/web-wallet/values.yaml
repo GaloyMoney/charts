@@ -13,7 +13,7 @@ service:
   port: 80
   type: ClusterIP
 webWallet:
-  otelExporterOtlpEndpoint: http://localhost:4318
+  jaegerHost: localhost
   tracingPrefix: "galoy"
   bitcoinNetwork: regtest
   authEndpoint: api/login
