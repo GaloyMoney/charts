@@ -33,8 +33,8 @@ spec:
         env:
         - name: NODE_ENV
           value: production
-        - name: JAEGER_HOST
-          value: {{ $.Values.webWallet.jaegerHost }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ $.Values.webWallet.otelExporterOtlpEndpoint }}
         - name: TRACING_SERVICE_NAME
           value: {{ $.Values.webWallet.tracingPrefix }}-web-wallet
         - name: SESSION_KEYS
