@@ -1,0 +1,97 @@
+[
+  {
+    "name": "journal_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "account_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "entry_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "currency",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "settled_dr_balance",
+    "type": "BIGNUMERIC",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "settled_cr_balance",
+    "type": "BIGNUMERIC",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "settled_entry_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "settled_modified_at",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "pending_dr_balance",
+    "type": "BIGNUMERIC",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "pending_cr_balance",
+    "type": "BIGNUMERIC",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "pending_entry_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "pending_modified_at",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "encumbered_dr_balance",
+    "type": "BIGNUMERIC",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "encumbered_cr_balance",
+    "type": "BIGNUMERIC",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "encumbered_entry_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "encumbered_modified_at",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "version",
+    "type": "INTEGER",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "modified_at",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "created_at",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  }
+]

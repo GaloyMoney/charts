@@ -24,11 +24,6 @@ module "kafka_connect" {
   source = "./kafka-connect"
 
   name_prefix = local.name_prefix
-
-  depends_on = [
-    module.galoy_deps,
-    module.infra_services
-  ]
 }
 
 module "bitcoin" {

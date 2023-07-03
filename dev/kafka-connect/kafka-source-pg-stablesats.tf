@@ -1,5 +1,5 @@
-variable "replicator_password" {}
-variable "host" {}
+variable "replicator_password" { default = "" }
+variable "host" { default = "" }
 
 locals {
   replicator_password  = var.replicator_password

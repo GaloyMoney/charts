@@ -1,0 +1,47 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "id",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "buy_amount",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "sell_amount",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "external_ref",
+    "type": "JSON"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "created_at",
+    "type": "TIMESTAMP"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "ledger_tx_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "buy_unit",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "sell_unit",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "correction_ledger_tx_id",
+    "type": "STRING"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "cursor",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "is_paired",
+    "type": "BOOLEAN"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "settlement_amount",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "settlement_currency",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "settlement_method",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "direction",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "memo",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "cents_per_unit",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "amount_in_usd_cents",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "created_at",
+    "type": "TIMESTAMP"
+  }
+]

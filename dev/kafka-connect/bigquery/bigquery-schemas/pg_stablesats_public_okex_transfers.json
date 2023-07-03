@@ -1,0 +1,92 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "client_transfer_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "correlation_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "action",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "currency",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "amount",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "fee",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "transfer_from",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "transfer_to",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "target_usd_exposure",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "current_usd_exposure",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "trading_btc_used_balance",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "trading_btc_total_balance",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "current_usd_btc_price",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "funding_btc_total_balance",
+    "type": "BIGNUMERIC"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "lost",
+    "type": "BOOLEAN"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "transfer_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "state",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "created_at",
+    "type": "TIMESTAMP"
+  }
+]
