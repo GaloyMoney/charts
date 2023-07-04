@@ -1581,6 +1581,20 @@ entries:
   rtl:
     - apiVersion: v2
       appVersion: 0.13.3
+      created: "2023-07-04T15:11:49.527922397Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.5.0
+      description: A Helm chart for Kubernetes
+      digest: 6c9e02de07b997bbf5cabefcfda2f56949d9b06159c005d2dc884a2731e9060a
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.2.0/rtl-0.2.0.tgz
+      version: 0.2.0
+    - apiVersion: v2
+      appVersion: 0.13.3
       created: "2023-06-01T13:58:33.25304371Z"
       dependencies:
         - name: common
@@ -18172,4 +18186,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2023-07-04T15:10:01.274132102Z"
+generated: "2023-07-04T15:11:49.527938947Z"
