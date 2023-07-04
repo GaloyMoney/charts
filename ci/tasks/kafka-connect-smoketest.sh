@@ -16,7 +16,7 @@ if [ "${kafka_connect_api_host}" != "" ]; then
       success="true"
       break
     fi
-    sleep 1
+    sleep 3
   done
   set -e
 
