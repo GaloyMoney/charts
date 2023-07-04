@@ -14618,6 +14618,16 @@ entries:
       version: 0.1.0
   web-wallet:
     - apiVersion: v2
+      appVersion: 0.3.4
+      created: "2023-07-04T15:00:35.439026595Z"
+      description: A Helm chart for the web wallet addon to Galoy
+      digest: d196d3090e879d57332b86a74e4f83e457743b4d5a8948c0ee20707bdf6558a0
+      name: web-wallet
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/web-wallet-v0.3.0/web-wallet-0.3.0.tgz
+      version: 0.3.0
+    - apiVersion: v2
       appVersion: 0.3.0
       created: "2023-05-24T07:16:04.637753197Z"
       description: A Helm chart for the web wallet addon to Galoy
@@ -18134,4 +18144,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2023-07-04T14:58:58.374973394Z"
+generated: "2023-07-04T15:00:35.439048838Z"
