@@ -4062,6 +4062,20 @@ entries:
   dealer:
     - apiVersion: v2
       appVersion: 0.1.60
+      created: "2023-07-04T08:50:40.149397416Z"
+      dependencies:
+        - name: common
+          repository: https://charts.bitnami.com/bitnami
+          version: 2.5.0
+      description: A Helm chart for Kubernetes
+      digest: 45abefbd849a43cd4305d7a0f121fd9c7571943f67dd1bda90ab0243a1697081
+      name: dealer
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/dealer-v0.3.0/dealer-0.3.0.tgz
+      version: 0.3.0
+    - apiVersion: v2
+      appVersion: 0.1.60
       created: "2023-06-30T04:28:53.009331546Z"
       dependencies:
         - name: common
@@ -18088,4 +18102,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2023-07-03T15:52:20.39568431Z"
+generated: "2023-07-04T08:50:40.149412227Z"
