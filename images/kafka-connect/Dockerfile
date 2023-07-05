@@ -8,16 +8,16 @@ WORKDIR /opt/kafka/plugins
 # Download and install the mongo source connector from
 # https://repo1.maven.org/maven2/org/mongodb/kafka/mongo-kafka-connect/1.10.1/
 RUN mkdir mongo-source-connector && cd mongo-source-connector && \
-    curl -L -o mongo-source-connector.jar https://repo1.maven.org/maven2/org/mongodb/kafka/mongo-kafka-connect/1.10.1/mongo-kafka-connect-1.10.1.jar && \
-    curl -L -o mongo-source-connector.jar.sha1 https://repo1.maven.org/maven2/org/mongodb/kafka/mongo-kafka-connect/1.10.1/mongo-kafka-connect-1.10.1.jar.sha1 && \
+    curl -L -o mongo-source-connector.jar https://repo1.maven.org/maven2/org/mongodb/kafka/mongo-kafka-connect/1.10.1/mongo-kafka-connect-1.10.1-all.jar && \
+    curl -L -o mongo-source-connector.jar.sha1 https://repo1.maven.org/maven2/org/mongodb/kafka/mongo-kafka-connect/1.10.1/mongo-kafka-connect-1.10.1-all.jar.sha1 && \
     echo "$(cat mongo-source-connector.jar.sha1) mongo-source-connector.jar" | sha1sum -c - && \
     rm mongo-source-connector.jar.sha1
 
 # Download and install the postgres source connector from
-# https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.2.1.Final/
+# https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.3.0.Final/
 RUN mkdir postgres-source-connector && cd postgres-source-connector && \
-    curl -L -o postgres-source-connector.tar.gz https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.2.1.Final/debezium-connector-postgres-2.2.1.Final-plugin.tar.gz && \
-    curl -L -o postgres-source-connector.tar.gz.sha1 https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.2.1.Final/debezium-connector-postgres-2.2.1.Final-plugin.tar.gz.sha1 && \
+    curl -L -o postgres-source-connector.tar.gz https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.3.0.Final/debezium-connector-postgres-2.3.0.Final-plugin.tar.gz && \
+    curl -L -o postgres-source-connector.tar.gz.sha1 https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.3.0.Final/debezium-connector-postgres-2.3.0.Final-plugin.tar.gz.sha1 && \
     echo "$(cat postgres-source-connector.tar.gz.sha1) postgres-source-connector.tar.gz" | sha1sum -c - && \
     tar -xzvf postgres-source-connector.tar.gz && \
     rm postgres-source-connector.tar.gz postgres-source-connector.tar.gz.sha1
