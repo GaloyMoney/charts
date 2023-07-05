@@ -1,8 +1,8 @@
 ## The image is built with the Dockerfile in /images/kafka-connect
 image:
   repository: us.gcr.io/galoy-org/kafka-connect
-  digest: sha256:8115fc6afc165c79e09049879332e1839f4a08f19ef8fa27db1800b325b755ae
-  git_ref: 10a8b5c
+  digest: sha256:71addfbb20d5e5a7279256b44761a08604383490424be63d87c2f3b331831e65
+  git_ref: 6a10312
 # Change to allow multiple kafka-connect instances
 kafkaConnectInstanceName: kafka
 ## The pods from this namespace are allowed to access the Kafka Connect API
