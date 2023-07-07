@@ -8,8 +8,6 @@ locals {
     "medici_transaction_metadatas",
     "medici_transactions"
   ]
-  mongodb_password       = "password" #data.kubernetes_secret.mongodb_creds.data["mongodb-password"]
-  mongodb_connection_uri = "mongodb://testGaloy:${local.mongodb_password}@galoy-mongodb-headless.${local.galoy_namespace}.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0"
 }
 
 data "kubernetes_secret" "mongodb_creds" {
