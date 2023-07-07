@@ -975,7 +975,9 @@ kratos:
               default_browser_return_url: http://api:4002/login
       courier:
         smtp:
-          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true # TODO: need to make this a secret and connect to an SMTP server we verified our domain with (sendgrid, mailgun etc...) see https://www.ory.sh/docs/kratos/emails-sms/sending-emails-smtp
+          from_address: noreply@blink.sv
+          from_name: Blink Verification Code
         templates:
           recovery_code:
             valid:
