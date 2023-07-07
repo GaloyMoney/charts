@@ -963,7 +963,7 @@ kratos:
           verification:
             use: code # Defines which method is used, one of 'code' or 'link'.
             enabled: true
-            lifespan: 15min
+            lifespan: 15m
             # notify_unknown_recipients: false
           recovery:
             enabled: true
