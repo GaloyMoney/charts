@@ -8,12 +8,25 @@ locals {
     "medici_transaction_metadatas",
     "medici_transactions"
   ]
+  mongodb_password       = "password" #data.kubernetes_secret.mongodb_creds.data["mongodb-password"]
+  mongodb_connection_uri = "mongodb://testGaloy:${local.mongodb_password}@galoy-mongodb-headless.${local.galoy_namespace}.svc.cluster.local:27017/?authSource=galoy&replicaSet=rs0"
 }
 
 data "kubernetes_secret" "mongodb_creds" {
   metadata {
     name      = "galoy-mongodb"
     namespace = local.galoy_namespace
+  }
+}
+
+resource "kubernetes_secret" "mongodb_connection_uri" {
+  metadata {
+    name      = "mongodb-connection-uri"
+    namespace = local.kafka_namespace
+  }
+
+  data = {
+    uri = "uri=${local.mongodb_connection_uri}"
   }
 }
 
@@ -41,21 +54,20 @@ resource "kubernetes_manifest" "kafka_source_mongo" {
     spec = {
       class    = "com.mongodb.kafka.connect.MongoSourceConnector"
       tasksMax = 1
+      #config = yamldecode(templatefile("yaml.tmpl", { collection = each.value }))
       config = {
-        "startup.mode"                   = "latest",
-        "connection.uri"                 = "password:file:/opt/kafka/external-configuration/mongodb-uri/uri"
-        "config.providers"               = "file"
-        "config.providers.file.class"    = "org.apache.kafka.common.config.provider.FileConfigProvider"
-        "topic.prefix"                   = "mongodb",
-        "database"                       = "galoy",
-        "topic.separator"                = "_",
-        "collection"                     = "${each.value}",
-        "output.format.key"              = "schema",
-        "output.format.value"            = "schema",
-        "output.schema.infer.value"      = true,
-        "key.converter.schemas.enable"   = true,
-        "value.converter.schemas.enable" = true,
-        "key.converter"                  = "org.apache.kafka.connect.json.JsonConverter",
+        "startup.mode"                   = "latest"
+        "connection.uri"                 = "$${file:/opt/kafka/external-configuration/mongodb-connection-uri/uri:uri}"
+        "topic.prefix"                   = "mongodb"
+        "database"                       = "galoy"
+        "topic.separator"                = "_"
+        "collection"                     = "${each.value}"
+        "output.format.key"              = "schema"
+        "output.format.value"            = "schema"
+        "output.schema.infer.value"      = true
+        "key.converter.schemas.enable"   = true
+        "value.converter.schemas.enable" = true
+        "key.converter"                  = "org.apache.kafka.connect.json.JsonConverter"
         "value.converter"                = "org.apache.kafka.connect.json.JsonConverter"
       }
     }
