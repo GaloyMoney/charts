@@ -732,7 +732,7 @@ oathkeeper:
           "id": "anonymous-rest-auth",
           "upstream": { "url": "http://api:4002" },
           "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code-request|email/login)>",
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code|email/login)>",
             "methods": ["GET", "POST", "OPTIONS"]
           },
           "authenticators": [{ "handler": "anonymous" }],
