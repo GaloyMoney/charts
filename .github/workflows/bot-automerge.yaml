@@ -12,7 +12,6 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: galoybot
-          MERGE_FILTER_AUTHOR: galoybot-app
           MERGE_FORKS: false
           MERGE_METHOD: squash
           MERGE_REQUIRED_APPROVALS: 1
