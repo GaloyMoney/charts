@@ -15,6 +15,11 @@ data:
       security:
         blocked_addresses: {{ toYaml .Values.bria.app.security.blockedAddresses | nindent 8 }}
       {{- end }}
+      {{- if and .Values.bria.app.deprecatedEncryptionKey.nonce .Values.bria.app.deprecatedEncryptionKey.key }}
+      deprecated_encryption_key:
+        nonce: {{ .Values.bria.app.deprecatedEncryptionKey.nonce }}
+        key: {{ .Values.bria.app.deprecatedEncryptionKey.key }}
+      {{- end }}
     db:
       migrate_on_start: true
       pool_size: {{ .Values.bria.db.poolSize }}

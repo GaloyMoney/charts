@@ -18,6 +18,9 @@ bria:
         url: https://mempool.space
     security:
       blockedAddresses: []
+    deprecatedEncryptionKey:
+      nonce: null
+      key: null
   db:
     poolSize: 20
   admin:
