@@ -16,8 +16,6 @@ galoy:
   ## Ref: https://github.com/GaloyMoney/galoy/blob/main/default.yaml
   ##
   config:
-    ## Default Galoy Wallet Name
-    name: Galoy Wallet
     ## Apollo Configuration
     apollo:
       playground: false
