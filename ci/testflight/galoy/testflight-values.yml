@@ -11,7 +11,6 @@ galoy:
 
   config:
     funder: "GaloyFunder"
-    name: "Galoy Wallet"
     bria:
       hotWalletName: galoy-staging-hot
   
