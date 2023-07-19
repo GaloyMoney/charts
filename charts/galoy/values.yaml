@@ -851,6 +851,8 @@ oathkeeper:
   maester:
     enabled: false
 kratos:
+  image:
+    tag: v1.0.0
   secret:
     enabled: true
     nameOverride: ""
