@@ -68,7 +68,6 @@ spec:
 {{ include "galoy.lnd2.env" . | indent 12 }}
 {{ include "galoy.bria.env" . | indent 12 }}
 
-{{ include "galoy.jwt.env" . | indent 12 }}
 {{ include "galoy.appcheck.env" . | indent 12 }}
 
             {{ if .Values.galoy.trigger.backups.dropbox.enabled }}

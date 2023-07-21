@@ -102,17 +102,6 @@ resource "kubernetes_secret" "twilio_secret" {
   }
 }
 
-resource "kubernetes_secret" "jwt_secret" {
-  metadata {
-    name      = "jwt-secret"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = {
-    secret = "jwt-secret"
-  }
-}
-
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
     name      = "bitcoind-rpcpassword"

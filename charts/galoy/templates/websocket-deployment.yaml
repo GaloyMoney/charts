@@ -77,7 +77,6 @@ spec:
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
-{{ include "galoy.jwt.env" . | indent 8 }}
 
         - name: KRATOS_MASTER_USER_PASSWORD
           valueFrom:

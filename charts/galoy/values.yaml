@@ -490,13 +490,6 @@ galoy:
     id_key: id
     # Geetest Key Secret Key
     secret_key: key
-  ## JsonWebToken Secret
-  ##
-  jwtSecretExistingSecret:
-    # Secret Name
-    name: jwt-secret
-    # Secret Key
-    key: secret
   ## Twilio Configuration
   ##
   twilioExistingSecret:
@@ -614,8 +607,6 @@ secrets:
   ## Secrets for Geetest
   geetestId:
   geetestSecretKey:
-  ## Secret for JWT
-  jwtSecret:
   ## Secret for Twilio
   twilioVerifyService:
   twilioAccountSid:

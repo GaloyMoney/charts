@@ -7,7 +7,6 @@ locals {
   galoy_namespace     = "${var.name_prefix}-galoy"
   bitcoin_namespace   = "${var.name_prefix}-bitcoin"
   bitcoin_secret      = "bitcoind-rpcpassword"
-  jwt_secret          = "jwt"
 
   postgres_database = "price-history"
   postgres_username = "price-history"
@@ -40,17 +39,6 @@ resource "kubernetes_secret" "network" {
   }
 
   data = data.kubernetes_secret.network.data
-}
-
-resource "kubernetes_secret" "jwt_secret" {
-  metadata {
-    name      = "jwt-secret"
-    namespace = kubernetes_namespace.galoy.metadata[0].name
-  }
-
-  data = {
-    secret = local.jwt_secret
-  }
 }
 
 resource "kubernetes_secret" "bria" {

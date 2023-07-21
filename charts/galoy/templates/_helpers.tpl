@@ -270,17 +270,6 @@ Return Galoy environment variables for Geetest
 {{- end -}}
 
 {{/*
-Return Galoy environment variables for JWT Secret
-*/}}
-{{- define "galoy.jwt.env" -}}
-- name: JWT_SECRET
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.jwtSecretExistingSecret.name }}
-      key: {{ .Values.galoy.jwtSecretExistingSecret.key }}
-{{- end -}}
-
-{{/*
 Return Galoy environment variables for App Check
 */}}
 {{- define "galoy.appcheck.env" -}}
