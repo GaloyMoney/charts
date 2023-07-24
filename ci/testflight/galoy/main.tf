@@ -335,6 +335,7 @@ resource "helm_release" "postgresql" {
   name       = "postgresql"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "postgresql"
+  version    = "11.9.13"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
