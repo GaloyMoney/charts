@@ -6,5 +6,6 @@ auth:
   password: kratos-pg
   database: kratos-pg
 
-persistence:
-  enabled: false
+primary:
+  persistence:
+    enabled: false

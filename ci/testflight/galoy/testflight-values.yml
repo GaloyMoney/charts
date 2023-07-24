@@ -13,11 +13,11 @@ galoy:
     funder: "GaloyFunder"
     bria:
       hotWalletName: galoy-staging-hot
-  
+
   bitcoind:
     dns: bitcoind.galoy-staging-bitcoin.svc.cluster.local
     port: 38332
-  
+
   lnd1:
     dns: lnd1.galoy-staging-bitcoin.svc.cluster.local
 
@@ -29,11 +29,6 @@ galoy:
 
   dealer:
     host: dealer-price.galoy-staging-addons.svc.cluster.local
-
-postgresql:
-  primary:
-    persistence:
-      enabled: false
 
 price:
   postgresql:
