@@ -37,9 +37,16 @@ price:
         enabled: false
 
 redis:
+  master:
+    persistence:
+      enabled: false
   auth:
     existingSecret: "galoy-redis"
     existingSecretPasswordKey: "redis-password"
+
+mongodb:
+  persistence:
+    enabled: false
 
 oathkeeper:
   secret:
