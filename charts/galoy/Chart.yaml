@@ -37,3 +37,6 @@ dependencies:
   - name: kratos
     repository: https://k8s.ory.sh/helm/charts
     version: 0.33.5
+  - name: router
+    repository: oci://ghcr.io/apollographql/helm-charts
+    version: 1.25.0
