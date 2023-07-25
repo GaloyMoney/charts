@@ -1158,3 +1158,25 @@ kratos:
           }
         }
     emailTemplates: {}
+router:
+  extraEnvVars:
+  - name: APOLLO_ROUTER_SUPERGRAPH_PATH
+    value: /etc/apollo/supergraph-schema.graphql
+
+  extraVolumeMounts:
+    - name: supergraph
+      mountPath: /etc/apollo/supergraph-schema.graphql
+      subPath: supergraph-schema.graphql
+
+  extraVolumes:
+    - name: supergraph
+      configMap:
+        name: galoy-supergraph
+
+  router:
+    configuration:
+      telemetry:
+        tracing:
+          otlp:
+            endpoint: http://localhost:4318
+            protocol: http
