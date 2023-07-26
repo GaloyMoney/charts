@@ -51,7 +51,7 @@ spec:
             path: /
             backend:
               service:
-                name: "{{ .Release.Name }}-router"
+                name: "{{ $.Release.Name }}-router"
                 port:
                   number: {{ $.Values.galoy.router.port }}
   {{- end -}}
