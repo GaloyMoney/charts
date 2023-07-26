@@ -1167,6 +1167,8 @@ router:
   extraEnvVars:
   - name: APOLLO_ROUTER_SUPERGRAPH_PATH
     value: /etc/apollo/supergraph-schema.graphql
+  - name: CONFIG_CHECKSUM
+    value: "{{ .Values.router.configuration | toString | sha256sum }}"
 
   extraVolumeMounts:
     - name: supergraph
