@@ -1180,6 +1180,10 @@ router:
 
   router:
     configuration:
+      sandbox:
+        enabled: true
+      homepage:
+        enabled: false
       supergraph:
         introspection: true
         path: /graphql
