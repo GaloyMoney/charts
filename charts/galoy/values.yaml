@@ -1167,6 +1167,8 @@ router:
   extraEnvVars:
   - name: APOLLO_ROUTER_SUPERGRAPH_PATH
     value: /etc/apollo/supergraph-schema.graphql
+  - name: ALWAYS_UPGRADE_DEPLOYMENT
+    value: "{{ now }}"
 
   extraVolumeMounts:
     - name: supergraph
