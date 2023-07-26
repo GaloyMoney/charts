@@ -754,9 +754,9 @@ oathkeeper:
           "mutators": [{ "handler": "noop" }]
         },
         {
-          "id": "galoy-backend",
+          "id": "galoy-router",
           "upstream": {
-            "url": "http://api:4002"
+            "url": "http://galoy-router:80"
           },
           "match": {
             "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
@@ -1159,7 +1159,7 @@ kratos:
         }
     emailTemplates: {}
 router:
-  supergraphFilePath: apollorouter-supergraph.graphql
+  supergraphFilePath: apollo-router/supergraph.graphql
 
   extraEnvVars:
   - name: APOLLO_ROUTER_SUPERGRAPH_PATH
