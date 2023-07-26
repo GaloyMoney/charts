@@ -1190,6 +1190,9 @@ router:
           request:
             - propagate:
                 matching: .*
+      cors:
+        allow_any_origin: true
+        allow_credentials: true
       telemetry:
         tracing:
           otlp:
