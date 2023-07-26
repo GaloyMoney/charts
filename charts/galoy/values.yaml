@@ -1175,6 +1175,11 @@ router:
 
   router:
     configuration:
+      headers:
+        all:
+          request:
+            - propagate:
+                matching: .*
       telemetry:
         tracing:
           otlp:
