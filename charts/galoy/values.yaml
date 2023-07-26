@@ -49,18 +49,18 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:fb112f102b4c69a2b76f730ba5b3889dfbd7401b81450ff22318bc2ec8b7e07a"
+      digest: "sha256:21d680ca82566ca65e65a58de52c94d24306a6432f79b7e67899be207fdd3515"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "2d502fc"
+      git_ref: "e1737b7"
     websocket:
       ## Has websocket
       ##
       repository: us.gcr.io/galoy-org/galoy-app-websocket
       ## Digest of the image
       ##
-      digest: "sha256:ba859e81b5da9aeac5e7a4575080809239e289a2150d65d02ab98a24c22a58bd"
+      digest: "sha256:97884d15d8153c814358eba27f6c6da0d37b8a985e849d677e3d1be036d50c87"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -69,7 +69,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:e8daf8276026ecb4d4f4304e97c6fd7e47b97cbe28290ee5c5e8cd368cda9f9d"
+      digest: "sha256:80abcc4dcc053b8e6b927accf8ba46d6ab4f90a76cc5bfc1061e45e9c315c705"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -1160,21 +1160,17 @@ kratos:
     emailTemplates: {}
 router:
   supergraphFilePath: apollo-router/supergraph.graphql
-
   extraEnvVars:
-  - name: APOLLO_ROUTER_SUPERGRAPH_PATH
-    value: /etc/apollo/supergraph-schema.graphql
-
+    - name: APOLLO_ROUTER_SUPERGRAPH_PATH
+      value: /etc/apollo/supergraph-schema.graphql
   extraVolumeMounts:
     - name: supergraph
       mountPath: /etc/apollo/supergraph-schema.graphql
       subPath: supergraph-schema.graphql
-
   extraVolumes:
     - name: supergraph
       configMap:
         name: galoy-supergraph
-
   router:
     configuration:
       override_subgraph_url:
