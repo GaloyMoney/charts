@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "galoy.name" . }}-supergraph
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+data:
+  supergraph-schema.graphql: |-
+{{ .Files.Get .Values.router.supergraphFilePath | indent 4 }}
