@@ -1178,7 +1178,7 @@ router:
   router:
     configuration:
       override_subgraph_url:
-        accounts: http://localhost:4002
+        public: http://api:4002
       headers:
         all:
           request:
