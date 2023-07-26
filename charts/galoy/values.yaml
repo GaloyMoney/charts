@@ -1159,6 +1159,8 @@ kratos:
         }
     emailTemplates: {}
 router:
+  supergraphFilePath: apollorouter-supergraph.graphql
+
   extraEnvVars:
   - name: APOLLO_ROUTER_SUPERGRAPH_PATH
     value: /etc/apollo/supergraph-schema.graphql

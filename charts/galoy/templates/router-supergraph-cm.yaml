@@ -8,4 +8,4 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 data:
   supergraph-schema.graphql: |-
-{{ .Files.Get "apollorouter-supergraph.graphql" | indent 4 }}
+{{ .Files.Get .Values.router.supergraphFilePath | indent 4 }}
