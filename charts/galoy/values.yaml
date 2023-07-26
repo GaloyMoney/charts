@@ -1177,8 +1177,11 @@ router:
 
   router:
     configuration:
+      supergraph:
+        introspection: true
+        path: /graphql
       override_subgraph_url:
-        public: http://api:4002
+        public: http://api:4002/graphql
       headers:
         all:
           request:
