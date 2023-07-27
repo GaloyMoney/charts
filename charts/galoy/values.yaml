@@ -1162,6 +1162,7 @@ kratos:
     emailTemplates: {}
 router:
   supergraphFilePath: apollo-router/supergraph.graphql
+  rhaiScriptFilePath: apollo-router/main.rhai
   extraEnvVars:
     - name: APOLLO_ROUTER_SUPERGRAPH_PATH
       value: /etc/apollo/supergraph-schema.graphql
@@ -1171,10 +1172,16 @@ router:
     - name: supergraph
       mountPath: /etc/apollo/supergraph-schema.graphql
       subPath: supergraph-schema.graphql
+    - name: rhai
+      mountPath: /etc/apollo/main.rhai
+      subPath: main.rhai
   extraVolumes:
     - name: supergraph
       configMap:
         name: galoy-supergraph
+    - name: rhai
+      configMap:
+        name: galoy-rhai
   router:
     configuration:
       include_subgraph_errors:
@@ -1198,3 +1205,15 @@ router:
           otlp:
             endpoint: http://localhost:4318
             protocol: http
+        experimental_logging: # TODO REMOVE just for local charts env debugging
+          format: json
+          display_filename: true
+          display_line_number: false
+      cors:
+        match_origins:
+          - "^http://([a-z0-9]+[.])*" # http
+          - "^https://([a-z0-9]+[.])*" # https
+        allow_credentials: true # for cookie auth
+      rhai:
+        scripts: "/etc/apollo"
+        main: "main.rhai"

@@ -9,3 +9,5 @@ metadata:
 data:
   supergraph-schema.graphql: |-
 {{ .Files.Get .Values.router.supergraphFilePath | indent 4 }}
+  main.rhai: |-
+{{ .Files.Get .Values.router.rhaiScriptFilePath | indent 4 }}
