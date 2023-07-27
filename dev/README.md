@@ -30,7 +30,7 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 1. get session token
     ```
-    curl -ksS 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+59981730222","code":"111111"}}}' | jq '.data.userLogin.authToken'
+    curl -ksS 'https://localhost:8080/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '{"query":"mutation login($input: UserLoginInput!) { userLogin(input: $input) { authToken } }","variables":{"input":{"phone":"+16505554321","code":"321321"}}}' | jq '.data.userLogin.authToken'
     ```
 
     Example result:
@@ -143,8 +143,8 @@ Currently successfully brings up charts - no guarantee that everything is workin
   ```
   host=localhost
   port=4455
-  phone='+59981730222'
-  code='111111'
+  phone='+16505554321'
+  code='321321'
 
   # apollo-playground-ui
   curl -LksSf "${host}:${port}/graphql" \
