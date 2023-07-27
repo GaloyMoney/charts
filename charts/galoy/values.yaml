@@ -17,7 +17,6 @@ galoy:
   ##
   router:
     port: 80
-
   config:
     ## Apollo Configuration
     apollo:
@@ -52,18 +51,18 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:fb112f102b4c69a2b76f730ba5b3889dfbd7401b81450ff22318bc2ec8b7e07a"
+      digest: "sha256:6e977978b360c9b59a4471556937bda734334cc610ee9d87e6830b34484b0afd"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "2d502fc"
+      git_ref: "cee05ea"
     websocket:
       ## Has websocket
       ##
       repository: us.gcr.io/galoy-org/galoy-app-websocket
       ## Digest of the image
       ##
-      digest: "sha256:ba859e81b5da9aeac5e7a4575080809239e289a2150d65d02ab98a24c22a58bd"
+      digest: "sha256:9ebd1cba98b8cdb48a896cf2eee91bb8cb8f4faefe493237ddf11b4b0828adeb"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -72,7 +71,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:e8daf8276026ecb4d4f4304e97c6fd7e47b97cbe28290ee5c5e8cd368cda9f9d"
+      digest: "sha256:19434e757178e3dec5463c9c27d1e1fd022a2db2d6682992472e2597c8be5391"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -1163,23 +1162,19 @@ kratos:
     emailTemplates: {}
 router:
   supergraphFilePath: apollo-router/supergraph.graphql
-
   extraEnvVars:
-  - name: APOLLO_ROUTER_SUPERGRAPH_PATH
-    value: /etc/apollo/supergraph-schema.graphql
-  - name: ALWAYS_UPGRADE_DEPLOYMENT
-    value: "{{ now }}"
-
+    - name: APOLLO_ROUTER_SUPERGRAPH_PATH
+      value: /etc/apollo/supergraph-schema.graphql
+    - name: ALWAYS_UPGRADE_DEPLOYMENT
+      value: "{{ now }}"
   extraVolumeMounts:
     - name: supergraph
       mountPath: /etc/apollo/supergraph-schema.graphql
       subPath: supergraph-schema.graphql
-
   extraVolumes:
     - name: supergraph
       configMap:
         name: galoy-supergraph
-
   router:
     configuration:
       sandbox:
