@@ -1181,7 +1181,7 @@ router:
         name: galoy-supergraph
     - name: rhai
       configMap:
-        name: galoy-rhai
+        name: galoy-supergraph
   router:
     configuration:
       include_subgraph_errors:
