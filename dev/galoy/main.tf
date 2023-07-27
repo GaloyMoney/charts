@@ -15,8 +15,8 @@ locals {
   galoy-oathkeeper-proxy-host = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
   kratos_pg_host              = "postgresql.${local.galoy_namespace}.svc.cluster.local"
 
-  bankowner_phone = "+59981730222"
-  bankowner_code  = "111111"
+  bankowner_phone = "+16505554321"
+  bankowner_code  = "321321"
 }
 
 resource "kubernetes_namespace" "galoy" {

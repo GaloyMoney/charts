@@ -54,3 +54,16 @@ kratos:
                           value: ${kratos_callback_api_key}
                           in: header
                   - hook: session
+router:
+  router:
+    configuration:
+      telemetry:
+        experimental_logging:
+          format: json
+          display_filename: true
+          display_line_number: false
+      cors:
+        match_origins:
+          - "^http://([a-z0-9]+[.])*"
+          - "^https://([a-z0-9]+[.])*"
+        allow_credentials: true

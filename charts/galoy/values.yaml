@@ -1205,15 +1205,6 @@ router:
           otlp:
             endpoint: http://localhost:4318
             protocol: http
-        experimental_logging: # TODO REMOVE just for local charts env debugging
-          format: json
-          display_filename: true
-          display_line_number: false
-      cors:
-        match_origins:
-          - "^http://([a-z0-9]+[.])*" # http
-          - "^https://([a-z0-9]+[.])*" # https
-        allow_credentials: true # for cookie auth
       rhai:
         scripts: "/etc/apollo"
         main: "main.rhai"
