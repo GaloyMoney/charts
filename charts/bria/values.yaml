@@ -36,8 +36,8 @@ bria:
   labels: {}
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:bab4712ed486eca7c15d320497144c5939dab7de283b14468abeb074ace0874b"
-    git_ref: "8ad5129"
+    digest: "sha256:6a6ef6d95a960200ce9a31d636b1f8bbb6e54283cc9ece1f40e76b69d4cf3569"
+    git_ref: "8d20db7"
   replicas: 2
   annotations:
   secrets:
