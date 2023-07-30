@@ -48,11 +48,18 @@ spec:
           {{- toYaml $.Values.galoy.api.ingress.extraPaths | nindent 10 }}
           {{- end }}
           - pathType: ImplementationSpecific
-            path: /
+            path: /graphql
             backend:
               service:
                 name: "{{ $.Release.Name }}-router"
                 port:
                   number: {{ $.Values.galoy.router.port }}
+          - pathType: ImplementationSpecific
+            path: /
+            backend:
+              service:
+                name: {{ template "galoy.api.fullname" $ }}
+                port:
+                  number: {{ $.Values.galoy.api.port }}
   {{- end -}}
 {{- end -}}
