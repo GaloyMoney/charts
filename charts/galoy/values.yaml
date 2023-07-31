@@ -1193,6 +1193,11 @@ router:
           request:
             - propagate:
                 matching: .*
+      traffic_shaping:
+        router:
+          timeout: 180s # If client requests to the router take longer
+        all:
+          timeout: 180s # If subgraph requests takes longer
       telemetry:
         tracing:
           otlp:
