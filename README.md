@@ -18,7 +18,6 @@ This repo includes charts for:
 - [`galoy`](https://github.com/GaloyMoney/galoy) Our bitcoin banking application
   - [`galoy-pay`](https://github.com/GaloyMoney/galoy-pay)
   - [`admin-panel`](https://github.com/GaloyMoney/admin-panel)
-  - [`dealer`](https://github.com/GaloyMoney/dealer)
   - [`price`](https://github.com/GaloyMoney/price)
 
 - [`bitcoind`](https://github.com/bitcoin/bitcoin) Bitcoin full node

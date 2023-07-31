@@ -398,8 +398,6 @@ resources:
 - #@ testflight_tf_resource("galoy")
 - #@ slack_resource("galoy")
 
-- #@ repo_resource("dealer")
-
 - #@ chart_repo_resource("stablesats")
 - #@ testflight_tf_resource("stablesats")
 - #@ slack_resource("stablesats")
