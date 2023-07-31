@@ -14,9 +14,6 @@ locals {
 
   galoy-oathkeeper-proxy-host = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
   kratos_pg_host              = "postgresql.${local.galoy_namespace}.svc.cluster.local"
-
-  bankowner_phone = "+59981730222"
-  bankowner_code  = "111111"
 }
 
 resource "kubernetes_namespace" "galoy" {
@@ -285,8 +282,6 @@ resource "helm_release" "galoy" {
 
   values = [
     templatefile("${path.module}/galoy-values.yml.tmpl", {
-      bankowner_phone : local.bankowner_phone,
-      bankowner_code : local.bankowner_code,
       kratos_pg_host : local.kratos_pg_host,
       kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
@@ -326,22 +321,6 @@ resource "kubernetes_secret" "price_history_postgres_creds" {
 resource "random_password" "kratos_master_user_password" {
   length  = 32
   special = false
-}
-
-resource "kubernetes_secret" "test_accounts" {
-  metadata {
-    name      = "test-accounts"
-    namespace = local.galoy_namespace
-  }
-  data = {
-    json = jsonencode([
-      {
-        phone = local.bankowner_phone
-        code  = local.bankowner_code
-        tag   = "bankowner"
-      }
-    ])
-  }
 }
 
 resource "kubernetes_secret" "smoketest" {

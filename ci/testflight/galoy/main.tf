@@ -20,9 +20,6 @@ locals {
   postgres_database = "price-history"
   postgres_username = "price-history"
   postgres_password = "price-history"
-
-  bankowner_phone = "+59981730222"
-  bankowner_code  = "824197"
 }
 
 data "kubernetes_secret" "network" {
@@ -230,22 +227,6 @@ resource "kubernetes_secret" "bria_credentials" {
   data = data.kubernetes_secret.bria_credentials.data
 }
 
-resource "kubernetes_secret" "test_accounts" {
-  metadata {
-    name      = "test-accounts"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-  data = {
-    json = jsonencode([
-      {
-        phone = local.bankowner_phone
-        code  = local.bankowner_code
-        tag   = "bankowner"
-      }
-    ])
-  }
-}
-
 resource "kubernetes_namespace" "testflight" {
   metadata {
     name = local.testflight_namespace
@@ -351,8 +332,6 @@ resource "helm_release" "galoy" {
 
   values = [
     templatefile("${path.module}/testflight-values.yml.tmpl", {
-      bankowner_phone : local.bankowner_phone,
-      bankowner_code : local.bankowner_code,
       kratos_pg_host : local.kratos_pg_host,
       kratos_callback_api_key : random_password.kratos_callback_api_key.result
     }),
