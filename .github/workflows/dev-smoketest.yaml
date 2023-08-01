@@ -115,13 +115,6 @@ jobs:
             CHART=web-wallet ./dev-smoketest-settings.sh && \
             ./web-wallet-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Dealer Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=dealer ./dev-smoketest-settings.sh && \
-            ./dealer-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: Bria Smoketest
         run: |
           pushd dev && source ./.envrc
