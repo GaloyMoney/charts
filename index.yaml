@@ -17160,6 +17160,38 @@ entries:
   galoy-deps:
     - apiVersion: v2
       appVersion: 0.1.0
+      created: "2023-08-02T11:24:48.492702677Z"
+      dependencies:
+        - condition: cert-manager.enabled
+          name: cert-manager
+          repository: https://charts.jetstack.io
+          version: v1.12.3
+        - condition: ingress-nginx.enabled
+          name: ingress-nginx
+          repository: https://kubernetes.github.io/ingress-nginx
+          version: 4.7.1
+        - condition: strimzi-kafka-operator.enabled
+          name: strimzi-kafka-operator
+          repository: https://strimzi.io/charts/
+          version: 0.36.1
+        - alias: kubemonkey
+          condition: kubemonkey.enabled
+          name: kube-monkey
+          repository: https://asobti.github.io/kube-monkey/charts/repo
+          version: 1.5.2
+        - condition: opentelemetry-collector.enabled
+          name: opentelemetry-collector
+          repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+          version: 0.65.0
+      description: A Helm chart for Kubernetes
+      digest: 781249bf70eb93946d797a7146d04b104c6783592a2e6a50dffd0305de7d59b9
+      name: galoy-deps
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.3.6/galoy-deps-0.3.6.tgz
+      version: 0.3.6
+    - apiVersion: v2
+      appVersion: 0.1.0
       created: "2023-07-31T09:30:54.77585709Z"
       dependencies:
         - condition: cert-manager.enabled
@@ -19002,4 +19034,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2023-08-02T08:27:37.537103859Z"
+generated: "2023-08-02T11:24:48.492729073Z"
