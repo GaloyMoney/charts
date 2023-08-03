@@ -26,8 +26,6 @@ This repo includes charts for:
 
 - [`rtl`](https://github.com/Ride-The-Lightning/RTL) Dashboard for using `lnd`
 
-- [`specter`](https://github.com/cryptoadvance/specter-desktop) On-chain wallet and multisig co-ordinator
-
 - `monitoring` Metrics dashboard
   - [`grafana`](https://github.com/grafana/grafana)
   - [`prometheus`](https://github.com/prometheus/prometheus)
