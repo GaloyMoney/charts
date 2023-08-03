@@ -1,7 +1,7 @@
 dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 17.14.4
+  version: 17.14.5
 - name: mongodb
   repository: https://charts.bitnami.com/bitnami
   version: 13.16.2
@@ -20,5 +20,5 @@ dependencies:
 - name: router
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
-digest: sha256:3058e00843f3b287dcb1e6c7bf181edccbbaf660896c39ba56b93a1d4772db65
-generated: "2023-08-02T13:48:38.940998502Z"
+digest: sha256:c1638b999a64b7ac121dc83a2df5124a73e6f30630e1914aa5c7384ba3a672af
+generated: "2023-08-03T13:54:53.181835074Z"
