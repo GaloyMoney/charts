@@ -36,6 +36,9 @@ galoy:
       hotWalletName: dev
       queueNames:
         fast: fast
+      coldStorage:
+        walletName: cold
+        hotToColdRebalanceQueueName: dev
     appcheckConfig:
       audience: projects/72279297366
       issuer: https://firebaseappcheck.googleapis.com/72279297366
@@ -455,21 +458,6 @@ galoy:
       macaroon_key: loop_macaroon_base64
       ## TLS Key
       tls_key: tls_base64
-  ## Configuration values for establishing connection to BITCOIND
-  ## TODO: This should be injected as ConfigMap from Bitcoin Chart
-  ##
-  bitcoind:
-    ## DNS for bitcoind
-    dns: bitcoind.default.svc.cluster.local
-    ## Port on which bitcoind is running
-    port: 8332
-    ## RPC Password Secret
-    ##
-    rpcPasswordExistingSecret:
-      ## Secret Name
-      name: bitcoind-rpcpassword
-      ## Secret Key
-      key: password
   bria:
     host: bria-api.default.svc.cluster.local
     port: 2742
@@ -613,8 +601,6 @@ secrets:
   twilioVerifyService:
   twilioAccountSid:
   twilioAuthToken:
-  ## Bitcoin RPC password
-  bitcoindRpcPassword:
   ## Secrets for LND1
   lnd1Macaroon:
   lnd1Tls:
