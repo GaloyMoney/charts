@@ -36,6 +36,9 @@ galoy:
       hotWalletName: dev
       queueNames:
         fast: fast
+      coldStorage:
+        walletName: cold
+        hotToColdRebalanceQueueName: dev
     appcheckConfig:
       audience: projects/72279297366
       issuer: https://firebaseappcheck.googleapis.com/72279297366
@@ -51,18 +54,18 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
-      digest: "sha256:44298ff98d56488ea8996409ca1128bf15acab06cc448619b768fdcd04f56bfd"
+      digest: "sha256:b158bbe9796055ec2217a36bfd7fdcb9e9e8ad012c9c9813e1a15d24e965f6bd"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "96e76c9"
+      git_ref: "ae777a0"
     websocket:
       ## Has websocket
       ##
       repository: us.gcr.io/galoy-org/galoy-app-websocket
       ## Digest of the image
       ##
-      digest: "sha256:bf0f6d4abf7a4ed80c5d9152e7eea8adf9d2d93ebb246b1a62f425a3bb39531c"
+      digest: "sha256:7de3e3e2258f0e90a5570fdd650e5aae1224a534878a68ea92d927a6da688ce0"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -71,7 +74,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:c183ef9a328fac9171191a4d1dfddf77140b4691e9877f8b58567449d654e526"
+      digest: "sha256:6d481cad6cdcb350ec5fd7f5feec17ac16a48028be73e3a434a26961cfaea78b"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -455,21 +458,6 @@ galoy:
       macaroon_key: loop_macaroon_base64
       ## TLS Key
       tls_key: tls_base64
-  ## Configuration values for establishing connection to BITCOIND
-  ## TODO: This should be injected as ConfigMap from Bitcoin Chart
-  ##
-  bitcoind:
-    ## DNS for bitcoind
-    dns: bitcoind.default.svc.cluster.local
-    ## Port on which bitcoind is running
-    port: 8332
-    ## RPC Password Secret
-    ##
-    rpcPasswordExistingSecret:
-      ## Secret Name
-      name: bitcoind-rpcpassword
-      ## Secret Key
-      key: password
   bria:
     host: bria-api.default.svc.cluster.local
     port: 2742
@@ -613,8 +601,6 @@ secrets:
   twilioVerifyService:
   twilioAccountSid:
   twilioAuthToken:
-  ## Bitcoin RPC password
-  bitcoindRpcPassword:
   ## Secrets for LND1
   lnd1Macaroon:
   lnd1Tls:

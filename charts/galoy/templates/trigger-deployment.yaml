@@ -76,7 +76,6 @@ spec:
 {{ include "galoy.redis.env" . | indent 8 }}
 
 {{/* Bitcoin/LND */}}
-{{ include "galoy.bitcoind.env" . | indent 8 }}
 {{ include "galoy.lnd1.env" . | indent 8 }}
 {{ include "galoy.lnd2.env" . | indent 8 }}
 {{ include "galoy.bria.env" . | indent 8 }}

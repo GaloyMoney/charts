@@ -119,21 +119,6 @@ Return Galoy environment variables for MongoDB configuration
 {{- end -}}
 
 {{/*
-Return Galoy environment variables for BitcoinD configuration
-*/}}
-{{- define "galoy.bitcoind.env" -}}
-- name: BITCOINDADDR
-  value: {{ .Values.galoy.bitcoind.dns | quote }}
-- name: BITCOINDPORT
-  value: {{ .Values.galoy.bitcoind.port | quote }}
-- name: BITCOINDRPCPASS
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.bitcoind.rpcPasswordExistingSecret.name }}
-      key: {{ .Values.galoy.bitcoind.rpcPasswordExistingSecret.key }}
-{{- end -}}
-
-{{/*
 Return Galoy environment variables for LND 1 configuration
 */}}
 {{- define "galoy.lnd1.env" -}}
