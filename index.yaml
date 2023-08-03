@@ -1968,23 +1968,6 @@ entries:
   monitoring:
     - apiVersion: v2
       appVersion: 0.1.0
-      created: "2023-08-02T08:27:37.537087173Z"
-      dependencies:
-        - name: grafana
-          repository: https://grafana.github.io/helm-charts
-          version: 6.58.7
-        - name: prometheus
-          repository: https://prometheus-community.github.io/helm-charts
-          version: 23.2.0
-      description: A Helm chart for Kubernetes
-      digest: 3ca92bdeacc80b364f9d35b298997fa963f86942f934fdfd3451c4330b02432b
-      name: monitoring
-      type: application
-      urls:
-        - https://github.com/GaloyMoney/charts/releases/download/monitoring-v0.4.3/monitoring-0.4.3.tgz
-      version: 0.4.3
-    - apiVersion: v2
-      appVersion: 0.1.0
       created: "2023-07-31T12:30:55.882413975Z"
       dependencies:
         - name: grafana
@@ -17210,38 +17193,6 @@ entries:
         - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.1.0/stablesats-0.1.0.tgz
       version: 0.1.0
   galoy-deps:
-    - apiVersion: v2
-      appVersion: 0.1.0
-      created: "2023-08-02T11:24:48.492702677Z"
-      dependencies:
-        - condition: cert-manager.enabled
-          name: cert-manager
-          repository: https://charts.jetstack.io
-          version: v1.12.3
-        - condition: ingress-nginx.enabled
-          name: ingress-nginx
-          repository: https://kubernetes.github.io/ingress-nginx
-          version: 4.7.1
-        - condition: strimzi-kafka-operator.enabled
-          name: strimzi-kafka-operator
-          repository: https://strimzi.io/charts/
-          version: 0.36.1
-        - alias: kubemonkey
-          condition: kubemonkey.enabled
-          name: kube-monkey
-          repository: https://asobti.github.io/kube-monkey/charts/repo
-          version: 1.5.2
-        - condition: opentelemetry-collector.enabled
-          name: opentelemetry-collector
-          repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-          version: 0.65.0
-      description: A Helm chart for Kubernetes
-      digest: 781249bf70eb93946d797a7146d04b104c6783592a2e6a50dffd0305de7d59b9
-      name: galoy-deps
-      type: application
-      urls:
-        - https://github.com/GaloyMoney/charts/releases/download/galoy-deps-v0.3.6/galoy-deps-0.3.6.tgz
-      version: 0.3.6
     - apiVersion: v2
       appVersion: 0.1.0
       created: "2023-07-31T09:30:54.77585709Z"
