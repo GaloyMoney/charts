@@ -93,6 +93,9 @@ Return Galoy environment variables for MongoDB configuration
 */}}
 {{- define "galoy.mongodb.env" -}}
 {{ if eq .Values.mongodb.architecture "replicaset" }}
+{{/*
+// TODO: unify in a single MONGODB_CON
+*/}}
 - name: MONGODB_ADDRESS
   value: "{{ range until (.Values.mongodb.replicaCount | int) }}
   {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
@@ -252,16 +255,4 @@ Return Galoy environment variables for Geetest
     secretKeyRef:
       name: {{ .Values.galoy.geetestExistingSecret.name }}
       key: {{ .Values.galoy.geetestExistingSecret.secret_key }}
-{{- end -}}
-
-{{/*
-Return Galoy environment variables for App Check
-*/}}
-{{- define "galoy.appcheck.env" -}}
-- name: APPCHECK_AUDIENCE
-  value: {{ .Values.galoy.config.appcheckConfig.audience | quote }}
-- name: APPCHECK_ISSUER
-  value: {{ .Values.galoy.config.appcheckConfig.issuer | quote }}
-- name: APPCHECK_JWKSURI
-  value: {{ .Values.galoy.config.appcheckConfig.jwksUri | quote }}
 {{- end -}}

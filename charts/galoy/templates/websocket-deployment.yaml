@@ -48,8 +48,6 @@ spec:
         env:
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
-        - name: NODE_ENV
-          value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.websocket.logLevel | quote }}
         - name: NETWORK
@@ -75,6 +73,9 @@ spec:
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
+
+        - name: OATHKEEPER_DECISION_ENDPOINT
+          value: http://galoy-oathkeeper-api:4456
 
         - name: KRATOS_MASTER_USER_PASSWORD
           valueFrom:

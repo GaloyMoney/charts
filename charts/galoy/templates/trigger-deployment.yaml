@@ -58,8 +58,6 @@ spec:
         env:
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
-        - name: NODE_ENV
-          value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.trigger.logLevel | quote }}
 
@@ -83,7 +81,6 @@ spec:
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
-{{ include "galoy.appcheck.env" . | indent 8 }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.history.host | quote }}
@@ -102,7 +99,7 @@ spec:
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
 
         {{ if .Values.galoy.trigger.backups.gcs.enabled }}
-        - name: GCS_APPLICATION_CREDENTIALS
+        - name: GCS_APPLICATION_CREDENTIALS_PATH
           value: "/var/secret/cloud.google.com/gcs-sa-key.json"
         {{ end }}
 

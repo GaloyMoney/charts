@@ -63,8 +63,6 @@ spec:
         env:
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
-        - name: NODE_ENV
-          value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.exporter.logLevel | quote }}
 

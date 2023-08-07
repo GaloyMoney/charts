@@ -18,20 +18,7 @@ galoy:
   router:
     port: 80
   config:
-    ## Apollo Configuration
-    apollo:
-      playground: false
-    oathkeeperConfig:
-      urlJkws: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
-      decisionsApi: "http://galoy-oathkeeper-api:4456/decisions/"
-    kratosConfig:
-      publicApi: http://galoy-kratos-public
-      adminApi: http://galoy-kratos-admin
-      corsAllowedOrigins:
-        - https://localhost:8080
-    cronConfig:
-      rebalanceEnabled: true
-      swapEnabled: true
+
     bria:
       hotWalletName: dev
       queueNames:
@@ -39,10 +26,6 @@ galoy:
       coldStorage:
         walletName: cold
         hotToColdRebalanceQueueName: dev
-    appcheckConfig:
-      audience: projects/72279297366
-      issuer: https://firebaseappcheck.googleapis.com/72279297366
-      jwksUri: https://firebaseappcheck.googleapis.com/v1beta/jwks
   ## Docker Images for running Galoy Banking Codebase
   ##
   images:
