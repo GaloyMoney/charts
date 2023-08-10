@@ -13,8 +13,8 @@ stablesats:
     resources: {}
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:cf51de097a12573b35f62acf88997ab1e779d6f56d5253ea02f7a400be8e01fa"
-    git_ref: "598464e"
+    digest: "sha256:e85bdec757e9d59abedf3fb93fd4b05c16857bb1ee325b5235a8fc2300458aa2"
+    git_ref: "284e286"
   crash_report_config_danger: false
   db:
     poolSize: 20
