@@ -4,17 +4,6 @@ metadata:
   name: {{ include "stablesats.fullname" . }}-dealer
 data:
   stablesats.yml: |-
-    pubsub:
-{{- if .Values.stablesats.externalRedis }}
-{{- toYaml .Values.stablesats.externalRedis | nindent 6 }}
-{{- else }}
-      sentinel:
-        hosts:
-        - host: "{{ .Chart.Name }}-redis-node-0.{{ .Chart.Name }}-redis-headless"
-        - host: "{{ .Chart.Name }}-redis-node-1.{{ .Chart.Name }}-redis-headless"
-        - host: "{{ .Chart.Name }}-redis-node-2.{{ .Chart.Name }}-redis-headless"
-{{- end }}
-
     db:
       pool_size: {{ .Values.stablesats.db.poolSize }}
       migrate_on_startup: true

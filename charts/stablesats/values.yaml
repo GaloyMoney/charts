@@ -51,17 +51,6 @@ stablesats:
     jaegerHost: "localhost"
     priceServiceName: "stablesats-price"
     dealerServiceName: "stablesats-dealer"
-redis:
-  enabled: true
-  master:
-    persistence:
-      enabled: true
-  auth:
-    password: password
-  sentinel:
-    enabled: true
-  metrics:
-    enabled: true
 postgresql:
   enabled: true
   auth:
