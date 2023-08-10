@@ -12,6 +12,8 @@ REF=$(cat ../chart/.git/ref)
 make bump-vendored-ref DEP=${CHART} REF=${REF}
 GITHUB_SSH_KEY_BASE64=$(base64 -w 0 ./github.key) make vendir
 
+make recompose-supergraph
+
 if [[ -z $(git config --global user.email) ]]; then
   git config --global user.email "bot@galoy.io"
 fi
