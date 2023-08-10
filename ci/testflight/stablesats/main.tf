@@ -30,11 +30,6 @@ resource "kubernetes_namespace" "testflight" {
   }
 }
 
-resource "random_password" "redis" {
-  length  = 20
-  special = false
-}
-
 resource "random_password" "postgresql" {
   length  = 20
   special = false
@@ -54,7 +49,6 @@ resource "kubernetes_secret" "stablesats" {
   }
 
   data = {
-    redis-password : random_password.redis.result
     pg-user-pw : random_password.postgresql.result
     pg-con : "postgres://stablesats:${random_password.postgresql.result}@stablesats-postgresql:5432/stablesats"
     okex-secret-key : var.okex_secret_key
