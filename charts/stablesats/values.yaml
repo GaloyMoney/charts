@@ -13,8 +13,8 @@ stablesats:
     resources: {}
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:e85bdec757e9d59abedf3fb93fd4b05c16857bb1ee325b5235a8fc2300458aa2"
-    git_ref: "284e286"
+    digest: "sha256:b0efadcb251a1bcea493724438f5d5f58253b28bcaa026a6ac3cf0db265aa40f"
+    git_ref: "4bd1f03"
   crash_report_config_danger: false
   db:
     poolSize: 20
@@ -51,17 +51,6 @@ stablesats:
     jaegerHost: "localhost"
     priceServiceName: "stablesats-price"
     dealerServiceName: "stablesats-dealer"
-redis:
-  enabled: true
-  master:
-    persistence:
-      enabled: true
-  auth:
-    password: password
-  sentinel:
-    enabled: true
-  metrics:
-    enabled: true
 postgresql:
   enabled: true
   auth:

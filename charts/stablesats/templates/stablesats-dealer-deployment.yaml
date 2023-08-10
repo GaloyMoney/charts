@@ -63,11 +63,6 @@ spec:
           value: '{{ .Values.stablesats.migrate_to_unified_db }}'
         - name: STABLESATS_CONFIG
           value: "/stablesats.yml"
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "stablesats.fullname" . }}
-              key: "redis-password"
         - name: GALOY_PHONE_CODE
           valueFrom:
             secretKeyRef:
