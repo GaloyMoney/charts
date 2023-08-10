@@ -3,6 +3,6 @@ bria:
     enabled: true
   blockchain:
     electrumUrl: fulcrum.galoy-dev-bitcoin.svc.cluster.local
-  
+  replicas: 1
   secrets:
     create: false
