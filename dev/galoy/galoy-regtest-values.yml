@@ -1,8 +1,6 @@
 galoy:
   network: regtest
   config:
-    apollo:
-      playground: true
     swap:
       loopOutWhenHotWalletLessThan: 500000
       swapOutAmount:  250000
