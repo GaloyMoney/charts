@@ -108,6 +108,11 @@ spec:
             secretKeyRef:
               name: {{ .Values.galoy.kratos.existingSecret.name }}
               key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
+        - name: KRATOS_PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.kratos.secret.nameOverride | default "galoy-kratos" }}
+              key: dsn
 
         - name: KRATOS_PUBLIC_API
           value: http://galoy-kratos-public
