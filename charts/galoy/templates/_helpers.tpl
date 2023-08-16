@@ -92,15 +92,12 @@ Config name
 Return Galoy environment variables for MongoDB configuration
 */}}
 {{- define "galoy.mongodb.env" -}}
-{{ if eq .Values.mongodb.architecture "replicaset" }}
-{{/*
-// TODO: unify in a single MONGODB_CON
-*/}}
 - name: MONGODB_CON
   valueFrom:
     secretKeyRef:
       name: {{ .Values.mongodb.auth.connectionStringExistingSecret }}
       key: mongodb-con
+{{ if eq .Values.mongodb.architecture "replicaset" }}
 - name: MONGODB_ADDRESS
   value: "{{ range until (.Values.mongodb.replicaCount | int) }}
   {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
