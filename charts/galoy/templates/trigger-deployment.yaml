@@ -119,6 +119,12 @@ spec:
           value: "/tmp/service-account.json"
         {{ end }}
 
+        - name: SVIX_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.svixExistingSecret.name }}
+              key: {{ .Values.galoy.svixExistingSecret.secret_key }}
+
         {{ if .Values.galoy.trigger.probes.enabled }}
         livenessProbe:
           httpGet:

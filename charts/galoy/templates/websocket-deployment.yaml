@@ -98,6 +98,12 @@ spec:
         - name: PRICE_HOST
           value: {{ .Values.price.realtime.host | quote }}
 
+        - name: SVIX_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.svixExistingSecret.name }}
+              key: {{ .Values.galoy.svixExistingSecret.secret_key }}
+
         {{ if .Values.galoy.websocket.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-service-account/service-account.json"

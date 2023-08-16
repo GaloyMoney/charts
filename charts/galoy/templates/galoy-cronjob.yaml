@@ -69,6 +69,12 @@ spec:
 
 {{ include "galoy.appcheck.env" . | indent 12 }}
 
+            - name: SVIX_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.galoy.svixExistingSecret.name }}
+                  key: {{ .Values.galoy.svixExistingSecret.secret_key }}
+
             {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
             - name: DROPBOX_ACCESS_TOKEN
               valueFrom:
