@@ -312,6 +312,16 @@ resource "kubernetes_secret" "kratos_master_user_password" {
   }
 }
 
+resource "kubernetes_secret" "svix_secret" {
+  metadata {
+    name      = "svix-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+  data = {
+    "svix-secret" = "dummy"
+  }
+}
+
 resource "helm_release" "postgresql" {
   name       = "postgresql"
   repository = "https://charts.bitnami.com/bitnami"
