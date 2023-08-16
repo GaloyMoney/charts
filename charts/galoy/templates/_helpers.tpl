@@ -201,7 +201,7 @@ Return Galoy environment variables for LND 2 configuration
   value: {{ .Values.galoy.bria.host | quote }}
 - name: BRIA_PORT
   value: {{ .Values.galoy.bria.port | quote }}
-- name: BRIA_PROFILE_API_KEY
+- name: BRIA_API_KEY
   valueFrom:
     secretKeyRef:
       name: {{ .Values.galoy.bria.apiKeyExistingSecret.name | quote }}
