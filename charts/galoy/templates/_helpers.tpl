@@ -96,6 +96,11 @@ Return Galoy environment variables for MongoDB configuration
 {{/*
 // TODO: unify in a single MONGODB_CON
 */}}
+- name: MONGODB_CON
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.mongodb.auth.connectionStringExistingSecret }}
+      key: mongodb-con
 - name: MONGODB_ADDRESS
   value: "{{ range until (.Values.mongodb.replicaCount | int) }}
   {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
