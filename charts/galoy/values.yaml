@@ -493,6 +493,12 @@ galoy:
     auth_token_key: TWILIO_AUTH_TOKEN
   ## Mattermost webhook url
   mattermostWebhookUrl: ""
+  ## Svix secret
+  svixExistingSecret:
+    # Secret Name
+    name: svix-secret
+    # Svix secret
+    secret_key: svix-secret
 # Configuration values for the mongodb dependency.
 # Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
 #
@@ -618,6 +624,8 @@ secrets:
   ## Secret for Galoy app
   kratosMasterUserPassword:
   kratosCallbackApiKey:
+  ## Secret for Svix
+  svixSecretKey:
 ## Tracing details
 ##
 tracing:

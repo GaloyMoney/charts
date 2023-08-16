@@ -75,6 +75,11 @@ spec:
           value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.api.fullname" . }}"
+        - name: SVIX_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.svixExistingSecret.name }}
+              key: {{ .Values.galoy.svixExistingSecret.secret_key }}
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 8 }}
 {{ include "galoy.redis.env" . | indent 8 }}
