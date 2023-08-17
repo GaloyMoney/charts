@@ -193,6 +193,31 @@ Return Galoy environment variables for LND 2 configuration
 {{ end }}
 {{- end -}}
 
+{{/*
+Define kratos env vars
+*/}}
+{{- define "galoy.kratos.env" -}}
+- name: KRATOS_MASTER_USER_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.kratos.existingSecret.name }}
+      key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
+- name: KRATOS_CALLBACK_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.kratos.existingSecret.name }}
+      key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
+- name: KRATOS_PG_CON
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.kratos.secret.nameOverride | default "galoy-kratos" }}
+      key: dsn
+- name: KRATOS_PUBLIC_API
+  value: http://galoy-kratos-public
+- name: KRATOS_ADMIN_API
+  value: http://galoy-kratos-admin
+{{- end -}}
+
 {{- define "galoy.bria.env" -}}
 - name: BRIA_HOST
   value: {{ .Values.galoy.bria.host | quote }}

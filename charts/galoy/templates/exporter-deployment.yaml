@@ -61,6 +61,9 @@ spec:
           protocol: TCP
 
         env:
+        # todo: do we need this?
+        - name: BUILDTIME
+          value: "2023"
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
         - name: LOGLEVEL
@@ -70,6 +73,10 @@ spec:
           value: {{ .Values.galoy.network }}
         - name: GALOY_API_PORT
           value: {{ .Values.galoy.exporter.port | quote }}
+        - name: TRIGGER_PORT
+          value: {{ .Values.galoy.trigger.port | quote }}
+        - name: WEBSOCKET_PORT
+          value: {{ .Values.galoy.websocket.port | quote }}
 
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
@@ -88,6 +95,8 @@ spec:
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
+
+{{ include "galoy.kratos.env" . | indent 8 }}
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.history.host | quote }}

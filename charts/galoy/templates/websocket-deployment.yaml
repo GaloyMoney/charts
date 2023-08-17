@@ -46,6 +46,8 @@ spec:
           containerPort: {{ .Values.galoy.websocket.port }}
           protocol: TCP
         env:
+        - name: BUILDTIME
+          value: "2023"
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
         - name: LOGLEVEL
@@ -58,6 +60,8 @@ spec:
           value: {{ .Values.galoy.admin.port | quote }}
         - name: WEBSOCKET_PORT
           value: {{ .Values.galoy.websocket.port | quote }}
+        - name: TRIGGER_PORT
+          value: {{ .Values.galoy.trigger.port | quote }}
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
         - name: TRACING_SERVICE_NAME
@@ -69,28 +73,21 @@ spec:
 {{/* Bitcoin/LND */}}
 {{ include "galoy.lnd1.env" . | indent 8 }}
 {{ include "galoy.lnd2.env" . | indent 8 }}
+{{ include "galoy.bria.env" . | indent 8 }}
 
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
 
+{{ include "galoy.kratos.env" . | indent 8 }}
+
         - name: OATHKEEPER_DECISION_ENDPOINT
           value: http://galoy-oathkeeper-api:4456
 
-        - name: KRATOS_MASTER_USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.kratos.existingSecret.name }}
-              key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
-        - name: KRATOS_CALLBACK_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.kratos.existingSecret.name }}
-              key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
         - name: PRICE_HISTORY_HOST
-          value: {{ .Values.price.host | quote }}
+          value: {{ .Values.price.history.host | quote }}
         - name: PRICE_HISTORY_PORT
-          value: {{ .Values.price.port | quote }}
+          value: {{ .Values.price.history.port | quote }}
         - name: PRICE_SERVER_HOST
           value: {{ .Values.galoy.dealer.host | quote }}
         - name: PRICE_SERVER_PORT
@@ -98,6 +95,11 @@ spec:
 
         - name: PRICE_HOST
           value: {{ .Values.price.realtime.host | quote }}
+
+        - name: KRATOS_PUBLIC_API
+          value: http://galoy-kratos-public
+        - name: KRATOS_ADMIN_API
+          value: http://galoy-kratos-admin
 
         - name: SVIX_SECRET
           valueFrom:
