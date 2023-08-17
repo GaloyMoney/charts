@@ -6,3 +6,8 @@ bria:
   replicas: 1
   secrets:
     create: false
+
+postgresql:
+  primary:
+    persistence:
+      enabled: false

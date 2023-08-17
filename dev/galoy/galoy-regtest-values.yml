@@ -24,6 +24,7 @@ galoy:
     host: dealer-price.galoy-dev-addons.svc.cluster.local
 
   api:
+    replicas: 1
     ingress:
       enabled: true
       hosts: [localhost]
@@ -84,8 +85,12 @@ postgresql:
       enabled: false
 
 oathkeeper:
+  replicaCount: 1
   secret:
     enabled: false
+
+kratos:
+  replicaCount: 1
 
 secrets:
   create: false
