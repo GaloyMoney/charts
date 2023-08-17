@@ -65,8 +65,6 @@ spec:
 {{ include "galoy.lnd2.env" . | indent 12 }}
 {{ include "galoy.bria.env" . | indent 12 }}
 
-{{ include "galoy.appcheck.env" . | indent 12 }}
-
             - name: SVIX_SECRET
               valueFrom:
                 secretKeyRef:
