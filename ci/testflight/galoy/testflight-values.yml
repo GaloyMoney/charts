@@ -8,6 +8,8 @@ galoy:
         bucketName: galoy-staging-backups
       dropbox:
         enabled: true
+  api:
+    replicas: 1
 
   config:
     funder: "GaloyFunder"
@@ -45,8 +47,12 @@ mongodb:
     enabled: false
 
 oathkeeper:
+  replicaCount: 1
   secret:
     enabled: false
+
+kratos:
+  replicaCount: 1
 
 secrets:
   create: false
