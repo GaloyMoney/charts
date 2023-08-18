@@ -46,9 +46,6 @@ spec:
           containerPort: {{ .Values.galoy.websocket.port }}
           protocol: TCP
         env:
-        - name: BUILDTIME
-          value: "2023"
-        - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
         - name: LOGLEVEL
           value: {{ .Values.galoy.websocket.logLevel | quote }}
