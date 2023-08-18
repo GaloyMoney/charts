@@ -31,8 +31,6 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: NODE_ENV
-          value: production
         - name: JAEGER_HOST
           value: {{ $.Values.webWallet.jaegerHost }}
         - name: TRACING_SERVICE_NAME

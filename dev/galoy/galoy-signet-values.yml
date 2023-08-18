@@ -2,8 +2,6 @@ galoy:
   network: signet
 
   config:
-    apollo:
-      playground: true
     swap:
       loopOutWhenHotWalletLessThan: 500000
       swapOutAmount:  250000
@@ -15,20 +13,6 @@ galoy:
       feeAccountingEnabled: false
     cronConfig:
       swapEnabled: false
-    kratosConfig:
-      publicApi: http://galoy-kratos-public.galoy-sig-galoy.svc.cluster.local
-      adminApi:  http://galoy-kratos-admin.galoy-sig-galoy.svc.cluster.local
-      corsAllowedOrigins:
-        - https://localhost:8080
-  bitcoind:
-    dns: bitcoind.galoy-sig-bitcoin.svc.cluster.local
-    port: 38332
-
-  lnd1:
-    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
-
-  lnd2:
-    dns: lnd1.galoy-sig-bitcoin.svc.cluster.local
 
   dealer:
     host: dealer-price.galoy-sig-addons.svc.cluster.local

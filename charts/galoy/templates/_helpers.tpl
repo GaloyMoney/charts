@@ -92,6 +92,11 @@ Config name
 Return Galoy environment variables for MongoDB configuration
 */}}
 {{- define "galoy.mongodb.env" -}}
+- name: MONGODB_CON
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.mongodb.auth.connectionStringExistingSecret }}
+      key: mongodb-con
 {{ if eq .Values.mongodb.architecture "replicaset" }}
 - name: MONGODB_ADDRESS
   value: "{{ range until (.Values.mongodb.replicaCount | int) }}
@@ -188,12 +193,37 @@ Return Galoy environment variables for LND 2 configuration
 {{ end }}
 {{- end -}}
 
+{{/*
+Define kratos env vars
+*/}}
+{{- define "galoy.kratos.env" -}}
+- name: KRATOS_MASTER_USER_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.kratos.existingSecret.name }}
+      key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
+- name: KRATOS_CALLBACK_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.kratos.existingSecret.name }}
+      key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
+- name: KRATOS_PG_CON
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.kratos.secret.nameOverride | default "galoy-kratos" }}
+      key: dsn
+- name: KRATOS_PUBLIC_API
+  value: http://galoy-kratos-public
+- name: KRATOS_ADMIN_API
+  value: http://galoy-kratos-admin
+{{- end -}}
+
 {{- define "galoy.bria.env" -}}
 - name: BRIA_HOST
   value: {{ .Values.galoy.bria.host | quote }}
 - name: BRIA_PORT
   value: {{ .Values.galoy.bria.port | quote }}
-- name: BRIA_PROFILE_API_KEY
+- name: BRIA_API_KEY
   valueFrom:
     secretKeyRef:
       name: {{ .Values.galoy.bria.apiKeyExistingSecret.name | quote }}
@@ -252,16 +282,4 @@ Return Galoy environment variables for Geetest
     secretKeyRef:
       name: {{ .Values.galoy.geetestExistingSecret.name }}
       key: {{ .Values.galoy.geetestExistingSecret.secret_key }}
-{{- end -}}
-
-{{/*
-Return Galoy environment variables for App Check
-*/}}
-{{- define "galoy.appcheck.env" -}}
-- name: APPCHECK_AUDIENCE
-  value: {{ .Values.galoy.config.appcheckConfig.audience | quote }}
-- name: APPCHECK_ISSUER
-  value: {{ .Values.galoy.config.appcheckConfig.issuer | quote }}
-- name: APPCHECK_JWKSURI
-  value: {{ .Values.galoy.config.appcheckConfig.jwksUri | quote }}
 {{- end -}}

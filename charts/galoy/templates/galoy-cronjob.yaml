@@ -42,8 +42,6 @@ spec:
             env:
             - name: HELMREVISION
               value: {{ .Release.Revision | quote }}
-            - name: NODE_ENV
-              value: "production"
             - name: LOGLEVEL
               value: {{ .Values.galoy.trigger.logLevel | quote }}
 
@@ -66,8 +64,6 @@ spec:
 {{ include "galoy.lnd1.env" . | indent 12 }}
 {{ include "galoy.lnd2.env" . | indent 12 }}
 {{ include "galoy.bria.env" . | indent 12 }}
-
-{{ include "galoy.appcheck.env" . | indent 12 }}
 
             - name: SVIX_SECRET
               valueFrom:

@@ -59,10 +59,11 @@ spec:
           protocol: TCP
 
         env:
+        # todo: do we need this?
+        - name: BUILDTIME
+          value: "2023"
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
-        - name: NODE_ENV
-          value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.api.logLevel | quote }}
         - name: NETWORK
@@ -71,6 +72,10 @@ spec:
           value: {{ .Values.galoy.api.port | quote }}
         - name: GALOY_ADMIN_PORT
           value: {{ .Values.galoy.admin.port | quote }}
+        - name: TRIGGER_PORT
+          value: {{ .Values.galoy.trigger.port | quote }}
+        - name: WEBSOCKET_PORT
+          value: {{ .Values.galoy.websocket.port | quote }}
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
         - name: TRACING_SERVICE_NAME
@@ -92,18 +97,11 @@ spec:
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
-{{ include "galoy.appcheck.env" . | indent 8 }}
 
-        - name: KRATOS_MASTER_USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.kratos.existingSecret.name }}
-              key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
-        - name: KRATOS_CALLBACK_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.kratos.existingSecret.name }}
-              key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
+{{ include "galoy.kratos.env" . | indent 8 }}
+
+        - name: OATHKEEPER_DECISION_ENDPOINT
+          value: http://galoy-oathkeeper-api:4456
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.history.host | quote }}

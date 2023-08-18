@@ -56,10 +56,11 @@ spec:
           protocol: TCP
 
         env:
+        # todo: do we need this?
+        - name: BUILDTIME
+          value: "2023"
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
-        - name: NODE_ENV
-          value: "production"
         - name: LOGLEVEL
           value: {{ .Values.galoy.trigger.logLevel | quote }}
 
@@ -70,6 +71,10 @@ spec:
           value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.trigger.fullname" . }}"
+        - name: TRIGGER_PORT
+          value: {{ .Values.galoy.trigger.port | quote }}
+        - name: WEBSOCKET_PORT
+          value: {{ .Values.galoy.websocket.port | quote }}
 
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 8 }}
@@ -83,7 +88,11 @@ spec:
 {{/* API Specifics */}}
 {{ include "galoy.twilio.env" . | indent 8 }}
 {{ include "galoy.geetest.env" . | indent 8 }}
-{{ include "galoy.appcheck.env" . | indent 8 }}
+
+{{ include "galoy.kratos.env" . | indent 8 }}
+
+        - name: OATHKEEPER_DECISION_ENDPOINT
+          value: http://galoy-oathkeeper-api:4456
 
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.history.host | quote }}
@@ -102,7 +111,7 @@ spec:
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
 
         {{ if .Values.galoy.trigger.backups.gcs.enabled }}
-        - name: GCS_APPLICATION_CREDENTIALS
+        - name: GCS_APPLICATION_CREDENTIALS_PATH
           value: "/var/secret/cloud.google.com/gcs-sa-key.json"
         {{ end }}
 
