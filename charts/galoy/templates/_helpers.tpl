@@ -213,9 +213,9 @@ Define kratos env vars
       name: {{ .Values.kratos.secret.nameOverride | default "galoy-kratos" }}
       key: dsn
 - name: KRATOS_PUBLIC_API
-  value: http://galoy-kratos-public
+  value: {{ .Values.galoy.kratos.publicApiUrl | quote }}
 - name: KRATOS_ADMIN_API
-  value: http://galoy-kratos-admin
+  value: {{ .Values.galoy.kratos.adminApiUrl | quote }}
 {{- end -}}
 
 {{- define "galoy.bria.env" -}}
