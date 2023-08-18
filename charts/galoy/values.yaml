@@ -34,7 +34,7 @@ galoy:
     app:
       ## Has api, trigger and exporter
       ##
-      repository: krtk6160/galoy
+      repository: us.gcr.io/galoy-org/galoy-app
       ## Digest of the image
       ##
       digest: "sha256:6a991326af3ad0a37a702ad16cf66e06cb0a7d10c1846907e700e22b75f7c430"
@@ -45,7 +45,7 @@ galoy:
     websocket:
       ## Has websocket
       ##
-      repository: krtk6160/galoy
+      repository: us.gcr.io/galoy-org/galoy-app-websocket
       ## Digest of the image
       ##
       digest: "sha256:eb92ce96bd0e75126a102194e2656a65eb672ec256c75544112fc255d9558415"
