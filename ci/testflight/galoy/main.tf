@@ -68,7 +68,7 @@ resource "kubernetes_secret" "dropbox_access_token" {
   }
 
   data = {
-    token = ""
+    token = "dummy"
   }
 }
 
