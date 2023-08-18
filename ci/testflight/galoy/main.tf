@@ -93,7 +93,7 @@ resource "kubernetes_secret" "mongodb_connection_string" {
   }
 
   data = {
-    "mongodb-con" : "mongodb://testGaloy:password@galoy-mongodb:27017/galoy"
+    "mongodb-con" : "mongodb://testGaloy:password@galoy-mongodb-0.galoy-mongodb-headless,galoy-mongodb-1.galoy-mongodb-headless,galoy-mongodb-2.galoy-mongodb-headless/galoy"
   }
 }
 
