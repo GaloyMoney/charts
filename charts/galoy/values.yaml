@@ -372,6 +372,8 @@ galoy:
     resources: {}
   ## Kratos
   kratos:
+    publicApiUrl: http://galoy-kratos-public
+    adminApiUrl: http://galoy-kratos-admin
     existingSecret:
       name: kratos-secret
       master_user_password: master_user_password
