@@ -56,6 +56,11 @@ spec:
             - name: PRICE_HOST
               value: {{ .Values.price.realtime.host | quote }}
 
+            - name: TRIGGER_PORT
+              value: {{ .Values.galoy.trigger.port | quote }}
+            - name: WEBSOCKET_PORT
+              value: {{ .Values.galoy.websocket.port | quote }}
+
             - name: PROXY_CHECK_APIKEY
               valueFrom:
                 secretKeyRef:
@@ -70,6 +75,12 @@ spec:
 {{ include "galoy.lnd1.env" . | indent 12 }}
 {{ include "galoy.lnd2.env" . | indent 12 }}
 {{ include "galoy.bria.env" . | indent 12 }}
+
+{{ include "galoy.kratos.env" . | indent 12 }}
+{{ include "galoy.twilio.env" . | indent 12 }}
+
+            - name: OATHKEEPER_DECISION_ENDPOINT
+              value: http://galoy-oathkeeper-api:4456
 
             - name: SVIX_SECRET
               valueFrom:
