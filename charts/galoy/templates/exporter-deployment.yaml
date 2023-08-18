@@ -61,9 +61,6 @@ spec:
           protocol: TCP
 
         env:
-        # todo: do we need this?
-        - name: BUILDTIME
-          value: "2023"
         - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
         - name: LOGLEVEL
