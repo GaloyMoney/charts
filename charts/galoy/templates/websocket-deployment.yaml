@@ -46,6 +46,7 @@ spec:
           containerPort: {{ .Values.galoy.websocket.port }}
           protocol: TCP
         env:
+        - name: HELMREVISION
           value: {{ .Release.Revision | quote }}
         - name: LOGLEVEL
           value: {{ .Values.galoy.websocket.logLevel | quote }}
