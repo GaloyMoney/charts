@@ -86,6 +86,17 @@ resource "kubernetes_secret" "mongodb_creds" {
   }
 }
 
+resource "kubernetes_secret" "mongodb_connection_string" {
+  metadata {
+    name      = "galoy-mongodb-connection-string"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    "mongodb-con" : "mongodb://testGaloy:password@galoy-mongodb:27017/galoy"
+  }
+}
+
 resource "kubernetes_secret" "twilio_secret" {
   metadata {
     name      = "twilio-secret"
