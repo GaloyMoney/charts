@@ -296,6 +296,16 @@ resource "kubernetes_secret" "svix_secret" {
   }
 }
 
+resource "kubernetes_secret" "proxy_check_api_key" {
+  metadata {
+    name      = "proxy-check-api-key"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+  data = {
+    "api-key" = "dummy"
+  }
+}
+
 resource "helm_release" "galoy" {
   name      = "galoy"
   chart     = "${path.module}/../../charts/galoy"

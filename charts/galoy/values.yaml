@@ -479,6 +479,12 @@ galoy:
     name: svix-secret
     # Svix secret
     secret_key: svix-secret
+  ## Proxy check api key
+  proxyCheckExistingSecret:
+    # Secret Name
+    name: proxy-check-api-key
+    # Proxy check api key
+    key: api-key
   ## Mattermost webhook url
   mattermostWebhookUrl: "mattermostwebhookurl"
 # Configuration values for the mongodb dependency.
@@ -611,6 +617,8 @@ secrets:
   kratosCallbackApiKey:
   ## Secret for Svix
   svixSecretKey:
+  ## Api key for proxy check
+  proxyCheckApiKey:
 ## Tracing details
 ##
 tracing:

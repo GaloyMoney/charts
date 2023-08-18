@@ -100,6 +100,12 @@ spec:
               name: {{ .Values.galoy.svixExistingSecret.name }}
               key: {{ .Values.galoy.svixExistingSecret.secret_key }}
 
+        - name: PROXY_CHECK_APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.proxyCheckExistingSecret.name }}
+              key: {{ .Values.galoy.proxyCheckExistingSecret.key }}
+
         {{ if .Values.galoy.websocket.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-service-account/service-account.json"

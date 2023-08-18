@@ -56,6 +56,12 @@ spec:
             - name: PRICE_HOST
               value: {{ .Values.price.realtime.host | quote }}
 
+            - name: PROXY_CHECK_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.galoy.proxyCheckExistingSecret.name }}
+                  key: {{ .Values.galoy.proxyCheckExistingSecret.key }}
+
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 12 }}
 {{ include "galoy.redis.env" . | indent 12 }}

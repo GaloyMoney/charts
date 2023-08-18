@@ -80,6 +80,12 @@ spec:
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.exporter.fullname" . }}"
 
+        - name: PROXY_CHECK_APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.proxyCheckExistingSecret.name }}
+              key: {{ .Values.galoy.proxyCheckExistingSecret.key }}
+
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 8 }}
 {{ include "galoy.redis.env" . | indent 8 }}
