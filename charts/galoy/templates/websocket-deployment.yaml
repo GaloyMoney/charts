@@ -106,6 +106,9 @@ spec:
               name: {{ .Values.galoy.proxyCheckExistingSecret.name }}
               key: {{ .Values.galoy.proxyCheckExistingSecret.key }}
 
+        - name: LND_PRIORITY
+          value: {{ .Values.galoy.lndPriority }}
+
         {{ if .Values.galoy.websocket.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-service-account/service-account.json"

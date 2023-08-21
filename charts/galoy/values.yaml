@@ -17,6 +17,8 @@ galoy:
   ##
   router:
     port: 80
+  # LND used as primary lightning node, can be either lnd1 or lnd2
+  lndPriority: lnd1
   config:
     bria:
       hotWalletName: dev

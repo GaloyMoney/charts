@@ -86,6 +86,9 @@ spec:
               name: {{ .Values.galoy.proxyCheckExistingSecret.name }}
               key: {{ .Values.galoy.proxyCheckExistingSecret.key }}
 
+        - name: LND_PRIORITY
+          value: {{ .Values.galoy.lndPriority }}
+
 {{/* Databases */}}
 {{ include "galoy.mongodb.env" . | indent 8 }}
 {{ include "galoy.redis.env" . | indent 8 }}
