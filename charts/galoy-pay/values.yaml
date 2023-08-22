@@ -7,8 +7,8 @@ ingress:
 service:
   port: 80
   type: ClusterIP
-graphqlHostname: domain.example
-graphqlHostnameInternal: service-name.namespace.svc.cluster.local
+graphqlUrl: https://domain.example/graphql
+graphqlUrlInternal: http://service-name.namespace.svc.cluster.local
 graphqlWebsocketUrl: wss://ws.domain.example/graphql
 nostrPubkey: "pubkey"
 galoy-nostr:

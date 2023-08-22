@@ -27,12 +27,12 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: NEXT_PUBLIC_GRAPHQL_HOSTNAME
-          value: "{{ .Values.graphqlHostname }}"
-        - name: GRAPHQL_HOSTNAME_INTERNAL
-          value: "{{ .Values.graphqlHostnameInternal }}"
-        - name: GRAPHQL_WEBSOCKET_URL
+        - name: NEXT_PUBLIC_GRAPHQL_URL
+          value: "{{ .Values.graphqlUrl }}"
+        - name: NEXT_PUBLIC_GRAPHQL_WEBSOCKET_URL
           value: "{{ .Values.graphqlWebsocketUrl }}"
+        - name: GRAPHQL_URL_INTERNAL\
+          value: "{{ .Values.graphqlUrlInternal }}"
         - name: NOSTR_PUBKEY
           value: "{{ .Values.nostrPubkey }}"
         - name: REDIS_MASTER_NAME
