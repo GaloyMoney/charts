@@ -31,7 +31,7 @@ spec:
           value: "{{ .Values.graphqlUrl }}"
         - name: NEXT_PUBLIC_GRAPHQL_WEBSOCKET_URL
           value: "{{ .Values.graphqlWebsocketUrl }}"
-        - name: GRAPHQL_URL_INTERNAL\
+        - name: GRAPHQL_URL_INTERNAL
           value: "{{ .Values.graphqlUrlInternal }}"
         - name: NOSTR_PUBKEY
           value: "{{ .Values.nostrPubkey }}"
