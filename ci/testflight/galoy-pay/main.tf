@@ -35,12 +35,7 @@ resource "helm_release" "galoy_pay" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    templatefile("${path.module}/testflight-values.yml", {
-      redis_namespace : "${local.galoy_namespace}",
-      graphql_hostname : local.graphql_hostname,
-      graphql_hostname_internal : local.graphql_hostname,
-      graphql_websocket_url : local.graphql_websocket_url,
-    })
+    file("${path.module}/testflight-values.yml")
   ]
 }
 
