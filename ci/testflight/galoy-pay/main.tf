@@ -5,13 +5,10 @@ locals {
   cluster_location = "us-east1"
   gcp_project      = "galoy-staging"
 
-  smoketest_namespace   = "galoy-staging-smoketest"
-  bitcoin_namespace     = "galoy-staging-bitcoin"
-  galoy_namespace       = "galoy-staging-galoy"
-  testflight_namespace  = var.testflight_namespace
-  graphql_url           = "http://api.${local.galoy_namespace}.svc.cluster.local/graphql"
-  graphql_url_internal  = local.graphql_url
-  graphql_websocket_url = "wss://ws.${local.galoy_namespace}.svc.cluster.local/graphql"
+  smoketest_namespace  = "galoy-staging-smoketest"
+  bitcoin_namespace    = "galoy-staging-bitcoin"
+  galoy_namespace      = "galoy-staging-galoy"
+  testflight_namespace = var.testflight_namespace
 }
 
 resource "kubernetes_namespace" "testflight" {
@@ -38,12 +35,7 @@ resource "helm_release" "galoy_pay" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    templatefile("${path.module}/testflight-values.yml.tmpl", {
-      redis_namespace : "${local.galoy_namespace}",
-      graphql_hostname : local.graphql_hostname,
-      graphql_hostname_internal : local.graphql_hostname,
-      graphql_websocket_url : local.graphql_websocket_url,
-    })
+    file("${path.module}/testflight-values.yml")
   ]
 }
 
