@@ -9,7 +9,8 @@ locals {
   bitcoin_namespace     = "galoy-staging-bitcoin"
   galoy_namespace       = "galoy-staging-galoy"
   testflight_namespace  = var.testflight_namespace
-  graphql_hostname      = "api.${local.galoy_namespace}.svc.cluster.local"
+  graphql_url           = "http://api.${local.galoy_namespace}.svc.cluster.local/graphql"
+  graphql_url_internal  = local.graphql_url
   graphql_websocket_url = "wss://ws.${local.galoy_namespace}.svc.cluster.local/graphql"
 }
 
