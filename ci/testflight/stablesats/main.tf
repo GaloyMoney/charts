@@ -10,6 +10,7 @@ locals {
 
   smoketest_namespace  = "galoy-staging-smoketest"
   galoy_namespace      = "galoy-staging-galoy"
+  bitcoin_namespace    = "galoy-staging-bitcoin"
   testflight_namespace = var.testflight_namespace
 }
 
@@ -42,6 +43,13 @@ data "kubernetes_secret" "dealer_creds" {
   }
 }
 
+data "kubernetes_secret" "bria_credentials" {
+  metadata {
+    name      = "stablesats-bria-creds"
+    namespace = local.bitcoin_namespace
+  }
+}
+
 resource "kubernetes_secret" "stablesats" {
   metadata {
     name      = "stablesats"
@@ -54,6 +62,7 @@ resource "kubernetes_secret" "stablesats" {
     okex-secret-key : var.okex_secret_key
     okex-passphrase : var.okex_passphrase
     galoy-phone-code : data.kubernetes_secret.dealer_creds.data["code"]
+    bria-profile-api-key: data.kubernetes_secret.bria_credentials.data["api-key"]
   }
 }
 

@@ -83,6 +83,11 @@ spec:
             secretKeyRef:
               name: {{ template "stablesats.fullname" . }}
               key: "okex-passphrase"
+        - name: BRIA_PROFILE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "stablesats.fullname" . }}
+              key: "bria-profile-api-key"
         - name: KUBE_NODE_NAME
           valueFrom:
             fieldRef:
