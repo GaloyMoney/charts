@@ -36,3 +36,8 @@ data:
       service_name: {{ .Values.stablesats.tracing.dealerServiceName }}
       host: {{ .Values.stablesats.tracing.jaegerHost }}
       port: 6831
+    bria:
+      url: {{ .Values.stablesats.bria.url }}
+      wallet_name: {{ .Values.stablesats.bria.walletName }}
+      payout_queue_name: {{ .Values.stablesats.bria.payoutQueueName }}
+      onchain_address_external_id: {{ .Values.stablesats.bria.onchainAddressExternalId }}
