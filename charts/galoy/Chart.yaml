@@ -25,7 +25,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 13.17.2
   - name: common
-    version: 2.9.0
+    version: 2.9.2
     repository: https://charts.bitnami.com/bitnami
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
