@@ -26,8 +26,6 @@ spec:
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.stablesats.image.repository }}@{{ .Values.stablesats.image.digest }}"
-        ports:
-        - containerPort: {{ .Values.stablesats.priceServer.port }}
         args:
         - stablesats
         - run
