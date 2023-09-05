@@ -100,18 +100,12 @@ spec:
         - name: OATHKEEPER_DECISION_ENDPOINT
           value: http://galoy-oathkeeper-api:4456
 
-        - name: PRICE_HISTORY_HOST
-          value: {{ .Values.price.history.host | quote }}
-        - name: PRICE_HISTORY_PORT
-          value: {{ .Values.price.history.port | quote }}
+{{ include "galoy.price.env" . | indent 8 }}
 
         - name: PRICE_SERVER_HOST
           value: {{ .Values.galoy.dealer.host | quote }}
         - name: PRICE_SERVER_PORT
           value: {{ .Values.galoy.dealer.port | quote }}
-
-        - name: PRICE_HOST
-          value: {{ .Values.price.realtime.host | quote }}
 
         - name: MATTERMOST_WEBHOOK_URL
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}

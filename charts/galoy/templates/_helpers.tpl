@@ -248,6 +248,18 @@ Return Galoy environment variables for Redis configuration
 {{- end -}}
 
 {{/*
+Return Galoy environment variables for price server
+*/}}
+{{- define "galoy.price.env" -}}
+- name: PRICE_HISTORY_HOST
+  value: {{ .Values.price.history.host | quote }}
+- name: PRICE_HISTORY_PORT
+  value: {{ .Values.price.history.port | quote }}
+- name: PRICE_HOST
+  value: {{ .Values.price.realtime.host | quote }}
+{{- end -}}
+
+{{/*
 Return Galoy environment variables for Twilio
 */}}
 {{- define "galoy.twilio.env" -}}
