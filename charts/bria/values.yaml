@@ -6,8 +6,8 @@ bria:
     bitcoindSignerEndpoint: https://bitcoind-onchain.default.svc.cluster.local:18543
   resources: {}
   tracing:
-    jaegerHost: localhost
-    port: 6831
+    host: localhost
+    port: 4318
     serviceName: bria-dev
   app:
     blockchain:
