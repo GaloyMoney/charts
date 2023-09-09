@@ -977,7 +977,7 @@ kratos:
             url: file:///etc/config/phone_email_no_password_v0.identity.schema.json
         default_schema_id: phone_no_password_v0
       session:
-        lifespan: "720h" # 1 month
+        lifespan: "9360h" # 1 year and 1 month
         earliest_possible_extend: "96h" # 4 days
         whoami:
           required_aal: highest_available
