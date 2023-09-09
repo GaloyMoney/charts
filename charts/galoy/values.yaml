@@ -18,7 +18,6 @@ galoy:
   router:
     port: 80
   config:
-
     bria:
       hotWalletName: dev
       queueNames:
@@ -752,7 +751,7 @@ oathkeeper:
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
-                "extra_from": "identity.traits"
+                "extra_from": "@this"
               }
             },
             {
@@ -762,7 +761,7 @@ oathkeeper:
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
-                "extra_from": "identity.traits"
+                "extra_from": "@this"
               }
             },
             { "handler": "anonymous" }
@@ -771,8 +770,8 @@ oathkeeper:
           "mutators": [
             {
               "handler": "id_token",
-              "config": {
-                "claims": "{\"sub\": \"{{ print .Subject }}\"}"
+              "config": { 
+                "claims": '{"sub": "{{ print .Subject }}", "session_id": "{{ print .Extra.id }}", "expires_at": "{{ print .Extra.expires_at }}" }'
               }
             }
           ]
@@ -795,7 +794,7 @@ oathkeeper:
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
-                "extra_from": "identity.traits"
+                "extra_from": "@this"
               }
             },
             {
@@ -805,7 +804,7 @@ oathkeeper:
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
-                "extra_from": "identity.traits"
+                "extra_from": "@this"
               }
             },
             { "handler": "anonymous" }
@@ -816,7 +815,9 @@ oathkeeper:
           "mutators": [
             {
               "handler": "id_token",
-              "config": { "claims": '{"sub": "{{ print .Subject }}"}' }
+              "config": { 
+                "claims": '{"sub": "{{ print .Subject }}"}' 
+              }
             }
           ]
         }
