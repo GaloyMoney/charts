@@ -14,8 +14,8 @@ stablesats:
     resources: {}
   image:
     repository: us.gcr.io/galoy-org/stablesats-rs
-    digest: "sha256:5ac9c9f9377877300a97d24abe5cd59cc87ccd97327cf34aec6732633e65edf2"
-    git_ref: "c776a69"
+    digest: "sha256:370a197872a5b56a1dd463278f93175cd9cade25c11ef8d8f3b4903ebfffd3e3"
+    git_ref: "251d67b"
   crash_report_config_danger: false
   db:
     poolSize: 20
@@ -49,7 +49,8 @@ stablesats:
         apiKey: ""
         simulated: true
   tracing:
-    jaegerHost: "localhost"
+    host: "localhost"
+    port: 4318
     priceServiceName: "stablesats-price"
     dealerServiceName: "stablesats-dealer"
   bria:
