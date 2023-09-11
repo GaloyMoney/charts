@@ -989,6 +989,7 @@ kratos:
         default_schema_id: phone_no_password_v0
       session:
         lifespan: "9360h" # 1 year and 1 month
+        earliest_possible_extend: "9360h" # 1 year and 1 month
         whoami:
           required_aal: highest_available
       log:
