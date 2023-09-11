@@ -56,6 +56,11 @@ spec:
             - name: PRICE_HOST
               value: {{ .Values.price.realtime.host | quote }}
 
+            - name: PRICE_SERVER_HOST
+              value: {{ .Values.galoy.dealer.host | quote }}
+            - name: PRICE_SERVER_PORT
+              value: {{ .Values.galoy.dealer.port | quote }}
+
             - name: TRIGGER_PORT
               value: {{ .Values.galoy.trigger.port | quote }}
             - name: WEBSOCKET_PORT
