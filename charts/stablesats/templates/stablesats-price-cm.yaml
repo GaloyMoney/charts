@@ -25,5 +25,5 @@ data:
       enabled: false
     tracing:
       service_name: {{ .Values.stablesats.tracing.priceServiceName }}
-      host: {{ .Values.stablesats.tracing.jaegerHost }}
-      port: 6831
+      host: {{ .Values.stablesats.tracing.host }}
+      port: {{ .Values.stablesats.tracing.port }}

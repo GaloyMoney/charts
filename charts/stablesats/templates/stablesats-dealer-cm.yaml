@@ -34,8 +34,8 @@ data:
       phone_number: {{ .Values.stablesats.galoy.phoneNumber }}
     tracing:
       service_name: {{ .Values.stablesats.tracing.dealerServiceName }}
-      host: {{ .Values.stablesats.tracing.jaegerHost }}
-      port: 6831
+      host: {{ .Values.stablesats.tracing.host }}
+      port: {{ .Values.stablesats.tracing.port }}
     bria:
       url: {{ .Values.stablesats.bria.url }}
       wallet_name: {{ .Values.stablesats.bria.walletName }}

@@ -49,7 +49,8 @@ stablesats:
         apiKey: ""
         simulated: true
   tracing:
-    jaegerHost: "localhost"
+    host: "localhost"
+    port: 4318
     priceServiceName: "stablesats-price"
     dealerServiceName: "stablesats-dealer"
   bria:
