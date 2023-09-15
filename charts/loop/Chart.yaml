@@ -16,7 +16,7 @@ maintainers:
 dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
-    version: 2.10.1
+    version: 2.11.1
   - name: loopserver
     version: x.x.x
     condition: loopserver.enabled
