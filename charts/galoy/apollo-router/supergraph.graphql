@@ -1665,7 +1665,7 @@ input UserLoginUpgradeInput
 input UserLogoutInput
   @join__type(graph: PUBLIC)
 {
-  authToken: AuthToken!
+  deviceToken: String
 }
 
 """Unique identifier of a user"""
