@@ -14,9 +14,6 @@ maintainers:
   - name: Galoy
     email: dev@galoy.io
 dependencies:
-  - name: common
-    repository: https://charts.bitnami.com/bitnami
-    version: 2.10.1
   - name: loopserver
     version: x.x.x
     condition: loopserver.enabled
