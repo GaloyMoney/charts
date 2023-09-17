@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "rtl.labels" . | nindent 4 }}
     kube-monkey/identifier: {{ .Release.Name }}
-    {{- if .Values.labels }}
-    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
   selector:
@@ -21,8 +21,8 @@ spec:
       labels:
         {{- include "rtl.selectorLabels" . | nindent 8 }}
         kube-monkey/identifier: {{ .Release.Name }}
-        {{- if .Values.podLabels }}
-        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- with .Values.labels }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
