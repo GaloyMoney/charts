@@ -24,9 +24,6 @@ dependencies:
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
     version: 13.18.1
-  - name: common
-    version: 2.10.1
-    repository: https://charts.bitnami.com/bitnami
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 11.9.13
