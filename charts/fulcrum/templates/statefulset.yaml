@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "fulcrum.labels" . | nindent 4 }}
     kube-monkey/identifier: {{ .Release.Name }}
-    {{- if .Values.labels }}
-    {{- include "common.tplvalues.render" (dict "value" .Values.labels "context" $) | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml .Values.labels | nindent 4 }}
     {{- end }}
 spec:
   serviceName: {{ include "fulcrum.fullname" . }}
