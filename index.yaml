@@ -1701,6 +1701,16 @@ entries:
   rtl:
     - apiVersion: v2
       appVersion: 0.13.3
+      created: "2023-09-18T10:06:40.766808005Z"
+      description: A Helm chart for Kubernetes
+      digest: 05835813dbd9985fae452e2f4fd6199546cf755c7924c63f6780501a249bd4ca
+      name: rtl
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/rtl-v0.4.3/rtl-0.4.3.tgz
+      version: 0.4.3
+    - apiVersion: v2
+      appVersion: 0.13.3
       created: "2023-09-08T13:36:24.316089162Z"
       dependencies:
         - name: common
@@ -21589,4 +21599,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2023-09-18T09:24:22.508364026Z"
+generated: "2023-09-18T10:06:40.769608622Z"
