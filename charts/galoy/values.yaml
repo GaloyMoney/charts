@@ -708,7 +708,132 @@ oathkeeper:
       access_rules:
         matching_strategy: regexp
     mutatorIdTokenJWKs: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
-    accessRules: "[\n  {\n    \"id\": \"anonymous-rest-auth\",\n    \"upstream\": { \"url\": \"http://api:4002\" },\n    \"match\": {\n      \"url\": \"<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code|email/login|email/login/cookie)>\",\n      \"methods\": [\"GET\", \"POST\", \"OPTIONS\"]\n    },\n    \"authenticators\": [{ \"handler\": \"anonymous\" }],\n    \"authorizer\": { \"handler\": \"allow\" },\n    \"mutators\": [{ \"handler\": \"noop\" }]\n  },\n  {\n    \"id\": \"device-login\",\n    \"upstream\": {\n      \"url\": \"http://api:4002\"\n    },\n    \"match\": {\n      \"url\": \"<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/create/device-account\",\n      \"methods\": [\"POST\"]\n    },\n    \"authenticators\": [\n      {\n        \"handler\": \"jwt\",\n        \"config\": {\n          \"trusted_issuers\": [ \"https://firebaseappcheck.googleapis.com/72279297366\" ],\n          \"target_audience\": [ \"projects/72279297366\" ],\n          \"jwks_urls\": [ \"https://firebaseappcheck.googleapis.com/v1beta/jwks\" ],\n          \"token_from\": {\n            \"header\": \"Appcheck\"\n          }\n        }\n      },\n    ],\n    \"authorizer\": { \"handler\": \"allow\" },\n    \"mutators\": [{ \"handler\": \"noop\" }]\n  },\n  {\n    \"id\": \"galoy-router\",\n    \"upstream\": {\n      \"url\": \"http://galoy-router:80\"\n    },\n    \"match\": {\n      \"url\": \"<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql\",\n      \"methods\": [ \"POST\", \"GET\", \"OPTIONS\" ]\n    },\n    \"authenticators\": [\n      {\n        \"handler\": \"cookie_session\",\n        \"config\": {\n          \"check_session_url\": \"http://galoy-kratos-public:80/sessions/whoami\",\n          \"preserve_path\": true,\n          \"preserve_query\": true,\n          \"subject_from\": \"identity.id\",\n          \"extra_from\": \"@this\"\n        }\n      },\n      {\n        \"handler\": \"bearer_token\",\n        \"config\": {\n          \"check_session_url\": \"http://galoy-kratos-public:80/sessions/whoami\",\n          \"preserve_path\": true,\n          \"preserve_query\": true,\n          \"subject_from\": \"identity.id\",\n          \"extra_from\": \"@this\"\n        }\n      },\n      { \"handler\": \"anonymous\" }\n    ],\n    \"authorizer\": { \"handler\": \"allow\" },\n    \"mutators\": [\n      {\n        \"handler\": \"id_token\",\n        \"config\": { \n          \"claims\": '{\"sub\": \"{{ print .Subject }}\", \"session_id\": \"{{ print .Extra.id }}\", \"expires_at\": \"{{ print .Extra.expires_at }}\" }'\n        }\n      }\n    ]\n  },\n  {\n    \"id\": \"admin-backend\",\n    \"upstream\": {\n      \"url\": \"http://graphql-admin:4001\",\n      \"strip_path\": \"/admin\"\n    },\n    \"match\": {\n      \"url\": \"<(http|https)>://<.*><[0-9]*>/admin/<.*>\",\n      \"methods\": [\"GET\", \"POST\", \"OPTIONS\"]\n    },\n    \"authenticators\": [\n      {\n        \"handler\": \"cookie_session\",\n        \"config\": {\n          \"check_session_url\": \"http://galoy-kratos-public:80/sessions/whoami\",\n          \"preserve_path\": true,\n          \"preserve_query\": true,\n          \"subject_from\": \"identity.id\",\n          \"extra_from\": \"@this\"\n        }\n      },\n      {\n        \"handler\": \"bearer_token\",\n        \"config\": {\n         \"check_session_url\": \"http://galoy-kratos-public:80/sessions/whoami\",\n          \"preserve_path\": true,\n          \"preserve_query\": true,\n          \"subject_from\": \"identity.id\",\n          \"extra_from\": \"@this\"\n        }\n      },\n      { \"handler\": \"anonymous\" }\n    ],\n    \"authorizer\": {\n      \"handler\": \"allow\"\n    },\n    \"mutators\": [\n      {\n        \"handler\": \"id_token\",\n        \"config\": { \n          \"claims\": '{\"sub\": \"{{ print .Subject }}\"}' \n        }\n      }\n    ]\n  }\n]\n"
+    accessRules: |
+      [
+        {
+          "id": "anonymous-rest-auth",
+          "upstream": { "url": "http://api:4002" },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code|email/login|email/login/cookie)>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [{ "handler": "anonymous" }],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "device-login",
+          "upstream": {
+            "url": "http://api:4002"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/create/device-account",
+            "methods": ["POST"]
+          },
+          "authenticators": [
+            {
+              "handler": "jwt",
+              "config": {
+                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/72279297366" ],
+                "target_audience": [ "projects/72279297366" ],
+                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ],
+                "token_from": {
+                  "header": "Appcheck"
+                }
+              }
+            },
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "galoy-router",
+          "upstream": {
+            "url": "http://galoy-router:80"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
+            "methods": [ "POST", "GET", "OPTIONS" ]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": '{"sub": "{{ print .Subject }}", "session_id": "{{ print .Extra.id }}", "expires_at": "{{ print .Extra.expires_at }}" }'
+              }
+            }
+          ]
+        },
+        {
+          "id": "admin-backend",
+          "upstream": {
+            "url": "http://graphql-admin:4001",
+            "strip_path": "/admin"
+          },
+          "match": {
+            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+              "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": {
+            "handler": "allow"
+          },
+          "mutators": [
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": '{"sub": "{{ print .Subject }}"}'
+              }
+            }
+          ]
+        }
+      ]
   maester:
     enabled: false
 kratos:
