@@ -32,6 +32,9 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 realtime:
+  tracing:
+    otelExporterOtlpEndpoint: http://localhost:4318/v1/traces
+    otelServiceName: galoy-price-realtime-dev
   config: {}
   image:
     repository: us.gcr.io/galoy-org/price
@@ -46,6 +49,9 @@ realtime:
     prometheus.io/port: "9464"
     prometheus.io/scrape: "true"
 history:
+  tracing:
+    otelExporterOtlpEndpoint: http://localhost:4318/v1/traces
+    otelServiceName: galoy-price-history-dev
   valuesOverride: {}
   image:
     repository: us.gcr.io/galoy-org/price-history
