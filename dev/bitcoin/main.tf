@@ -1,34 +1,5 @@
-variable "name_prefix" {}
-variable "bitcoin_network" {}
-
 locals {
-  bitcoin_network      = var.bitcoin_network
-  smoketest_namespace  = "${var.name_prefix}-smoketest"
-  bitcoin_namespace    = "${var.name_prefix}-bitcoin"
-  bitcoind_rpcpassword = "rpcpassword"
-}
-
-resource "kubernetes_namespace" "bitcoin" {
-  metadata {
-    name = local.bitcoin_namespace
-  }
-}
-
-resource "null_resource" "bitcoind_block_generator" {
-
-  triggers = {
-    run_every_time = timestamp()
-  }
-
-  provisioner "local-exec" {
-    command     = local.bitcoin_network == "regtest" && local.bitcoin_namespace == "galoy-dev-bitcoin" ? "${path.module}/generateBlock.sh" : "echo Running ${local.bitcoin_network}"
-    interpreter = ["sh", "-c"]
-  }
-
-  depends_on = [
-    helm_release.bitcoind,
-    helm_release.bitcoind_onchain
-  ]
+  smoketest_namespace = "${var.name_prefix}-smoketest"
 }
 
 resource "kubernetes_secret" "bitcoind_smoketest" {
@@ -59,6 +30,15 @@ resource "kubernetes_secret" "fulcrum_smoketest" {
     fulcrum_stats_port = 8080
   }
 }
+
+resource "kubernetes_secret" "bria_smoketest" {
+  metadata {
+    name      = "bria-smoketest"
+    namespace = local.smoketest_namespace
+  }
+  data = {}
+}
+
 
 resource "kubernetes_secret" "mempool_smoketest" {
   metadata {
