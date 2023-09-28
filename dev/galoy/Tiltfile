@@ -97,7 +97,7 @@ k8s_yaml(secret_from_dict(
 k8s_yaml(secret_from_dict(
   name='bria-api-key',
   namespace=galoy_namespace,
-  inputs={'api-key': 'bria_dev_000000000000000000000'}
+  inputs={'network': 'bria_dev_000000000000000000000'}
 ))
 
 k8s_yaml(secret_from_dict(
