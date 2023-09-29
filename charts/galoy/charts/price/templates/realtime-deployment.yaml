@@ -37,6 +37,11 @@ spec:
             - name: prometheus
               containerPort: {{ .Values.realtime.service.prometheus }}
               protocol: TCP
+          env:
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: {{ .Values.realtime.tracing.otelExporterOtlpEndpoint }}
+          - name: OTEL_SERVICE_NAME
+            value: {{ .Values.realtime.tracing.otelServiceName }}
           volumeMounts:
             - name: custom-yaml
               mountPath: "/var/yaml/"
