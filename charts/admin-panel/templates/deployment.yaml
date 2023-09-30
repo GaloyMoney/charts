@@ -31,5 +31,15 @@ spec:
           value: {{ .Values.adminPanel.graphqlUrl }}
         - name: NEXT_PUBLIC_GALOY_AUTH_ENDPOINT
           value: {{ .Values.adminPanel.galoyAuthEndpoint }}
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "adminPanel.fullname" . }}
+              key: oauth-client-id
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "adminPanel.fullname" . }}
+              key: oauth-client-secret
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
