@@ -12,6 +12,7 @@ adminPanel:
   nextAuthUrl: http://localhost:3000
 resources: {}
 secrets:
-  googleOauthClientId: ""
-  googleOauthClientSecret: ""
+  create: true
+  oauthClientId: ""
+  oauthClientSecret: ""
   nextAuthSecret: ""
