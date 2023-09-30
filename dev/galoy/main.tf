@@ -1,38 +1,3 @@
-locals {
-  smoketest_namespace = "${var.name_prefix}-smoketest"
-  galoy_namespace     = "${var.name_prefix}-galoy"
-}
-
-resource "helm_release" "galoy" {
-  name      = "galoy"
-  chart     = "${path.module}/../../charts/galoy"
-  namespace = kubernetes_namespace.galoy.metadata[0].name
-
-  values = [
-    templatefile("${path.module}/galoy-values.yml.tmpl", {
-      kratos_pg_host : local.kratos_pg_host,
-      kratos_callback_api_key : random_password.kratos_callback_api_key.result
-    }),
-    file("${path.module}/galoy-${var.bitcoin_network}-values.yml")
-  ]
-
-  depends_on = [
-    kubernetes_secret.bitcoinrpc_password,
-    kubernetes_secret.lnd1_credentials,
-    kubernetes_secret.loop1_credentials,
-    kubernetes_secret.lnd1_pubkey,
-    kubernetes_secret.lnd2_credentials,
-    kubernetes_secret.loop2_credentials,
-    kubernetes_secret.lnd2_pubkey,
-    kubernetes_secret.price_history_postgres_creds,
-    kubernetes_secret.kratos_master_user_password,
-    helm_release.postgresql
-  ]
-
-  dependency_update = true
-  timeout           = 900
-}
-
 resource "kubernetes_secret" "smoketest" {
   metadata {
     name      = "galoy-smoketest"
