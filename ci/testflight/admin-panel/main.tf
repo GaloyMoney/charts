@@ -26,6 +26,19 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
+resource "kubernetes_secret" "admin_panel" {
+  metadata {
+    name      = "admin-panel"
+    namespace = local.testflight_namespace
+  }
+
+  data = {
+    "next-auth-secret" : "dummy",
+    "oauth-client-id" : "dummy",
+    "oauth-client-secret" : "dummy"
+  }
+}
+
 resource "helm_release" "admin_panel" {
   name       = "admin-panel"
   chart      = "${path.module}/chart"
