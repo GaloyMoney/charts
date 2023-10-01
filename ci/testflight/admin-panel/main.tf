@@ -33,7 +33,7 @@ resource "kubernetes_secret" "admin_panel" {
   }
 
   data = {
-    "next-auth-secret" : "dummy",
+    "next-auth-secret" : "dummy123",
     "oauth-client-id" : "dummy",
     "oauth-client-secret" : "dummy"
   }
