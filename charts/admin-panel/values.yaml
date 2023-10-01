@@ -8,6 +8,11 @@ service:
   port: 3000
   type: ClusterIP
 adminPanel:
-  graphqlUrl: http://localhost:4002/graphql
-  galoyAuthEndpoint: http://localhost:4002/auth
+  adminCoreApi: http://admin-api.galoy-dev-galoy.svc.cluster.local:4001/admin/graphql
+  nextAuthUrl: http://localhost:3000
 resources: {}
+secrets:
+  create: true
+  oauthClientId: ""
+  oauthClientSecret: ""
+  nextAuthSecret: ""
