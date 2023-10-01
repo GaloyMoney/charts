@@ -44,6 +44,10 @@ resource "helm_release" "admin_panel" {
   chart      = "${path.module}/chart"
   repository = "https://galoymoney.github.io/charts/"
   namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    file("${path.module}/testflight-values.yml")
+  ]
 }
 
 data "google_container_cluster" "primary" {
