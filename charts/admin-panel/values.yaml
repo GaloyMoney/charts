@@ -16,3 +16,5 @@ secrets:
   oauthClientId: ""
   oauthClientSecret: ""
   nextAuthSecret: ""
+otelExporterOtlpEndpoint: http://localhost:4318
+tracingServiceName: "admin-panel"
