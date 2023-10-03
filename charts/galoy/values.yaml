@@ -1152,6 +1152,7 @@ kratos:
         }
     emailTemplates: {}
 hydra:
+  enabled: false
   hydra:
     config:
       dsn: memory
