@@ -1156,7 +1156,7 @@ hydra:
     enabled: false
   hydra:
     config:
-      dsn: memory
+      dsn: postgresql://hydra-pg:hydra-pg@postgresql/hydra-pg
     dev: true
     serve:
       cookies:
