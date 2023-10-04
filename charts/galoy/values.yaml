@@ -1155,6 +1155,12 @@ hydra:
   maester:
     enabled: false
   hydra:
+    ingress:
+      public:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-issuer
+          kubernetes.io/ingress.class: nginx
     config:
       dsn: memory
     dev: true
