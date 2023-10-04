@@ -108,13 +108,6 @@ jobs:
             CHART=galoy-pay ./dev-smoketest-settings.sh && \
             ./galoy-pay-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Web Wallet Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=web-wallet ./dev-smoketest-settings.sh && \
-            ./web-wallet-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: Bria Smoketest
         run: |
           pushd dev && source ./.envrc
