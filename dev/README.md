@@ -58,14 +58,6 @@ Currently successfully brings up charts - no guarantee that everything is workin
     "Beo2lGQZO4nZKzIyZRlVFIQ6jAeo9bNu"
     ```
 
-#### Test the web wallet
-
-1. port forward the web wallet on 3000
-    ```
-    kubectl -n galoy-dev-addons port-forward --address 0.0.0.0 svc/web-wallet-mobile 3000:80
-    ```
-2. open http://localhost:3000
-
 #### Test the admin panel
 
 1. port forward the web wallet on 3001
