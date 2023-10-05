@@ -824,8 +824,7 @@ oathkeeper:
                 "subject_from": "identity.id",
                 "extra_from": "@this"
               }
-            },
-            { "handler": "anonymous" }
+            }
           ],
           "authorizer": {
             "handler": "allow"
