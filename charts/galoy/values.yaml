@@ -1162,6 +1162,8 @@ hydra:
     enabled: false
   hydra:
     config:
+      ttl:
+        access_token: 168h
       dsn: memory
     dev: true
     serve:
