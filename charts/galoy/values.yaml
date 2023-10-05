@@ -1158,6 +1158,7 @@ kratos:
         }
     emailTemplates: {}
 hydra:
+  enabled: true
   maester:
     enabled: false
   hydra:
