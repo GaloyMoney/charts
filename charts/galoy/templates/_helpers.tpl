@@ -1,4 +1,12 @@
 {{/* vim: set filetype=mustache: */}}
+
+{{/*
+Create a timestamp of the current helm release time.
+*/}}
+{{- define "releasetime" -}}
+{{- now | unixEpoch -}}
+{{- end -}}
+
 {{/*
 Expand the name of the chart.
 */}}
@@ -71,14 +79,14 @@ Mongo Backup CronJob name
 Migration Job name
 */}}
 {{- define "galoy.migration.jobname" -}}
-{{- printf "%s-mongodb-migrate-%d" .Release.Name .Release.Revision -}}
+{{- printf "%s-mongodb-migrate-" .Release.Name -}}{{- template "releasetime" -}}
 {{- end -}}
 
 {{/*
 Pre-Migration Job name
 */}}
 {{- define "galoy.preMigration.jobname" -}}
-{{- printf "%s-pre-mongodb-migrate-%d" .Release.Name .Release.Revision -}}
+{{- printf "%s-pre-mongodb-migrate-" .Release.Name -}}{{- template "releasetime" -}}
 {{- end -}}
 
 {{/*
