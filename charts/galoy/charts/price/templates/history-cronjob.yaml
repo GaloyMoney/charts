@@ -10,6 +10,9 @@ spec:
     spec:
       activeDeadlineSeconds: 60
       template:
+        metadata:
+          labels:
+            app: {{ include "price.history.fullname" . }}-cronjob
         spec:
           containers:
           - name: update-price

@@ -19,6 +19,7 @@ spec:
       template:
         metadata:
           labels:
+            app: {{ template "galoy.cron.jobname" . }}
         spec:
           serviceAccountName: {{ template "galoy.name" . }}
           restartPolicy: OnFailure
