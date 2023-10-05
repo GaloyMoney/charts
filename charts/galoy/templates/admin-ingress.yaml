@@ -13,7 +13,7 @@ metadata:
     nginx.ingress.kubernetes.io/limit-rpm: "10"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "20"
     nginx.ingress.kubernetes.io/limit-connections: "4"
-    nginx.ingress.kubernetes.io/auth-url: "http://galoy-oathkeeper-api.{{ .Release.Namespace }}.svc.cluster.local:4456/decisions/admin"
+    nginx.ingress.kubernetes.io/auth-url: "http://galoy-oathkeeper-api.{{ .Release.Namespace }}.svc.cluster.local:4456/decisions"
     nginx.ingress.kubernetes.io/auth-method: GET
     nginx.ingress.kubernetes.io/auth-response-headers: Authorization
     nginx.ingress.kubernetes.io/auth-snippet: |
