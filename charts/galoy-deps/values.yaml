@@ -97,6 +97,12 @@ opentelemetry-collector:
         - key: code.function.params.password
           action: update
           value: "<redacted>"
+        - key: graphql.variables.input.totpCode
+          action: update
+          value: "<redacted>"
+        - key: graphql.variables.input.authToken
+          action: update
+          value: "<redacted>"
       # If set to null, will be overridden with values based on k8s resource limits
       memory_limiter: null
       resourcedetection:
