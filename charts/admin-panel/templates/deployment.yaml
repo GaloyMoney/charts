@@ -52,6 +52,8 @@ spec:
             secretKeyRef:
               name: {{ template "adminPanel.fullname" . }}
               key: github-oauth-client-secret
+        - name: AUTHORIZED_EMAILS
+          value: {{ .Values.adminPanel.authorizedEmails }}
         - name: NEXTAUTH_URL
           value: {{ .Values.adminPanel.nextAuthUrl }}
         - name: ADMIN_CORE_API
