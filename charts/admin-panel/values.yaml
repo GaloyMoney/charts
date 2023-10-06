@@ -13,8 +13,10 @@ adminPanel:
 resources: {}
 secrets:
   create: true
-  oauthClientId: ""
-  oauthClientSecret: ""
+  googleOauthClientId: ""
+  googleOauthClientSecret: ""
   nextAuthSecret: ""
+  githubOauthClientId: ""
+  githubOauthClientSecret: ""
 otelExporterOtlpEndpoint: http://localhost:4318
 tracingServiceName: "admin-panel"
