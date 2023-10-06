@@ -31,17 +31,29 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ template "adminPanel.fullname" . }}
-              key: oauth-client-id
+              key: google-oauth-client-id
         - name: GOOGLE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
               name: {{ template "adminPanel.fullname" . }}
-              key: oauth-client-secret
+              key: google-oauth-client-secret
         - name: NEXTAUTH_SECRET
           valueFrom:
             secretKeyRef:
               name: {{ template "adminPanel.fullname" . }}
               key: next-auth-secret
+        - name: GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "adminPanel.fullname" . }}
+              key: github-oauth-client-id
+        - name: GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "adminPanel.fullname" . }}
+              key: github-oauth-client-secret
+        - name: AUTHORIZED_EMAILS
+          value: {{ .Values.adminPanel.authorizedEmails }}
         - name: NEXTAUTH_URL
           value: {{ .Values.adminPanel.nextAuthUrl }}
         - name: ADMIN_CORE_API

@@ -10,11 +10,14 @@ service:
 adminPanel:
   adminCoreApi: http://admin-api.galoy-dev-galoy.svc.cluster.local:4001/admin/graphql
   nextAuthUrl: http://localhost:3000
+  authorizedEmails: "satoshi@galoy.io,nakamoto@blink.sv"
 resources: {}
 secrets:
   create: true
-  oauthClientId: ""
-  oauthClientSecret: ""
+  googleOauthClientId: ""
+  googleOauthClientSecret: ""
   nextAuthSecret: ""
+  githubOauthClientId: ""
+  githubOauthClientSecret: ""
 otelExporterOtlpEndpoint: http://localhost:4318
 tracingServiceName: "admin-panel"
