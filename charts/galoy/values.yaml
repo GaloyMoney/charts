@@ -808,6 +808,11 @@ oathkeeper:
               preserve_query: true
               subject_from: identity.id
               extra_from: "@this"
+          - handler: oauth2_introspection
+            config:
+              introspection_url: http://galoy-hydra-admin:4445/admin/oauth2/introspect
+              token_from:
+                header: Oauth2-Token
         authorizer:
           handler: allow
         mutators:
