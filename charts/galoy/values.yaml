@@ -818,7 +818,7 @@ oathkeeper:
         mutators:
           - handler: id_token
             config:
-              claims: '{"sub": "{{ print .Subject }}"}'
+              claims: '{"sub": "{{ print .Subject }}", "scope": "{{ print .Extra.scope }}" }'
   maester:
     enabled: false
 kratos:
