@@ -8,7 +8,8 @@ locals {
 
 module "galoy_deps" {
   source = "./galoy-deps"
-
+  cloudflare_api_key = var.cloudflare_api_key
+  cloudflare_email   = var.cloudflare_email
   name_prefix = local.name_prefix
 }
 

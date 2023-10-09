@@ -54,7 +54,7 @@ stablesats:
     priceServiceName: "stablesats-price"
     dealerServiceName: "stablesats-dealer"
   bria:
-    url: "http://bria-api.default.svc.cluster.local:2742"
+    url: "http://bria-api.galoy-dev-bitcoin.svc.cluster.local:2742"
     walletName: "dev-wallet"
     payoutQueueName: "dev-queue"
     onchainAddressExternalId: "dev-onchain-address"

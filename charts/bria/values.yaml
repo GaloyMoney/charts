@@ -3,7 +3,7 @@ nameOverride: ""
 bria:
   devDaemon:
     enabled: false
-    bitcoindSignerEndpoint: https://bitcoind-onchain.default.svc.cluster.local:18543
+    bitcoindSignerEndpoint: https://bitcoind-onchain.galoy-dev-bitcoin.svc.cluster.local:18543
   resources: {}
   tracing:
     host: localhost
@@ -12,7 +12,7 @@ bria:
   app:
     blockchain:
       network: regtest
-      electrumUrl: fulcrum.default.svc.cluster.local
+      electrumUrl: fulcrum.galoy-dev-bitcoin.svc.cluster.local
     fees:
       mempoolSpace:
         url: https://mempool.space

@@ -70,7 +70,6 @@ spec:
 
 {{/* Bitcoin/LND */}}
 {{ include "galoy.lnd1.env" . | indent 8 }}
-{{ include "galoy.lnd2.env" . | indent 8 }}
 {{ include "galoy.bria.env" . | indent 8 }}
 
 {{/* API Specifics */}}

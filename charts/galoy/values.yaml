@@ -97,10 +97,10 @@ galoy:
     ingress:
       ## Enable Ingress.
       ##
-      enabled: false
+      enabled: true
       ## Ingress Host
       ##
-      hosts: ["api.staging.galoy.io"]
+      hosts: ["api-development.flashapp.me"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -234,10 +234,10 @@ galoy:
     ingress:
       ## Enable Ingress.
       ##
-      enabled: false
+      enabled: true
       ## Ingress Host
       ##
-      hosts: ["admin.staging.galoy.io"]
+      hosts: ["api-development.flashapp.me"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -326,10 +326,10 @@ galoy:
     ingress:
       ## Enable Ingress.
       ##
-      enabled: false
+      enabled: true
       ## Ingress Host
       ##
-      hosts: [ws.staging.galoy.io]
+      hosts: ["api-development.flashapp.me"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -386,7 +386,7 @@ galoy:
   lnd1:
     ## DNS for LND1
     ##
-    dns: lnd1.default.svc.cluster.local
+    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
     ## Credentials to access LND RPC
     ##
     credentialsExistingSecret:
@@ -418,7 +418,7 @@ galoy:
   lnd2:
     ## DNS for LND2
     ##
-    dns: lnd2.default.svc.cluster.local
+    dns: lnd2.galoy-dev-bitcoin.svc.cluster.local
     ## Credentials to access LND RPC
     ##
     credentialsExistingSecret:
@@ -445,7 +445,7 @@ galoy:
       ## TLS Key
       tls_key: tls_base64
   bria:
-    host: bria-api.default.svc.cluster.local
+    host: bria-api.galoy-dev-bitcoin.svc.cluster.local
     port: 2742
     apiKeyExistingSecret:
       name: bria-api-key
@@ -454,7 +454,7 @@ galoy:
   ##
   dealer:
     ## Dealer Service Host
-    host: dealer-price.default.svc.cluster.local
+    host: dealer-price.galoy-dev-bitcoin.svc.cluster.local
     ## Dealer Service Port
     port: 3325
   ## Geetest Configuration
@@ -631,7 +631,7 @@ tracing:
   otelExporterOtlpEndpoint: http://localhost:4318
   ## Prefix for tracing
   ##
-  prefix: galoy-dev
+  prefix: galoy-sig
 price:
   realtime:
     host: galoy-price-realtime
@@ -659,9 +659,9 @@ oathkeeper:
           enabled: true
           config:
             trusted_issuers:
-              - https://firebaseappcheck.googleapis.com/72279297366
+              - https://firebaseappcheck.googleapis.com/806646140435
             target_audience:
-              - projects/72279297366
+              - projects/806646140435
             jwks_urls:
               - https://firebaseappcheck.googleapis.com/v1beta/jwks
             token_from:
@@ -734,8 +734,8 @@ oathkeeper:
             {
               "handler": "jwt",
               "config": {
-                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/72279297366" ],
-                "target_audience": [ "projects/72279297366" ],
+                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/806646140435" ],
+                "target_audience": [ "projects/806646140435", "projects/avid-ceiling-390418" ],
                 "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ],
                 "token_from": {
                   "header": "Appcheck"
@@ -842,9 +842,9 @@ kratos:
     nameOverride: ""
   ingress:
     admin:
-      enabled: false
+      enabled: true
     public:
-      enabled: false
+      enabled: true
   replicaCount: 2
   deployment:
     livenessProbe:

@@ -1,5 +1,11 @@
 galoy:
   network: regtest
+  images:
+    app:
+      repository: dreadnterrible/flash-dev:0.1.2
+      imagePullPolicy: Always
+      digest: sha256:9d2487064189884b33fcc09973baf536794200e0b208bb86497829e127b7b5bf
+      git_ref: "2b4c7a"
   config:
     swap:
       loopOutWhenHotWalletLessThan: 500000
@@ -17,9 +23,6 @@ galoy:
   lnd1:
     dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
 
-  lnd2:
-    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
-
   dealer:
     host: dealer-price.galoy-dev-addons.svc.cluster.local
 
@@ -27,7 +30,7 @@ galoy:
     replicas: 1
     ingress:
       enabled: true
-      hosts: [localhost]
+      hosts: ["api-development.flashapp.me"]
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
       extraPaths:
@@ -41,7 +44,7 @@ galoy:
   admin:
     ingress:
       enabled: true
-      hosts: [localhost]
+      hosts: ["api-development.flashapp.me"]
       annotations:
         nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /$1

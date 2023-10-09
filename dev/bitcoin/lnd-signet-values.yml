@@ -3,15 +3,13 @@ global:
 
 resources:
   limits:
-    cpu: 150m
-    memory: 256Mi
+    cpu: 250m
+    memory: 2Gi
 
 terminationGracePeriodSeconds: 60
 
 persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 1Gi
+  enabled: false
 
 configmap:
   customValues:
@@ -20,7 +18,7 @@ configmap:
   - bitcoind.rpchost=bitcoind:38332
   - keysend-hold-time=2s
   - tlsextradomain=lnd1.galoy-sig-bitcoin.svc.cluster.local
-  - debuglevel=info
+  - debuglevel=debug
 
 autoGenerateSeed:
   enabled: true

@@ -1,9 +1,20 @@
 locals {
-  letsencrypt_issuer_email = "dev@galoy.io"
+  letsencrypt_issuer_email = "cloudflare@islandbitcoin.com"
   ingress_namespace        = "${var.name_prefix}-ingress"
   ingress_service_name     = "${var.name_prefix}-ingress"
   jaeger_host              = "opentelemetry-collector.${local.otel_namespace}.svc.cluster.local"
   enable_tracing           = true
+}
+
+resource "kubernetes_secret" "cloudflare_api_key" {
+  metadata {
+    name      = "cloudflare-api-key-secret"
+    namespace = local.ingress_namespace
+  }
+
+  data = {
+    api-key = var.cloudflare_api_key
+  }
 }
 
 resource "kubernetes_namespace" "ingress" {
@@ -62,7 +73,16 @@ resource "kubernetes_manifest" "issuer" {
           name = "letsencrypt-issuer"
         }
         solvers = [
-          { http01 = { ingress = { class = "nginx" } } }
+          { dns01 = {
+              cloudflare = {
+                email = var.cloudflare_email,
+                apiKeySecretRef = {
+                  name = kubernetes_secret.cloudflare_api_key.metadata[0].name,
+                  key  = "api-key"
+                }
+              }
+            }
+          }
         ]
       }
     }
