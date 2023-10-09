@@ -117,6 +117,13 @@ galoy:
         name: galoyapp-firebase-serviceaccount
         # Secret Key
         key: galoyapp-firebase-serviceaccount.json
+    ## CAUTION - UNSECURE FLAG!
+    ## Enable Unsercure default logins to any phone number via the code
+    unsecureDefaultLoginCode:
+      enabled: false # Should be disabled in all production systems
+      existingSecret:
+        name: galoyapp-unsecure-login-code
+        key: code
     ## Liveness/Readiness Probes Configuration
     ## Determines if pod is healthy or if it should be killed.
     ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
