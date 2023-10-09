@@ -1,6 +1,10 @@
 variable "testflight_namespace" {}
 variable "smoketest_kubeconfig" {}
 variable "testflight_backups_creds" {}
+variable "TWILIO_VERIFY_SERVICE_ID" {}
+variable "TWILIO_ACCOUNT_SID" {}
+variable "TWILIO_AUTH_TOKEN" {}
+
 
 locals {
   cluster_name     = "galoy-staging-cluster"
@@ -104,9 +108,9 @@ resource "kubernetes_secret" "twilio_secret" {
   }
 
   data = {
-    TWILIO_VERIFY_SERVICE_ID = "VAe11a3584045bf83e044c9852308cb599"
-    TWILIO_ACCOUNT_SID       = "AC47db6946f29ced2fd7202b8dbf006ffb"
-    TWILIO_AUTH_TOKEN        = "844f3f93ae903da28576264de7e66473"
+    TWILIO_VERIFY_SERVICE_ID = var.TWILIO_VERIFY_SERVICE_ID
+    TWILIO_ACCOUNT_SID       = var.TWILIO_ACCOUNT_SID
+    TWILIO_AUTH_TOKEN        = var.TWILIO_AUTH_TOKEN
   }
 }
 
