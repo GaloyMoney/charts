@@ -124,6 +124,14 @@ spec:
         - name: MATTERMOST_WEBHOOK_URL
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
 
+        {{ if .Values.galoy.api.unsecureDefaultLoginCode.enabled }}
+        - name: UNSECURE_DEFAULT_LOGIN_CODE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.api.unsecureDefaultLoginCode.existingSecret.name }}
+              key: {{ .Values.galoy.api.unsecureDefaultLoginCode.existingSecret.key }}
+        {{ end }}
+
         {{ if .Values.galoy.api.firebaseNotifications.enabled }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/tmp/firebase-service-account/service-account.json"
