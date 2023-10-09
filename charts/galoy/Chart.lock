@@ -20,5 +20,5 @@ dependencies:
 - name: router
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
-digest: sha256:c72950d9e698aba2411645a4000068a2323cf3eb3339539fe2918edcaa7fd7bb
-generated: "2023-10-04T08:29:30.118916645Z"
+digest: sha256:e253fb8422e592d39c0c2f9e44426f5cff0caf71a170d4af77a853d96a1b439c
+generated: "2023-10-09T17:58:30.193950248+05:30"
