@@ -283,3 +283,18 @@ Return Galoy environment variables for Geetest
       name: {{ .Values.galoy.geetestExistingSecret.name }}
       key: {{ .Values.galoy.geetestExistingSecret.secret_key }}
 {{- end -}}
+
+# TODO: Remove this once https://github.com/apollographql/router/issues/4002 is resolved
+# This is copied from https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl
+{{- define "common.tplvalues.render" -}}
+{{- $value := typeIs "string" .value | ternary .value (.value | toYaml) }}
+{{- if contains "{{" (toJson .value) }}
+  {{- if .scope }}
+      {{- tpl (cat "{{- with $.RelativeScope -}}" $value "{{- end }}") (merge (dict "RelativeScope" .scope) .context) }}
+  {{- else }}
+    {{- tpl $value .context }}
+  {{- end }}
+{{- else }}
+    {{- $value }}
+{{- end }}
+{{- end -}}
