@@ -35,10 +35,6 @@ spec:
       containers:
       - name: websocket
         image: "{{ .Values.galoy.images.websocket.repository }}@{{ .Values.galoy.images.websocket.digest }}"
-        args:
-        - "-r"
-        - "/app/lib/services/tracing.js"
-        - "lib/servers/ws-server.js"
         resources:
           {{ toYaml .Values.galoy.websocket.resources | nindent 10 }}
         ports:

@@ -44,10 +44,6 @@ spec:
       containers:
       - name: api
         image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-        args:
-        - "-r"
-        - "/app/lib/services/tracing.js"
-        - "lib/servers/graphql-main-server.js"
         resources:
           {{ toYaml .Values.galoy.api.resources | nindent 10 }}
         ports:

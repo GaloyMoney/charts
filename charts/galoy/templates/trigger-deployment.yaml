@@ -43,11 +43,7 @@ spec:
 
       containers:
       - name: api
-        image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-        args:
-        - "-r"
-        - "/app/lib/services/tracing.js"
-        - "lib/servers/trigger.js"
+        image: "{{ .Values.galoy.images.trigger.repository }}@{{ .Values.galoy.images.trigger.digest }}"
         resources:
           {{ toYaml .Values.galoy.trigger.resources | nindent 10 }}
         ports:

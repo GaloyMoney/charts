@@ -30,6 +30,7 @@
               ytt
               yq-go
               kubernetes-helm
+              terraform
             ];
 
             shellHook = ''
