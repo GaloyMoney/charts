@@ -48,11 +48,7 @@ spec:
 
       containers:
       - name: exporter
-        image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-        args:
-        - "-r"
-        - "/app/lib/services/tracing.js"
-        - "lib/servers/exporter.js"
+        image: "{{ .Values.galoy.images.exporter.repository }}@{{ .Values.galoy.images.exporter.digest }}"
         resources:
           {{ toYaml .Values.galoy.exporter.resources | nindent 10 }}
         ports:
