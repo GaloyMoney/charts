@@ -33,11 +33,7 @@ spec:
 
           containers:
           - name: {{ template "galoy.cron.jobname" . }}
-            image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
-            args:
-            - "-r"
-            - "/app/lib/services/tracing.js"
-            - "lib/servers/cron.js"
+            image: "{{ .Values.galoy.images.cron.repository }}@{{ .Values.galoy.images.cron.digest }}"
             resources:
               {{ toYaml .Values.galoy.galoyCron.resources | nindent 14 }}
             env:

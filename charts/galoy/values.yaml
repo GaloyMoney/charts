@@ -51,6 +51,11 @@ galoy:
       ## Digest of the image
       ##
       digest: "sha256:2bd3e626a2449d3498e02ebf8d0a98d7e9abc10df041fbce1f658dc5ecf21c72"
+    cron:
+      repository: us.gcr.io/galoy-org/galoy-api-cron
+      ## Digest of the image
+      ##
+      digest: "sha256:2bd3e626a2449d3498e02ebf8d0a98d7e9abc10df041fbce1f658dc5ecf21c72"
     exporter:
       repository: us.gcr.io/galoy-org/galoy-api-exporter
       ## Digest of the image
