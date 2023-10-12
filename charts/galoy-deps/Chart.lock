@@ -4,7 +4,7 @@ dependencies:
   version: v1.13.1
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
-  version: 4.7.1
+  version: 4.8.2
 - name: strimzi-kafka-operator
   repository: https://strimzi.io/charts/
   version: 0.36.1
@@ -14,5 +14,5 @@ dependencies:
 - name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   version: 0.71.1
-digest: sha256:7591aa8f691277e1e4b38aefcd8f4a8b6f738754c641d2fb8b959036c06f689d
-generated: "2023-10-09T03:48:54.743439718Z"
+digest: sha256:2f4b1a0b131faf44fd896b7ddda3b6a56ee99c23ad8b38c9b13f50d30051c9cd
+generated: "2023-10-12T14:46:28.302888664Z"
