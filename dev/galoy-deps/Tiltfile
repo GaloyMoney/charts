@@ -1,0 +1,68 @@
+load('ext://helm_resource', 'helm_resource')
+load('ext://namespace', 'namespace_create')
+update_settings(k8s_upsert_timeout_secs=120)
+
+name_prefix = "galoy-dev"
+kafka_namespace = "{}-kafka".format(name_prefix)
+ingress_namespace = "{}-ingress".format(name_prefix)
+otel_namespace = "{}-otel".format(name_prefix)
+kubemonkey_namespace = "{}-kubemonkey".format(name_prefix)
+
+namespace_create(kafka_namespace)
+
+# Attaching the namespace to the workload means that the namespace will be deleted when the workload is deleted
+# k8s_resource(workload="kafka-operator", objects=["galoy-dev-kafka:namespace"])
+
+helm_resource(
+  name="kafka",
+  chart="../../charts/galoy-deps",
+  namespace=kafka_namespace,
+  flags=['--values=./kafka-values.yml'],
+  labels="kafka"
+)
+
+## cert-manager and ingress-nginx
+
+namespace_create(ingress_namespace)
+
+# TODO: decide how to label the ingress namespace
+# k8s_resource(workload="cert-manager?", objects=["galoy-dev-ingress:namespace"])
+
+helm_resource(
+  name="cert-manager",
+  chart="../../charts/galoy-deps",
+  namespace=ingress_namespace,
+  flags=['--values=./cert-manager-values.yml'],
+  labels="cert-manager-and-ingress"
+)
+
+helm_resource(
+  name="ingress-nginx",
+  chart="../../charts/galoy-deps",
+  namespace=ingress_namespace,
+  flags=['--values=./ingress-nginx-values.yml'],
+  labels="cert-manager-and-ingress"
+)
+
+## opentelemetry-collector
+
+namespace_create(otel_namespace)
+
+helm_resource(
+  name="opentelemetry-collector",
+  chart="../../charts/galoy-deps",
+  namespace=otel_namespace,
+  flags=['--values=./otel-values.yml'],
+  labels="otel"
+)
+
+# do we need kubemonkey in local dev?
+
+# helm_resource(
+#   name="kubemonkey",
+#   chart="../../charts/galoy-deps",
+#   namespace=kubemonkey_namespace,
+#   flags=['--values=./kubemonkey-values.yml'],
+#   labels="kubemonkey"
+# )
+

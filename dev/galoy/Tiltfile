@@ -1,0 +1,238 @@
+load('ext://helm_resource', 'helm_resource')
+load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+update_settings(k8s_upsert_timeout_secs=120)
+
+name_prefix = 'galoy-dev'
+galoy_namespace = '{}-galoy'.format(name_prefix)
+bitcoin_namespace = '{}-bitcoin'.format(name_prefix)
+
+namespace_create(galoy_namespace)
+
+# TODO: Add labels for better grouping
+def copy_secret(source_secret_name, source_namespace, target_namespace, resource_deps, target_secret_name=None):
+  if target_secret_name == None:
+    target_secret_name = source_secret_name
+
+  delete_secret_cmd = 'kubectl -n {} delete secret {} --ignore-not-found=true'.format(target_namespace, target_secret_name)
+  generate_secret_json_cmd = 'kubectl -n {} get secret {} -o json | jq "del(.metadata.namespace, .metadata.name) | .metadata.name = \\"{}\\""'.format(source_namespace, source_secret_name, target_secret_name)
+  create_secret_cmd = 'kubectl -n {} apply -f -'.format(target_namespace)
+
+  local_resource(
+    name='{}-secret-copier'.format(target_secret_name),
+    cmd='{} && {} | {}'.format(delete_secret_cmd, generate_secret_json_cmd, create_secret_cmd),
+    resource_deps=resource_deps
+  )
+
+copy_secret(
+  source_secret_name='network',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  resource_deps=['bitcoind']
+)
+
+copy_secret(
+  source_secret_name='bitcoind-rpcpassword',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  resource_deps=['bitcoind']
+)
+
+# copy lnd1-pubkey secret
+copy_secret(
+  source_secret_name='lnd1-pubkey',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  resource_deps=['lnd1']
+)
+
+copy_secret(
+  source_secret_name='lnd1-pubkey',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  target_secret_name='lnd2-pubkey',
+  resource_deps=['lnd1']
+)
+
+# copy lnd1-credentials secret
+copy_secret(
+  source_secret_name='lnd1-credentials',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  resource_deps=['lnd1']
+)
+
+# # reuse lnd1_credentials for lnd2
+copy_secret(
+  source_secret_name='lnd1-credentials',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  target_secret_name='lnd2-credentials',
+  resource_deps=['lnd1']
+)
+
+# copy loop1-credentials secret
+copy_secret(
+  source_secret_name='loop1-credentials',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  resource_deps=['loop1']
+)
+
+# # reuse loop1_credentials for loop2
+copy_secret(
+  source_secret_name='loop1-credentials',
+  source_namespace=bitcoin_namespace,
+  target_namespace=galoy_namespace,
+  target_secret_name='loop2-credentials',
+  resource_deps=['loop1']
+)
+
+k8s_yaml(secret_from_dict(
+  name='gcs-sa-key',
+  namespace=galoy_namespace,
+  inputs={'key': 'dummy'}
+))
+
+k8s_yaml(secret_from_dict(
+  name='bria-api-key',
+  namespace=galoy_namespace,
+  inputs={'api-key': 'bria_dev_000000000000000000000'}
+))
+
+k8s_yaml(secret_from_dict(
+  name='geetest-key',
+  namespace=galoy_namespace,
+  inputs={'key': 'dummy', 'id': 'dummy'}
+))
+
+k8s_yaml(secret_from_dict(
+  name='galoy-mongodb',
+  namespace=galoy_namespace,
+  inputs={
+    'mongodb-password' : 'password',
+    'mongodb-passwords' : 'password',
+    'mongodb-root-password' : 'password',
+    'mongodb-replica-set-key' : 'replica'
+  }
+))
+
+k8s_yaml(secret_from_dict(
+  name='galoy-mongodb-connection-string',
+  namespace=galoy_namespace,
+  inputs={
+    'mongodb-con' : 'mongodb://testGaloy:password@galoy-mongodb:27017/galoy'
+  }
+))
+
+# galoy-redis-pw secret
+k8s_yaml(secret_from_dict(
+  name='galoy-redis-pw',
+  namespace=galoy_namespace,
+  inputs={'redis-password': 'redispw'}
+))
+
+# dropbox-access-token secret
+k8s_yaml(secret_from_dict(
+  name='dropbox-access-token',
+  namespace=galoy_namespace,
+  inputs={'token': 'dummy'}
+))
+
+# twilio-secret secret
+k8s_yaml(secret_from_dict(
+  name='twilio-secret',
+  namespace=galoy_namespace,
+  inputs={
+    'TWILIO_VERIFY_SERVICE_ID' : 'dummy',
+    'TWILIO_ACCOUNT_SID' : 'ACdummy',
+    'TWILIO_AUTH_TOKEN' : 'dummy'
+  }
+))
+
+# svix-secret secret
+k8s_yaml(secret_from_dict(
+  name='svix-secret',
+  namespace=galoy_namespace,
+  inputs={
+    'svix-secret': 'dummy'
+  }
+))
+
+# proxy-check-api-key secret
+k8s_yaml(secret_from_dict(
+  name='proxy-check-api-key',
+  namespace=galoy_namespace,
+  inputs={
+    'api-key': 'dummy'
+  }
+))
+
+# kratos-secret secret
+k8s_yaml(secret_from_dict(
+  name='kratos-secret',
+  namespace=galoy_namespace,
+  inputs={
+    'master_user_password': 'dummy',
+    'callback_api_key': 'dummy',
+  }
+))
+
+# galoy-oathkeeper secret
+k8s_yaml(secret_from_dict(
+  name='galoy-oathkeeper',
+  namespace=galoy_namespace,
+  inputs={
+    'mutator.id_token.jwks.json': local(
+      "cat oathkeeper_mutator_id_token_jwks.json | jq -c"
+    )
+  }
+))
+
+helm_resource(
+  name='postgresql',
+  chart='bitnami/postgresql',
+  namespace=galoy_namespace,
+  flags=[
+    '--values=./postgresql-values.yml',
+  ],
+  labels='galoy',
+  resource_deps=[
+    'network-secret-copier',
+    'bitcoind-rpcpassword-secret-copier',
+    'lnd1-pubkey-secret-copier',
+    'lnd1-credentials-secret-copier',
+    'lnd2-pubkey-secret-copier',
+    'lnd2-credentials-secret-copier',
+    'loop1-credentials-secret-copier',
+    'loop2-credentials-secret-copier',
+  ]
+)
+
+k8s_yaml(secret_from_dict(
+  name='galoy-price-history-postgres-creds',
+  namespace=galoy_namespace,
+  inputs={
+    'username': 'price-history',
+    'password': 'price-history',
+    'database': 'price-history'
+  }
+))
+
+# helm_resource(
+#   name='galoy',
+#   chart='../../charts/galoy',
+#   namespace=galoy_namespace,
+#   flags=[
+#     '--values=./galoy-values.yml',
+#     '--values=./galoy-regtest-values.yml',
+#   ],
+#   labels='galoy'
+# )
+
+k8s_yaml(helm(
+  '../../charts/galoy',
+  name = 'galoy',
+  namespace = galoy_namespace,
+  values = ['./galoy-values.yml', './galoy-regtest-values.yml'],
+))

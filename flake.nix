@@ -24,7 +24,9 @@
             nativeBuildInputs = [
               alejandra
               kubectl
+              python3
               tilt
+              jq
               k3d
               vendir
               ytt

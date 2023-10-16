@@ -1,0 +1,118 @@
+load('ext://helm_resource', 'helm_resource')
+load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+
+name_prefix = "galoy-dev"
+bitcoin_network = "regtest"
+bitcoind_rpcpassword = "rpcpassword"
+bitcoin_namespace = "{}-bitcoin".format(name_prefix)
+
+namespace_create(bitcoin_namespace)
+
+k8s_yaml(secret_from_dict(
+  name='bitcoind-rpcpassword',
+  namespace=bitcoin_namespace,
+  inputs={'password': bitcoind_rpcpassword},
+))
+
+helm_resource(
+  name="bitcoind",
+  chart="../../charts/bitcoind",
+  namespace=bitcoin_namespace,
+  flags=['--values=./bitcoind-regtest-values.yml'],
+  labels="bitcoin"
+)
+
+k8s_yaml(secret_from_dict(
+  name='bitcoind-onchain-rpcpassword',
+  namespace=bitcoin_namespace,
+  inputs={'password': bitcoind_rpcpassword},
+))
+
+k8s_yaml(secret_from_dict(
+  name='bitcoind-signer-descriptor',
+  namespace=bitcoin_namespace,
+  inputs={
+    'descriptor_json_base64': local(
+      "base64 bitcoind_signers_descriptors.json | tr -d '\n\r'"
+    )
+  },
+))
+
+helm_resource(
+  name="bitcoind-onchain",
+  chart="../../charts/bitcoind",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./bitcoind-regtest-values.yml',
+    '--values=./bitcoind-onchain-values.yml'
+  ],
+  labels="bitcoin"
+)
+
+local_resource(
+  name="bitcoind-block-generator",
+  cmd='./generateBlock.sh',
+  labels="bitcoin",
+  resource_deps=["bitcoind-onchain", "bitcoind"]
+)
+
+helm_resource(
+  name="lnd1",
+  chart="../../charts/lnd",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./lnd-regtest-values.yml',
+  ],
+  labels="bitcoin"
+)
+
+helm_resource(
+  name="loop1",
+  chart="../../charts/loop",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./loop-values.yml',
+  ],
+  labels="bitcoin"
+)
+
+# helm_resource(
+#   name="fulcrum",
+#   chart="../../charts/fulcrum",
+#   namespace=bitcoin_namespace,
+#   flags=[
+#     '--values=./fulcrum-regtest-values.yml',
+#   ],
+#   labels="bitcoin"
+# )
+
+k8s_yaml(secret_from_dict(
+  name='bria',
+  namespace=bitcoin_namespace,
+  inputs={
+    'pg-con': 'postgres://bria:bria@bria-postgresql:5432/bria',
+    'signer-encryption-key': local('openssl rand -hex 32'),
+  },
+))
+
+helm_resource(
+  name="bria",
+  chart="../../charts/bria",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./bria-values.yml',
+  ],
+  labels="bitcoin"
+)
+
+# TODO: uncomment mempool when we actually use it
+# helm_resource(
+#   name="mempool",
+#   chart="../../charts/mempool",
+#   namespace=bitcoin_namespace,
+#   flags=[
+#     '--values=./mempool-regtest-values.yml',
+#   ],
+#   labels="bitcoin"
+# )

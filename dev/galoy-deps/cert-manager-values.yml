@@ -1,0 +1,10 @@
+ingress-nginx:
+  enabled: false
+kubemonkey:
+  enabled: false
+opentelemetry-collector:
+  enabled: false
+strimzi-kafka-operator:
+  enabled: false
+cert-manager:
+  installCRDs: true
