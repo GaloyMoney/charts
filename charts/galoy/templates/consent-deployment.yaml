@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoy.consent.fullname" . }}
+  labels:
+    app: {{ template "galoy.consent.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ template "galoy.trigger.fullname" . }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "galoy.consent.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.galoy.consent.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "galoy.consent.fullname" . }}
+        release: "{{ .Release.Name }}"
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ template "galoy.trigger.fullname" . }}
+    spec:
+      serviceAccountName: {{ template "galoy.name" . }}
+      containers:
+      - name: consent
+        image: "{{ .Values.galoy.images.consent.repository }}@{{ .Values.galoy.images.consent.digest }}"
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.galoy.consent.port }}
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "{{ .Values.galoy.consent.port }}"
+        - name: GRAPHQL_PUBLIC_API
+          value: {{ .Values.galoy.consent.graphqlPublicApi }}
+        - name: CORE_AUTH_URL
+          value: {{ .Values.galoy.consent.coreAuthUrl }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.tracing.otelExporterOtlpEndpoint }}
+        - name: TRACING_SERVICE_NAME
+          value: "{{ .Values.tracing.prefix }}-{{ template "galoy.consent.fullname" . }}"
+        - name: HYDRA_ADMIN_URL
+          value: {{ .Values.galoy.consent.hydraAdminUrl }}

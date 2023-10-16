@@ -1,0 +1,48 @@
+{{- if .Values.galoy.consent.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "galoy.consent.fullname" . }}
+  labels:
+    app: {{ template "galoy.consent.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.galoy.consent.ingress.clusterIssuer }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "1s"
+    nginx.ingress.kubernetes.io/proxy-next-upstream: "error timeout"
+    nginx.ingress.kubernetes.io/proxy-next-upstream-tries: "3"
+    nginx.ingress.kubernetes.io/limit-rpm: "10"
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "2"
+    nginx.ingress.kubernetes.io/limit-connections: "10"
+    {{- with .Values.galoy.consent.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  ingressClassName: nginx
+  tls:
+    {{- range .Values.galoy.consent.ingress.hosts }}
+    - hosts:
+      - {{ . }}
+      secretName: {{ printf "%s-tls" . }}
+    {{- end }}
+  rules:
+  {{- range .Values.galoy.consent.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          {{- if $.Values.galoy.consent.ingress.extraPaths }}
+          {{- toYaml $.Values.galoy.consent.ingress.extraPaths | nindent 10 }}
+          {{- end }}
+          - pathType: ImplementationSpecific
+            path: /
+            backend:
+              service:
+                name: {{ template "galoy.consent.fullname" $ }}
+                port:
+                  number: {{ $.Values.galoy.consent.port }}
+  {{- end -}}
+{{- end -}}
