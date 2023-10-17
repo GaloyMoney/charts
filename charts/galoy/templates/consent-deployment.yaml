@@ -39,7 +39,7 @@ spec:
           protocol: TCP
         env:
         - name: PORT
-          value: "{{ .Values.galoy.consent.port }}"
+          value: "{{ .Values.galoy.consent.containerPort }}"
         - name: GRAPHQL_PUBLIC_API
           value: {{ .Values.galoy.consent.graphqlPublicApi }}
         - name: CORE_AUTH_URL

@@ -389,6 +389,7 @@ galoy:
   consent:
     resources: {}
     port: 80
+    containerPort: 3000
     graphqlPublicApi: http://galoy-oathkeeper-proxy/graphql
     coreAuthUrl: http://galoy-oathkeeper-proxy/auth
     hydraAdminUrl: http://galoy-hydra-admin:4445
