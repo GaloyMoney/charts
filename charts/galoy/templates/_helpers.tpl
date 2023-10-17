@@ -47,6 +47,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified consent name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "galoy.consent.fullname" -}}
+{{- default "consent" .Values.galoy.consent.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 CronJob name
 */}}
 {{- define "galoy.cron.jobname" -}}
@@ -282,4 +290,19 @@ Return Galoy environment variables for Geetest
     secretKeyRef:
       name: {{ .Values.galoy.geetestExistingSecret.name }}
       key: {{ .Values.galoy.geetestExistingSecret.secret_key }}
+{{- end -}}
+
+# TODO: Remove this once https://github.com/apollographql/router/issues/4002 is resolved
+# This is copied from https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl
+{{- define "common.tplvalues.render" -}}
+{{- $value := typeIs "string" .value | ternary .value (.value | toYaml) }}
+{{- if contains "{{" (toJson .value) }}
+  {{- if .scope }}
+      {{- tpl (cat "{{- with $.RelativeScope -}}" $value "{{- end }}") (merge (dict "RelativeScope" .scope) .context) }}
+  {{- else }}
+    {{- tpl $value .context }}
+  {{- end }}
+{{- else }}
+    {{- $value }}
+{{- end }}
 {{- end -}}

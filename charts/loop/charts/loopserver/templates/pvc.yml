@@ -3,8 +3,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ template "loopserver.fullname" $ }}
-  annotations:
-    "helm.sh/resource-policy": keep
   labels:
     {{- include "loopserver.labels" . | nindent 4 }}
 spec:

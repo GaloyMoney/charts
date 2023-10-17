@@ -21,4 +21,4 @@ dependencies:
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
 digest: sha256:bb886d7d909ea493a1113209c3544efde2497772abd7ca7f3466cb73060eb759
-generated: "2023-10-16T07:29:50.903201944Z"
+generated: "2023-10-17T00:27:44.993098112+05:30"

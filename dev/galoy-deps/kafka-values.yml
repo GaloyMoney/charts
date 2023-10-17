@@ -1,0 +1,12 @@
+cert-manager:
+  enabled: false
+ingress-nginx:
+  enabled: false
+kubemonkey:
+  enabled: false
+opentelemetry-collector:
+  enabled: false
+strimzi-kafka-operator:
+  kafka:
+    listener:
+      type: nodeport

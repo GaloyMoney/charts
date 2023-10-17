@@ -1,0 +1,14 @@
+load('ext://namespace', 'namespace_create')
+load('ext://helm_resource', 'helm_resource')
+
+name_prefix = 'galoy-dev'
+monitoring_namespace = '{}-monitoring'.format(name_prefix)
+
+namespace_create(monitoring_namespace)
+
+helm_resource(
+  name='monitoring',
+  chart='../../charts/monitoring',
+  namespace=monitoring_namespace,
+  labels='monitoring'
+)

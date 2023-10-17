@@ -1,0 +1,3 @@
+# include('./galoy-deps/Tiltfile')
+include('./bitcoin/Tiltfile')
+include('./galoy/Tiltfile')

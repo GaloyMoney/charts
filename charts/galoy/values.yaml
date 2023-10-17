@@ -61,6 +61,11 @@ galoy:
       ## Digest of the image
       ##
       digest: "sha256:aa16b25de59adef5b13b391394c9b637ce79c64e20ca36d0798968b5028a08d2"
+    consent:
+      repository: us.gcr.io/galoy-org/galoy-consent
+      ## Digest of the image
+      ##
+      digest: "sha256:f0a9190ad0b1f4accddc938c7ebd08ee7e9006011864d68cc1ad4aae6451ac46"
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -381,6 +386,17 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  consent:
+    resources: {}
+    port: 80
+    graphqlPublicApi: http://galoy-oathkeeper-proxy/graphql
+    coreAuthUrl: http://galoy-oathkeeper-proxy/auth
+    hydraAdminUrl: http://galoy-hydra-admin:4445
+    ingress:
+      enabled: false
+      hosts: [consent.staging.galoy.io]
+      clusterIssuer: letsencrypt-issuer
+      tlsSecretName: websocket-tls
   mongoBackupCron:
     resources: {}
   galoyCron:
