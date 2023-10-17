@@ -36,31 +36,31 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api
       ## Digest of the image
       ##
-      digest: "sha256:3c7e0a60f7e66ae628b9390d9614be1a5899e0c5092740726e816ae83cfa2339"
+      digest: "sha256:8b06dba1807115bb489c6954c88225c75b76c3cf894de2cfda0f29e87a5b6f8c"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "c706882"
+      git_ref: "8c94ccd"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-api-ws-server
       ## Digest of the image
       ##
-      digest: "sha256:7e192fd1ebae5d9e028e7e3a20ce35af0aff2e59593a27747e0a21f6169ca482"
+      digest: "sha256:b59d7e3c9f6e68da8dde1cf8b371fd8462f7454c9e2cdfbf70ba00f73fdd77e7"
     trigger:
       repository: us.gcr.io/galoy-org/galoy-api-trigger
       ## Digest of the image
       ##
-      digest: "sha256:98f4c3ace64381c3ce8ec50c27abbef1e6376d146069884b2a8e581dd76b16d9"
+      digest: "sha256:2b02879d93adb245f3bcb33be3a2534a84166eaf46cc167f7ce85a11d26bcf4a"
     cron:
       repository: us.gcr.io/galoy-org/galoy-api-cron
       ## Digest of the image
       ##
-      digest: "sha256:ea0b11bc38c701977201c55c63d5e303f6e0e52c6ece9fcea22714b09657570e"
+      digest: "sha256:88180ba14db91da61f6381f7ce43b5654bdd9b28523a7b1759361663c382798f"
     exporter:
       repository: us.gcr.io/galoy-org/galoy-api-exporter
       ## Digest of the image
       ##
-      digest: "sha256:aa16b25de59adef5b13b391394c9b637ce79c64e20ca36d0798968b5028a08d2"
+      digest: "sha256:cb07bd684d4e598d557ec5df668c7d7eba54afcf87372f09f56d632da411a9cd"
     consent:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
@@ -74,7 +74,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:c8541ec700279cc94e231774c29f9834d6e2aec6f4f6590dc28f04b9ea7eff20"
+      digest: "sha256:5c5fb75ac2ddae3d780b15478e7bceebb295b368dca17c2cf451821bb3a08ad3"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
