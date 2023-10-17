@@ -397,7 +397,7 @@ galoy:
       enabled: false
       hosts: [consent.staging.galoy.io]
       clusterIssuer: letsencrypt-issuer
-      tlsSecretName: websocket-tls
+      tlsSecretName: consent-tls
   mongoBackupCron:
     resources: {}
   galoyCron:
