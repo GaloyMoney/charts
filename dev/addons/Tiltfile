@@ -1,12 +1,17 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+load('../common/Tiltfile', 'copy_secret')
 
 name_prefix = 'galoy-dev'
 galoy_namespace = '{}-galoy'.format(name_prefix)
 addons_namespace = '{}-addons'.format(name_prefix)
 bitcoin_namespace = '{}-bitcoin'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
 
 namespace_create(addons_namespace)
+
+## Admin Panel
 
 k8s_yaml(secret_from_dict(
   name='admin-panel',
@@ -29,6 +34,58 @@ k8s_yaml(helm(
 
 k8s_resource(workload='admin-panel', labels='addons')
 
+k8s_yaml(secret_from_dict(
+  name='admin-panel-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'admin_panel_endpoint' : 'admin-panel.${}.svc.cluster.local'.format(addons_namespace),
+    'admin_panel_port'     : '3000'
+  }
+))
+
+
+## Galoy Pay
+
+k8s_yaml(secret_from_dict(
+  name='galoy-nostr-private-key',
+  namespace=addons_namespace,
+  inputs={
+    'key': 'bb159f7aaafa75a7d4470307c9d6ea18409d4f082b41abcf6346aaae5b2b3b10'
+  }
+))
+
+copy_secret(
+  source_secret_name='lnd1-credentials',
+  source_namespace=bitcoin_namespace,
+  target_namespace=addons_namespace,
+  resource_deps=['bitcoind'],
+  target_secret_name='lnd-credentials',
+)
+
+copy_secret(
+  source_secret_name='galoy-redis-pw',
+  source_namespace=galoy_namespace,
+  target_namespace=addons_namespace,
+)
+
+k8s_yaml(helm(
+  '../../charts/galoy-pay',
+  name='galoy-pay',
+  namespace=addons_namespace,
+  values = ['./galoy-pay-values.yml']
+))
+
+k8s_resource(workload='galoy-pay', labels='addons')
+
+k8s_yaml(secret_from_dict(
+  name='galoy-pay-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'galoy_pay_endpoints' : '["galoy-pay.{}.svc.cluster.local"]'.format(addons_namespace),
+    'galoy_pay_port' : '80',
+    'lnurl_check_disabled' : "true"
+  }
+))
 
 k8s_yaml(helm(
   '../../charts/api-dashboard',
