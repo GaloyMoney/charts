@@ -11,7 +11,7 @@ spec:
   type: {{ .Values.galoy.consent.serviceType }}
   ports:
     - port: {{ .Values.galoy.consent.port }}
-    - targetPort: {{ .Values.galoy.consent.containerPort }}
+      targetPort: {{ .Values.galoy.consent.containerPort }}
       protocol: TCP
       name: http
   selector:
