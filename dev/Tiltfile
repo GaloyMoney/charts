@@ -2,3 +2,4 @@
 include('./bitcoin/Tiltfile')
 include('./galoy/Tiltfile')
 include('./addons/Tiltfile')
+include('./smoketest/Tiltfile')
