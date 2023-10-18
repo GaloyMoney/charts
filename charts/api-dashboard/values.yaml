@@ -13,7 +13,7 @@ apiDashboard:
 
 image:
   repository: us.gcr.io/galoy-org/galoy-dashboard
-  digest: "sha256:c8b7a872d2f718e2e0620958953b457f05ac6a8162d5d1ada947bcbe929c62cc"
+  digest: "sha256:5dc4c44904923cc015e1f694ee49d7236d805e47b6f8044fa349270ea6b3bf06"
 
 ingress:
   enabled: false
