@@ -1,5 +1,5 @@
 load('ext://namespace', 'namespace_create')
-load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+load('ext://secret', 'secret_from_dict')
 
 name_prefix = 'galoy-dev'
 smoketest_namespace = '{}-smoketest'.format(name_prefix)
@@ -17,7 +17,6 @@ rules:
   resources: ["secrets"]
   verbs: ["get", "list"]
 """
-
 k8s_yaml(blob(smoketest_role_yaml))
 
 smoketest_serviceaccount_yaml="""
@@ -27,25 +26,7 @@ metadata:
   name: smoketest
   namespace: galoy-dev-smoketest
 """
-
 k8s_yaml(blob(smoketest_serviceaccount_yaml))
-
-smoketest_pv_yaml="""
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: smoketest-tasks
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 1Gi
-  hostPath:
-    path: "/charts"
-"""
-
-k8s_yaml(blob(smoketest_pv_yaml))
 
 smoketest_rolebinding_yaml="""
 apiVersion: rbac.authorization.k8s.io/v1
@@ -62,8 +43,23 @@ subjects:
   name: smoketest
   namespace: galoy-dev-smoketest
 """
-
 k8s_yaml(blob(smoketest_rolebinding_yaml))
+
+smoketest_pv_yaml="""
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: smoketest-tasks
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: "/charts"
+"""
+k8s_yaml(blob(smoketest_pv_yaml))
 
 smoketest_pvc_yaml="""
 apiVersion: v1
@@ -80,7 +76,6 @@ spec:
       storage: 1Gi
   volumeName: smoketest-tasks
 """
-
 k8s_yaml(blob(smoketest_pvc_yaml))
 
 smoketest_pod_yaml="""
@@ -106,5 +101,4 @@ spec:
     persistentVolumeClaim:
       claimName: smoketest-tasks
 """
-
 k8s_yaml(blob(smoketest_pod_yaml))

@@ -1,11 +1,12 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
-load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+load('ext://secret', 'secret_from_dict')
 
-name_prefix = "galoy-dev"
-bitcoin_network = "regtest"
-bitcoind_rpcpassword = "rpcpassword"
-bitcoin_namespace = "{}-bitcoin".format(name_prefix)
+name_prefix = 'galoy-dev'
+bitcoin_network = 'regtest'
+bitcoind_rpcpassword = 'rpcpassword'
+bitcoin_namespace = '{}-bitcoin'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
 
 namespace_create(bitcoin_namespace)
 
@@ -77,6 +78,7 @@ helm_resource(
   labels="bitcoin"
 )
 
+# TODO: uncomment fulcrum when we actually use it
 # helm_resource(
 #   name="fulcrum",
 #   chart="../../charts/fulcrum",
@@ -116,3 +118,44 @@ helm_resource(
 #   ],
 #   labels="bitcoin"
 # )
+
+# TODO: uncomment rtl when we actually use it
+# helm_resource(
+#   name="rtl",
+#   chart="../../charts/rtl",
+#   namespace=bitcoin_namespace,
+#   labels="bitcoin"
+# )
+
+# create bitcoind smoketest secret from snippet above
+k8s_yaml(secret_from_dict(
+  name='bitcoind-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'bitcoind_rpcpassword': bitcoind_rpcpassword,
+    'bitcoind_endpoint': 'bitcoind.{}.svc.cluster.local'.format(bitcoin_namespace),
+    'bitcoind_port': '18443',
+    'bitcoind_user': 'rpcuser',
+    'bitcoind_onchain_rpcpassword': bitcoind_rpcpassword,
+    'bitcoind_onchain_endpoint': 'bitcoind.{}.svc.cluster.local'.format(bitcoin_namespace),
+  }
+))
+
+# create lnd smoketest secret from snippet above
+k8s_yaml(secret_from_dict(
+  name='lnd-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'lnd_api_endpoint': 'lnd1.{}.svc.cluster.local'.format(bitcoin_namespace),
+    'lnd_p2p_endpoint': 'lnd1-p2p.{}.svc.cluster.local'.format(bitcoin_namespace),
+  }
+))
+
+# create loop smoketest secret from snippet above
+k8s_yaml(secret_from_dict(
+  name='loop-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'loop_api_endpoint': 'loop1.{}.svc.cluster.local'.format(bitcoin_namespace),
+  }
+))

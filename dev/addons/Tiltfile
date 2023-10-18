@@ -1,6 +1,6 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
-load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+load('ext://secret', 'secret_from_dict')
 load('../common/Tiltfile', 'copy_secret')
 
 name_prefix = 'galoy-dev'
