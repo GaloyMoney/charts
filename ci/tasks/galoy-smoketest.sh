@@ -22,7 +22,7 @@ for i in {1..15}; do
   echo "Attempt ${i} to curl the public galoy API"
   curl --location -sSf --request POST "${host}:${port}/graphql"\
    --header 'Content-Type: application/json' \
-   --data-raw '{"query":"query btcPrice { btcPrice { base currencyUnit formattedAmount offset } }","variables":{}}' > response.json
+   --data-raw '{"query":"query realtimePrice { realtimePrice { id timestamp btcSatPrice { base offset } } }","variables":{}}' > response.json
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
 done
