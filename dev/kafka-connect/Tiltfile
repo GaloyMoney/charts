@@ -1,0 +1,22 @@
+load('ext://namespace', 'namespace_create')
+load('ext://helm_resource', 'helm_resource')
+load('ext://secret', 'secret_from_dict')
+
+name_prefix = 'galoy-dev'
+kafka_namespace = '{}-kafka'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
+
+k8s_yaml(helm(
+  '../../charts/kafka-connect',
+  name='kafka-connect',
+  namespace=kafka_namespace,
+))
+
+k8s_yaml(secret_from_dict(
+  name      = 'kafka-connect-smoketest',
+  namespace = smoketest_namespace,
+  inputs={
+    'kafka_connect_api_host' : 'kafka-connect-api.{}.svc.cluster.local'.format(kafka_namespace),
+    'kafka_connect_api_port' : '8083'
+  }
+))
