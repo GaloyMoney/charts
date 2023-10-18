@@ -22,18 +22,10 @@ jobs:
             -v "$(pwd):/charts"
             --k3s-arg --disable=traefik@server:0
             --k3s-arg --disable=servicelb@server:0
-      - name: Deploy Infra over K3D in Dev Mode
+      - name: Deploy deps and services over K3D in Dev Mode
         run: |
           pushd dev && source ./.envrc
-          make init
-          make deploy-services
-      - name: Deploy Charts in Dev
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 30
-          retry_on: error
-          max_attempts: 3
-          command: pushd dev && source ./.envrc && make deploy
+          tilt up
       - name: Wait for Ready
         run: |
           echo "Stack takes about 2 minutes to startup, waiting..."
