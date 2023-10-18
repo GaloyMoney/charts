@@ -40,7 +40,7 @@ spec:
         env:
         - name: PORT
           value: "{{ .Values.galoy.consent.containerPort }}"
-        - name: GRAPHQL_PUBLIC_API
+        - name: GRAPHQL_ENDPOINT
           value: {{ .Values.galoy.consent.graphqlPublicApi }}
         - name: CORE_AUTH_URL
           value: {{ .Values.galoy.consent.coreAuthUrl }}
