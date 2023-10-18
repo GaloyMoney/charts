@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "apiDashboard.fullname" . }}
+  labels:
+    app: {{ template "apiDashboard.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "apiDashboard.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "apiDashboard.fullname" . }}
+        release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: dashboard
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        env:
+        - name: HYDRA_PUBLIC
+          value: {{ .Values.apiDashboard.hydraPublic }}
+        - name: CORE_URL
+          value: {{ .Values.apiDashboard.coreUrl }}
+        - name: NEXTAUTH_URL
+          value: {{ .Values.apiDashboard.nextAuthUrl }}
+        - name: NEXTAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "apiDashboard.fullname" . }}
+              key: "next-auth-secret"
+        - name: CLIENT_ID
+          value: {{ .Values.apiDashboard.clientId }}
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "apiDashboard.fullname" . }}
+              key: "client-secret"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.apiDashboard.otelExporterOtlpEndpoint }}
+        - name: TRACING_SERVICE_NAME
+          value: {{ .Values.apiDashboard.tracingServiceName }}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
