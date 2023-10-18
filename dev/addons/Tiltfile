@@ -1,0 +1,12 @@
+load('ext://helm_resource', 'helm_resource')
+load('ext://namespace', 'namespace_create')
+
+name_prefix = 'galoy-dev'
+addons_namespace = '{}-addons'.format(name_prefix)
+namespace_create(addons_namespace)
+
+k8s_yaml(helm(
+  '../../charts/api-dashboard',
+  name = 'dashboard',
+  namespace = addons_namespace,
+))

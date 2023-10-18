@@ -44,7 +44,7 @@ source:
 
 #@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter", "bria", "fulcrum", "mempool"]
 
-#@ addons_charts = ["admin-panel", "galoy-pay"]
+#@ addons_charts = ["admin-panel", "galoy-pay", "api-dashboard"]
 
 #@ def testflight_job(chart, deployment, vars = {}):
 name: #@ testflight_job_name(chart)
