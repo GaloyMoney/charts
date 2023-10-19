@@ -1,2 +1,7 @@
 secrets:
   create: false
+
+apiDashboard:
+  hydraPublic: "http://galoy-hydra-public.galoy-staging-galoy.svc.cluster.local:4444"
+  coreUrl: "http://galoy-oathkeeper-proxy.galoy-staging-galoy.svc.cluster.local:4455/graphql"
+  nextAuthUrl: "http://api-dashboard:3000"
