@@ -36,31 +36,31 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api
       ## Digest of the image
       ##
-      digest: "sha256:8c2b9b67a1724cfbcf7f65eead52a9233fcd999180365cae66f35c419b2530eb"
+      digest: "sha256:02d4fdec59ec27b519cb23638b74746356226197f45f91d3c5cb49309b499187"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "1739e6c"
+      git_ref: "f589e59"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-api-ws-server
       ## Digest of the image
       ##
-      digest: "sha256:144a52a398c50507dc6f2f5d53ee36970a26a4ed2b2db703cadcd734e85153d6"
+      digest: "sha256:340ba628c7699e319820eace1bde4b4d33e67706f9840c9a968d63337b5094e7"
     trigger:
       repository: us.gcr.io/galoy-org/galoy-api-trigger
       ## Digest of the image
       ##
-      digest: "sha256:1cabf9473eb945cd8292999f1d68e660264f45f9d9a7c4a9a4d91ef7d9f0a882"
+      digest: "sha256:b9392e5bad1c6dbb760c97aade4a934c91346ef4488642abbcfc3168e7990ff4"
     cron:
       repository: us.gcr.io/galoy-org/galoy-api-cron
       ## Digest of the image
       ##
-      digest: "sha256:c75a7d807ed72a75886a0bc45897113db6170ea6c6d33bed9693a35152f70bdb"
+      digest: "sha256:2a5860fdb29f1f119d0d1b2ff773cc1581e9b1875ce98ba4d4c778008fc42606"
     exporter:
       repository: us.gcr.io/galoy-org/galoy-api-exporter
       ## Digest of the image
       ##
-      digest: "sha256:5b34f22793431cfb83d6384f84552059e8a4b0c68eb5379170176218d3b34a17"
+      digest: "sha256:379dfa20b5bb582f2cda9c2b2883b2d0356f5f851dd641e0fe6e12c8e5b0232d"
     consent:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
