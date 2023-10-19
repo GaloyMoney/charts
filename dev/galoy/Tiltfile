@@ -1,7 +1,7 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
-load('../common/Tiltfile', 'copy_secret', 'helm_release')
+load('../common/Tiltfile', 'copy_secret')
 update_settings(k8s_upsert_timeout_secs=120)
 
 name_prefix = 'galoy-dev'

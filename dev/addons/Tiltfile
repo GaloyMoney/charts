@@ -66,6 +66,7 @@ copy_secret(
   source_secret_name='galoy-redis-pw',
   source_namespace=galoy_namespace,
   target_namespace=addons_namespace,
+  resource_deps=['galoy-redis-node']
 )
 
 k8s_yaml(helm(
