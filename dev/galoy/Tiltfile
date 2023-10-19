@@ -224,6 +224,10 @@ k8s_yaml(helm(
   values = ['./galoy-values.yml', './galoy-regtest-values.yml'],
 ))
 
+k8s_resource(workload='galoy-cronjob', pod_readiness='ignore')
+k8s_resource(workload='galoy-price-history-cronjob', pod_readiness='ignore')
+k8s_resource(workload='galoy-mongo-backup', pod_readiness='ignore')
+
 k8s_yaml(secret_from_dict(
   name='galoy-smoketest',
   namespace=smoketest_namespace,
