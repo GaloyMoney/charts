@@ -36,11 +36,11 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api
       ## Digest of the image
       ##
-      digest: "sha256:038ae25ce7a8b22c63d35f4d7c9a6c22b8eea309072f0e0cf2f75b354b2c94d1"
+      digest: "sha256:adab9f799169299c8a2168e05349bc05e816eda07efa1d45e45513470690811d"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "4ca052e"
+      git_ref: "aae461f"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-api-ws-server
       ## Digest of the image
