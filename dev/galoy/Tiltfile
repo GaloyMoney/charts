@@ -1,7 +1,7 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
-load('../common/Tiltfile', 'copy_secret')
+load('../common/Tiltfile', 'copy_secret', 'helm_release')
 update_settings(k8s_upsert_timeout_secs=120)
 
 name_prefix = 'galoy-dev'
@@ -217,15 +217,16 @@ k8s_yaml(secret_from_dict(
 #   labels='galoy'
 # )
 
-k8s_yaml(helm(
+helm_release(
   '../../charts/galoy',
-  name = 'galoy',
-  namespace = galoy_namespace,
-  values = ['./galoy-values.yml', './galoy-regtest-values.yml'],
-))
+  name='galoy',
+  namespace=galoy_namespace,
+  values=['./galoy-values.yml', './galoy-regtest-values.yml'],
+  dependency_build=True
+)
 
 k8s_resource(workload='galoy-cronjob', pod_readiness='ignore')
-k8s_resource(workload='galoy-price-history-cronjob', pod_readiness='ignore')
+# k8s_resource(workload='galoy-price-history-cronjob', pod_readiness='ignore')
 k8s_resource(workload='galoy-mongo-backup', pod_readiness='ignore')
 
 k8s_yaml(secret_from_dict(
