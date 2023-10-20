@@ -10,14 +10,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.galoy.consent.ingress.clusterIssuer }}
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "1s"
-    nginx.ingress.kubernetes.io/proxy-next-upstream: "error timeout"
-    nginx.ingress.kubernetes.io/proxy-next-upstream-tries: "3"
-    nginx.ingress.kubernetes.io/limit-rpm: "10"
-    nginx.ingress.kubernetes.io/limit-burst-multiplier: "2"
-    nginx.ingress.kubernetes.io/limit-connections: "10"
     {{- with .Values.galoy.consent.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
