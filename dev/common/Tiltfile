@@ -27,7 +27,7 @@ def copy_secret(source_secret_name, source_namespace, target_namespace, resource
   )
 
 def helm_release(pathToChartDir, name, namespace, dependency_build=False, values=[]):
-  if dependency_build:
+  if dependency_build and (config.tilt_subcommand == 'up' or config.tilt_subcommand == 'ci'):
     local('helm dependency build {}'.format(pathToChartDir))
 
   k8s_yaml(helm(
