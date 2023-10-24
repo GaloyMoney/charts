@@ -55,7 +55,7 @@ helm_release(
   '../../charts/galoy-deps',
   name='opentelemetry-collector',
   namespace=otel_namespace,
-  values=['./otel-collector-values.yml'],
+  values=['./otel-values.yml'],
   dependency_build=True,
   add_repos=False
 )

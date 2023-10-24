@@ -27,15 +27,15 @@ def copy_secret(source_secret_name, source_namespace, target_namespace, resource
   )
 
 def helm_release(pathToChartDir, name, namespace, values=[], dependency_build=False, add_repos=True):
-  if add_repos:
+  if add_repos and (config.tilt_subcommand == 'up' or config.tilt_subcommand == 'ci'):
     local('../common/add-helm-repos.sh {}/Chart.yaml'.format(pathToChartDir))
 
   if dependency_build and (config.tilt_subcommand == 'up' or config.tilt_subcommand == 'ci'):
     local('helm dependency build {}'.format(pathToChartDir))
 
   k8s_yaml(helm(
-    '../../charts/galoy',
-    name = 'galoy',
-    namespace = namespace,
-    values = values,
+    pathToChartDir,
+    name,
+    namespace,
+    values,
   ))
