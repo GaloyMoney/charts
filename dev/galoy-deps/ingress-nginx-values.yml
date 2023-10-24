@@ -8,6 +8,8 @@ strimzi-kafka-operator:
   enabled: false
 ingress-nginx:
   controller:
+    admissionWebhooks:
+      enabled: false
     config:
       enable-opentracing: true
       jaeger-service-name: galoy-dev-ingress
