@@ -38,4 +38,5 @@ def helm_release(pathToChartDir, name, namespace, values=[], dependency_build=Fa
     name,
     namespace,
     values,
+    kube_version='1.27.0',
   ))

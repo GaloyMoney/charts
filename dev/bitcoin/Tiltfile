@@ -1,6 +1,7 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
+load('../common/Tiltfile', 'helm_release')
 
 name_prefix = 'galoy-dev'
 bitcoin_network = 'regtest'
@@ -16,12 +17,11 @@ k8s_yaml(secret_from_dict(
   inputs={'password': bitcoind_rpcpassword},
 ))
 
-helm_resource(
+helm_release(
+  "../../charts/bitcoind",
   name="bitcoind",
-  chart="../../charts/bitcoind",
   namespace=bitcoin_namespace,
-  flags=['--values=./bitcoind-regtest-values.yml'],
-  labels="bitcoin"
+  values=['./bitcoind-regtest-values.yml']
 )
 
 k8s_yaml(secret_from_dict(
@@ -40,15 +40,11 @@ k8s_yaml(secret_from_dict(
   },
 ))
 
-helm_resource(
-  name="bitcoind-onchain",
-  chart="../../charts/bitcoind",
+helm_release(
+  '../../charts/bitcoind',
+  name='bitcoind-onchain',
   namespace=bitcoin_namespace,
-  flags=[
-    '--values=./bitcoind-regtest-values.yml',
-    '--values=./bitcoind-onchain-values.yml'
-  ],
-  labels="bitcoin"
+  values=['./bitcoind-regtest-values.yml', './bitcoind-onchain-values.yml']
 )
 
 local_resource(
@@ -58,24 +54,18 @@ local_resource(
   resource_deps=["bitcoind-onchain", "bitcoind"]
 )
 
-helm_resource(
-  name="lnd1",
-  chart="../../charts/lnd",
+helm_release(
+  '../../charts/lnd',
+  name='lnd1',
   namespace=bitcoin_namespace,
-  flags=[
-    '--values=./lnd-regtest-values.yml',
-  ],
-  labels="bitcoin"
+  values=['./lnd-regtest-values.yml'],
 )
 
-helm_resource(
-  name="loop1",
-  chart="../../charts/loop",
+helm_release(
+  '../../charts/loop',
+  name='loop1',
   namespace=bitcoin_namespace,
-  flags=[
-    '--values=./loop-values.yml',
-  ],
-  labels="bitcoin"
+  values=['./loop-values.yml'],
 )
 
 # TODO: uncomment fulcrum when we actually use it
@@ -98,14 +88,12 @@ k8s_yaml(secret_from_dict(
   },
 ))
 
-helm_resource(
-  name="bria",
-  chart="../../charts/bria",
+helm_release(
+  '../../charts/bria',
+  name='bria',
   namespace=bitcoin_namespace,
-  flags=[
-    '--values=./bria-values.yml',
-  ],
-  labels="bitcoin"
+  values=['./bria-values.yml'],
+  dependency_build=True
 )
 
 # TODO: uncomment mempool when we actually use it
