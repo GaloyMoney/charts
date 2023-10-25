@@ -19,7 +19,6 @@ helm_release(
   name='kafka',
   namespace=kafka_namespace,
   values=['./kafka-values.yml'],
-  dependency_build=True
 )
 
 ## cert-manager and ingress-nginx
@@ -34,7 +33,6 @@ helm_release(
   name='cert-manager',
   namespace=ingress_namespace,
   values=['./cert-manager-values.yml'],
-  dependency_build=True,
   add_repos=False
 )
 
@@ -43,7 +41,6 @@ helm_release(
   name='ingress-nginx',
   namespace=ingress_namespace,
   values=['./ingress-nginx-values.yml'],
-  dependency_build=True,
   add_repos=False
 )
 
@@ -56,7 +53,6 @@ helm_release(
   name='opentelemetry-collector',
   namespace=otel_namespace,
   values=['./otel-values.yml'],
-  dependency_build=True,
   add_repos=False
 )
 
