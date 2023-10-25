@@ -2,6 +2,7 @@ load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
 load('../common/Tiltfile', 'helm_release')
+update_settings(k8s_upsert_timeout_secs=600)
 
 name_prefix = 'galoy-dev'
 bitcoin_network = 'regtest'
