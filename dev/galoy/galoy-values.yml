@@ -4,7 +4,7 @@ galoy:
 kratos:
   kratos:
     config:
-      dsn: postgresql://kratos-pg:kratos-pg@postgresql.galoy-dev-galoy.svc.cluster.local/kratos-pg
+      dsn: postgresql://kratos-pg:kratos-pg@galoy-postgresql.galoy-dev-galoy.svc.cluster.local/kratos-pg
       selfservice:
         flows:
           settings:
