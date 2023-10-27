@@ -22,4 +22,4 @@ jobs:
           --k3s-arg --disable=traefik@server:0
           --k3s-arg --disable=servicelb@server:0
     - name: Tilt CI
-      run: pushd dev && nix develop -c tilt ci
+      run: pushd dev && nix develop -c tilt ci || (echo "Tilt CI failed" && sleep 50000)
