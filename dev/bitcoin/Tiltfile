@@ -94,7 +94,8 @@ helm_release(
   name='bria',
   namespace=bitcoin_namespace,
   values=['./bria-values.yml'],
-  dependency_build=True
+  dependency_build=True,
+  add_repos=True
 )
 
 # TODO: uncomment mempool when we actually use it

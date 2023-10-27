@@ -224,6 +224,8 @@ helm_release(
   name='galoy',
   namespace=galoy_namespace,
   values=['./galoy-values.yml', './galoy-regtest-values.yml'],
+  dependency_build=True,
+  add_repos=True
 )
 
 k8s_resource(workload='galoy-cronjob', pod_readiness='ignore')
