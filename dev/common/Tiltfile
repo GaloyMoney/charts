@@ -26,7 +26,7 @@ def copy_secret(source_secret_name, source_namespace, target_namespace, resource
     resource_deps=['{}'.format(waiter_name)]
   )
 
-def helm_release(pathToChartDir, name, namespace, values=[], dependency_build=True, add_repos=True):
+def helm_release(pathToChartDir, name, namespace, values=[], dependency_build=False, add_repos=False):
   if add_repos and (config.tilt_subcommand == 'up' or config.tilt_subcommand == 'ci'):
     local('../common/add-helm-repos.sh {}/Chart.yaml'.format(pathToChartDir))
 
