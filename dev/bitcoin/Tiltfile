@@ -71,7 +71,7 @@ helm_resource(
   flags=[
     '--values=./lnd-regtest-values.yml',
   ],
-  resource_deps=["bitcoind-block-generator"],
+  # resource_deps=["bitcoind-block-generator"],
 )
 
 helm_release(
