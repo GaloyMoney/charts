@@ -185,17 +185,7 @@ helm_resource(
   flags=[
     '--values=./postgresql-values.yml',
   ],
-  labels='galoy',
-  resource_deps=[
-    'network-secret-copier',
-    'bitcoind-rpcpassword-secret-copier',
-    'lnd1-pubkey-secret-copier',
-    'lnd1-credentials-secret-copier',
-    'lnd2-pubkey-secret-copier',
-    'lnd2-credentials-secret-copier',
-    'loop1-credentials-secret-copier',
-    'loop2-credentials-secret-copier',
-  ]
+  labels='galoy'
 )
 
 k8s_yaml(secret_from_dict(
