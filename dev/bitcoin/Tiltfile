@@ -55,24 +55,24 @@ local_resource(
   resource_deps=["bitcoind-onchain", "bitcoind"]
 )
 
-helm_release(
-  '../../charts/lnd',
-  name='lnd1',
-  namespace=bitcoin_namespace,
-  values=['./lnd-regtest-values.yml'],
-)
-
-k8s_resource(workload='lnd1', resource_deps=['bitcoind-block-generator'])
-
-# helm_resource(
-#   name="lnd1",
-#   chart="../../charts/lnd",
+# helm_release(
+#   '../../charts/lnd',
+#   name='lnd1',
 #   namespace=bitcoin_namespace,
-#   flags=[
-#     '--values=./lnd-regtest-values.yml',
-#   ],
-#   resource_deps=["bitcoind-block-generator"],
+#   values=['./lnd-regtest-values.yml'],
 # )
+
+# k8s_resource(workload='lnd1', resource_deps=['bitcoind-block-generator'])
+
+helm_resource(
+  name="lnd1",
+  chart="../../charts/lnd",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./lnd-regtest-values.yml',
+  ],
+  resource_deps=["bitcoind-block-generator"],
+)
 
 helm_release(
   '../../charts/loop',
