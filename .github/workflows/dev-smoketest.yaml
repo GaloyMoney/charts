@@ -123,7 +123,7 @@ jobs:
             ./kafka-connect-smoketest.sh && \
             rm -rf smoketest-settings"
       - name: Clean Up
-        # if: always()
+        if: always()
         run: |
           rm -rf ci/tasks/smoketest-settings
           k3d cluster delete --all
