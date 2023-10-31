@@ -26,6 +26,6 @@ jobs:
         pushd dev
         for i in {1..5}; do
           echo "Tilt CI attempt $i"
-          nix develop -c tilt ci && exit 0 || sleep 10
+          nix develop -c tilt ci && exit 0 || sleep 60
         done
         exit 1
