@@ -10,9 +10,7 @@ metadata:
     {{- end }}
 spec:
   serviceName: {{ include "bitcoind.fullname" . }}
-{{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-{{- end }}
   selector:
     matchLabels:
       {{- include "bitcoind.selectorLabels" . | nindent 6 }}
