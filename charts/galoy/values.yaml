@@ -65,7 +65,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
       ##
-      digest: "sha256:8e3f231544eaed280183657b10fbd62764b9465fb107fc3468a3a1218876cf1a" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=4242d78;app=consent;
+      digest: "sha256:67d9d53adb24a3a1fdfa015345a39b3efb4e3a4e0f0d6a85e4c3300c63c127b8" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=5e5950c;app=consent;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
