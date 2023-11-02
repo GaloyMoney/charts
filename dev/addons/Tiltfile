@@ -102,4 +102,5 @@ k8s_yaml(helm(
   '../../charts/api-dashboard',
   name = 'api-dashboard',
   namespace = addons_namespace,
+  values = ['./api-dashboard-values.yml']
 ))
