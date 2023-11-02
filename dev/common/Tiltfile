@@ -1,6 +1,6 @@
 load('ext://secret', 'secret_from_dict')
 
-def wait_for_secret_creation(waiter_name, secret_name, namespace, resource_deps, timeout_secs=150):
+def wait_for_secret_creation(waiter_name, secret_name, namespace, resource_deps, timeout_secs=30):
   local_resource(
     name=waiter_name,
     cmd='for i in $(seq {}); do kubectl -n {} get secret {} &>/dev/null && echo "Secret exists" && exit 0; sleep 1; done; exit 1'.format(timeout_secs, namespace, secret_name),
