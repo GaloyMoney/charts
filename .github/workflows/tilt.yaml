@@ -29,3 +29,10 @@ jobs:
           nix develop -c tilt ci && exit 0 || sleep 60
         done
         exit 1
+    - name: Galoy Smoketest
+      run: |
+        pushd dev && source ./.envrc
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=galoy ./dev-smoketest-settings.sh && \
+          ./galoy-smoketest.sh && \
+          rm -rf smoketest-settings"
