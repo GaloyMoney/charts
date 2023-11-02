@@ -4,6 +4,8 @@ galoy:
 kratos:
   kratos:
     config:
+      log:
+        level: warn
       dsn: postgresql://kratos-pg:kratos-pg@postgresql.galoy-dev-galoy.svc.cluster.local/kratos-pg
       selfservice:
         flows:
