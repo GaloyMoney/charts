@@ -36,31 +36,31 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api
       ## Digest of the image
       ##
-      digest: "sha256:6bc9a9882585c7273e421a3e5f7eedc1ca784369b3a3d68ec79068e7d500eee5"
+      digest: "sha256:81b55f264725ca5a6274b0ba0fe3536c5006a99aaafafb04d22420f099294d88"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "808444d"
+      git_ref: "a41b6dc"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-api-ws-server
       ## Digest of the image
       ##
-      digest: "sha256:dbd994026bae947cefb81fbe111b192e7ea22a1d91fe8001b05729422310f73c"
+      digest: "sha256:6b00ce8579cb783c7cf74e72584476440884c02153820782854f3ffd3ae560fb"
     trigger:
       repository: us.gcr.io/galoy-org/galoy-api-trigger
       ## Digest of the image
       ##
-      digest: "sha256:ddc1d5f25d281b09709001b67d6b57c716dd584b2d1cefaf495953822fca788b"
+      digest: "sha256:aaa63dab3abd8bf22f7e3ad56031b238bcd00800a270370f89a019d2e90c7469"
     cron:
       repository: us.gcr.io/galoy-org/galoy-api-cron
       ## Digest of the image
       ##
-      digest: "sha256:981611db34cf67c6c166730787197fee56a68bb6e6001cba68877bdb5a120174"
+      digest: "sha256:a76ed7838a259300cc49e9a5f690c084bdf336032ac02fea5680d895500aee61"
     exporter:
       repository: us.gcr.io/galoy-org/galoy-api-exporter
       ## Digest of the image
       ##
-      digest: "sha256:4d9258d59d1191cf6fb5fc7de9c55c94c5f5e7a419a433e58333217cf448ed1f"
+      digest: "sha256:72faf4615d8ca3df5fd944fdae6b0f43d97bc21d8d1cc524eef38b229c270b58"
     consent:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
@@ -70,7 +70,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api-keys
       ## Digest of the image
       ##
-      digest: "sha256:a083dbbbbeaa5dca7f45d77245ac57d3907f69f858bb675125a55852a944df39" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=4242d78;app=api-keys;
+      digest: "sha256:2c3220ce4d6c73c3a37f18d634e9282a110f83e65759b9379738d2c93660fcf1" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=4242d78;app=api-keys;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -79,7 +79,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:56bb9ec42cce38d37bb1f0d6b9ee108cb78aeb5bec6c6be7ed100318eeb079bc"
+      digest: "sha256:dd4a2ad7d031704acca1eb705aa01529695ddcc533f4e275442b0c4e9b37babf"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
