@@ -365,7 +365,7 @@ resource "helm_release" "postgresql" {
   ]
 }
 
-resource "helm_release" "postgresql" {
+resource "helm_release" "api_keys_postgresql" {
   name       = "api-keys-postgresql"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "postgresql"
