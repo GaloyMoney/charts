@@ -32,7 +32,7 @@ spec:
           {{ toYaml .Values.galoy.apiKeys.resources | nindent 10 }}
         ports:
         - name: api
-          containerPort: {{ .Values.galoy.api.port }}
+          containerPort: {{ .Values.galoy.apiKeys.port }}
           protocol: TCP
         env:
           - name: PG_CON
