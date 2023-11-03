@@ -41,11 +41,11 @@ spec:
                 name: {{ template "galoy.apiKeys.fullname" . }}
                 key: pg-con
           - name: API_KEYS_CONFIG
-            value: "/api-keys.yaml"
+            value: "/api-keys.yml"
         volumeMounts:
         - name: config
-          mountPath: "/api-keys.yaml"
-          subPath: "api-keys.yaml"
+          mountPath: "/api-keys.yml"
+          subPath: "api-keys.yml"
           readOnly: true
       volumes:
       - name: config
