@@ -26,7 +26,7 @@ spec:
         kube-monkey/identifier: {{ template "galoy.apiKeys.fullname" . }}
     spec:
       containers:
-      - name: apiKeys
+      - name: api-keys
         image: "{{ .Values.galoy.images.apiKeys.repository }}@{{ .Values.galoy.images.apiKeys.digest }}"
         resources:
           {{ toYaml .Values.galoy.apiKeys.resources | nindent 10 }}
