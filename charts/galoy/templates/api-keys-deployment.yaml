@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoy.apiKeys.fullname" . }}
+  labels:
+    app: {{ template "galoy.apiKeys.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ template "galoy.apiKeys.fullname" . }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+spec:
+  replicas: {{ .Values.galoy.apiKeys.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "galoy.apiKeys.fullname" . }}
+  template:
+    metadata:
+      name: {{ template "galoy.apiKeys.fullname" . }}
+      labels:
+        app: {{ template "galoy.apiKeys.fullname" . }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ template "galoy.apiKeys.fullname" . }}
+    spec:
+      containers:
+      - name: apiKeys
+        image: "{{ .Values.galoy.images.apiKeys.repository }}@{{ .Values.galoy.images.apiKeys.digest }}"
+        resources:
+          {{ toYaml .Values.galoy.apiKeys.resources | nindent 10 }}
+        ports:
+        - name: api
+          containerPort: {{ .Values.galoy.api.port }}
+          protocol: TCP
+# TODO: add probes

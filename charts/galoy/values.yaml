@@ -386,6 +386,11 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  api-keys:
+    replicas: 1
+    port: 5397
+    serviceType: ClusterIP
+    resources: {}
   consent:
     resources: {}
     port: 80
