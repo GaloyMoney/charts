@@ -393,7 +393,7 @@ galoy:
         timeoutSeconds: 1
   apiKeys:
     nameOverride:
-    replicas: 1
+    replicas: 2
     port: 5397
     serviceType: ClusterIP
     resources: {}
