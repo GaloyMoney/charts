@@ -392,6 +392,7 @@ galoy:
         successThreshold: 2
         timeoutSeconds: 1
   apiKeys:
+    nameOverride:
     replicas: 1
     port: 5397
     serviceType: ClusterIP
