@@ -34,4 +34,21 @@ spec:
         - name: api
           containerPort: {{ .Values.galoy.api.port }}
           protocol: TCP
+        env:
+          - name: PG_CON
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "galoy.apiKeys.fullname" . }}
+                key: pg-con
+          - name: API_KEYS_CONFIG
+            value: "/api-keys.yaml"
+        volumeMounts:
+        - name: config
+          mountPath: "/api-keys.yaml"
+          subPath: "api-keys.yaml"
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "galoy.apiKeys.fullname" . }}
 # TODO: add probes

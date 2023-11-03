@@ -669,6 +669,8 @@ secrets:
   svixSecretKey:
   ## Api key for proxy check
   proxyCheckApiKey:
+  ## postgres secret for api-keys
+  apiKeysPgCon:
 ## Tracing details
 ##
 tracing:
