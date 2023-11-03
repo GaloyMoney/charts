@@ -824,6 +824,18 @@ oathkeeper:
               preserve_query: true
               subject_from: identity.id
               extra_from: "@this"
+          - handler: bearer_token
+            config:
+              token_from:
+                header: X-API-KEY
+              forward_http_headers:
+              - "X-API-KEY"
+              check_session_url: "http://api-keys:5397/auth/check"
+              force_method: GET
+              preserve_path: true
+              preserve_query: true
+              subject_from: sub
+              extra_from: "@this"
           - handler: anonymous
         authorizer:
           handler: allow
