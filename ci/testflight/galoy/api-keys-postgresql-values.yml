@@ -1,0 +1,11 @@
+# Settings from:
+# https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+
+auth:
+  username: api-keys
+  password: api-keys
+  database: api-keys
+
+primary:
+  persistence:
+    enabled: false

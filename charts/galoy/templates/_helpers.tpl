@@ -55,6 +55,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified consent name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "galoy.apiKeys.fullname" -}}
+{{- default "api-keys" .Values.galoy.apiKeys.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 CronJob name
 */}}
 {{- define "galoy.cron.jobname" -}}
