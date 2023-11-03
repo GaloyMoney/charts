@@ -397,6 +397,8 @@ galoy:
     port: 5397
     serviceType: ClusterIP
     resources: {}
+    config:
+      keyPrefix: galoy
   consent:
     resources: {}
     port: 80

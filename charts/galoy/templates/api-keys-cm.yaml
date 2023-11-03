@@ -5,8 +5,8 @@ metadata:
 data:
   api-keys.yml: |-
     app:
-      key_prefix: galoy_dev
-      default_expiry_days: 30
+      key_prefix: {{ .Values.galoy.apiKeys.config.keyPrefix }}
+      default_expiry_days: 90
     db:
       pool_size: 20
     server:
