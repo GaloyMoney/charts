@@ -36,31 +36,31 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api
       ## Digest of the image
       ##
-      digest: "sha256:9e9b65331b9c437d9a8d20411fdfbe94e9a5b547680de16edbc9488cd4b7ec7a"
+      digest: "sha256:cb83d4ce9c74891861f6a87e0b44f24963ad5ff00acc9f6b4177bebb4c4c31bc"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "d17fb06"
+      git_ref: "017665f"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-api-ws-server
       ## Digest of the image
       ##
-      digest: "sha256:bf970b0cc67ef9cb75d65eef06dcb8a88f1d59c4ac6a4bf828a96deb0ccb6ee2"
+      digest: "sha256:167924aecd9bfe0b9223f65477b5c1662abca9680f3e70b101a9ce5e8db6027c"
     trigger:
       repository: us.gcr.io/galoy-org/galoy-api-trigger
       ## Digest of the image
       ##
-      digest: "sha256:8b37bac66f77223e3249d529ac21c6ed2cb0f2f3fa58ec0c0f81df7c459fe2d7"
+      digest: "sha256:1ba860d1bb051b6d98275c5e85418b2b308b215e4a746784f7659591bd180551"
     cron:
       repository: us.gcr.io/galoy-org/galoy-api-cron
       ## Digest of the image
       ##
-      digest: "sha256:7d3054c14becd03a8e3eebcd27710c429cc253a5624ac1a725938fee64e6702a"
+      digest: "sha256:c2cfb65c06c8827988ae670c28860da8ceb2fd8074d39e313080fb48fdffd918"
     exporter:
       repository: us.gcr.io/galoy-org/galoy-api-exporter
       ## Digest of the image
       ##
-      digest: "sha256:76a1d908e3f28e914aebf1cce4b60e53c3aff56a4244bb27220035430a6f8de1"
+      digest: "sha256:1aa5bec076632ce93e7dfa04ffcf8460df6490f359e6085f0eca060d69486a5a"
     consent:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
@@ -74,7 +74,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-app-migrate
       ## Digest of the image
       ##
-      digest: "sha256:9464a401893d7f9ac3be116c558f2edb93bf690a534b55e929fbdaa4446604ff"
+      digest: "sha256:ac2416b69a05c9d81a040c23f17c9eb096147e697757e8d2b21687644e2a34ec"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
@@ -87,6 +87,8 @@ galoy:
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
       git_ref: "872b70e"
+    apiKeys:
+      digest: sha256:b3f90fd1927eba7f36791a58fb9728d9cc5161bd650b17d791b28e3b52196b4b
   ## Configuration values for Galoy API components.
   ##
   api:
