@@ -5,11 +5,14 @@ metadata:
 data:
   api-keys.yml: |-
     app:
-      key_prefix: galoy_dev
-      default_expiry_days: 30
+      key_prefix: {{ .Values.galoy.apiKeys.config.keyPrefix }}
+      default_expiry_days: 90
     db:
       pool_size: 20
     server:
       port: 5397
       jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
       api_key_auth_header: "X-API-KEY"
+    tracing:
+      endpoint: {{ .Values.tracing.otelExporterOtlpEndpoint }}
+      service_name: "{{ .Values.tracing.prefix }}-{{ template "galoy.apiKeys.fullname" . }}"
