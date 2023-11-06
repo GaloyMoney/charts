@@ -40,6 +40,8 @@ spec:
               secretKeyRef:
                 name: {{ template "galoy.apiKeys.fullname" . }}
                 key: pg-con
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}
           - name: API_KEYS_CONFIG
             value: "/api-keys.yml"
         volumeMounts:

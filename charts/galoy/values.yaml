@@ -679,6 +679,7 @@ tracing:
   ## OTEL Exporter OTLP Endpoint
   ##
   otelExporterOtlpEndpoint: http://localhost:4318
+  otelExporterGrpcEndpoint: http://localhost:4317
   ## Prefix for tracing
   ##
   prefix: galoy-dev
