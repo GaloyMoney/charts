@@ -30,20 +30,6 @@ jobs:
         run: |
           echo "Stack takes about 2 minutes to startup, waiting..."
           sleep 2m
-      - name: Bitcoin Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=bitcoind ./dev-smoketest-settings.sh && \
-            ./bitcoind-smoketest.sh regtest && \
-            rm -rf smoketest-settings"
-      - name: LND Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=lnd ./dev-smoketest-settings.sh && \
-            ./lnd-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: Fulcrum Smoketest
         run: |
           pushd dev && source ./.envrc
@@ -58,33 +44,12 @@ jobs:
             CHART=mempool ./dev-smoketest-settings.sh && \
             ./mempool-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Loop Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=loop ./dev-smoketest-settings.sh && \
-            ./loop-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: RTL Smoketest
         run: |
           pushd dev && source ./.envrc
           kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
             CHART=rtl ./dev-smoketest-settings.sh && \
             ./rtl-smoketest.sh && \
-            rm -rf smoketest-settings"
-      - name: Galoy Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=galoy ./dev-smoketest-settings.sh && \
-            ./galoy-smoketest.sh && \
-            rm -rf smoketest-settings"
-      - name: Monitoring Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=monitoring ./dev-smoketest-settings.sh && \
-            ./monitoring-smoketest.sh && \
             rm -rf smoketest-settings"
       - name: Admin Panel Smoketest
         run: |

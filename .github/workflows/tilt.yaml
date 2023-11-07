@@ -36,3 +36,31 @@ jobs:
           CHART=galoy ./dev-smoketest-settings.sh && \
           ./galoy-smoketest.sh && \
           rm -rf smoketest-settings"
+    - name: Bitcoin Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=bitcoind ./dev-smoketest-settings.sh && \
+          ./bitcoind-smoketest.sh regtest && \
+          rm -rf smoketest-settings"
+    - name: LND Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=lnd ./dev-smoketest-settings.sh && \
+          ./lnd-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Loop Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=loop ./dev-smoketest-settings.sh && \
+          ./loop-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Monitoring Smoketest
+      run: |
+        pushd dev && source ./.envrc
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=monitoring ./dev-smoketest-settings.sh && \
+          ./monitoring-smoketest.sh && \
+          rm -rf smoketest-settings"
