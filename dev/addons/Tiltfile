@@ -38,7 +38,7 @@ k8s_yaml(secret_from_dict(
   name='admin-panel-smoketest',
   namespace=smoketest_namespace,
   inputs={
-    'admin_panel_endpoint' : 'admin-panel.${}.svc.cluster.local'.format(addons_namespace),
+    'admin_panel_endpoint' : 'admin-panel.{}.svc.cluster.local'.format(addons_namespace),
     'admin_panel_port'     : '3000'
   }
 ))

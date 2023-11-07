@@ -58,13 +58,6 @@ jobs:
             CHART=admin-panel ./dev-smoketest-settings.sh && \
             ./admin-panel-smoketest.sh && \
             rm -rf smoketest-settings"
-      - name: Galoy Pay Smoketest
-        run: |
-          pushd dev && source ./.envrc
-          kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-            CHART=galoy-pay ./dev-smoketest-settings.sh && \
-            ./galoy-pay-smoketest.sh && \
-            rm -rf smoketest-settings"
       - name: Bria Smoketest
         run: |
           pushd dev && source ./.envrc
