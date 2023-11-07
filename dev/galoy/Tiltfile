@@ -198,6 +198,12 @@ k8s_yaml(secret_from_dict(
   }
 ))
 
+k8s_yaml(secret_from_dict(
+  name='api-keys',
+  namespace=galoy_namespace,
+  inputs={'pg-con': 'dummy'}
+))
+
 # helm_resource(
 #   name='galoy',
 #   chart='../../charts/galoy',
@@ -219,8 +225,11 @@ helm_release(
 )
 
 k8s_resource(workload='galoy-cronjob', pod_readiness='ignore')
-# k8s_resource(workload='galoy-price-history-cronjob', pod_readiness='ignore')
+k8s_resource(workload='galoy-price-history-cronjob', pod_readiness='ignore')
+k8s_resource(workload='galoy-price-history-postgres-migrate-1', pod_readiness='ignore')
 k8s_resource(workload='galoy-mongo-backup', pod_readiness='ignore')
+
+k8s_resource(workload='api-keys', pod_readiness='ignore')
 
 k8s_yaml(secret_from_dict(
   name='galoy-smoketest',
