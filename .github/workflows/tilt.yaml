@@ -31,7 +31,7 @@ jobs:
         exit 1
     - name: Galoy Smoketest
       run: |
-        pushd dev && source ./.envrc
+        pushd dev
         kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
           CHART=galoy ./dev-smoketest-settings.sh && \
           ./galoy-smoketest.sh && \
