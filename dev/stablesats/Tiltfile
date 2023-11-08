@@ -1,0 +1,37 @@
+load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict')
+
+name_prefix = 'galoy-dev'
+stablesats_namespace = '{}-stablesats'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
+
+namespace_create(stablesats_namespace)
+
+k8s_yaml(secret_from_dict(
+  name='stablesats',
+  namespace=stablesats_namespace,
+  inputs={
+    'pg-user-pw': '${random_password.postgresql.result}',
+    'pg-con': 'postgres://stablesats:${random_password.postgresql.result}@stablesats-postgresql:5432/stablesats',
+    'okex-secret-key': '${var.okex_secret_key}',
+    'okex-passphrase': '${var.okex_passphrase}',
+    'galoy-phone-code': '${var.galoy_phone_code}'
+  }
+))
+
+# stablesats smoketest secret
+k8s_yaml(secret_from_dict(
+  name='stablesats-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'price_server_grpc_host': 'stablesats-price.{}.svc.cluster.local'.format(stablesats_namespace),
+    'price_server_grpc_port': 3325
+  }
+))
+
+k8s_yaml(helm(
+  '../../charts/stablesats',
+  name='stablesats',
+  namespace=stablesats_namespace,
+  values=['./stablesats-values.yml']
+))
