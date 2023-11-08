@@ -2,11 +2,11 @@ secrets:
   create: false
 stablesats:
   galoy:
-    phoneNumber: '"${galoy_phone_number}"'
+    phoneNumber: '+15555555555'
   exchanges:
    okex:
      client:
-       apiKey: "${okex_api_key}"
+       apiKey: "dummy"
        simulated: true
   crash_report_config_danger: true
 

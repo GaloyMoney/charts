@@ -1,5 +1,6 @@
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
+load('../common/Tiltfile', 'copy_secret', 'helm_release')
 
 name_prefix = 'galoy-dev'
 stablesats_namespace = '{}-stablesats'.format(name_prefix)
@@ -11,11 +12,12 @@ k8s_yaml(secret_from_dict(
   name='stablesats',
   namespace=stablesats_namespace,
   inputs={
-    'pg-user-pw': '${random_password.postgresql.result}',
-    'pg-con': 'postgres://stablesats:${random_password.postgresql.result}@stablesats-postgresql:5432/stablesats',
-    'okex-secret-key': '${var.okex_secret_key}',
-    'okex-passphrase': '${var.okex_passphrase}',
-    'galoy-phone-code': '${var.galoy_phone_code}'
+    'pg-user-pw': 'password',
+    'pg-con': 'postgres://stablesats:stablesats@postgresql:5432/stablesats',
+    'okex-secret-key': 'key',
+    'okex-passphrase': 'passphrase',
+    'galoy-phone-code': '123456',
+    'bria-profile-api-key': 'key'
   }
 ))
 
@@ -29,9 +31,20 @@ k8s_yaml(secret_from_dict(
   }
 ))
 
-k8s_yaml(helm(
+helm_resource(
+  name='postgresql',
+  chart='bitnami/postgresql',
+  namespace=stablesats_namespace,
+  flags=[
+    '--values=./postgresql-values.yml',
+  ],
+  labels='stablesats'
+)
+
+helm_release(
   '../../charts/stablesats',
   name='stablesats',
   namespace=stablesats_namespace,
-  values=['./stablesats-values.yml']
-))
+  values=['./stablesats-values.yml'],
+  dependency_build=True
+)
