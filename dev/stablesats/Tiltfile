@@ -13,7 +13,7 @@ k8s_yaml(secret_from_dict(
   name='stablesats',
   namespace=stablesats_namespace,
   inputs={
-    'pg-user-pw': 'password',
+    'pg-user-pw': 'stablesats',
     'pg-con': 'postgres://stablesats:stablesats@stablesats-postgresql:5432/stablesats',
     'okex-secret-key': 'key',
     'okex-passphrase': 'passphrase',
@@ -31,16 +31,6 @@ k8s_yaml(secret_from_dict(
     'price_server_grpc_port': 3325
   }
 ))
-
-helm_resource(
-  name='stablesats-postgresql',
-  chart='bitnami/postgresql',
-  namespace=stablesats_namespace,
-  flags=[
-    '--values=./postgresql-values.yml',
-  ],
-  labels='stablesats'
-)
 
 helm_release(
   '../../charts/stablesats',

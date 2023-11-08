@@ -2,7 +2,7 @@ secrets:
   create: false
 stablesats:
   galoy:
-    phoneNumber: '+15555555555'
+    phoneNumber: '+16505554350'
   exchanges:
    okex:
      client:
