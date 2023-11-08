@@ -1,5 +1,6 @@
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
+load('ext://helm_resource', 'helm_resource')
 load('../common/Tiltfile', 'copy_secret', 'helm_release')
 
 name_prefix = 'galoy-dev'
@@ -13,7 +14,7 @@ k8s_yaml(secret_from_dict(
   namespace=stablesats_namespace,
   inputs={
     'pg-user-pw': 'password',
-    'pg-con': 'postgres://stablesats:stablesats@postgresql:5432/stablesats',
+    'pg-con': 'postgres://stablesats:stablesats@stablesats-postgresql:5432/stablesats',
     'okex-secret-key': 'key',
     'okex-passphrase': 'passphrase',
     'galoy-phone-code': '123456',
@@ -32,7 +33,7 @@ k8s_yaml(secret_from_dict(
 ))
 
 helm_resource(
-  name='postgresql',
+  name='stablesats-postgresql',
   chart='bitnami/postgresql',
   namespace=stablesats_namespace,
   flags=[
