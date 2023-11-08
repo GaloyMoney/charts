@@ -25,7 +25,6 @@ copy_secret(
   resource_deps=['bitcoind']
 )
 
-# copy lnd1-pubkey secret
 copy_secret(
   source_secret_name='lnd1-pubkey',
   source_namespace=bitcoin_namespace,
@@ -41,7 +40,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-# copy lnd1-credentials secret
 copy_secret(
   source_secret_name='lnd1-credentials',
   source_namespace=bitcoin_namespace,
@@ -49,7 +47,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-# # reuse lnd1_credentials for lnd2
 copy_secret(
   source_secret_name='lnd1-credentials',
   source_namespace=bitcoin_namespace,
@@ -58,7 +55,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-# copy loop1-credentials secret
 copy_secret(
   source_secret_name='loop1-credentials',
   source_namespace=bitcoin_namespace,
@@ -66,7 +62,6 @@ copy_secret(
   resource_deps=['loop1']
 )
 
-# # reuse loop1_credentials for loop2
 copy_secret(
   source_secret_name='loop1-credentials',
   source_namespace=bitcoin_namespace,
@@ -203,17 +198,6 @@ k8s_yaml(secret_from_dict(
   namespace=galoy_namespace,
   inputs={'pg-con': 'postgres://api-keys:api-keys@api-keys-postgresql:5432/api-keys'}
 ))
-
-# helm_resource(
-#   name='galoy',
-#   chart='../../charts/galoy',
-#   namespace=galoy_namespace,
-#   flags=[
-#     '--values=./galoy-values.yml',
-#     '--values=./galoy-regtest-values.yml',
-#   ],
-#   labels='galoy'
-# )
 
 helm_release(
   '../../charts/galoy',
