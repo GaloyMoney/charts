@@ -1,0 +1,44 @@
+load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict')
+load('ext://helm_resource', 'helm_resource')
+load('../common/Tiltfile', 'copy_secret', 'helm_release')
+
+name_prefix = 'galoy-dev'
+stablesats_namespace = '{}-stablesats'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
+
+namespace_create(stablesats_namespace)
+
+k8s_yaml(secret_from_dict(
+  name='stablesats',
+  namespace=stablesats_namespace,
+  inputs={
+    'pg-user-pw': 'stablesats',
+    'pg-con': 'postgres://stablesats:stablesats@stablesats-postgresql:5432/stablesats',
+    'okex-secret-key': 'key',
+    'okex-passphrase': 'passphrase',
+    'galoy-phone-code': '123456',
+    'bria-profile-api-key': 'key'
+  }
+))
+
+# stablesats smoketest secret
+k8s_yaml(secret_from_dict(
+  name='stablesats-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'price_server_grpc_host': 'stablesats-price.{}.svc.cluster.local'.format(stablesats_namespace),
+    'price_server_grpc_port': 3325
+  }
+))
+
+helm_release(
+  '../../charts/stablesats',
+  name='stablesats',
+  namespace=stablesats_namespace,
+  values=['./stablesats-values.yml'],
+  dependency_build=True
+)
+
+# TODO: Fix stablesats dealer, involves provisioning phone and code and injecting into both galoy and stablesats
+k8s_resource(workload='stablesats-dealer', pod_readiness='ignore')

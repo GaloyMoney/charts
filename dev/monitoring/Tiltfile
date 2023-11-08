@@ -1,8 +1,10 @@
 load('ext://namespace', 'namespace_create')
 load('ext://helm_resource', 'helm_resource')
+load('ext://secret', 'secret_from_dict')
 
 name_prefix = 'galoy-dev'
 monitoring_namespace = '{}-monitoring'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
 
 namespace_create(monitoring_namespace)
 
@@ -10,5 +12,14 @@ helm_resource(
   name='monitoring',
   chart='../../charts/monitoring',
   namespace=monitoring_namespace,
-  labels='monitoring'
+  labels='monitoring',
+  update_dependencies=True
 )
+
+k8s_yaml(secret_from_dict(
+  name      = 'monitoring-smoketest',
+  namespace = smoketest_namespace,
+  inputs={
+    'grafana_host': 'monitoring-grafana.{}.svc.cluster.local'.format(monitoring_namespace),
+  }
+))

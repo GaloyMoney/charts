@@ -1,0 +1,42 @@
+load('ext://secret', 'secret_from_dict')
+
+def wait_for_secret_creation(waiter_name, secret_name, namespace, resource_deps, timeout_secs=30):
+  local_resource(
+    name=waiter_name,
+    cmd='for i in $(seq {}); do kubectl -n {} get secret {} &>/dev/null && echo "Secret exists" && exit 0; sleep 1; done; exit 1'.format(timeout_secs, namespace, secret_name),
+    resource_deps=resource_deps
+  )
+
+# TODO: Add labels for better grouping
+def copy_secret(source_secret_name, source_namespace, target_namespace, resource_deps, target_secret_name=None):
+  if target_secret_name == None:
+    target_secret_name = source_secret_name
+
+  random_suffix=local('openssl rand -hex 1')
+  waiter_name='{}-secret-copier-waiter-{}'.format(target_secret_name, random_suffix)
+  wait_for_secret_creation(waiter_name, source_secret_name, source_namespace, resource_deps)
+
+  delete_secret_cmd = 'kubectl -n {} delete secret {} --ignore-not-found=true'.format(target_namespace, target_secret_name)
+  generate_secret_json_cmd = 'kubectl -n {} get secret {} -o json | jq "del(.metadata.namespace, .metadata.name) | .metadata.name = \\"{}\\""'.format(source_namespace, source_secret_name, target_secret_name)
+  create_secret_cmd = 'kubectl -n {} apply -f -'.format(target_namespace)
+
+  local_resource(
+    name='{}-secret-copier'.format(target_secret_name),
+    cmd='{} && {} | {}'.format(delete_secret_cmd, generate_secret_json_cmd, create_secret_cmd),
+    resource_deps=['{}'.format(waiter_name)]
+  )
+
+def helm_release(pathToChartDir, name, namespace, values=[], dependency_build=False, add_repos=False):
+  if add_repos and (config.tilt_subcommand == 'up' or config.tilt_subcommand == 'ci'):
+    local('../common/add-helm-repos.sh {}/Chart.yaml'.format(pathToChartDir))
+
+  if dependency_build and (config.tilt_subcommand == 'up' or config.tilt_subcommand == 'ci'):
+    local('helm dependency build {}'.format(pathToChartDir))
+
+  k8s_yaml(helm(
+    pathToChartDir,
+    name,
+    namespace,
+    values,
+    kube_version='1.27.0',
+  ))

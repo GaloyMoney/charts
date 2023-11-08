@@ -1,0 +1,104 @@
+load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict')
+
+name_prefix = 'galoy-dev'
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
+
+namespace_create(smoketest_namespace)
+
+smoketest_role_yaml="""
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: smoketest
+  namespace: galoy-dev-smoketest
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list"]
+"""
+k8s_yaml(blob(smoketest_role_yaml))
+
+smoketest_serviceaccount_yaml="""
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: smoketest
+  namespace: galoy-dev-smoketest
+"""
+k8s_yaml(blob(smoketest_serviceaccount_yaml))
+
+smoketest_rolebinding_yaml="""
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: smoketest
+  namespace: galoy-dev-smoketest
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: smoketest
+subjects:
+- kind: ServiceAccount
+  name: smoketest
+  namespace: galoy-dev-smoketest
+"""
+k8s_yaml(blob(smoketest_rolebinding_yaml))
+
+smoketest_pv_yaml="""
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: smoketest-tasks
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: "/charts"
+"""
+k8s_yaml(blob(smoketest_pv_yaml))
+
+smoketest_pvc_yaml="""
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: smoketest-tasks
+  namespace: galoy-dev-smoketest
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: smoketest-tasks
+"""
+k8s_yaml(blob(smoketest_pvc_yaml))
+
+smoketest_pod_yaml="""
+apiVersion: v1
+kind: Pod
+metadata:
+  name: smoketest
+  namespace: galoy-dev-smoketest
+spec:
+  containers:
+  - name: smoketest
+    image: us.gcr.io/galoy-org/galoy-deployments-pipeline
+    imagePullPolicy: IfNotPresent
+    command:
+    - sleep
+    - "604800"
+    volumeMounts:
+    - name: smoketest-tasks
+      mountPath: /charts
+  serviceAccountName: smoketest
+  volumes:
+  - name: smoketest-tasks
+    persistentVolumeClaim:
+      claimName: smoketest-tasks
+"""
+k8s_yaml(blob(smoketest_pod_yaml))

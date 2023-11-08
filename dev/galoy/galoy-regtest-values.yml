@@ -63,6 +63,11 @@ mongodb:
   metrics:
     enabled: false
   initDbScripts: {}
+  customReadinessProbe:
+    timeoutSeconds: 7
+    exec:
+      command:
+        - /bitnami/scripts/readiness-probe.sh
 
 redis:
   replica:

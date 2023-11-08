@@ -1,28 +1,15 @@
 load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
-load('ext://secret', 'secret_from_dict', 'secret_create_generic')
+load('ext://secret', 'secret_from_dict')
+load('../common/Tiltfile', 'copy_secret', 'helm_release')
 update_settings(k8s_upsert_timeout_secs=120)
 
 name_prefix = 'galoy-dev'
 galoy_namespace = '{}-galoy'.format(name_prefix)
 bitcoin_namespace = '{}-bitcoin'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
 
 namespace_create(galoy_namespace)
-
-# TODO: Add labels for better grouping
-def copy_secret(source_secret_name, source_namespace, target_namespace, resource_deps, target_secret_name=None):
-  if target_secret_name == None:
-    target_secret_name = source_secret_name
-
-  delete_secret_cmd = 'kubectl -n {} delete secret {} --ignore-not-found=true'.format(target_namespace, target_secret_name)
-  generate_secret_json_cmd = 'kubectl -n {} get secret {} -o json | jq "del(.metadata.namespace, .metadata.name) | .metadata.name = \\"{}\\""'.format(source_namespace, source_secret_name, target_secret_name)
-  create_secret_cmd = 'kubectl -n {} apply -f -'.format(target_namespace)
-
-  local_resource(
-    name='{}-secret-copier'.format(target_secret_name),
-    cmd='{} && {} | {}'.format(delete_secret_cmd, generate_secret_json_cmd, create_secret_cmd),
-    resource_deps=resource_deps
-  )
 
 copy_secret(
   source_secret_name='network',
@@ -38,7 +25,6 @@ copy_secret(
   resource_deps=['bitcoind']
 )
 
-# copy lnd1-pubkey secret
 copy_secret(
   source_secret_name='lnd1-pubkey',
   source_namespace=bitcoin_namespace,
@@ -54,7 +40,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-# copy lnd1-credentials secret
 copy_secret(
   source_secret_name='lnd1-credentials',
   source_namespace=bitcoin_namespace,
@@ -62,7 +47,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-# # reuse lnd1_credentials for lnd2
 copy_secret(
   source_secret_name='lnd1-credentials',
   source_namespace=bitcoin_namespace,
@@ -71,7 +55,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-# copy loop1-credentials secret
 copy_secret(
   source_secret_name='loop1-credentials',
   source_namespace=bitcoin_namespace,
@@ -79,7 +62,6 @@ copy_secret(
   resource_deps=['loop1']
 )
 
-# # reuse loop1_credentials for loop2
 copy_secret(
   source_secret_name='loop1-credentials',
   source_namespace=bitcoin_namespace,
@@ -189,6 +171,8 @@ k8s_yaml(secret_from_dict(
   }
 ))
 
+local('helm repo add bitnami https://charts.bitnami.com/bitnami')
+
 helm_resource(
   name='postgresql',
   chart='bitnami/postgresql',
@@ -196,17 +180,7 @@ helm_resource(
   flags=[
     '--values=./postgresql-values.yml',
   ],
-  labels='galoy',
-  resource_deps=[
-    'network-secret-copier',
-    'bitcoind-rpcpassword-secret-copier',
-    'lnd1-pubkey-secret-copier',
-    'lnd1-credentials-secret-copier',
-    'lnd2-pubkey-secret-copier',
-    'lnd2-credentials-secret-copier',
-    'loop1-credentials-secret-copier',
-    'loop2-credentials-secret-copier',
-  ]
+  labels='galoy'
 )
 
 k8s_yaml(secret_from_dict(
@@ -219,20 +193,35 @@ k8s_yaml(secret_from_dict(
   }
 ))
 
-# helm_resource(
-#   name='galoy',
-#   chart='../../charts/galoy',
-#   namespace=galoy_namespace,
-#   flags=[
-#     '--values=./galoy-values.yml',
-#     '--values=./galoy-regtest-values.yml',
-#   ],
-#   labels='galoy'
-# )
+k8s_yaml(secret_from_dict(
+  name='api-keys',
+  namespace=galoy_namespace,
+  inputs={'pg-con': 'postgres://api-keys:api-keys@api-keys-postgresql:5432/api-keys'}
+))
 
-k8s_yaml(helm(
+helm_release(
   '../../charts/galoy',
-  name = 'galoy',
-  namespace = galoy_namespace,
-  values = ['./galoy-values.yml', './galoy-regtest-values.yml'],
+  name='galoy',
+  namespace=galoy_namespace,
+  values=['./galoy-values.yml', './galoy-regtest-values.yml'],
+  dependency_build=True,
+  add_repos=True
+)
+
+k8s_resource(workload='galoy-cronjob', pod_readiness='ignore')
+k8s_resource(workload='galoy-price-history-cronjob', pod_readiness='ignore')
+k8s_resource(workload='galoy-price-history-postgres-migrate-1', pod_readiness='ignore')
+k8s_resource(workload='galoy-mongo-backup', pod_readiness='ignore')
+
+k8s_resource(workload='api-keys', pod_readiness='ignore')
+
+k8s_yaml(secret_from_dict(
+  name='galoy-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'galoy_endpoint' : 'galoy-oathkeeper-proxy.{}.svc.cluster.local'.format(galoy_namespace),
+    'galoy_port' : '4455',
+    'price_history_endpoint' : 'galoy-price-history.{}.svc.cluster.local'.format(galoy_namespace),
+    'price_history_port' : '50052',
+  }
 ))

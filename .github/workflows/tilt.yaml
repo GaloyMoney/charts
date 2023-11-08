@@ -1,0 +1,78 @@
+name: "Tilt CI"
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  tilt-ci:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - uses: AbsaOSS/k3d-action@v2
+      name: "Create Single Cluster"
+      with:
+        cluster-name: "k3s-default"
+        args: >-
+          --image rancher/k3s:v1.27.4-k3s1
+          -v "$(pwd):/charts"
+          --k3s-arg --disable=traefik@server:0
+          --k3s-arg --disable=servicelb@server:0
+    - name: Tilt CI
+      run: |
+        pushd dev
+        for i in {1..5}; do
+          echo "Tilt CI attempt $i"
+          nix develop -c tilt ci && exit 0 || sleep 60
+        done
+        exit 1
+    - name: Galoy Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=galoy ./dev-smoketest-settings.sh && \
+          ./galoy-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Bitcoin Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=bitcoind ./dev-smoketest-settings.sh && \
+          ./bitcoind-smoketest.sh regtest && \
+          rm -rf smoketest-settings"
+    - name: LND Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=lnd ./dev-smoketest-settings.sh && \
+          ./lnd-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Loop Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=loop ./dev-smoketest-settings.sh && \
+          ./loop-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Monitoring Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=monitoring ./dev-smoketest-settings.sh && \
+          ./monitoring-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Galoy Pay Smoketest
+      run: |
+        pushd dev
+        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
+          CHART=galoy-pay ./dev-smoketest-settings.sh && \
+          ./galoy-pay-smoketest.sh && \
+          rm -rf smoketest-settings"
+    - name: Clean Up
+      if: always()
+      run: |
+        rm -rf ci/tasks/smoketest-settings
+        k3d cluster delete --all
