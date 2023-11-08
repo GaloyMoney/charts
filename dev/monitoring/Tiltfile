@@ -12,7 +12,8 @@ helm_resource(
   name='monitoring',
   chart='../../charts/monitoring',
   namespace=monitoring_namespace,
-  labels='monitoring'
+  labels='monitoring',
+  update_dependencies=True
 )
 
 k8s_yaml(secret_from_dict(
