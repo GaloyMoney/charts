@@ -94,6 +94,15 @@ k8s_resource(workload='loop1', resource_deps=['lnd1'])
 #   labels="bitcoin"
 # )
 
+# k8s_yaml(secret_from_dict(
+#   name='fulcrum-smoketest',
+#   namespace=bitcoin_namespace,
+#   inputs={
+#     'fulcrum_endpoint': 'fulcrum.{}.svc.cluster.local'.format(bitcoin_namespace),
+#     'fulcrum_stats_port': 8080
+#   },
+# ))
+
 k8s_yaml(secret_from_dict(
   name='bria-smoketest',
   namespace=bitcoin_namespace,
@@ -130,6 +139,15 @@ helm_release(
 #   ],
 #   labels="bitcoin"
 # )
+#
+# k8s_yaml(secret_from_dict(
+#   name='mempool-smoketest',
+#   namespace=bitcoin_namespace,
+#   inputs={
+#     'mempool_endpoint': 'mempool.{}.svc.cluster.local'.format(bitcoin_namespace),
+#     'mempool_stats_port': 8999
+#   },
+# ))
 
 # TODO: uncomment rtl when we actually use it
 # helm_resource(
@@ -138,6 +156,15 @@ helm_release(
 #   namespace=bitcoin_namespace,
 #   labels="bitcoin"
 # )
+#
+# k8s_yaml(secret_from_dict(
+#   name='rtl-smoketest',
+#   namespace=bitcoin_namespace,
+#   inputs={
+#     'rtl_endpoint': 'rtl.{}.svc.cluster.local'.format(bitcoin_namespace),
+#     'rtl_port': 3000
+#   },
+# ))
 
 # create bitcoind smoketest secret from snippet above
 k8s_yaml(secret_from_dict(
