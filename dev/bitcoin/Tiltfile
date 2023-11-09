@@ -133,12 +133,14 @@ helm_resource(
 
 k8s_yaml(secret_from_dict(
   name='mempool-smoketest',
-  namespace=bitcoin_namespace,
+  namespace=smoketest_namespace,
   inputs={
     'mempool_endpoint': 'mempool.{}.svc.cluster.local'.format(bitcoin_namespace),
-    'mempool_stats_port': 8999
+    'mempool_port': 8999
   },
 ))
+
+k8s_resource(workload='mempool', labels='bitcoin')
 
 # TODO: uncomment rtl when we actually use it
 # helm_resource(
