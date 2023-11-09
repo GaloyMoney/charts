@@ -104,3 +104,5 @@ k8s_yaml(helm(
   namespace = addons_namespace,
   values = ['./api-dashboard-values.yml']
 ))
+
+k8s_resource(workload='api-dashboard', labels='addons')
