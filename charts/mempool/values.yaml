@@ -1,7 +1,7 @@
 image:
   repository: mempool/backend
   pullPolicy: IfNotPresent
-  tag: v2.5.0
+  tag: v3.0.0-dev1
 
 service:
   type: ClusterIP

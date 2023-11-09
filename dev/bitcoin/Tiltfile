@@ -128,24 +128,26 @@ helm_release(
 k8s_resource(workload='bria', labels='bitcoin')
 
 # TODO: uncomment mempool when we actually use it
-# helm_resource(
-#   name="mempool",
-#   chart="../../charts/mempool",
-#   namespace=bitcoin_namespace,
-#   flags=[
-#     '--values=./mempool-regtest-values.yml',
-#   ],
-#   labels="bitcoin"
-# )
-#
-# k8s_yaml(secret_from_dict(
-#   name='mempool-smoketest',
-#   namespace=bitcoin_namespace,
-#   inputs={
-#     'mempool_endpoint': 'mempool.{}.svc.cluster.local'.format(bitcoin_namespace),
-#     'mempool_stats_port': 8999
-#   },
-# ))
+helm_resource(
+  name="mempool",
+  chart="../../charts/mempool",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./mempool-regtest-values.yml',
+  ],
+  labels="bitcoin"
+)
+
+k8s_yaml(secret_from_dict(
+  name='mempool-smoketest',
+  namespace=smoketest_namespace,
+  inputs={
+    'mempool_endpoint': 'mempool.{}.svc.cluster.local'.format(bitcoin_namespace),
+    'mempool_port': 8999
+  },
+))
+
+k8s_resource(workload='mempool', labels='bitcoin')
 
 # TODO: uncomment rtl when we actually use it
 # helm_resource(
