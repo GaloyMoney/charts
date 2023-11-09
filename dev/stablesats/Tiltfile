@@ -40,5 +40,7 @@ helm_release(
   dependency_build=True
 )
 
+
+k8s_resource(workload='stablesats-price', labels='stablesats')
 # TODO: Fix stablesats dealer, involves provisioning phone and code and injecting into both galoy and stablesats
-k8s_resource(workload='stablesats-dealer', pod_readiness='ignore')
+k8s_resource(workload='stablesats-dealer', pod_readiness='ignore', labels='stablesats')

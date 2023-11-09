@@ -25,6 +25,8 @@ helm_release(
   values=['./bitcoind-regtest-values.yml']
 )
 
+k8s_resource(workload='bitcoind', labels='bitcoin')
+
 k8s_yaml(secret_from_dict(
   name='bitcoind-onchain-rpcpassword',
   namespace=bitcoin_namespace,
@@ -48,6 +50,8 @@ helm_release(
   values=['./bitcoind-regtest-values.yml', './bitcoind-onchain-values.yml']
 )
 
+k8s_resource(workload='bitcoind-onchain', labels='bitcoin')
+
 local_resource(
   name="bitcoind-block-generator",
   cmd='./generateBlock.sh',
@@ -62,6 +66,7 @@ helm_resource(
   flags=[
     '--values=./lnd-regtest-values.yml',
   ],
+  labels='bitcoin'
   # resource_deps=["bitcoind-block-generator"],
 )
 
@@ -72,7 +77,7 @@ helm_release(
   values=['./loop-values.yml'],
 )
 
-k8s_resource(workload='loop1', resource_deps=['lnd1'])
+k8s_resource(workload='loop1', resource_deps=['lnd1'], labels='bitcoin')
 
 # TODO: uncomment fulcrum when we actually use it
 # helm_resource(
@@ -119,6 +124,8 @@ helm_release(
   dependency_build=True,
   add_repos=True
 )
+
+k8s_resource(workload='bria', labels='bitcoin')
 
 # TODO: uncomment mempool when we actually use it
 # helm_resource(
