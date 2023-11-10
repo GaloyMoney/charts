@@ -10,7 +10,7 @@ dependencies:
   version: 11.9.13
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
-  version: 0.36.0
+  version: 0.37.0
 - name: kratos
   repository: https://k8s.ory.sh/helm/charts
   version: 0.37.0
@@ -20,5 +20,5 @@ dependencies:
 - name: router
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
-digest: sha256:0a119057c362521f507e86060910eedf3ae128efdc5f34d60243efcf54c89290
-generated: "2023-11-09T17:26:39.575811709Z"
+digest: sha256:7f68e922bb533965e0aebf40afce165c6cdbc020313a5b38ed92aadafa4f1dbe
+generated: "2023-11-10T08:57:00.491303492Z"
