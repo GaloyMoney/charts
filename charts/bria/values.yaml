@@ -7,7 +7,7 @@ bria:
   resources: {}
   tracing:
     host: localhost
-    port: 4318
+    port: 4317
     serviceName: bria-dev
   app:
     blockchain:
