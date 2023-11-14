@@ -9,5 +9,5 @@ ingress-nginx:
     ingressClassResource:
       enabled: false
     config:
-      otlp-service-name: ${service_name}
-      otlp-collector-host: ${otlp_collector_host}
+      jaeger-service-name: ${service_name}
+      jaeger-collector-host: ${jaeger_host}
