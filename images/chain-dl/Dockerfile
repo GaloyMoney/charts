@@ -1,4 +1,4 @@
-FROM lncm/bitcoind:v24.0.1
+FROM lncm/bitcoind:v25.1
 
 USER root
 
