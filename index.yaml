@@ -284,6 +284,22 @@ entries:
   lnd:
     - apiVersion: v2
       appVersion: 0.16.1
+      created: "2023-11-15T13:27:27.15920173Z"
+      description: LND helm chart
+      digest: d1d445a8b6c2cd96012149ef54c1bff7545480c12ed1046bf610c485297debbb
+      keywords:
+        - lnd
+      maintainers:
+        - email: krtk6160@galoy.io
+          name: krtk6160
+        - email: nb@galoy.io
+          name: nicolasburtey
+      name: lnd
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/lnd-v0.8.0/lnd-0.8.0.tgz
+      version: 0.8.0
+    - apiVersion: v2
+      appVersion: 0.16.1
       created: "2023-09-18T10:08:38.922057097Z"
       description: LND helm chart
       digest: f5c62542bf8e96b27266e62932ec1b6f605718a9ba652ad69b0c46817d870e1d
@@ -24223,4 +24239,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2023-11-15T09:16:40.797428678Z"
+generated: "2023-11-15T13:27:27.161988955Z"
