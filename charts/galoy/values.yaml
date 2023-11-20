@@ -754,6 +754,11 @@ oathkeeper:
           config:
             jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
             issuer_url: "galoy.io"
+        header:
+          enabled: true
+          config:
+            headers:
+              X-Appcheck-Jti: "{{ print .Extra.jti }}"
       errors:
         fallback:
           - json
@@ -770,24 +775,11 @@ oathkeeper:
         upstream:
           url: http://api:4002
         match:
-          url: "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code|email/login|email/login/cookie)>"
+          url: "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<.*>"
           methods:
             - GET
             - POST
             - OPTIONS
-        authenticators:
-          - handler: anonymous
-        authorizer:
-          handler: allow
-        mutators:
-          - handler: noop
-      - id: device-login
-        upstream:
-          url: http://api:4002
-        match:
-          url: "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/create/device-account"
-          methods:
-            - POST
         authenticators:
           - handler: jwt
             config:
@@ -799,10 +791,11 @@ oathkeeper:
                 - https://firebaseappcheck.googleapis.com/v1beta/jwks
               token_from:
                 header: Appcheck
+          - handler: anonymous
         authorizer:
           handler: allow
         mutators:
-          - handler: noop
+          - handler: header
       - id: galoy-router
         upstream:
           url: http://galoy-router:80
