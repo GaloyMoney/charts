@@ -97,5 +97,8 @@ oathkeeper:
 kratos:
   replicaCount: 1
 
+hydra:
+  replicaCount: 1
+
 secrets:
   create: false
