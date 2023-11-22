@@ -759,6 +759,7 @@ oathkeeper:
           config:
             headers:
               X-Appcheck-Jti: "{{ print .Extra.jti }}"
+              Authorization: '{{ .MatchContext.Header.Get "Authorization" }}'
       errors:
         fallback:
           - json
