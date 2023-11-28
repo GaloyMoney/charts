@@ -238,6 +238,29 @@ galoy:
           name: dropbox-access-token
           # Secret Key
           key: token
+      ## Backup data to S3 bucket
+      ## To backup to S3 bucket, you would need an access key and secret key
+      ## to upload data to your S3 bucket
+      ##
+      s3:
+        # Enable/disable uploading backup to S3 bucket
+        enabled: false
+        # S3 bucket name to upload to (it should already be created)
+        bucketName: s3-bucket-name
+        # Aws region
+        region: us-east-1
+        # S3 access key to use to upload backup to above-mentioned bucket
+        accessKeyExistingSecret:
+          # Secret name
+          name: s3-creds
+          # Secret Key
+          key: access-key
+        # S3 secret key to use to upload backup to above-mentioned bucket
+        secretKeyExistingSecret:
+          # Secret name
+          name: s3-creds
+          # Secret Key
+          key: secret-key
   ## Configuration values for Galoy Admin components.
   ##
   admin:
