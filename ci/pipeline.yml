@@ -289,7 +289,7 @@ jobs:
         GH_TOKEN: #@ data.values.github_token
         BRANCH: #@ data.values.git_branch
         BOT_BRANCH: #@ data.values.git_mongo_backup_bot_branch
-        IMAGE_KEY_PATH: mongobackup.image
+        IMAGE_KEY_PATH: galoy.images.mongoBackup
         IMAGE: mongo-backup
         CHART: galoy
       run:
