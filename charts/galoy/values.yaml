@@ -87,11 +87,11 @@ galoy:
       ##
       repository: us.gcr.io/galoy-org/mongo-backup
       ## Digest of the image
-      digest: "sha256:4cfc197ea082ef3dae2d4321a9dfa31ef185f43d578a37a224095b75de656e6a"
+      digest: "sha256:66d22e50f472f8fb43a93edec095cd724df2393130d6fa3f17e98906eaedb269"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "872b70e"
+      git_ref: "ce9792c"
   ## Configuration values for Galoy API components.
   ##
   api:
