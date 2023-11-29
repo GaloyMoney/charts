@@ -267,7 +267,7 @@ jobs:
       - name: charts-repo
       params:
         BRANCH: #@ data.values.git_branch
-        IMAGE_KEY_PATH: mongobackup.image
+        IMAGE_KEY_PATH: galoy.images.mongoBackup
         IMAGE: mongo-backup
         CHART: galoy
       run:
