@@ -36,7 +36,7 @@ bria:
   labels: {}
   image:
     repository: us.gcr.io/galoy-org/bria
-    digest: "sha256:2b59075c2c0f18a3c3db5f15ae589f0a6fdf15876aaf08f05bf2ab24dbb6bdc2" # METADATA:: repository=https://github.com/GaloyMoney/bria;commit_ref=8f46b12;app=bria;
+    digest: "sha256:659fa04f39b29bb043af329e22cec027e69019dd36630ec3f30c33451f7b4664" # METADATA:: repository=https://github.com/GaloyMoney/bria;commit_ref=78c0c60;app=bria;
     git_ref: "55654e2"
   replicas: 2
   annotations:
