@@ -70,13 +70,6 @@ CronJob name
 {{- end -}}
 
 {{/*
-Balance Notification CronJob name
-*/}}
-{{- define "galoy.balanceNotificationCron.jobname" -}}
-{{- printf "%s-balance-notif" .Release.Name -}}
-{{- end -}}
-
-{{/*
 Mongo Backup CronJob name
 */}}
 {{- define "galoy.mongoBackupCron.jobname" -}}
