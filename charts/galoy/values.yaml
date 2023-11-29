@@ -1270,3 +1270,7 @@ router:
           otlp:
             endpoint: http://localhost:4318
             protocol: http
+mongobackup:
+  image:
+    digest: sha256:66d22e50f472f8fb43a93edec095cd724df2393130d6fa3f17e98906eaedb269
+    git_ref: ce9792c
