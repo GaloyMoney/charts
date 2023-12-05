@@ -11,18 +11,13 @@ metadata:
 
 data:
   backup.sh: |
-    {{ if or .Values.galoy.trigger.backups.gcs.enabled .Values.galoy.trigger.backups.dropbox.enabled }}
+    {{ if or .Values.galoy.trigger.backups.gcs.enabled .Values.galoy.trigger.backups.s3.enabled }}
     echo "Backup script starts"
     set -e
     LOG_TIME=$(date +%s)
     BACKUP_NAME="$NETWORK-$LOG_TIME.gz"
     echo "Backing up mongodb"
     mongodump --host=$MONGODB_ADDRESS --port=$MONGODB_PORT --username=$MONGODB_USER --password=$MONGODB_PASSWORD --gzip --archive=$BACKUP_NAME -d=$MONGODB_DB --readPreference=secondary
-
-    {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
-    echo "Uploading backup $BACKUP_NAME to dropbox"
-    curl -X POST https://content.dropboxapi.com/2/files/upload --http1.1 --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" --header "Dropbox-API-Arg: {\"path\": \"/mongo/$BACKUP_NAME\"}" --header "Content-Type: application/octet-stream" --data-binary $BACKUP_NAME
-    {{ end }}
 
     {{ if .Values.galoy.trigger.backups.s3.enabled }}
     export S3_BUCKET="{{ .Values.galoy.trigger.backups.s3.bucketName }}"
