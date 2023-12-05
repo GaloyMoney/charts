@@ -6,8 +6,6 @@ galoy:
       gcs:
         enabled: true
         bucketName: galoy-staging-backups
-      dropbox:
-        enabled: true
   api:
     replicas: 1
 

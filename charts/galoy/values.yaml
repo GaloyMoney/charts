@@ -225,19 +225,6 @@ galoy:
           name: gcs-sa-key
           # Secret Key
           key: gcs-sa-key.json
-      ## Backup data to Dropbox
-      ## To backup to dropbox, you would need an access token to upload
-      ## data to your dropbox account
-      ##
-      dropbox:
-        # Enable/disable uploading backup to dropbox
-        enabled: false
-        # Dropbox Access Token must be injected via a secret
-        accessTokenExistingSecret:
-          # Secret Name
-          name: dropbox-access-token
-          # Secret Key
-          key: token
       ## Backup data to S3 bucket
       ## To backup to S3 bucket, you would need an access key and secret key
       ## to upload data to your S3 bucket

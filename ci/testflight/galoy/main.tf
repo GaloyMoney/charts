@@ -61,17 +61,6 @@ resource "kubernetes_secret" "geetest_key" {
   }
 }
 
-resource "kubernetes_secret" "dropbox_access_token" {
-  metadata {
-    name      = "dropbox-access-token"
-    namespace = kubernetes_namespace.testflight.metadata[0].name
-  }
-
-  data = {
-    token = "dummy"
-  }
-}
-
 resource "kubernetes_secret" "mongodb_creds" {
   metadata {
     name      = "galoy-mongodb"

@@ -117,14 +117,6 @@ spec:
           value: "/var/secret/cloud.google.com/gcs-sa-key.json"
         {{ end }}
 
-        {{ if .Values.galoy.trigger.backups.dropbox.enabled }}
-        - name: DROPBOX_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.galoy.trigger.backups.dropbox.accessTokenExistingSecret.name | quote }}
-              key: {{ .Values.galoy.trigger.backups.dropbox.accessTokenExistingSecret.key | quote }}
-        {{ end }}
-
         {{ if .Values.galoy.trigger.backups.s3.enabled }}
         - name: AWS_ACCESS_KEY_ID
           valueFrom:

@@ -114,13 +114,6 @@ k8s_yaml(secret_from_dict(
   inputs={'redis-password': 'redispw'}
 ))
 
-# dropbox-access-token secret
-k8s_yaml(secret_from_dict(
-  name='dropbox-access-token',
-  namespace=galoy_namespace,
-  inputs={'token': 'dummy'}
-))
-
 # twilio-secret secret
 k8s_yaml(secret_from_dict(
   name='twilio-secret',
