@@ -1,7 +1,6 @@
 image:
   repository: us.gcr.io/galoy-org/galoy-pay
-  digest: "sha256:98127b113eb0699f1f0dd59ab0c46402e08d0e5f436b924f23b46da4b8f348e0" # METADATA:: repository=https://github.com/GaloyMoney/galoy-pay;commit_ref=5e67086;app=galoy-pay;
-  git_ref: "cf1ff28" # Not used by helm
+  digest: "sha256:98127b113eb0699f1f0dd59ab0c46402e08d0e5f436b924f23b46da4b8f348e0" # METADATA:: repository=https://github.com/GaloyMoney/galoy-pay;commit_ref=d2e95df1;app=galoy-pay;
 ingress:
   enabled: false
 service:
