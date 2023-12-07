@@ -106,3 +106,15 @@ k8s_yaml(helm(
 ))
 
 k8s_resource(workload='api-dashboard', labels='addons')
+
+k8s_yaml(helm(
+  '../../charts/novu',
+  name = 'novu',
+  namespace = addons_namespace
+))
+
+k8s_resource(workload='novu-api', labels='novu')
+k8s_resource(workload='novu-ws', labels='novu')
+k8s_resource(workload='novu-worker', labels='novu')
+k8s_resource(workload='novu-web', labels='novu')
+k8s_resource(workload='novu-redis-master', labels='novu')
