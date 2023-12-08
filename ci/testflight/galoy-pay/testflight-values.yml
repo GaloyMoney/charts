@@ -9,6 +9,6 @@ redis:
   redis0Dns: galoy-redis-node-0.galoy-redis-headless.galoy-staging-galoy.svc.cluster.local
   redis1Dns: galoy-redis-node-1.galoy-redis-headless.galoy-staging-galoy.svc.cluster.local
   redis2Dns: galoy-redis-node-2.galoy-redis-headless.galoy-staging-galoy.svc.cluster.local
-graphqlUrl: http://api.galoy-staging-galoy.svc.cluster.local/graphql
-graphqlUrlInternal: http://api.galoy-staging-galoy.svc.cluster.local/graphql
-graphqlWebsocketUrl: wss://ws.galoy-staging-galoy.svc.cluster.local/graphql
+coreGqlUrlIntranet: http://api.galoy-staging-galoy.svc.cluster.local/graphql
+payUrl: http://pay.galoy-staging-galoy.svc.cluster.local/graphql
+payDomain: galoy-staging-galoy.svc.cluster.local
