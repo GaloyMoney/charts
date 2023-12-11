@@ -11,6 +11,7 @@ data:
       fees:
         mempool_space:
           url: {{ .Values.bria.app.fees.mempoolSpace.url }}
+          number_of_retries: {{ .Values.bria.app.fees.mempoolSpace.numberOfRetries }}
       {{- if gt (len .Values.bria.app.security.blockedAddresses) 0 }}
       security:
         blocked_addresses: {{ toYaml .Values.bria.app.security.blockedAddresses | nindent 8 }}

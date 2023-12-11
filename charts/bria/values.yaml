@@ -16,6 +16,7 @@ bria:
     fees:
       mempoolSpace:
         url: https://mempool.space
+        numberOfRetries: 3
     security:
       blockedAddresses: []
     deprecatedEncryptionKey:
