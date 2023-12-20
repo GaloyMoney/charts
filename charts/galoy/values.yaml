@@ -903,6 +903,8 @@ kratos:
         domain: localhost # var.root_domain
       serve:
         public:
+          access_log:
+            disable_for_health: true
           base_url: http://galoy-kratos-public:80/
           cors:
             enabled: true
@@ -923,6 +925,8 @@ kratos:
               - Set-Cookie
             debug: true
         admin:
+          access_log:
+            disable_for_health: true
           base_url: http://galoy-kratos-admin:80/
       selfservice:
         default_browser_return_url: http://localhost:3000/
