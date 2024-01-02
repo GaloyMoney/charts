@@ -15,7 +15,7 @@ bria:
       electrumUrl: fulcrum.default.svc.cluster.local
     fees:
       mempoolSpace:
-        url: https://mempool.space
+        url: https://mempool.tk7.mempool.space
         numberOfRetries: 3
     security:
       blockedAddresses: []
