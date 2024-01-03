@@ -26018,6 +26018,16 @@ entries:
   fulcrum:
     - apiVersion: v2
       appVersion: 1.9.7
+      created: "2024-01-03T12:51:03.888063514Z"
+      description: Fulcrum Electrum Server
+      digest: 544251075e684aedc263f3d10168f5306c5f6ef4b578a1dd3f1ade88c6d5eff6
+      name: fulcrum
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.4.3/fulcrum-0.4.3.tgz
+      version: 0.4.3
+    - apiVersion: v2
+      appVersion: 1.9.7
       created: "2024-01-02T10:20:10.226162611Z"
       description: Fulcrum Electrum Server
       digest: c4c4a3b68162272f94cd79ebe7fe5eee7f3ae0ceab637460a8872abe68ef10e9
@@ -26196,4 +26206,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-01-02T10:38:36.838878924Z"
+generated: "2024-01-03T12:51:03.891538717Z"
