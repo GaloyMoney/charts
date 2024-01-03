@@ -36,7 +36,7 @@ dependencies:
     version: 0.37.1
   - name: hydra
     repository: https://k8s.ory.sh/helm/charts
-    version: 0.37.1
+    version: 0.38.0
     condition: hydra.enabled
   - name: router
     repository: oci://ghcr.io/apollographql/helm-charts
