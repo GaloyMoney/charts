@@ -11,7 +11,7 @@ apiDashboard:
   tracingServiceName: "dashboard"
 image:
   repository: us.gcr.io/galoy-org/galoy-dashboard
-  digest: "sha256:9b21800c4bf05ba51ab4876b48a895cba2317a5b9d9d27ee437dcb652042f72e" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=c02b200;app=dashboard;
+  digest: "sha256:4c1899c4f009d8fbb22eb5f735774d7d65d33a91cb0a61af12a84020ecbb1dc5" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=e446eda;app=dashboard;
 ingress:
   enabled: false
 service:
