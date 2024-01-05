@@ -181,7 +181,7 @@ resource "kubernetes_secret" "lnd1_credentials" {
 
 data "kubernetes_secret" "loop1_credentials" {
   metadata {
-    name      = "loop1-credentials"
+    name      = "lnd1-loop-credentials"
     namespace = local.bitcoin_namespace
   }
 }
@@ -197,7 +197,7 @@ resource "kubernetes_secret" "loop1_credentials" {
 
 data "kubernetes_secret" "loop2_credentials" {
   metadata {
-    name      = "loop2-credentials"
+    name      = "lnd2-loop-credentials"
     namespace = local.bitcoin_namespace
   }
 }
