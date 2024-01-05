@@ -1,6 +1,7 @@
 variable "bitcoin_network" {}
 variable "name_prefix" {}
 
+
 locals {
   bitcoin_network = var.bitcoin_network
   name_prefix     = var.name_prefix
@@ -48,6 +49,9 @@ module "galoy" {
 
   bitcoin_network = local.bitcoin_network
   name_prefix     = local.name_prefix
+  TWILIO_VERIFY_SERVICE_ID = var.TWILIO_VERIFY_SERVICE_ID
+  TWILIO_ACCOUNT_SID       = var.TWILIO_ACCOUNT_SID
+  TWILIO_AUTH_TOKEN        = var.TWILIO_AUTH_TOKEN
 
   depends_on = [
     module.bitcoin

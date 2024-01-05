@@ -1,16 +1,16 @@
 image:
-  repository: us.gcr.io/galoy-org/galoy-pay
-  digest: "sha256:7eb631c0c21bf3a3d1487d466b8c26799e7a3a9719a8a9326ef1ef9cccaadcdf"
+  repository: dreadnterrible/flash-pay:latest
+  digest: "sha256:a59f9d5bd5e0e7327da543a4e3b1f4dc5b539070881c822b7c982251fc746876"
   git_ref: "cf1ff28" # Not used by helm
 ingress:
   enabled: false
 service:
   port: 80
   type: ClusterIP
-graphqlUrl: https://domain.example/graphql
-graphqlUrlInternal: http://service-name.namespace.svc.cluster.local
-graphqlWebsocketUrl: wss://ws.domain.example/graphql
-nostrPubkey: "pubkey"
+graphqlUrl: https://development.flashapp.me:8080/graphql
+graphqlUrlInternal: http://api.galoy-dev-galoy.svc.cluster.local
+graphqlWebsocketUrl: wss://development.flashapp.me:4000/graphql
+nostrPubkey: "npub1qqqqqqrm4aehwh4t0mknaxvaqvhxdrvrnquz7a7npdgll3lezkpqq3j5a5"
 galoy-nostr:
   enabled: true
   fullnameOverride: galoy-nostr
@@ -22,3 +22,4 @@ redis:
     existingSecret: galoy-redis-pw
     existingSecretPasswordKey: redis-password
 resources: {}
+

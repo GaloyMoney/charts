@@ -103,6 +103,11 @@ redeploy-signet-addons:
 	cd addons
 	$(TF) apply -var="name_prefix=galoy-sig" -auto-approve
 
+redeploy-addons:
+	-kubectl delete namespace galoy-dev-addons --force
+	cd addons
+	$(TF) apply -var="name_prefix=galoy-dev" -auto-approve
+
 redeploy-signet-monitoring:
 	-kubectl delete namespace galoy-sig-monitoring --force
 	cd monitoring

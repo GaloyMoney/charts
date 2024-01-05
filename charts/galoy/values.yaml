@@ -100,7 +100,7 @@ galoy:
       enabled: true
       ## Ingress Host
       ##
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -237,7 +237,7 @@ galoy:
       enabled: true
       ## Ingress Host
       ##
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -329,7 +329,7 @@ galoy:
       enabled: true
       ## Ingress Host
       ##
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -631,7 +631,7 @@ tracing:
   otelExporterOtlpEndpoint: http://localhost:4318
   ## Prefix for tracing
   ##
-  prefix: galoy-sig
+  prefix: galoy-dev
 price:
   realtime:
     host: galoy-price-realtime

@@ -21,7 +21,7 @@ galoy:
   api:
     ingress:
       enabled: true
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
       extraPaths:
@@ -35,7 +35,7 @@ galoy:
   admin:
     ingress:
       enabled: true
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /$1

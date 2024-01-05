@@ -2,10 +2,10 @@ galoy:
   network: regtest
   images:
     app:
-      repository: dreadnterrible/flash-dev:0.1.2
+      repository: dreadnterrible/flash-dev:0.1.5
       imagePullPolicy: Always
-      digest: sha256:9d2487064189884b33fcc09973baf536794200e0b208bb86497829e127b7b5bf
-      git_ref: "2b4c7a"
+      digest: sha256:d2a4389f62ea0a213701628d08e4e4d4f695a74c19271809b4644ca24119834a
+      git_ref: "d2a438"
   config:
     swap:
       loopOutWhenHotWalletLessThan: 500000
@@ -30,7 +30,7 @@ galoy:
     replicas: 1
     ingress:
       enabled: true
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
       extraPaths:
@@ -41,10 +41,11 @@ galoy:
             name: api
             port:
               number: 4002
+              
   admin:
     ingress:
       enabled: true
-      hosts: ["api-development.flashapp.me"]
+      hosts: ["development.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /$1
