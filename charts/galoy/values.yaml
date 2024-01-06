@@ -673,6 +673,12 @@ oathkeeper:
             preserve_path: true
             subject_from: identity.id
             extra_from: identity.traits
+        oauth2_introspection:
+          enabled: true
+          config:
+            introspection_url: http://galoy-hydra-admin:4445/admin/oauth2/introspect
+            token_from:
+              header: Oauth2-Token
         anonymous:
           enabled: true
           config:
@@ -697,6 +703,12 @@ oathkeeper:
           config:
             jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
             issuer_url: "galoy.io"
+        header:
+          enabled: true
+          config:
+            headers:
+              X-Appcheck-Jti: "{{ print .Extra.jti }}"
+              Authorization: '{{ .MatchContext.Header.Get "Authorization" }}'
       errors:
         fallback:
           - json
@@ -709,131 +721,103 @@ oathkeeper:
         matching_strategy: regexp
     mutatorIdTokenJWKs: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
     accessRules: |
-      [
-        {
-          "id": "anonymous-rest-auth",
-          "upstream": { "url": "http://api:4002" },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code|email/login|email/login/cookie)>",
-            "methods": ["GET", "POST", "OPTIONS"]
-          },
-          "authenticators": [{ "handler": "anonymous" }],
-          "authorizer": { "handler": "allow" },
-          "mutators": [{ "handler": "noop" }]
-        },
-        {
-          "id": "device-login",
-          "upstream": {
-            "url": "http://api:4002"
-          },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/create/device-account",
-            "methods": ["POST"]
-          },
-          "authenticators": [
-            {
-              "handler": "jwt",
-              "config": {
-                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/806646140435" ],
-                "target_audience": [ "projects/806646140435", "projects/avid-ceiling-390418" ],
-                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ],
-                "token_from": {
-                  "header": "Appcheck"
-                }
-              }
-            },
-          ],
-          "authorizer": { "handler": "allow" },
-          "mutators": [{ "handler": "noop" }]
-        },
-        {
-          "id": "galoy-router",
-          "upstream": {
-            "url": "http://galoy-router:80"
-          },
-          "match": {
-            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
-            "methods": [ "POST", "GET", "OPTIONS" ]
-          },
-          "authenticators": [
-            {
-              "handler": "cookie_session",
-              "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "@this"
-              }
-            },
-            {
-              "handler": "bearer_token",
-              "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "@this"
-              }
-            },
-            { "handler": "anonymous" }
-          ],
-          "authorizer": { "handler": "allow" },
-          "mutators": [
-            {
-              "handler": "id_token",
-              "config": {
-                "claims": '{"sub": "{{ print .Subject }}", "session_id": "{{ print .Extra.id }}", "expires_at": "{{ print .Extra.expires_at }}" }'
-              }
-            }
-          ]
-        },
-        {
-          "id": "admin-backend",
-          "upstream": {
-            "url": "http://graphql-admin:4001",
-            "strip_path": "/admin"
-          },
-          "match": {
-            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
-            "methods": ["GET", "POST", "OPTIONS"]
-          },
-          "authenticators": [
-            {
-              "handler": "cookie_session",
-              "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "@this"
-              }
-            },
-            {
-              "handler": "bearer_token",
-              "config": {
-              "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
-                "preserve_path": true,
-                "preserve_query": true,
-                "subject_from": "identity.id",
-                "extra_from": "@this"
-              }
-            },
-            { "handler": "anonymous" }
-          ],
-          "authorizer": {
-            "handler": "allow"
-          },
-          "mutators": [
-            {
-              "handler": "id_token",
-              "config": {
-                "claims": '{"sub": "{{ print .Subject }}"}'
-              }
-            }
-          ]
-        }
-      ]
+      - id: anonymous-rest-auth
+        upstream:
+          url: http://api:4002
+        match:
+          url: "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<.*>"
+          methods:
+            - GET
+            - POST
+            - OPTIONS
+        authenticators:
+          - handler: jwt
+            config:
+              trusted_issuers:
+                - https://firebaseappcheck.googleapis.com/806646140435
+              target_audience:
+                - projects/806646140435
+              jwks_urls:
+                - https://firebaseappcheck.googleapis.com/v1beta/jwks
+              token_from:
+                header: Appcheck
+          - handler: anonymous
+        authorizer:
+          handler: allow
+        mutators:
+          - handler: header
+      - id: galoy-router
+        upstream:
+          url: http://galoy-router:80
+        match:
+          url: "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql"
+          methods:
+            - POST
+            - GET
+            - OPTIONS
+        authenticators:
+          - handler: cookie_session
+            config:
+              check_session_url: http://galoy-kratos-public:80/sessions/whoami
+              preserve_path: true
+              preserve_query: true
+              subject_from: identity.id
+              extra_from: "@this"
+          - handler: bearer_token
+            config:
+              check_session_url: http://galoy-kratos-public:80/sessions/whoami
+              preserve_path: true
+              preserve_query: true
+              subject_from: identity.id
+              extra_from: "@this"
+          - handler: bearer_token
+            config:
+              token_from:
+                header: X-API-KEY
+              forward_http_headers:
+              - "X-API-KEY"
+              check_session_url: "http://api-keys:5397/auth/check"
+              force_method: GET
+              preserve_path: true
+              preserve_query: true
+              subject_from: sub
+              extra_from: "@this"
+          - handler: anonymous
+        authorizer:
+          handler: allow
+        mutators:
+          - handler: id_token
+            config:
+              claims: '{"sub": "{{ print .Subject }}", "session_id": "{{ print .Extra.id }}", "expires_at": "{{ print .Extra.expires_at }}" }'
+      - id: admin-backend
+        upstream:
+          url: http://graphql-admin:4001
+          strip_path: /admin
+        match:
+          url: "<(http|https)>://<.*><[0-9]*>/admin/<.*>"
+          methods:
+            - GET
+            - POST
+            - OPTIONS
+        authenticators:
+          - handler: cookie_session
+            config:
+              check_session_url: http://galoy-kratos-public:80/sessions/whoami
+              preserve_path: true
+              preserve_query: true
+              subject_from: identity.id
+              extra_from: "@this"
+          - handler: oauth2_introspection
+            config:
+              introspection_url: http://galoy-hydra-admin:4445/admin/oauth2/introspect
+              token_from:
+                header: Oauth2-Token
+        authorizer:
+          handler: allow
+        mutators:
+          - handler: id_token
+            config:
+              claims: '{"sub": "{{ print .Subject }}", "scope": "{{ print .Extra.scope }}" }'
   maester:
     enabled: false
 kratos:
