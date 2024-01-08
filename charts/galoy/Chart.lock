@@ -4,7 +4,7 @@ dependencies:
   version: 18.6.1
 - name: mongodb
   repository: https://charts.bitnami.com/bitnami
-  version: 14.4.9
+  version: 14.5.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 11.9.13
@@ -20,5 +20,5 @@ dependencies:
 - name: router
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
-digest: sha256:84e48f9b8ca3384d1047aef05df5ef5cad9f7f29a07caaaca149ca7b0e80ac60
-generated: "2024-01-02T13:45:41.950353565Z"
+digest: sha256:9c2d184f08a9a2625f68e3a11b451210981e57cceeb1d3fdcc0afb23307dc2c5
+generated: "2024-01-08T09:36:37.219916358Z"
