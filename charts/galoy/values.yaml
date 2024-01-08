@@ -76,7 +76,7 @@ galoy:
     mongodbMigrate:
       ## Has mongodb migration
       ##
-      repository: us.gcr.io/galoy-org/galoy-app-migrate
+      repository: us.gcr.io/galoy-org/galoy-api-migrate
       ## Digest of the image
       ##
       digest: "sha256:2b12a3a03a571bba508d19d5a6cfe2d348565895f99d3bd5ccce7527b279ded1"
