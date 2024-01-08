@@ -36,31 +36,31 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api
       ## Digest of the image
       ##
-      digest: "sha256:45e707dd07a30dee9dd4144fa33fd52620a7d62e2f02dfa6c1f194a8167c0d28"
+      digest: "sha256:ebc1f8f26c74dedb44e543d960f969dae5014993dcf2aa94a1e2cc62e1b3af10"
       ## Not used by Helm, just used to ref to the source https://github.com/GaloyMoney/galoy.git
       ## Reference for timestamping the corresponding docker image and used by internal CI.
       ##
-      git_ref: "5825080"
+      git_ref: "bd6b666"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-api-ws-server
       ## Digest of the image
       ##
-      digest: "sha256:1a9d75c765b57a1817bd9d78fff438b38733da85c9f1c8f0874cae9d1806fb65"
+      digest: "sha256:1ea681dec3a33dcb8a763c51a8fe77b98ec666500c57e7863f1295e401a0358f"
     trigger:
       repository: us.gcr.io/galoy-org/galoy-api-trigger
       ## Digest of the image
       ##
-      digest: "sha256:9b8f297628f6af1851b48b857d027c2bbcf9f0933084b6b79b2563b1b9b05a25"
+      digest: "sha256:1f6de41483049bc6316188be5487949fe9a9280ef78c19b9ca32f3fa9fe5f659"
     cron:
       repository: us.gcr.io/galoy-org/galoy-api-cron
       ## Digest of the image
       ##
-      digest: "sha256:e9a057573dc0e7f961ac043334c57747c1e4effa1fa8d541f3253c2ed2668f9e"
+      digest: "sha256:366919a5e0eff39eeb4aa68c9b46bdbb85282002c98dd8ed7ed06d5172f472c5"
     exporter:
       repository: us.gcr.io/galoy-org/galoy-api-exporter
       ## Digest of the image
       ##
-      digest: "sha256:60401fc49dfea9f2b8c5eecbee9ce108f05c1e427d856dafad790278783f89a7"
+      digest: "sha256:afa5af2d70cb053be299936727ac7af968d7a5367a06eb1ead15873c7dee5cf5"
     consent:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
@@ -76,10 +76,10 @@ galoy:
     mongodbMigrate:
       ## Has mongodb migration
       ##
-      repository: us.gcr.io/galoy-org/galoy-app-migrate
+      repository: us.gcr.io/galoy-org/galoy-api-migrate
       ## Digest of the image
       ##
-      digest: "sha256:c37a9f636b3fcc910a80ce1828cfe58b63dbbc091e0377313eed8dabf65e706a"
+      digest: "sha256:2b12a3a03a571bba508d19d5a6cfe2d348565895f99d3bd5ccce7527b279ded1"
     ## Galoy Application MongoDB Backup Image details
     ##
     mongoBackup:
