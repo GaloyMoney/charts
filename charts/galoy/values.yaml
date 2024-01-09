@@ -65,7 +65,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
       ##
-      digest: "sha256:c9d3d8a18fd64475eb6c6baa1c3ccbb1f2215128a53c0d5c4355945cc4db053f" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=e446eda;app=consent;
+      digest: "sha256:7740b7832ccea1665d5a39c11df5d93a6f9a1b5c9ddb21146cd5f40031f7539b" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=4475797;app=consent;
     apiKeys:
       repository: us.gcr.io/galoy-org/galoy-api-keys
       ## Digest of the image
