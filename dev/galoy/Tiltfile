@@ -196,7 +196,7 @@ helm_release(
   '../../charts/galoy',
   name='galoy',
   namespace=galoy_namespace,
-  values=['./galoy-values.yml', './galoy-regtest-values.yml'],
+  values=['./galoy-values.yml', './galoy-signet-values.yml'],
   dependency_build=True,
   add_repos=True
 )

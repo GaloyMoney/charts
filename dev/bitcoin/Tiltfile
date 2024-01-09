@@ -5,7 +5,7 @@ load('../common/Tiltfile', 'helm_release')
 update_settings(k8s_upsert_timeout_secs=120)
 
 name_prefix = 'galoy-dev'
-bitcoin_network = 'regtest'
+bitcoin_network = 'signet'
 bitcoind_rpcpassword = 'rpcpassword'
 bitcoin_namespace = '{}-bitcoin'.format(name_prefix)
 smoketest_namespace = '{}-smoketest'.format(name_prefix)
@@ -22,7 +22,7 @@ helm_release(
   "../../charts/bitcoind",
   name="bitcoind",
   namespace=bitcoin_namespace,
-  values=['./bitcoind-regtest-values.yml']
+  values=['./bitcoind-signet-values.yml']
 )
 
 k8s_resource(workload='bitcoind', labels='bitcoin')
@@ -47,7 +47,7 @@ helm_release(
   '../../charts/bitcoind',
   name='bitcoind-onchain',
   namespace=bitcoin_namespace,
-  values=['./bitcoind-regtest-values.yml', './bitcoind-onchain-values.yml']
+  values=['./bitcoind-signet-values.yml', './bitcoind-onchain-values.yml']
 )
 
 k8s_resource(workload='bitcoind-onchain', labels='bitcoin')
@@ -64,40 +64,41 @@ helm_resource(
   chart="../../charts/lnd",
   namespace=bitcoin_namespace,
   flags=[
-    '--values=./lnd-regtest-values.yml',
+    '--values=./lnd-signet-values.yml',
   ],
   labels='bitcoin'
   # resource_deps=["bitcoind-block-generator"],
 )
 
-helm_release(
-  '../../charts/loop',
-  name='loop1',
-  namespace=bitcoin_namespace,
-  values=['./loop-values.yml'],
-)
-
-k8s_resource(workload='loop1', resource_deps=['lnd1'], labels='bitcoin')
+# TODO: uncomment loop when not on signet
+# helm_release(
+#   '../../charts/loop',
+#   name='loop1',
+#   namespace=bitcoin_namespace,
+#   values=['./loop-values.yml'],
+# )
+# 
+# k8s_resource(workload='loop1', resource_deps=['lnd1'], labels='bitcoin')
 
 # TODO: uncomment fulcrum when we actually use it
-# helm_resource(
-#   name="fulcrum",
-#   chart="../../charts/fulcrum",
-#   namespace=bitcoin_namespace,
-#   flags=[
-#     '--values=./fulcrum-regtest-values.yml',
-#   ],
-#   labels="bitcoin"
-# )
+helm_resource(
+  name="fulcrum",
+  chart="../../charts/fulcrum",
+  namespace=bitcoin_namespace,
+  flags=[
+    '--values=./fulcrum-signet-values.yml',
+  ],
+  labels="bitcoin"
+)
 
-# k8s_yaml(secret_from_dict(
-#   name='fulcrum-smoketest',
-#   namespace=bitcoin_namespace,
-#   inputs={
-#     'fulcrum_endpoint': 'fulcrum.{}.svc.cluster.local'.format(bitcoin_namespace),
-#     'fulcrum_stats_port': 8080
-#   },
-# ))
+k8s_yaml(secret_from_dict(
+  name='fulcrum-smoketest',
+  namespace=bitcoin_namespace,
+  inputs={
+    'fulcrum_endpoint': 'fulcrum.{}.svc.cluster.local'.format(bitcoin_namespace),
+    'fulcrum_stats_port': 8080
+  },
+))
 
 k8s_yaml(secret_from_dict(
   name='bria-smoketest',
@@ -133,7 +134,7 @@ helm_resource(
   chart="../../charts/mempool",
   namespace=bitcoin_namespace,
   flags=[
-    '--values=./mempool-regtest-values.yml',
+    '--values=./mempool-signet-values.yml',
   ],
   labels="bitcoin"
 )
