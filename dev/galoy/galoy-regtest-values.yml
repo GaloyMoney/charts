@@ -2,9 +2,9 @@ galoy:
   network: regtest
   images:
     app:
-      repository: dreadnterrible/flash-dev:0.1.6
+      repository: dreadnterrible/flash-dev:0.2.0
       imagePullPolicy: Always
-      digest: sha256:d2a4389f62ea0a213701628d08e4e4d4f695a74c19271809b4644ca24119834a
+      digest: sha256:d1404d8afc6d885dae2a8617795419dc751c3733b5fa1f6195703c7356c12897
       git_ref: "d2a438"
   config:
     swap:

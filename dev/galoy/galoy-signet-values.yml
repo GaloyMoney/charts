@@ -35,7 +35,7 @@ galoy:
   admin:
     ingress:
       enabled: true
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["localhost"]
       annotations:
         nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /$1
