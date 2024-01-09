@@ -1,6 +1,6 @@
 image:
   repository: us.gcr.io/galoy-org/galoy-pay
-  digest: "sha256:3870f8a32f18a8aacf982b9a916c9c7f0aacc3d3e8e39e5a2872f8af193a20d5" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=e446eda;app=pay;
+  digest: "sha256:d76593a79d99f4516b08553755525652bb7a340a01b0114bf1c2b51b0526c4b3" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=3673972;app=pay;
 ingress:
   enabled: false
 service:
