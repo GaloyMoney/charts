@@ -5,18 +5,29 @@ Currently successfully brings up charts - no guarantee that everything is workin
 
 ## Dependencies
 
-- k3d
-- terraform
-- kubectl
+### Docker
+* choose the install method for your system https://docs.docker.com/desktop/
+
+### Nix package manager
+* recommended install method using https://github.com/DeterminateSystems/nix-installer
+  ```
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+  ```
+
+### direnv >= 2.30.0
+* recommended install method from https://direnv.net/docs/installation.html:
+  ```
+  curl -sfL https://direnv.net/install.sh | bash
+  echo "eval \"\$(direnv hook bash)\"" >> ~/.bashrc
+  source ~/.bashrc
+  ```
 
 ## Regtest
 * run in the `dev` folder:
   ```
   direnv allow
   make create-cluster
-  make init
-  make deploy-services
-  make deploy
+  tilt up
   ```
 
 ### Test
@@ -65,17 +76,6 @@ Currently successfully brings up charts - no guarantee that everything is workin
     kubectl -n galoy-dev-addons port-forward  --address 0.0.0.0 svc/admin-panel 3001:3000
     ```
 2. open http://localhost:3001
-
-## Signet
-
-* run in the `dev` folder:
-  ```
-  direnv allow
-  make create-cluster
-  make init
-  make deploy-signet-services
-  make deploy-signet
-  ```
 
 ## RTL access
 -
