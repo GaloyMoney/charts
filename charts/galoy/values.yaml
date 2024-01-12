@@ -126,7 +126,7 @@ galoy:
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
       clusterIssuer: letsencrypt-issuer
-      limitRpm: 30
+      limitRpm: 60
       limitBurstMultiplier: 40
       limitConnections: 80
     ## Firebase Notifications Configuration
