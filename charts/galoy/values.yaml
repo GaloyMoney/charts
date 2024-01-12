@@ -70,7 +70,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-api-keys
       ## Digest of the image
       ##
-      digest: "sha256:cf6a816a5a69a1c232f442944772f00bb4fe1fd7108c98f2207e7bf6826e7bff" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=8f83645;app=api-keys;
+      digest: "sha256:6be2a41658a3fe727522f2c7041dbfa7c27e0b52d304428f38dbd00f34548290" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=4497a64;app=api-keys;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
