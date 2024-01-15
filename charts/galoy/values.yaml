@@ -65,12 +65,12 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
       ##
-      digest: "sha256:3fd85d066f03c672661a31a6b0e2d860bf3a74e7476ef384f98b1f48b7e0e27f" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=8f83645;app=consent;
+      digest: "sha256:3fd85d066f03c672661a31a6b0e2d860bf3a74e7476ef384f98b1f48b7e0e27f" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=8f83645;app=consent;buck_target_pattern=apps/consent;
     apiKeys:
       repository: us.gcr.io/galoy-org/galoy-api-keys
       ## Digest of the image
       ##
-      digest: "sha256:399a1c86b0ea2d9494f48e215095df0e1e856778e8dbf9302a45165b4be8c9bb" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=ac43ce0;app=api-keys;
+      digest: "sha256:399a1c86b0ea2d9494f48e215095df0e1e856778e8dbf9302a45165b4be8c9bb" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=ac43ce0;app=api-keys;buck_target_pattern=core/api-keys;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
