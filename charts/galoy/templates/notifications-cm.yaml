@@ -6,6 +6,8 @@ data:
   notifications.yml: |-
     db:
       pool_size: 20
+    subgraph_server:
+      jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
     grpc_server:
       port: {{ .Values.galoy.notifications.grpcPort }}
     mongo_import:
