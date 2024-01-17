@@ -55,11 +55,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Create a default fully qualified consent name.
+Create a default fully qualified api keys name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "galoy.apiKeys.fullname" -}}
 {{- default "api-keys" .Values.galoy.apiKeys.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified notifications name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "galoy.notifications.fullname" -}}
+{{- default "notifications" .Values.galoy.notifications.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

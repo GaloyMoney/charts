@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "galoy.notifications.fullname" . }}
+  labels:
+    app: {{ template "galoy.notifications.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: {{ .Values.galoy.notifications.serviceType }}
+  ports:
+    - port: {{ .Values.galoy.notifications.grpcPort }}
+      targetPort: {{ .Values.galoy.notifications.grpcPort }}
+      protocol: TCP
+      name: grpc
+  selector:
+    app: {{ template "galoy.notifications.fullname" . }}

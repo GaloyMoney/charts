@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoy.notifications.fullname" . }}
+  labels:
+    app: {{ template "galoy.notifications.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ template "galoy.notifications.fullname" . }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+spec:
+  replicas: {{ .Values.galoy.notifications.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "galoy.notifications.fullname" . }}
+  template:
+    metadata:
+      name: {{ template "galoy.notifications.fullname" . }}
+      labels:
+        app: {{ template "galoy.notifications.fullname" . }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ template "galoy.notifications.fullname" . }}
+    spec:
+      containers:
+      - name: notifications
+        image: "{{ .Values.galoy.images.notifications.repository }}@{{ .Values.galoy.images.notifications.digest }}"
+        resources:
+          {{ toYaml .Values.galoy.notifications.resources | nindent 10 }}
+        ports:
+        - name: grpc
+          containerPort: {{ .Values.galoy.notifications.grpcPort }}
+          protocol: TCP
+        env:
+          - name: PG_CON
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "galoy.notifications.fullname" . }}
+                key: pg-con
+{{ include "galoy.mongodb.env" . | indent 12 }}
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}
+          - name: NOTIFICATIONS_CONFIG
+            value: "/notifications.yml"
+        volumeMounts:
+        - name: config
+          mountPath: "/notifications.yml"
+          subPath: "notifications.yml"
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "galoy.notifications.fullname" . }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "galoy.notifications.fullname" . }}
+data:
+  notifications.yml: |-
+    db:
+      pool_size: 20
+    grpc_server:
+      port: {{ .Values.galoy.notifications.grpcPort }}
+    mongo_import:
+      enabled: {{ .Values.galoy.notifications.config.importFromMongo }}
+    tracing:
+      endpoint: {{ .Values.tracing.otelExporterOtlpEndpoint }}
+      service_name: "{{ .Values.tracing.prefix }}-{{ template "galoy.notifications.fullname" . }}"

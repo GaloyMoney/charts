@@ -342,6 +342,16 @@ resource "kubernetes_secret" "api_keys" {
   }
 }
 
+resource "kubernetes_secret" "notifications" {
+  metadata {
+    name      = "notifications"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+  data = {
+    pg-con : "postgres://notifications:notifications@notifications-postgresql:5432/notifications"
+  }
+}
+
 resource "helm_release" "postgresql" {
   name       = "postgresql"
   repository = "https://charts.bitnami.com/bitnami"
@@ -363,6 +373,18 @@ resource "helm_release" "api_keys_postgresql" {
 
   values = [
     file("${path.module}/api-keys-postgresql-values.yml")
+  ]
+}
+
+resource "helm_release" "notifications_postgresql" {
+  name       = "notifications-postgresql"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "postgresql"
+  version    = "11.9.13"
+  namespace  = kubernetes_namespace.testflight.metadata[0].name
+
+  values = [
+    file("${path.module}/notifications-postgresql-values.yml")
   ]
 }
 
