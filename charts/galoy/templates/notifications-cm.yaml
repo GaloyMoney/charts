@@ -9,7 +9,7 @@ data:
     grpc_server:
       port: {{ .Values.galoy.notifications.grpcPort }}
     mongo_import:
-      enabled: {{ .Values.galoy.notifications.config.importFromMongo }}
+      execute_import: {{ .Values.galoy.notifications.config.importFromMongo }}
     tracing:
       endpoint: {{ .Values.tracing.otelExporterOtlpEndpoint }}
       service_name: "{{ .Values.tracing.prefix }}-{{ template "galoy.notifications.fullname" . }}"
