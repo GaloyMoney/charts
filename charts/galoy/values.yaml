@@ -71,6 +71,11 @@ galoy:
       ## Digest of the image
       ##
       digest: "sha256:2c5540b276d8d16c06277901a587b60344509af663b5180c7fce54d7175e4e50" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=22adf9c;app=api-keys;monorepo_subdir=core/api-keys;
+    notifications:
+      repository: us.gcr.io/galoy-org/galoy-notifications
+      ## Digest of the image
+      ##
+      digest: "sha256:236b9fa28aa30fb621a7fa10db7cab1e7805f99b885f64918daff5e172d19faf" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=22adf9c;app=notifications;monorepo_subdir=core/notifications;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -406,12 +411,20 @@ galoy:
         timeoutSeconds: 1
   apiKeys:
     nameOverride:
-    replicas: 2
     port: 5397
+    replicas: 2
     serviceType: ClusterIP
     resources: {}
     config:
       keyPrefix: galoy
+  notifications:
+    nameOverride:
+    replicas: 2
+    serviceType: ClusterIP
+    resources: {}
+    grpcPort: 6685
+    config:
+      importFromMongo: false
   consent:
     resources: {}
     port: 80
@@ -686,6 +699,8 @@ secrets:
   proxyCheckApiKey:
   ## postgres secret for api-keys
   apiKeysPgCon:
+  ## postgres secret for notifications
+  notificationsPgCon:
 ## Tracing details
 ##
 tracing:
