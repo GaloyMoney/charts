@@ -50,6 +50,11 @@ spec:
             - name: TRACING_SERVICE_NAME
               value: "{{ .Values.tracing.prefix }}-{{ template "galoy.cron.jobname" . }}"
 
+            - name: NOTIFICATIONS_HOST
+              value: notifications
+            - name: NOTIFICATIONS_PORT
+              value: {{ .Values.galoy.notifications.grpcPort | quote }}
+
             - name: PRICE_HOST
               value: {{ .Values.price.realtime.host | quote }}
 
