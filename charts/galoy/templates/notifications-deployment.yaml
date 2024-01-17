@@ -24,6 +24,8 @@ spec:
         app: {{ template "galoy.notifications.fullname" . }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ template "galoy.notifications.fullname" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/notifications-cm.yaml") . | sha256sum }}
     spec:
       containers:
       - name: notifications

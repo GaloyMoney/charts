@@ -24,6 +24,8 @@ spec:
         app: {{ template "galoy.apiKeys.fullname" . }}
         kube-monkey/enabled: enabled
         kube-monkey/identifier: {{ template "galoy.apiKeys.fullname" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/api-keys-cm.yaml") . | sha256sum }}
     spec:
       containers:
       - name: api-keys
