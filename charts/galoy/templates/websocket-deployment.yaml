@@ -78,6 +78,11 @@ spec:
         - name: OATHKEEPER_DECISION_ENDPOINT
           value: http://galoy-oathkeeper-api:4456
 
+        - name: NOTIFICATIONS_HOST
+          value: notifications
+        - name: NOTIFICATIONS_PORT
+          value: {{ .Values.galoy.notifications.grpcPort | quote }}
+
         - name: PRICE_HISTORY_HOST
           value: {{ .Values.price.history.host | quote }}
         - name: PRICE_HISTORY_PORT
