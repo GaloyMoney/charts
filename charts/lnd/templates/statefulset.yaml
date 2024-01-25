@@ -98,7 +98,7 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /root/.lnd
-          {{- if not .Values.autoGenerateTls }}
+          {{- if not .Values.autoGenerateTls.enabled }}
           - name: tls-cert
             mountPath: /root/.lnd/tls.cert
             subPath: tls.cert
@@ -147,7 +147,7 @@ spec:
             subPath: exportSecrets.sh
           - name: lnd-storage
             mountPath: /root/.lnd
-          {{- if not .Values.autoGenerateTls }}
+          {{- if not .Values.autoGenerateTls.enabled }}
           - name: tls-cert
             mountPath: /root/.lnd/tls.cert
             subPath: tls.cert
@@ -174,7 +174,7 @@ spec:
               mountPath: /tmp/lnd-pass
               subPath: password
             {{- end }}
-            {{- if not .Values.autoGenerateTls }}
+            {{- if not .Values.autoGenerateTls.enabled }}
             - name: tls-cert
               mountPath: /root/.lnd/tls.cert
               subPath: tls.cert
@@ -218,7 +218,7 @@ spec:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
         {{- end }}
-        {{- if not .Values.autoGenerateTls }}
+        {{- if not .Values.autoGenerateTls.enabled }}
         - name: tls-cert
           secret:
             secretName: {{ printf "%s-tls" (include "lnd.fullname" .) }}
