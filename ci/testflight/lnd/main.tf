@@ -58,6 +58,33 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
+resource "tls_private_key" "lnd" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
+}
+
+resource "tls_self_signed_cert" "lnd1" {
+  private_key_pem = tls_private_key.lnd.private_key_pem
+
+  subject {
+    common_name  = "localhost"
+    organization = "org"
+  }
+
+  validity_period_hours = 420 * 24
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
+
+  dns_names = [
+    "localhost",
+  ]
+  ip_addresses = ["127.0.0.1", "0.0.0.0"]
+}
+
 resource "helm_release" "lnd1" {
   name       = "lnd1"
   chart      = "${path.module}/chart"
