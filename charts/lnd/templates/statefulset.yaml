@@ -98,6 +98,11 @@ spec:
             subPath: walletInit.exp
           - name: lnd-storage
             mountPath: /root/.lnd
+          {{- if not .Values.autoGenerateTls }}
+          - name: tls-cert
+            mountPath: /root/.lnd/tls.cert
+            subPath: tls.cert
+          {{- end }}
         {{- end }}
         - name: tor
           image: osminogin/tor-simple
@@ -142,7 +147,12 @@ spec:
             subPath: exportSecrets.sh
           - name: lnd-storage
             mountPath: /root/.lnd
-        - name: {{ .Chart.Name }}
+          {{- if not .Values.autoGenerateTls }}
+          - name: tls-cert
+            mountPath: /root/.lnd/tls.cert
+            subPath: tls.cert
+          {{- end }}
+        - name: lnd
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
             - name: rpc
@@ -163,6 +173,14 @@ spec:
             - name: lnd-password
               mountPath: /tmp/lnd-pass
               subPath: password
+            {{- end }}
+            {{- if not .Values.autoGenerateTls }}
+            - name: tls-cert
+              mountPath: /root/.lnd/tls.cert
+              subPath: tls.cert
+            - name: tls-cert
+              mountPath: /root/.lnd/tls.key
+              subPath: tls.key
             {{- end }}
           startupProbe:
             exec:
@@ -199,6 +217,16 @@ spec:
           configMap:
             name: {{ printf "%s-wallet-init" (include "lnd.fullname" .) }}
             defaultMode: 0777
+        {{- end }}
+        {{- if not .Values.autoGenerateTls }}
+        - name: tls-cert
+          secret:
+            secretName: {{ printf "%s-tls" (include "lnd.fullname" .) }}
+            items:
+            - key: tls.cert
+              path: tls.cert
+            - key: tls.key
+              path: tls.key
         {{- end }}
         - name: export-secrets
           configMap:
