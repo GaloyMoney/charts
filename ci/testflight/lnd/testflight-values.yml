@@ -45,3 +45,6 @@ walletPassword: lndtestflight
 
 autoGenerateSeed:
   enabled: true
+
+autoGenerateTls:
+  enabled: false
