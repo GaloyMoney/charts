@@ -701,6 +701,8 @@ secrets:
   apiKeysPgCon:
   ## postgres secret for notifications
   notificationsPgCon:
+  ## Api key for accessing Novu
+  novuApiKey:
 ## Tracing details
 ##
 tracing:
