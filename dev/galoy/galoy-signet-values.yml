@@ -1,19 +1,6 @@
 galoy:
   network: signet
 
-  config:
-    swap:
-      loopOutWhenHotWalletLessThan: 500000
-      swapOutAmount:  250000
-      swapProviders: ["Loop"]
-      lnd1loopRestEndpoint: https://lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:8081
-      lnd1loopRpcEndpoint: lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:11010
-      lnd2loopRestEndpoint: https://lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:8081
-      lnd2loopRpcEndpoint: lnd1-loop.galoy-sig-bitcoin.svc.cluster.local:11010
-      feeAccountingEnabled: false
-    cronConfig:
-      swapEnabled: false
-
   dealer:
     host: dealer-price.galoy-sig-addons.svc.cluster.local
 

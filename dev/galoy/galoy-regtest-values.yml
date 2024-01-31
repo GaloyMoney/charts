@@ -1,14 +1,5 @@
 galoy:
   network: regtest
-  config:
-    swap:
-      loopOutWhenHotWalletLessThan: 500000
-      swapOutAmount:  250000
-      swapProviders: ["Loop"]
-      lnd1loopRestEndpoint: https://lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:8081
-      lnd1loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
-      lnd2loopRestEndpoint: https://lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:8081
-      lnd2loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
 
   bitcoind:
     dns: bitcoind.galoy-dev-bitcoin.svc.cluster.local
