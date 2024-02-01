@@ -47,6 +47,11 @@ spec:
           value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}
         - name: NOTIFICATIONS_CONFIG
           value: "/notifications.yml"
+        - name: NOVU_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoy.notifications.fullname" . }}
+              key: novu-api-key
         volumeMounts:
         - name: config
           mountPath: "/notifications.yml"
