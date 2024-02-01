@@ -349,6 +349,7 @@ resource "kubernetes_secret" "notifications" {
   }
   data = {
     pg-con : "postgres://notifications:notifications@notifications-postgresql:5432/notifications"
+    novu-api-key = "dummy"
   }
 }
 
