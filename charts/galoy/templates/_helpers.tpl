@@ -226,11 +226,6 @@ Define kratos env vars
     secretKeyRef:
       name: {{ .Values.galoy.kratos.existingSecret.name }}
       key: {{ .Values.galoy.kratos.existingSecret.master_user_password }}
-- name: KRATOS_CALLBACK_API_KEY
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.kratos.existingSecret.name }}
-      key: {{ .Values.galoy.kratos.existingSecret.callback_api_key }}
 - name: KRATOS_PG_CON
   valueFrom:
     secretKeyRef:
