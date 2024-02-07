@@ -6,6 +6,9 @@ metadata:
     app: {{ template "adminPanel.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | nindent 6 }}
+{{- end }}
 spec:
   selector:
     matchLabels:
@@ -17,8 +20,8 @@ spec:
       labels:
         app: {{ template "adminPanel.fullname" . }}
         release: "{{ .Release.Name }}"
-{{- with .Values.labels }}
-{{ toYaml . | trim | indent 8 }}
+{{- with .Values.podLabels }}
+{{- toYaml . | nindent 8 }}
 {{- end }}
     spec:
       containers:

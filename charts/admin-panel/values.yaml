@@ -21,3 +21,12 @@ secrets:
   githubOauthClientSecret: ""
 otelExporterOtlpEndpoint: http://localhost:4318
 tracingServiceName: "admin-panel"
+labels:
+  - kube-monkey/enabled: enabled
+  - kube-monkey/identifier: admin-panel
+  - kube-monkey/kill-mode: fixed
+  - kube-monkey/kill-value: "1"
+  - kube-monkey/mtbf: "3"
+podLabels:
+  - kube-monkey/enabled: enabled
+  - kube-monkey/identifier: admin-panel
