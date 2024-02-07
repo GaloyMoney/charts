@@ -57,7 +57,17 @@ spec:
           mountPath: "/notifications.yml"
           subPath: "notifications.yml"
           readOnly: true
+        - name: firebase-service-account
+          mountPath: {{ .Values.galoy.notifications.config.google_application_credentials_path }}
+          subPath: "service-account.json"
+          readOnly: true
       volumes:
       - name: config
         configMap:
           name: {{ template "galoy.notifications.fullname" . }}
+      - name: firebase-service-account
+        secret:
+          secretName: {{ template "galoy.notifications.fullname" . }}
+          items:
+          - key: firebase-service-account
+            path: "service-account.json"
