@@ -168,6 +168,8 @@ Return Galoy environment variables for LND 1 configuration
     secretKeyRef:
       name: {{ .Values.galoy.lnd1.pubkeyExistingSecret.name }}
       key: {{ .Values.galoy.lnd1.pubkeyExistingSecret.key }}
+- name: LND1_CREDS_CHECKSUM
+  value: {{ .Values.galoy.lnd1.credsChecksum | default "" }}
 {{ if .Values.loop.enabled }}
 - name: LND1_LOOP_MACAROON
   valueFrom:
@@ -203,6 +205,8 @@ Return Galoy environment variables for LND 2 configuration
     secretKeyRef:
       name: {{ .Values.galoy.lnd2.pubkeyExistingSecret.name }}
       key: {{ .Values.galoy.lnd2.pubkeyExistingSecret.key }}
+- name: LND2_CREDS_CHECKSUM
+  value: {{ .Values.galoy.lnd2.credsChecksum | default "" }}
 {{ if .Values.loop.enabled }}
 - name: LND2_LOOP_MACAROON
   valueFrom:
