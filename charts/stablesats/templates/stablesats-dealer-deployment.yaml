@@ -6,6 +6,11 @@ metadata:
     app: {{ template "stablesats.fullname" . }}-dealer
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+    kube-monkey/identifier: {{ template "stablesats.fullname" . }}-dealer
+    kube-monkey/enabled: enabled
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "3"
 spec:
   selector:
     matchLabels:
@@ -17,6 +22,8 @@ spec:
       labels:
         app: {{ template "stablesats.fullname" . }}-dealer
         release: "{{ .Release.Name }}"
+        kube-monkey/identifier: {{ template "stablesats.fullname" . }}-dealer
+        kube-monkey/enabled: enabled
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/stablesats-dealer-cm.yaml") . | sha256sum }}
       {{- with .Values.stablesats.annotations }}

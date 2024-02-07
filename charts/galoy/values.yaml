@@ -65,7 +65,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-consent
       ## Digest of the image
       ##
-      digest: "sha256:5d6ebf60a7c64aa42ccb1dd346b170be22ca5d18f02d44b249a848ba3a0ea9e4" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=d2f6f35;app=consent;monorepo_subdir=apps/consent;
+      digest: "sha256:be5e90bffe3ae6dc6f2729266b21022802fbed803341a90515c3ed0da6d9def1" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=84f91fb;app=consent;monorepo_subdir=apps/consent;
     apiKeys:
       repository: us.gcr.io/galoy-org/galoy-api-keys
       ## Digest of the image
@@ -611,16 +611,6 @@ mongodb:
         db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
       EOF
       fi;
-  # Kube Monkey Labels
-  labels:
-    kube-monkey/enabled: enabled
-    kube-monkey/identifier: mongodb
-    kube-monkey/kill-mode: fixed
-    kube-monkey/kill-value: "1"
-    kube-monkey/mtbf: "8"
-  podLabels:
-    kube-monkey/enabled: enabled
-    kube-monkey/identifier: mongodb
   # Prometheus metrics
   metrics:
     enabled: true

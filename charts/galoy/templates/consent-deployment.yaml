@@ -9,10 +9,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: {{ template "galoy.trigger.fullname" . }}
+    kube-monkey/identifier: {{ template "galoy.consent.fullname" . }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
-    kube-monkey/mtbf: "8"
+    kube-monkey/mtbf: "3"
 spec:
   selector:
     matchLabels:
@@ -25,7 +25,7 @@ spec:
         app: {{ template "galoy.consent.fullname" . }}
         release: "{{ .Release.Name }}"
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: {{ template "galoy.trigger.fullname" . }}
+        kube-monkey/identifier: {{ template "galoy.consent.fullname" . }}
     spec:
       serviceAccountName: {{ template "galoy.name" . }}
       containers:

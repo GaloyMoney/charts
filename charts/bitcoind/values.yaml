@@ -101,17 +101,7 @@ labels: {}
 
 podLabels: {}
 
-# custom labels
-# labels:
-#   - kube-monkey/enabled: enabled
-#   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
-#   - kube-monkey/kill-mode: fixed
-#   - kube-monkey/kill-value: "1"
-#   - kube-monkey/mtbf: "8"
-
-# podLabels:
-#   - kube-monkey/enabled: enabled
-#   - kube-monkey/identifier: {{.Values.bitcoindContainer.name }}
+labels: {}
 
 # TODO: Document the usage of generic and custom config to instruct where to put specific flags
 
