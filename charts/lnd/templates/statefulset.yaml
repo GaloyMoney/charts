@@ -8,10 +8,10 @@ metadata:
     {{- include "lnd.labels" . | nindent 4 }}
     {{- if .Values.kubemonkey.enabled }}
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: {{ .Release.Name }}
+    kube-monkey/identifier: {{ include "lnd.fullname" . }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
-    kube-monkey/mtbf: "2"
+    kube-monkey/mtbf: "3"
     {{- end }}
     {{- with .Values.labels }}
     {{- toYaml . | nindent 4 }}
@@ -33,7 +33,7 @@ spec:
         {{- include "lnd.selectorLabels" . | nindent 8 }}
         {{- if .Values.kubemonkey.enabled }}
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: {{ .Release.Name }}
+        kube-monkey/identifier: {{ include "lnd.fullname" . }}
         {{- end }}
         {{- with .Values.labels }}
         {{- toYaml . | nindent 8 }}

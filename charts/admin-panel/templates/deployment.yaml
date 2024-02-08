@@ -6,6 +6,11 @@ metadata:
     app: {{ template "adminPanel.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+    kube-monkey/identifier: {{ template "adminPanel.fullname" . }}
+    kube-monkey/enabled: enabled
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "3"
 spec:
   selector:
     matchLabels:
@@ -17,6 +22,8 @@ spec:
       labels:
         app: {{ template "adminPanel.fullname" . }}
         release: "{{ .Release.Name }}"
+        kube-monkey/identifier: {{ template "adminPanel.fullname" . }}
+        kube-monkey/enabled: enabled
 {{- with .Values.labels }}
 {{ toYaml . | trim | indent 8 }}
 {{- end }}

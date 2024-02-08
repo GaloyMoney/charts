@@ -5,10 +5,10 @@ metadata:
   labels:
     {{- include "price.realtime.labels" . | nindent 4 }}
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: priceRealtime
+    kube-monkey/identifier: {{ include "price.realtime.fullname" . }}
     kube-monkey/kill-mode: fixed
     kube-monkey/kill-value: "1"
-    kube-monkey/mtbf: "8"
+    kube-monkey/mtbf: "3"
 spec:
   selector:
     matchLabels:
@@ -23,7 +23,7 @@ spec:
       labels:
         {{- include "price.realtime.selectorLabels" . | nindent 8 }}
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: price
+        kube-monkey/identifier: {{ include "price.realtime.fullname" . }}
     spec:
       containers:
         - name: realtime

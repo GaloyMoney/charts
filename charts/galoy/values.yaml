@@ -593,16 +593,6 @@ mongodb:
         db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
       EOF
       fi;
-  # Kube Monkey Labels
-  labels:
-    kube-monkey/enabled: enabled
-    kube-monkey/identifier: mongodb
-    kube-monkey/kill-mode: fixed
-    kube-monkey/kill-value: "1"
-    kube-monkey/mtbf: "8"
-  podLabels:
-    kube-monkey/enabled: enabled
-    kube-monkey/identifier: mongodb
   # Prometheus metrics
   metrics:
     enabled: true

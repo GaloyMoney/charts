@@ -6,6 +6,11 @@ metadata:
     app: {{ template "bria.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
+    kube-monkey/identifier: {{ template "bria.fullname" . }}
+    kube-monkey/enabled: enabled
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "3"
 spec:
   selector:
     matchLabels:
@@ -18,6 +23,8 @@ spec:
         app: {{ template "bria.fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         release: "{{ .Release.Name }}"
+        kube-monkey/identifier: {{ template "bria.fullname" . }}
+        kube-monkey/enabled: enabled
       {{- with .Values.bria.labels }}
         {{ toYaml . | nindent 8 }}
       {{- end }}
