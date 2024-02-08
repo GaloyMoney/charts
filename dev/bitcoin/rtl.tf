@@ -7,6 +7,5 @@ resource "helm_release" "rtl" {
 
   depends_on = [
     helm_release.lnd,
-    helm_release.loop
   ]
 }

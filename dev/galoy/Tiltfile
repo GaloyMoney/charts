@@ -55,21 +55,6 @@ copy_secret(
   resource_deps=['lnd1']
 )
 
-copy_secret(
-  source_secret_name='loop1-credentials',
-  source_namespace=bitcoin_namespace,
-  target_namespace=galoy_namespace,
-  resource_deps=['loop1']
-)
-
-copy_secret(
-  source_secret_name='loop1-credentials',
-  source_namespace=bitcoin_namespace,
-  target_namespace=galoy_namespace,
-  target_secret_name='loop2-credentials',
-  resource_deps=['loop1']
-)
-
 k8s_yaml(secret_from_dict(
   name='gcs-sa-key',
   namespace=galoy_namespace,

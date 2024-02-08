@@ -3,6 +3,3 @@ global:
 
 persistence:
   enabled: false
-
-loopserver:
-  enabled: true
