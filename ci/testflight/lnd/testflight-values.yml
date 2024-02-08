@@ -30,11 +30,6 @@ resources:
   limits:
     cpu: 1000m
 
-loop:
-  enabled: false
-loopserver:
-  enabled: false
-
 rbac:
   create: true
 

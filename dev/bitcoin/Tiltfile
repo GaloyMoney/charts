@@ -70,15 +70,6 @@ helm_resource(
   # resource_deps=["bitcoind-block-generator"],
 )
 
-helm_release(
-  '../../charts/loop',
-  name='loop1',
-  namespace=bitcoin_namespace,
-  values=['./loop-values.yml'],
-)
-
-k8s_resource(workload='loop1', resource_deps=['lnd1'], labels='bitcoin')
-
 # TODO: uncomment fulcrum when we actually use it
 # helm_resource(
 #   name="fulcrum",
@@ -187,14 +178,5 @@ k8s_yaml(secret_from_dict(
   inputs={
     'lnd_api_endpoint': 'lnd1.{}.svc.cluster.local'.format(bitcoin_namespace),
     'lnd_p2p_endpoint': 'lnd1-p2p.{}.svc.cluster.local'.format(bitcoin_namespace),
-  }
-))
-
-# create loop smoketest secret from snippet above
-k8s_yaml(secret_from_dict(
-  name='loop-smoketest',
-  namespace=smoketest_namespace,
-  inputs={
-    'loop_api_endpoint': 'loop1.{}.svc.cluster.local'.format(bitcoin_namespace),
   }
 ))

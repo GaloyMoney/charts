@@ -170,20 +170,7 @@ Return Galoy environment variables for LND 1 configuration
       key: {{ .Values.galoy.lnd1.pubkeyExistingSecret.key }}
 - name: LND1_CREDS_CHECKSUM
   value: {{ .Values.galoy.lnd1.credsChecksum | default "" }}
-{{ if .Values.loop.enabled }}
-- name: LND1_LOOP_MACAROON
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd1.loopCredentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd1.loopCredentialsExistingSecret.macaroon_key }}
-- name: LND1_LOOP_TLS
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd1.loopCredentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd1.loopCredentialsExistingSecret.tls_key }}
-{{ end }}
 {{- end -}}
-
 {{/*
 Return Galoy environment variables for LND 2 configuration
 */}}
@@ -207,18 +194,6 @@ Return Galoy environment variables for LND 2 configuration
       key: {{ .Values.galoy.lnd2.pubkeyExistingSecret.key }}
 - name: LND2_CREDS_CHECKSUM
   value: {{ .Values.galoy.lnd2.credsChecksum | default "" }}
-{{ if .Values.loop.enabled }}
-- name: LND2_LOOP_MACAROON
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.macaroon_key }}
-- name: LND2_LOOP_TLS
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.name }}
-      key: {{ .Values.galoy.lnd2.loopCredentialsExistingSecret.tls_key }}
-{{ end }}
 {{- end -}}
 
 {{/*

@@ -50,13 +50,6 @@ jobs:
           CHART=lnd ./dev-smoketest-settings.sh && \
           ./lnd-smoketest.sh && \
           rm -rf smoketest-settings"
-    - name: Loop Smoketest
-      run: |
-        pushd dev
-        kubectl -n galoy-dev-smoketest exec smoketest -- bash -c "cd /charts/ci/tasks && \
-          CHART=loop ./dev-smoketest-settings.sh && \
-          ./loop-smoketest.sh && \
-          rm -rf smoketest-settings"
     - name: Monitoring Smoketest
       run: |
         pushd dev
