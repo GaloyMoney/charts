@@ -3,6 +3,16 @@ entries:
   bitcoind:
     - apiVersion: v2
       appVersion: 0.21.0
+      created: "2024-02-08T12:43:16.252326127Z"
+      description: A Helm chart for Kubernetes
+      digest: 365103e7bf98cadcbc61065f3307838747ac4127bdfd36a98f918d559afe2862
+      name: bitcoind
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/bitcoind-v0.4.0/bitcoind-0.4.0.tgz
+      version: 0.4.0
+    - apiVersion: v2
+      appVersion: 0.21.0
       created: "2023-11-15T09:16:40.794242826Z"
       description: A Helm chart for Kubernetes
       digest: 1c4773d12ee4c7322df04300973c204565d969025411d1684c482841f4f4ee7e
@@ -27884,4 +27894,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-02-08T12:41:23.023610163Z"
+generated: "2024-02-08T12:43:16.25565013Z"
