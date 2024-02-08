@@ -18,4 +18,4 @@ data:
     app:
       executor:
         fcm:
-          google_application_credentials_path: {{ .Values.galoy.notifications.config.google_application_credentials_path }}
+          google_application_credentials_path: "/tmp/firebase-service-account/service-account.json"

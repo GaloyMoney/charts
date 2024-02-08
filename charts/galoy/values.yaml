@@ -425,7 +425,6 @@ galoy:
     grpcPort: 6685
     config:
       importFromMongo: false
-      google_application_credentials_path: "/firebase-service-account.json"
   consent:
     resources: {}
     port: 80
@@ -702,8 +701,6 @@ secrets:
   apiKeysPgCon:
   ## postgres secret for notifications
   notificationsPgCon:
-  ## Api key for accessing Novu
-  novuApiKey:
   ## Service account to send firebase noitifications
   firebaseServiceAccountJson:
 ## Tracing details
