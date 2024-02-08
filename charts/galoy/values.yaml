@@ -679,8 +679,8 @@ secrets:
   apiKeysPgCon:
   ## postgres secret for notifications
   notificationsPgCon:
-  ## Api key for accessing Novu
-  novuApiKey:
+  ## Service account to send firebase noitifications
+  firebaseServiceAccountJson:
 ## Tracing details
 ##
 tracing:

@@ -47,17 +47,21 @@ spec:
           value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}
         - name: NOTIFICATIONS_CONFIG
           value: "/notifications.yml"
-        - name: NOVU_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "galoy.notifications.fullname" . }}
-              key: novu-api-key
         volumeMounts:
         - name: config
           mountPath: "/notifications.yml"
           subPath: "notifications.yml"
           readOnly: true
+        - name: firebase-notifications-service-account
+          mountPath: /tmp/firebase-service-account/
+          readOnly: true
       volumes:
       - name: config
         configMap:
           name: {{ template "galoy.notifications.fullname" . }}
+      - name: firebase-notifications-service-account
+        secret:
+          secretName: {{ template "galoy.notifications.fullname" . }}
+          items:
+          - key: firebase-service-account
+            path: service-account.json
