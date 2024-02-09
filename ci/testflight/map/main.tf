@@ -33,7 +33,7 @@ resource "kubernetes_secret" "map" {
   }
 
   data = {
-    "next-public-map-api-token" : "dummy"
+    "map-api-key" : "dummy"
   }
 }
 

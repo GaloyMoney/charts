@@ -1,6 +1,6 @@
 secrets:
   create: true
-  nextPublicMapApiToken: ""
+  mapApiKey: ""
 map:
   coreUrl: "http://galoy-oathkeeper-proxy.galoy-dev-galoy.svc.cluster.local:4455/graphql"
   otelExporterOtlpEndpoint: http://localhost:4318

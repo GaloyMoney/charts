@@ -22,6 +22,8 @@ spec:
       labels:
         app: {{ template "map.fullname" . }}
         release: "{{ .Release.Name }}"
+        kube-monkey/identifier: {{ template "map.fullname" . }}
+        kube-monkey/enabled: enabled
 {{- with .Values.labels }}
 {{ toYaml . | trim | indent 8 }}
 {{- end }}
@@ -34,11 +36,11 @@ spec:
         env:
         - name: CORE_URL
           value: {{ .Values.map.coreUrl }}
-        - name: NEXT_PUBLIC_MAP_API_TOKEN
+        - name: NEXT_PUBLIC_MAP_API_KEY
           valueFrom:
             secretKeyRef:
               name: {{ template "map.fullname" . }}
-              key: "next-public-map-api-token"
+              key: "map-api-key"
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.map.otelExporterOtlpEndpoint }}
         - name: TRACING_SERVICE_NAME
