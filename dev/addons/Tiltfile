@@ -106,3 +106,21 @@ k8s_yaml(helm(
 ))
 
 k8s_resource(workload='api-dashboard', labels='addons')
+
+# map
+k8s_yaml(secret_from_dict(
+  name='map',
+  namespace=addons_namespace,
+  inputs={
+    'next-public-map-api-token' : 'dummy'
+  }
+))
+
+k8s_yaml(helm(
+  '../../charts/map',
+  name = 'map',
+  namespace = addons_namespace,
+  values = ['./map-values.yml']
+))
+
+k8s_resource(workload='map', labels='addons')

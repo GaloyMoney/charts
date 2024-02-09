@@ -1,0 +1,5 @@
+secrets:
+  create: false
+
+map:
+  coreUrl: "http://galoy-oathkeeper-proxy.galoy-staging-galoy.svc.cluster.local:4455/graphql"
