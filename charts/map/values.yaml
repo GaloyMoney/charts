@@ -1,0 +1,16 @@
+secrets:
+  create: true
+  mapApiKey: ""
+map:
+  coreUrl: "http://galoy-oathkeeper-proxy.galoy-dev-galoy.svc.cluster.local:4455/graphql"
+  otelExporterOtlpEndpoint: http://localhost:4318
+  tracingServiceName: "map"
+image:
+  repository: us.gcr.io/galoy-org/galoy-map
+  digest: "sha256:3f8c3dc5cabf0975dc528c292db41aa62783d880a2d42df52d27c93424b55719" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=3b0135e;app=map;monorepo_subdir=apps/map;
+ingress:
+  enabled: false
+service:
+  port: 3000
+  type: ClusterIP
+resources: {}
