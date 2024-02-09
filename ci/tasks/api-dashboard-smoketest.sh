@@ -9,7 +9,7 @@ port=`setting "api_dashboard_port"`
 
 set +e
 for i in {1..15}; do
-  echo "Attempt ${i} to curl admin panel"
+  echo "Attempt ${i} to curl api dashboard"
   curl --location -f ${host}:${port}
   if [[ $? == 0 ]]; then success="true"; break; fi;
   sleep 1
