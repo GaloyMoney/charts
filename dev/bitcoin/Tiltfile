@@ -140,23 +140,6 @@ k8s_yaml(secret_from_dict(
 
 k8s_resource(workload='mempool', labels='bitcoin')
 
-# TODO: uncomment rtl when we actually use it
-# helm_resource(
-#   name="rtl",
-#   chart="../../charts/rtl",
-#   namespace=bitcoin_namespace,
-#   labels="bitcoin"
-# )
-#
-# k8s_yaml(secret_from_dict(
-#   name='rtl-smoketest',
-#   namespace=bitcoin_namespace,
-#   inputs={
-#     'rtl_endpoint': 'rtl.{}.svc.cluster.local'.format(bitcoin_namespace),
-#     'rtl_port': 3000
-#   },
-# ))
-
 # create bitcoind smoketest secret from snippet above
 k8s_yaml(secret_from_dict(
   name='bitcoind-smoketest',

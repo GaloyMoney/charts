@@ -77,20 +77,6 @@ Currently successfully brings up charts - no guarantee that everything is workin
     ```
 2. open http://localhost:3001
 
-## RTL access
--
-  ```
-  env=galoy-dev
-
-  # get the password
-  k -n ${env}-bitcoin get secrets rtl-pass -o jsonpath='{.data.password}' | base64 -d; echo
-
-  # forward the port from the pod
-  k -n ${env}-bitcoin port-forward svc/rtl 3000:3000
-
-  # access RTL on http://localhost:3000
-  ```
-
 ## Grafana access
 -
   ```
