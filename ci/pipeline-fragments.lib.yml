@@ -42,7 +42,7 @@ source:
 
 #@ monitoring_charts = ["monitoring", "kafka-connect"]
 
-#@ bitcoin_charts = ["bitcoind", "lnd", "rtl", "specter", "bria", "fulcrum", "mempool"]
+#@ bitcoin_charts = ["bitcoind", "lnd", "specter", "bria", "fulcrum", "mempool"]
 
 #@ addons_charts = ["admin-panel", "galoy-pay", "api-dashboard", "map"]
 

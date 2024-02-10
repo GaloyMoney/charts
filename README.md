@@ -24,8 +24,6 @@ This repo includes charts for:
 
 - [`lnd`](https://github.com/lightningnetwork/lnd) Lightning Network daemon & client
 
-- [`rtl`](https://github.com/Ride-The-Lightning/RTL) Dashboard for using `lnd`
-
 - [`specter`](https://github.com/cryptoadvance/specter-desktop) On-chain wallet and multisig co-ordinator
 
 - `monitoring` Metrics dashboard
