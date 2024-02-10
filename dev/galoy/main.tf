@@ -3,6 +3,7 @@ variable "bitcoin_network" {}
 variable "TWILIO_VERIFY_SERVICE_ID" {}
 variable "TWILIO_ACCOUNT_SID" {}
 variable "TWILIO_AUTH_TOKEN" {}
+variable "IBEX_PASSWORD" {}
 
 locals {
   bitcoin_network     = var.bitcoin_network
@@ -49,6 +50,19 @@ resource "kubernetes_secret" "bria" {
 
   data = {
     api-key = "bria_dev_000000000000000000000"
+  }
+}
+
+# Should be defined as data?
+resource "kubernetes_secret" "ibex_auth" {
+  metadata {
+    name      = "ibex-auth"
+    namespace = kubernetes_namespace.galoy.metadata[0].name
+  }
+
+  data = {
+    "api-password" : var.IBEX_PASSWORD 
+    "webhook-secret" : "not-so-secret"
   }
 }
 
@@ -332,6 +346,7 @@ resource "helm_release" "galoy" {
     kubernetes_secret.lnd2_pubkey,
     kubernetes_secret.price_history_postgres_creds,
     kubernetes_secret.kratos_master_user_password,
+    kubernetes_secret.ibex_auth,
     helm_release.postgresql
   ]
 

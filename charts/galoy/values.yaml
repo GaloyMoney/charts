@@ -100,7 +100,7 @@ galoy:
       enabled: true
       ## Ingress Host
       ##
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["api.staging.flashapp.me", "localhost"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -237,7 +237,7 @@ galoy:
       enabled: true
       ## Ingress Host
       ##
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["admin.staging.flashapp.me", "localhost"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -329,7 +329,7 @@ galoy:
       enabled: true
       ## Ingress Host
       ##
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["ws.staging.flashapp.me", "localhost"]
       ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
       ## Read More: https://cert-manager.io/docs/usage/ingress/
       ##
@@ -450,6 +450,18 @@ galoy:
     apiKeyExistingSecret:
       name: bria-api-key
       key: api-key
+  ibex:
+    url: https://api-sandbox.poweredbyibex.io
+    email: mail2michaelennis@gmail.com
+    listener:
+      host: ibex-api.galoy-dev-galoy.svc.cluster.local
+      port: 8889
+    secrets: 
+      name: ibex-auth 
+      password:
+        key: api-password
+      webhook:
+        key: webhook-secret
   ## Dealer Service Connection details
   ##
   dealer:
@@ -623,6 +635,9 @@ secrets:
   svixSecretKey:
   ## Api key for proxy check
   proxyCheckApiKey:
+  ## secret for Ibex webhook authentication
+  ibexPassword:
+  ibexWebhookKey:
 ## Tracing details
 ##
 tracing:
@@ -662,6 +677,7 @@ oathkeeper:
               - https://firebaseappcheck.googleapis.com/806646140435
             target_audience:
               - projects/806646140435
+              - projects/avid-ceiling-390418
             jwks_urls:
               - https://firebaseappcheck.googleapis.com/v1beta/jwks
             token_from:

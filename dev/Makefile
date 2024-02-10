@@ -34,6 +34,11 @@ redeploy-kafka:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
 
+redeploy-ingress:
+	$(TF) apply -target=module.galoy_deps.helm_release.ingress_nginx \
+				-var="bitcoin_network=regtest" \
+				-var="name_prefix=galoy-dev" -auto-approve
+
 deploy:
 	$(TF) apply -var="bitcoin_network=regtest" \
 				-var="name_prefix=galoy-dev" -auto-approve
@@ -106,7 +111,7 @@ redeploy-signet-addons:
 redeploy-addons:
 	-kubectl delete namespace galoy-dev-addons --force
 	cd addons
-	$(TF) apply -var="name_prefix=galoy-dev" -auto-approve
+	$(TF) apply -var="bitcoin_network=regtest" -var="name_prefix=galoy-dev" -auto-approve
 
 redeploy-signet-monitoring:
 	-kubectl delete namespace galoy-sig-monitoring --force

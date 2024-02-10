@@ -52,7 +52,7 @@ module "galoy" {
   TWILIO_VERIFY_SERVICE_ID = var.TWILIO_VERIFY_SERVICE_ID
   TWILIO_ACCOUNT_SID       = var.TWILIO_ACCOUNT_SID
   TWILIO_AUTH_TOKEN        = var.TWILIO_AUTH_TOKEN
-
+  IBEX_PASSWORD 	   = var.IBEX_PASSWORD
   depends_on = [
     module.bitcoin
   ]

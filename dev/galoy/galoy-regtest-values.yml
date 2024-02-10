@@ -2,9 +2,10 @@ galoy:
   network: regtest
   images:
     app:
-      repository: dreadnterrible/flash-dev:0.2.0
+      # repository: lnflash/flash-dev:latest
+      repository: dreadnterrible/flash-dev:latest
       imagePullPolicy: Always
-      digest: sha256:d1404d8afc6d885dae2a8617795419dc751c3733b5fa1f6195703c7356c12897
+      digest: sha256:330bc79f701865ce9ed3a4f047dac7557245e7a38ddf61830b020a17f1941b6e
       git_ref: "d2a438"
   config:
     swap:
@@ -26,11 +27,15 @@ galoy:
   dealer:
     host: dealer-price.galoy-dev-addons.svc.cluster.local
 
+  ibex:
+    url: https://api-sandbox.poweredbyibex.io
+    email: mail2michaelennis@gmail.com
+  
   api:
     replicas: 1
     ingress:
       enabled: true
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["api.staging.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
       extraPaths:
@@ -45,7 +50,7 @@ galoy:
   admin:
     ingress:
       enabled: true
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["admin.staging.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/use-regex: "true"
         nginx.ingress.kubernetes.io/rewrite-target: /$1

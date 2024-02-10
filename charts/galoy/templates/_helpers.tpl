@@ -230,6 +230,27 @@ Define kratos env vars
       key: {{ .Values.galoy.bria.apiKeyExistingSecret.key | quote }}
 {{- end -}}
 
+{{- define "galoy.ibex.env" -}}
+- name: IBEX_URL
+  value: {{ .Values.galoy.ibex.url | quote }}
+- name: IBEX_EMAIL
+  value: {{ .Values.galoy.ibex.email | quote }}
+- name: IBEX_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.ibex.secrets.name | quote }}
+      key: {{ .Values.galoy.ibex.secrets.password.key | quote }}
+- name: IBEX_LISTENER_HOST
+  value: {{ .Values.galoy.ibex.listener.host | quote }}
+- name: IBEX_LISTENER_PORT
+  value: {{ .Values.galoy.ibex.listener.port | quote }}
+- name: IBEX_WEBHOOK_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.ibex.secrets.name | quote }}
+      key: {{ .Values.galoy.ibex.secrets.webhook.key | quote }}
+{{- end -}}
+
 {{/*
 Return Galoy environment variables for Redis configuration
 */}}

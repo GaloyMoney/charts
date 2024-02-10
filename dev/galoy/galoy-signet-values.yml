@@ -21,7 +21,7 @@ galoy:
   api:
     ingress:
       enabled: true
-      hosts: ["development.flashapp.me", "localhost"]
+      hosts: ["staging.flashapp.me", "localhost"]
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
       extraPaths:

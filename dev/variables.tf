@@ -26,3 +26,9 @@ variable "TWILIO_AUTH_TOKEN" {
   type        = string
   // default     = "some_default_value"  // Uncomment and provide a default if needed
 }
+
+variable "IBEX_PASSWORD" {
+  description = "The api password to ibex"
+  type        = string
+  // default     = "some_default_value"  // Uncomment and provide a default if needed
+}
