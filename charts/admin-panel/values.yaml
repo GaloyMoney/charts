@@ -8,6 +8,6 @@ service:
   port: 3000
   type: ClusterIP
 adminPanel:
-  graphqlUrl: http://localhost:4002/graphql
-  galoyAuthEndpoint: http://localhost:4002/auth
+  graphqlUrl: http://api.staging.flashapp.me:4002/graphql
+  galoyAuthEndpoint: http://api.staging.flashapp.me:4002/auth
 resources: {}

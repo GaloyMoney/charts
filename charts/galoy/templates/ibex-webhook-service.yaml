@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "galoy.ibex.webhook.fullname" . }}
+  labels:
+    app: {{ template "galoy.ibex.webhook.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: {{ .Values.galoy.ibex.webhook.serviceType }}
+  ports:
+    - port: {{ .Values.galoy.ibex.webhook.port }}
+      targetPort: {{ .Values.galoy.ibex.webhook.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "galoy.ibex.webhook.fullname" . }}

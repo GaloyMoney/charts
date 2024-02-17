@@ -30,6 +30,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- default "websocket" .Values.galoy.websocket.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "galoy.ibex.webhook.fullname" -}}
+{{- default "ibex-webhook" .Values.galoy.ibex.webhook.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{/*
 Create a default fully qualified exporter name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
@@ -240,10 +244,10 @@ Define kratos env vars
     secretKeyRef:
       name: {{ .Values.galoy.ibex.secrets.name | quote }}
       key: {{ .Values.galoy.ibex.secrets.password.key | quote }}
-- name: IBEX_LISTENER_HOST
-  value: {{ .Values.galoy.ibex.listener.host | quote }}
 - name: IBEX_LISTENER_PORT
-  value: {{ .Values.galoy.ibex.listener.port | quote }}
+  value: {{ .Values.galoy.ibex.webhook.port | quote }}
+- name: IBEX_EXTERNAL_URI
+  value: {{ .Values.galoy.ibex.webhook.externalUri | quote }}
 - name: IBEX_WEBHOOK_SECRET
   valueFrom:
     secretKeyRef:

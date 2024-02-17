@@ -136,6 +136,42 @@ galoy:
         failureThreshold: 5
         successThreshold: 2
         timeoutSeconds: 1
+  ibex:
+    url: # set by env
+    email: # set by env
+    secrets: 
+      name: ibex-auth 
+      password:
+        key: api-password
+      webhook:
+        key: webhook-secret
+    webhook:
+      nameOverride: 
+      replicas: 1
+      logLevel: debug
+      port: 4008
+      serviceType: ClusterIP
+      resources: {}
+      externalUri: # set by env
+      ingress:
+        enabled: true
+        hosts: ["ibex.staging.flashapp.me"]
+        clusterIssuer: letsencrypt-issuer
+      probes:
+        ## Enable/disable API probes for healthcheck
+        enabled: false
+        ## If pod is starting up/healthy
+        liveness:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 5
+          timeoutSeconds: 1
+        ## When to expose the pod to the service
+        readiness:
+          initialDelaySeconds: 5
+          failureThreshold: 5
+          successThreshold: 2
+          timeoutSeconds: 1
   ## Configuration values for Trigger components.
   ##
   trigger:
@@ -450,18 +486,6 @@ galoy:
     apiKeyExistingSecret:
       name: bria-api-key
       key: api-key
-  ibex:
-    url: https://api-sandbox.poweredbyibex.io
-    email: mail2michaelennis@gmail.com
-    listener:
-      host: ibex-api.galoy-dev-galoy.svc.cluster.local
-      port: 8889
-    secrets: 
-      name: ibex-auth 
-      password:
-        key: api-password
-      webhook:
-        key: webhook-secret
   ## Dealer Service Connection details
   ##
   dealer:

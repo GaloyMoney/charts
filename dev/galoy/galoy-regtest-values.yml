@@ -2,10 +2,9 @@ galoy:
   network: regtest
   images:
     app:
-      # repository: lnflash/flash-dev:latest
-      repository: dreadnterrible/flash-dev:latest
+      repository: lnflash/flash-dev:latest
       imagePullPolicy: Always
-      digest: sha256:330bc79f701865ce9ed3a4f047dac7557245e7a38ddf61830b020a17f1941b6e
+      digest: sha256:df8d5b820ea0a84642e8ed37cf485a5cce29dbde976801962100a002931130c2
       git_ref: "d2a438"
   config:
     swap:
@@ -30,7 +29,8 @@ galoy:
   ibex:
     url: https://api-sandbox.poweredbyibex.io
     email: mail2michaelennis@gmail.com
-  
+    webhook:
+      externalUri: https://ibex.staging.flashapp.me:8080 
   api:
     replicas: 1
     ingress:
