@@ -42,7 +42,7 @@ spec:
             secretKeyRef:
               name: {{ template "galoy.notifications.fullname" . }}
               key: pg-con
-{{ include "galoy.mongodb.env" . | indent 8 }}
+{{ include "galoy.kratos.env" . | indent 8 }}
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}
         - name: NOTIFICATIONS_CONFIG
