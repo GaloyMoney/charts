@@ -424,7 +424,7 @@ galoy:
     resources: {}
     grpcPort: 6685
     config:
-      importFromMongo: false
+      importFromKratos: false
   consent:
     resources: {}
     port: 80
