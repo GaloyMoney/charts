@@ -16,6 +16,12 @@ data:
       endpoint: {{ .Values.tracing.otelExporterOtlpEndpoint }}
       service_name: "{{ .Values.tracing.prefix }}-{{ template "galoy.notifications.fullname" . }}"
     app:
-      executor:
+      push_executor:
         fcm:
           google_application_credentials_path: "/tmp/firebase-service-account/service-account.json"
+      email_executor:
+        smtp:
+          username: {{ .Values.galoy.notifications.config.smtp.username }}
+          from_email: {{ .Values.galoy.notifications.config.smtp.fromEmail }}
+          relay: {{ .Values.galoy.notifications.config.smtp.relayHost }}
+          port: {{ .Values.galoy.notifications.config.smtp.relayPort }}

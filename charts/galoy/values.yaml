@@ -425,6 +425,11 @@ galoy:
     grpcPort: 6685
     config:
       importFromKratos: false
+      smtp:
+        username: ""
+        fromEmail: ""
+        relayHost: ""
+        relayPort: 587
   consent:
     resources: {}
     port: 80
@@ -669,6 +674,8 @@ secrets:
   apiKeysPgCon:
   ## postgres secret for notifications
   notificationsPgCon:
+  ## Smtp password for notifications
+  notificationsSmtpPassword:
   ## Service account to send firebase noitifications
   firebaseServiceAccountJson:
 ## Tracing details
