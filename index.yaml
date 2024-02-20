@@ -6666,6 +6666,40 @@ entries:
   galoy:
     - apiVersion: v2
       appVersion: 0.20.68
+      created: "2024-02-20T11:19:58.333647327Z"
+      dependencies:
+        - name: redis
+          repository: https://charts.bitnami.com/bitnami
+          version: 18.14.0
+        - name: mongodb
+          repository: https://charts.bitnami.com/bitnami
+          version: 14.10.1
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.13
+        - name: oathkeeper
+          repository: https://k8s.ory.sh/helm/charts
+          version: 0.39.1
+        - name: kratos
+          repository: https://k8s.ory.sh/helm/charts
+          version: 0.39.1
+        - condition: hydra.enabled
+          name: hydra
+          repository: https://k8s.ory.sh/helm/charts
+          version: 0.39.1
+        - name: router
+          repository: oci://ghcr.io/apollographql/helm-charts
+          version: 1.25.0
+      description: A Helm chart for galoy servers
+      digest: 075a4ed8c83f2a3a025cd6946dff1b8f2c09f3e5bae8e32efc63dbdf47e9d667
+      name: galoy
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-v0.33.15/galoy-0.33.15.tgz
+      version: 0.33.15
+    - apiVersion: v2
+      appVersion: 0.20.68
       created: "2024-02-19T20:52:12.499575779Z"
       dependencies:
         - name: redis
@@ -28866,4 +28900,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-02-20T11:13:02.718451208Z"
+generated: "2024-02-20T11:19:58.339458886Z"
