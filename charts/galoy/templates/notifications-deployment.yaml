@@ -42,6 +42,11 @@ spec:
             secretKeyRef:
               name: {{ template "galoy.notifications.fullname" . }}
               key: pg-con
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoy.notifications.fullname" . }}
+              key: smtp-password
 {{ include "galoy.kratos.env" . | indent 8 }}
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}

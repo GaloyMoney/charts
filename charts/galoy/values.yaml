@@ -75,7 +75,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-notifications
       ## Digest of the image
       ##
-      digest: "sha256:cda90b5539fdf8d7ecfe44a04f7ef5053bfaf9c1d685f96dc217202e264921a7" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=a24b356;app=notifications;monorepo_subdir=core/notifications;
+      digest: "sha256:27887d5291d645b08cba081cc5ea34b77e748025dd6c4bc9795e43632b019872" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=1af8f5d;app=notifications;monorepo_subdir=core/notifications;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -425,6 +425,11 @@ galoy:
     grpcPort: 6685
     config:
       importFromKratos: false
+      smtp:
+        username: ""
+        fromEmail: ""
+        relayHost: ""
+        relayPort: 587
   consent:
     resources: {}
     port: 80
@@ -669,6 +674,8 @@ secrets:
   apiKeysPgCon:
   ## postgres secret for notifications
   notificationsPgCon:
+  ## Smtp password for notifications
+  notificationsSmtpPassword:
   ## Service account to send firebase noitifications
   firebaseServiceAccountJson:
 ## Tracing details
