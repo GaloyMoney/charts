@@ -20,6 +20,7 @@ data:
         fcm:
           google_application_credentials_path: "/tmp/firebase-service-account/service-account.json"
       email_executor:
+        enabled: {{ .Values.galoy.notifications.config.smtp.enabled }}
         smtp:
           username: {{ .Values.galoy.notifications.config.smtp.username }}
           from_email: {{ .Values.galoy.notifications.config.smtp.fromEmail }}
