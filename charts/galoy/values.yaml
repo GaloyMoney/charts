@@ -429,6 +429,7 @@ galoy:
         enabled: false
         username: ""
         fromEmail: ""
+        fromName: ""
         relayHost: ""
         relayPort: 587
   consent:
