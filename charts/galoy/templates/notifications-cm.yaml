@@ -24,5 +24,6 @@ data:
         smtp:
           username: {{ .Values.galoy.notifications.config.smtp.username }}
           from_email: {{ .Values.galoy.notifications.config.smtp.fromEmail }}
+          from_name: {{ .Values.galoy.notifications.config.smtp.fromName }}
           relay: {{ .Values.galoy.notifications.config.smtp.relayHost }}
           port: {{ .Values.galoy.notifications.config.smtp.relayPort }}
