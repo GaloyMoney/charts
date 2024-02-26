@@ -1,0 +1,123 @@
+
+galoy:
+  
+  ### TODO: remove env variables from templates & codebase
+  # config:
+  #   swap:
+  #     loopOutWhenHotWalletLessThan: 500000
+  #     swapOutAmount:  250000
+  #     swapProviders: ["Loop"]
+  #     lnd1loopRestEndpoint: https://lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:8081
+  #     lnd1loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
+  #     lnd2loopRestEndpoint: https://lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:8081
+  #     lnd2loopRpcEndpoint: lnd1-loop.galoy-dev-bitcoin.svc.cluster.local:11010
+
+  ### TODO: remove env variables from templates & codebase
+  # bitcoind:
+  #   dns: bitcoind.galoy-dev-bitcoin.svc.cluster.local
+  #   port: 18332
+
+  # lnd1:
+  #   dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
+
+  # dealer:
+    # host: dealer-price.galoy-dev-addons.svc.cluster.local
+
+  api:
+    replicas: 1
+    ingress:
+      enabled: false
+      hosts: ["api.staging.flashapp.me"]
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      extraPaths:
+      - path: /(graphql|kratos|browser|healthz|metrics|auth)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: api
+            port:
+              number: 4002
+              
+  admin:
+    ingress:
+      enabled: false
+      hosts: ["admin.staging.flashapp.me"]
+      annotations:
+        nginx.ingress.kubernetes.io/use-regex: "true"
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      extraPaths:
+      - path: /admin/?(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: graphql-admin
+            port:
+              number: 4001
+  ibex:
+    url: https://api-sandbox.poweredbyibex.io
+    email: mail2michaelennis@gmail.com
+    webhook:
+      ingress:
+        enabled: false
+      externalUri: https://ibex.staging.flashapp.me:8080 
+
+  websocket:
+    ingress:
+      enabled: false
+
+mongodb:
+  architecture: standalone
+  persistence:
+    enabled: false
+  replicaCount: 1
+  metrics:
+    enabled: false
+  initDbScripts: {}
+
+redis:
+  replica:
+    replicaCount: 1
+  master:
+    persistence:
+      enabled: false
+  metrics:
+    enabled: false
+  sentinel:
+    getMasterTimeout: 5
+
+price:
+  service:
+    type: NodePort
+
+postgresql:
+  primary:
+    persistence:
+      enabled: false
+  auth:
+    enablePostgresUser: true
+    # username: price-history
+    # database: price-history
+    # existingSecret: price-history-postgres-creds
+    username: kratos-pg
+    database: kratos-ps
+    password: dummyPw
+
+oathkeeper:
+  replicaCount: 1
+  secret:
+    enabled: false
+
+kratos:
+  replicaCount: 1
+  ingress:
+    admin:
+      enabled: false
+    public:
+      enabled: false
+  kratos:
+    automigration:
+      enabled: false
+    config:
+      dsn: postgresql://kratos-pg:dummyPw@flash-postgresql-0.test.svc.cluster.local:5432/kratos-ps

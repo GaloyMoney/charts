@@ -1,6 +1,0 @@
-dependencies:
-- name: loopserver
-  repository: ""
-  version: x.x.x
-digest: sha256:647501bfb22bd2f4de7f46a43f5d734cf987f64d3cfc28f81e81d739ad8ed0c9
-generated: "2023-09-17T21:26:29.353464797+05:30"

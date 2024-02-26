@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "galoy.migration.jobname" . }}
+  labels:
+    app: {{ template "galoy.migration.jobname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      {{ if or .Values.galoy.trigger.backups.gcs.enabled .Values.galoy.trigger.backups.dropbox.enabled }}
+      serviceAccountName: {{ template "flash.name" . }}
+      initContainers:
+      - name: trigger-mongodb-backup
+        image: "groundnuty/k8s-wait-for:v1.5.1"
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          job_name="{{ template "galoy.preMigration.jobname" . }}"
+          echo "Executing ${job_name}"
+          kubectl delete job "${job_name}" || true
+          kubectl create job --from=cronjob/{{ template "galoy.mongoBackupCron.jobname" . }} "${job_name}"
+          sleep 1
+          wait_for.sh job "${job_name}"
+          sleep 1
+          status="$(kubectl get job ${job_name} -o jsonpath='{.status.succeeded}')"
+          if [[ "${status}" != "1" ]]; then
+            echo "Backup failed!"
+            exit 1
+          else
+            echo "Backup succeeded!"
+          fi
+          kubectl delete job "${job_name}"
+      {{ end }}
+      containers:
+      - name: mongodb-migrate
+        image: "{{ .Values.galoy.images.mongodbMigrate.repository }}@{{ .Values.galoy.images.mongodbMigrate.digest }}"
+        resources:
+          {{ toYaml .Values.galoy.mongoMigrationJob.resources | nindent 10 }}
+        env:
+{{ include "galoy.mongodb.env" . | indent 8 }}
+      restartPolicy: Never

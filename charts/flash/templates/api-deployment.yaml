@@ -1,0 +1,177 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ template "galoy.api.fullname" . }}
+  labels:
+    app: {{ template "galoy.api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+
+spec:
+
+  replicas: {{ .Values.galoy.api.replicas }}
+
+  selector:
+    matchLabels:
+      app: {{ template "galoy.api.fullname" . }}
+
+  template:
+
+    metadata:
+      name: {{ template "galoy.api.fullname" . }}
+      labels:
+        app: {{ template "galoy.api.fullname" . }}
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ template "galoy.api.fullname" . }}
+    spec:
+      serviceAccountName: {{ template "flash.name" . }}
+
+      initContainers:
+      - name: wait-for-mongodb-migrate
+        image: "groundnuty/k8s-wait-for:v1.5.1"
+        args:
+        - job-wr
+        - {{ template "galoy.migration.jobname" . }}
+
+      containers:
+      - name: api
+        image: "{{ .Values.galoy.images.app.repository }}@{{ .Values.galoy.images.app.digest }}"
+        args:
+        - "-r"
+        - "/app/lib/services/tracing.js"
+        - "lib/servers/graphql-main-server.js"
+        resources:
+          {{ toYaml .Values.galoy.api.resources | nindent 10 }}
+        ports:
+        - name: api
+          containerPort: {{ .Values.galoy.api.port }}
+          protocol: TCP
+        - name: admin
+          containerPort: {{ .Values.galoy.admin.port }}
+          protocol: TCP
+
+        env:
+        - name: HELMREVISION
+          value: {{ .Release.Revision | quote }}
+        - name: LOGLEVEL
+          value: {{ .Values.galoy.api.logLevel | quote }}
+        - name: NETWORK
+          value: {{ .Values.galoy.network }}
+        - name: GALOY_API_PORT
+          value: {{ .Values.galoy.api.port | quote }}
+        - name: GALOY_ADMIN_PORT
+          value: {{ .Values.galoy.admin.port | quote }}
+        - name: TRIGGER_PORT
+          value: {{ .Values.galoy.trigger.port | quote }}
+        - name: WEBSOCKET_PORT
+          value: {{ .Values.galoy.websocket.port | quote }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
+        - name: TRACING_SERVICE_NAME
+          value: "{{ .Values.tracing.prefix }}-{{ template "galoy.api.fullname" . }}"
+        - name: SVIX_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.svixExistingSecret.name }}
+              key: {{ .Values.galoy.svixExistingSecret.secret_key }}
+        - name: PROXY_CHECK_APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.proxyCheckExistingSecret.name }}
+              key: {{ .Values.galoy.proxyCheckExistingSecret.key }}
+
+        - name: LND_PRIORITY
+          value: {{ .Values.galoy.lndPriority }}
+
+        
+
+
+{{/* Databases */}}
+{{ include "galoy.mongodb.env" . | indent 8 }}
+{{ include "galoy.redis.env" . | indent 8 }}
+
+{{/* Bitcoin/LND */}}
+{{ include "galoy.lnd1.env" . | indent 8 }}
+{{ include "galoy.bria.env" . | indent 8 }}
+
+{{/* API Specifics */}}
+{{ include "galoy.twilio.env" . | indent 8 }}
+{{ include "galoy.geetest.env" . | indent 8 }}
+
+{{ include "galoy.kratos.env" . | indent 8 }}
+{{ include "galoy.ibex.env" . | indent 8 }}
+
+        - name: OATHKEEPER_DECISION_ENDPOINT
+          value: http://galoy-oathkeeper-api:4456
+
+        - name: PRICE_HISTORY_HOST
+          value: {{ .Values.price.history.host | quote }}
+        - name: PRICE_HISTORY_PORT
+          value: {{ .Values.price.history.port | quote }}
+
+        - name: PRICE_SERVER_HOST
+          value: {{ .Values.galoy.dealer.host | quote }}
+        - name: PRICE_SERVER_PORT
+          value: {{ .Values.galoy.dealer.port | quote }}
+
+        - name: PRICE_HOST
+          value: {{ .Values.price.realtime.host | quote }}
+
+        - name: MATTERMOST_WEBHOOK_URL
+          value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
+
+        {{ if .Values.galoy.api.firebaseNotifications.enabled }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/tmp/firebase-service-account/service-account.json"
+        {{ end }}
+
+        {{ if .Values.galoy.api.probes.enabled }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.galoy.api.port }}
+          initialDelaySeconds: {{ .Values.galoy.api.probes.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.galoy.api.probes.liveness.periodSeconds }}
+          failureThreshold: {{ .Values.galoy.api.probes.liveness.failureThreshold }}
+          timeoutSeconds: {{ .Values.galoy.api.probes.liveness.timeoutSeconds }}
+
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.galoy.api.port }}
+          initialDelaySeconds: {{ .Values.galoy.api.probes.readiness.initialDelaySeconds }}
+          failureThreshold: {{ .Values.galoy.api.probes.readiness.failureThreshold }}
+          successThreshold: {{ .Values.galoy.api.probes.readiness.successThreshold }}
+          timeoutSeconds: {{ .Values.galoy.api.probes.readiness.timeoutSeconds }}
+        {{ end }}
+
+        volumeMounts:
+        {{ if .Values.galoy.api.firebaseNotifications.enabled }}
+        - name: firebase-notifications-service-account
+          mountPath: /tmp/firebase-service-account/
+          readOnly: true
+        {{ end }}
+
+        - name: custom-yaml
+          mountPath: "/var/yaml/"
+      volumes:
+      {{ if .Values.galoy.api.firebaseNotifications.enabled }}
+      - name: firebase-notifications-service-account
+        secret:
+          secretName: {{ .Values.galoy.api.firebaseNotifications.existingSecret.name }}
+          items:
+          - key: {{ .Values.galoy.api.firebaseNotifications.existingSecret.key }}
+            path: service-account.json
+      {{ end }}
+
+      - name: custom-yaml
+        secret:
+          secretName: "{{ template "galoy.config.name" . }}"

@@ -1,0 +1,26 @@
+apiVersion: v2 # https://helm.sh/docs/topics/charts/#the-apiversion-field
+name: flash
+description: A Helm chart for the Flash application backend
+type: application
+version: 0.0.1-dev
+# appVersion: perhaps git commit set by CI/CD? ""
+dependencies:
+  - name: redis
+    repository: https://charts.bitnami.com/bitnami
+    version: 18.0.4
+  - name: mongodb
+    repository: https://charts.bitnami.com/bitnami
+    version: 13.18.4
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 11.9.13
+    condition: postgresql.enabled
+  - name: oathkeeper
+    repository: https://k8s.ory.sh/helm/charts
+    version: 0.36.0
+  - name: kratos
+    repository: https://k8s.ory.sh/helm/charts
+    version: 0.36.0
+  - name: router
+    repository: oci://ghcr.io/apollographql/helm-charts
+    version: 1.25.0

@@ -1,0 +1,1018 @@
+## Provide a name in place of `flash` for `app:` labels
+nameOverride:
+## Provide a name to substitute for the full names of resources
+fullnameOverride:
+galoy:
+  network: mainnet 
+  router:
+    port: 80
+  ### TODO: REMOVE lnd and bria config
+  lndPriority: lnd1
+  config:
+    bria:
+      hotWalletName: dev
+      queueNames:
+        fast: fast
+      coldStorage:
+        walletName: cold
+        hotToColdRebalanceQueueName: dev
+  images:
+    app:
+      repository: lnflash/flash-dev:latest
+      imagePullPolicy: Always
+      ## TODO: remove digest and commit hash
+      digest: sha256:df8d5b820ea0a84642e8ed37cf485a5cce29dbde976801962100a002931130c2
+      git_ref: "d2a438"
+    websocket:
+      repository: us.gcr.io/galoy-org/galoy-app-websocket
+      ## TODO: remove digest
+      digest: "sha256:6383819eeb5eb01f06507cd078724994d56e4951e5abcab9d7b3e1ae3085d28f"
+    mongodbMigrate:
+      repository: us.gcr.io/galoy-org/galoy-app-migrate
+      ## TODO: remove digest
+      digest: "sha256:997ada867d689d089c0c8f62c5520e19fade7fe95b0e84a963208348bc4e51e0"
+    mongoBackup:
+      repository: us.gcr.io/galoy-org/mongo-backup
+      ## TODO: remove digest and commit hash
+      digest: "sha256:4cfc197ea082ef3dae2d4321a9dfa31ef185f43d578a37a224095b75de656e6a"
+      git_ref: "872b70e"
+  api:
+    nameOverride: 
+    replicas: 2
+    logLevel: debug
+    port: 4002
+    serviceType: ClusterIP
+    resources: {}
+    ingress:
+      enabled: true
+      hosts: ["api.staging.flashapp.me"]
+      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
+      clusterIssuer: letsencrypt-issuer
+    firebaseNotifications:
+      enabled: false
+      existingSecret:
+        name: galoyapp-firebase-serviceaccount
+        key: galoyapp-firebase-serviceaccount.json
+    probes:
+      enabled: true
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+  ibex:
+    url:
+    email: 
+    secrets: 
+      name: ibex-auth 
+      password:
+        key: api-password
+      webhook:
+        key: webhook-secret
+    webhook:
+      nameOverride: 
+      replicas: 1
+      logLevel: debug
+      port: 4008
+      serviceType: ClusterIP
+      resources: {}
+      externalUri:
+      ingress:
+        enabled: true
+        hosts: ["ibex.staging.flashapp.me"]
+        clusterIssuer: letsencrypt-issuer
+      probes:
+        enabled: false
+        liveness:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 5
+          timeoutSeconds: 1
+        readiness:
+          initialDelaySeconds: 5
+          failureThreshold: 5
+          successThreshold: 2
+          timeoutSeconds: 1
+  trigger:
+    nameOverride:
+    replicas: 1
+    logLevel: debug
+    port: 8888
+    serviceType: ClusterIP
+    resources: {}
+    probes:
+      enabled: true
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+    ## Galoy database backup configuration
+    ## This is a custom backup configuration, which means data lying in
+    ## MongoDB and LND can be backed up by custom scripts present in the
+    ## galoy codebase itself.
+    ##
+    backups:
+      ## To backup to GCS bucket, you would need a GCP Service Account
+      ## that lets you upload to a specific bucket
+      gcs:
+        enabled: false
+        # GCS bucket name to upload to (it should already be created)
+        bucketName: gcs-bucket-name
+        # Service account to use to upload backup to above-mentioned bucket
+        # Service account credentials json file must be injected via a secret
+        serviceAccountExistingSecret:
+          name: gcs-sa-key
+          key: gcs-sa-key.json
+      
+      ## Backup data to Dropbox requires an eaccess token
+      dropbox:
+        enabled: false
+        accessTokenExistingSecret:
+          name: dropbox-access-token
+          key: token
+  
+  admin:
+    nameOverride:
+    replicas: 1
+    logLevel: debug
+    port: 4001
+    serviceType: ClusterIP
+    ingress:
+      enabled: true
+      hosts: ["admin.staging.flashapp.me", "localhost"]
+      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
+      ## Read More: https://cert-manager.io/docs/usage/ingress/
+      clusterIssuer: letsencrypt-issuer
+      ## TLS Secret Name
+      tlsSecretName: graphql-admin-tls
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    probes:
+      enabled: true
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+  
+  ## Configuration values for Galoy Metrics Exporter components.
+  exporter:
+    ## Override the components name (defaults to admin).
+    ##
+    nameOverride:
+    ## Number of replicas.
+    ##
+    replicas: 1
+    ## Log Level
+    ##
+    logLevel: debug
+    ## Port on which Exporter Server is running
+    ##
+    port: 3000
+    ## Resource configuration
+    resources: {}
+    ## Liveness/Readiness Probes Configuration
+    ## Determines if pod is healthy or if it should be killed.
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    ##
+    probes:
+      ## Enable/disable Admin API probes for healthcheck
+      enabled: true
+      ## If pod is starting up/healthy
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      ## When to expose the pod to the service
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+  ## Configuration values for Galoy Websocket components.
+  ##
+  websocket:
+    ## Override the components name (defaults to websocket).
+    ##
+    nameOverride:
+    ## Number of replicas.
+    ##
+    replicas: 1
+    ## Log Level
+    ##
+    logLevel: debug
+    ## Port on which websocket server is running
+    ##
+    port: 4000
+    ## Service type
+    ##
+    serviceType: ClusterIP
+    ## Resource configuration
+    resources: {}
+    ## Ingress configuration.
+    ## Ref: https://kubernetes.io/docs/user-guide/ingress/
+    ##
+    ingress:
+      enabled: true
+      hosts: ["ws.staging.flashapp.me"]
+      clusterIssuer: letsencrypt-issuer
+      tlsSecretName: websocket-tls
+    ## Liveness/Readiness Probes Configuration
+    ## Determines if pod is healthy or if it should be killed.
+    ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+    ##
+    firebaseNotifications:
+      enabled: false
+      existingSecret:
+        name: galoyapp-firebase-serviceaccount
+        key: galoyapp-firebase-serviceaccount.json
+    probes:
+      liveness:
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        failureThreshold: 5
+        timeoutSeconds: 1
+      readiness:
+        initialDelaySeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+        timeoutSeconds: 1
+  mongoBackupCron:
+    resources: {}
+  galoyCron:
+    resources: {}
+  balanceNotificationCron:
+    resources: {}
+    enabled: false
+  mongoMigrationJob:
+    resources: {}
+  ## Kratos
+  kratos:
+    publicApiUrl: http://galoy-kratos-public
+    adminApiUrl: http://galoy-kratos-admin
+    existingSecret:
+      name: kratos-secret
+      master_user_password: master_user_password
+      callback_api_key: callback_api_key
+  ### TODO: Remove
+  lnd1:
+    dns: lnd1.galoy-dev-bitcoin.svc.cluster.local
+    credentialsExistingSecret:
+      name: lnd1-credentials
+      macaroon_key: admin_macaroon_base64
+      tls_key: tls_base64
+    pubkeyExistingSecret:
+      name: lnd1-pubkey
+      key: pubkey
+    loopCredentialsExistingSecret:
+      name: loop1-credentials
+      macaroon_key: loop_macaroon_base64
+      tls_key: tls_base64
+  lnd2:
+    dns: lnd2.galoy-dev-bitcoin.svc.cluster.local
+    credentialsExistingSecret:
+      name: lnd2-credentials
+      macaroon_key: admin_macaroon_base64
+      tls_key: tls_base64
+    pubkeyExistingSecret:
+      name: lnd2-pubkey
+      key: pubkey
+    loopCredentialsExistingSecret:
+      name: loop2-credentials
+      macaroon_key: loop_macaroon_base64
+      tls_key: tls_base64
+  bria:
+    host: bria-api.galoy-dev-bitcoin.svc.cluster.local
+    port: 2742
+    apiKeyExistingSecret:
+      name: bria-api-key
+      key: api-key
+  dealer:
+    host: dealer-price.galoy-dev-bitcoin.svc.cluster.local
+    port: 3325
+  geetestExistingSecret:
+    name: geetest-key
+    id_key: id
+    secret_key: key
+  twilioExistingSecret:
+    name: twilio-secret
+    verify_service_id: TWILIO_VERIFY_SERVICE_ID
+    account_sid_key: TWILIO_ACCOUNT_SID
+    auth_token_key: TWILIO_AUTH_TOKEN
+  svixExistingSecret:
+    name: svix-secret
+    secret_key: svix-secret
+  proxyCheckExistingSecret:
+    name: proxy-check-api-key
+    key: api-key
+  mattermostWebhookUrl: "mattermostwebhookurl"
+
+# Ref: https://artifacthub.io/packages/helm/bitnami/mongodb/
+mongodb:
+  auth:
+    # This secret gets autogenerated if secrets.create is set to true.
+    existingSecret: galoy-mongodb
+    # Existing  secret for mongodb connection string
+    connectionStringExistingSecret: galoy-mongodb-connection-string
+    # Autocreated at MongoDB initialization
+    # There should be one and only one username in the array here.
+    usernames: [testGaloy]
+    # Autocreated at MongoDB initialization
+    # There should be one and only one database in the array here.
+    databases: [galoy]
+  architecture: replicaset
+  # Replicas for MongoDB
+  #
+  replicaCount: 3
+  persistence:
+    enabled: true
+  arbiter:
+    enabled: false
+  initdbScripts:
+    grant_user_admin_role.sh: |
+      isMaster=$(mongosh admin -u root -p "$MONGODB_ROOT_PASSWORD" --eval "rs.isMaster().ismaster" | tail -1 | tr -d '\n')
+      if [ "$isMaster" == "true" ]; then
+      mongosh admin -u root -p $MONGODB_ROOT_PASSWORD << EOF
+        use admin;
+        db.grantRolesToUser('root', [ {role: "userAdmin", db: "galoy"} ]);
+      EOF
+      fi;
+  # Kube Monkey Labels
+  labels:
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: mongodb
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "8"
+  podLabels:
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: mongodb
+  # Prometheus metrics
+  metrics:
+    enabled: true
+## Configuration values for the redis dependency.
+## Ref: https://artifacthub.io/packages/helm/bitnami/redis/
+##
+## This is a necessary component and without the cache, the chart will not work.
+## Therefore it doesn't have any enable/disable flag.
+##
+redis:
+  ## Redis replica config params
+  replica:
+    # Number of Redis to deploy
+    replicaCount: 3
+  ## Redis master config params
+  master:
+    persistence:
+      enabled: true
+  ## Redis auth config params
+  auth:
+    existingSecret: galoy-redis-pw
+    existingSecretPasswordKey: redis-password
+  ## Use sentinel on Redis pods
+  sentinel:
+    enabled: true
+    ## Master set name
+    masterSet: mymaster
+  ## Sidecar prometheus exporter
+  metrics:
+    enabled: true
+## For managing secrets using Helm
+## Set the values if you'd want to make it configurable
+##
+secrets:
+  ## Create the secret resource from the following values. Set this to false
+  ## to manage these secrets outside Helm.
+  ##
+  create: true
+  ## Secrets for MongoDB
+  mongodbPassword:
+  mongodbRootPassword:
+  mongodbMetricsPassword:
+  mongodbReplicaSetKey:
+  mongodbConnectionString:
+  ## Secrets for Redis
+  redisPassword:
+  ## Secrets for PostgreSQL
+  postgresPassword:
+  ## Secrets for Geetest
+  geetestId:
+  geetestSecretKey:
+  ## Secret for Twilio
+  twilioVerifyService:
+  twilioAccountSid:
+  twilioAuthToken:
+  ## Secrets for LND1
+  lnd1Macaroon:
+  lnd1Tls:
+  lnd1LoopMacaroon:
+  lnd1LoopTls:
+  lnd1PubKey:
+  ## Secrets for LND2
+  lnd2Macaroon:
+  lnd2Tls:
+  lnd2LoopMacaroon:
+  lnd2LoopTls:
+  lnd2PubKey:
+  ## Secrets for Bria
+  briaApiKey:
+  ## Secret for Galoy app
+  kratosMasterUserPassword:
+  kratosCallbackApiKey:
+  ## Secret for Svix
+  svixSecretKey:
+  ## Api key for proxy check
+  proxyCheckApiKey:
+  ## secret for Ibex webhook authentication
+  ibexPassword:
+  ibexWebhookKey:
+## Tracing details
+##
+tracing:
+  ## OTEL Exporter OTLP Endpoint
+  ##
+  otelExporterOtlpEndpoint: http://localhost:4318
+  ## Prefix for tracing
+  ##
+  prefix: galoy-dev
+price:
+  realtime:
+    host: galoy-price-realtime
+  history:
+    postgresqlHost: galoy-postgresql
+    host: galoy-price-history
+    port: 50052
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: price-history
+    database: price-history
+    existingSecret: price-history-postgres-creds
+
+loop:
+  enabled: true
+oathkeeper:
+  replicaCount: 2
+  oathkeeper:
+    config:
+      log:
+        level: debug
+      authenticators:
+        jwt:
+          enabled: true
+          config:
+            trusted_issuers:
+              - https://firebaseappcheck.googleapis.com/806646140435
+            target_audience:
+              - projects/806646140435
+              - projects/avid-ceiling-390418
+            jwks_urls:
+              - https://firebaseappcheck.googleapis.com/v1beta/jwks
+            token_from:
+              header: Appcheck
+        bearer_token:
+          enabled: true
+          config:
+            check_session_url: http://galoy-kratos-public:80/sessions/whoami
+            preserve_path: true
+            subject_from: identity.id
+            extra_from: identity.traits
+        anonymous:
+          enabled: true
+          config:
+            subject: anon
+        cookie_session:
+          enabled: true
+          config:
+            check_session_url: http://galoy-kratos-public:80/sessions/whoami
+            preserve_path: true
+            subject_from: identity.id
+            extra_from: identity.traits
+        unauthorized:
+          enabled: true
+      authorizers:
+        allow:
+          enabled: true
+      mutators:
+        noop:
+          enabled: true
+        id_token:
+          enabled: true
+          config:
+            jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
+            issuer_url: "galoy.io"
+      errors:
+        fallback:
+          - json
+        handlers:
+          json:
+            enabled: true
+            config:
+              verbose: true
+      access_rules:
+        matching_strategy: regexp
+    mutatorIdTokenJWKs: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
+    accessRules: |
+      [
+        {
+          "id": "anonymous-rest-auth",
+          "upstream": { "url": "http://api:4002" },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/<(clearCookies|login|logout|email/code|email/login|email/login/cookie)>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [{ "handler": "anonymous" }],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "device-login",
+          "upstream": {
+            "url": "http://api:4002"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/auth/create/device-account",
+            "methods": ["POST"]
+          },
+          "authenticators": [
+            {
+              "handler": "jwt",
+              "config": {
+                "trusted_issuers": [ "https://firebaseappcheck.googleapis.com/806646140435" ],
+                "target_audience": [ "projects/806646140435", "projects/avid-ceiling-390418" ],
+                "jwks_urls": [ "https://firebaseappcheck.googleapis.com/v1beta/jwks" ],
+                "token_from": {
+                  "header": "Appcheck"
+                }
+              }
+            },
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [{ "handler": "noop" }]
+        },
+        {
+          "id": "galoy-router",
+          "upstream": {
+            "url": "http://galoy-router:80"
+          },
+          "match": {
+            "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
+            "methods": [ "POST", "GET", "OPTIONS" ]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": { "handler": "allow" },
+          "mutators": [
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": '{"sub": "{{ print .Subject }}", "session_id": "{{ print .Extra.id }}", "expires_at": "{{ print .Extra.expires_at }}" }'
+              }
+            }
+          ]
+        },
+        {
+          "id": "admin-backend",
+          "upstream": {
+            "url": "http://graphql-admin:4001",
+            "strip_path": "/admin"
+          },
+          "match": {
+            "url": "<(http|https)>://<.*><[0-9]*>/admin/<.*>",
+            "methods": ["GET", "POST", "OPTIONS"]
+          },
+          "authenticators": [
+            {
+              "handler": "cookie_session",
+              "config": {
+                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            {
+              "handler": "bearer_token",
+              "config": {
+              "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "preserve_path": true,
+                "preserve_query": true,
+                "subject_from": "identity.id",
+                "extra_from": "@this"
+              }
+            },
+            { "handler": "anonymous" }
+          ],
+          "authorizer": {
+            "handler": "allow"
+          },
+          "mutators": [
+            {
+              "handler": "id_token",
+              "config": {
+                "claims": '{"sub": "{{ print .Subject }}"}'
+              }
+            }
+          ]
+        }
+      ]
+  maester:
+    enabled: false
+# Ref: https://k8s.ory.sh/helm/kratos.html
+kratos:
+  secret:
+    enabled: true
+    nameOverride: ""
+  ingress:
+    admin:
+      enabled: true
+    public:
+      enabled: true
+  replicaCount: 2
+  deployment:
+    livenessProbe:
+      periodSeconds: 1
+  kratos:
+    automigration:
+      enabled: true
+    config:
+      dsn: postgresql://kratos-pg:kratos-pg@flash-postgresql-0.test.svc.cluster.local:5432/kratos-pg
+      cookies:
+        domain: localhost # var.root_domain
+      serve:
+        public:
+          base_url: http://galoy-kratos-public:80/
+          cors:
+            enabled: true
+            allow_credentials: true
+            allowed_methods:
+              - POST
+              - GET
+              - PUT
+              - PATCH
+              - DELETE
+            allowed_headers:
+              - Authorization
+              - Cookie
+              - Content-Type
+              - X-Session-Token
+            exposed_headers:
+              - Content-Type
+              - Set-Cookie
+            debug: true
+        admin:
+          base_url: http://galoy-kratos-admin:80/
+      selfservice:
+        default_browser_return_url: http://localhost:3000/
+        methods:
+          oidc:
+            enabled: false
+          webauthn:
+            enabled: false
+          totp:
+            enabled: true
+          password:
+            enabled: true
+          code:
+            enabled: true
+            config:
+              # Defines how long the verification or the recovery code is valid for (default 1h)
+              lifespan: 15m
+        flows:
+          registration:
+            lifespan: 10m
+            ui_url: http://localhost:3000/register
+            after:
+              password:
+                hooks:
+                  - hook: web_hook
+                    config:
+                      url: http://api:4002/kratos/registration
+                      method: POST
+                      response:
+                        parse: false
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICB0cmFuc2llbnRfcGF5bG9hZDogaWYgc3RkLm9iamVjdEhhcyhjdHguZmxvdywgInRyYW5zaWVudF9wYXlsb2FkIikgdGhlbiBjdHguZmxvdy50cmFuc2llbnRfcGF5bG9hZCBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9Cg==
+                      auth:
+                        type: api_key
+                        config:
+                          name: Authorization
+                          value: callback_api_key
+                          in: header
+                  - hook: session
+          login:
+            ui_url: http://localhost:3000/login
+            lifespan: 10m
+            # this below make phone authentication fails even if there is no email in the schema
+            # after:
+            #   password:
+            #     hooks:
+            #     - hook: require_verified_address
+          settings:
+            ui_url: http://api:4002/settings
+            privileged_session_max_age: 15m
+            required_aal: aal1
+            after:
+              profile:
+                hooks:
+                  - hook: web_hook
+                    config:
+                      # url: http://e2e-tests:4002/auth/after_settings_hooks
+                      # url: http://api:4002/kratos/registration
+                      url: http://invalid-because-we-dont-want-profile-to-be-updated
+                      method: POST
+                      body: base64://ZnVuY3Rpb24oY3R4KSB7CiAgICBpZGVudGl0eV9pZDogaWYgc3RkLm9iamVjdEhhcyhjdHgsICJpZGVudGl0eSIpIHRoZW4gY3R4LmlkZW50aXR5LmlkIGVsc2UgbnVsbCwKICAgIHBob25lOiBpZiBzdGQub2JqZWN0SGFzKGN0eC5pZGVudGl0eS50cmFpdHMsICJwaG9uZSIpIHRoZW4gY3R4LmlkZW50aXR5LnRyYWl0cy5waG9uZSBlbHNlIG51bGwsCiAgICB0cmFuc2llbnRfcGF5bG9hZDogaWYgc3RkLm9iamVjdEhhcyhjdHguZmxvdywgInRyYW5zaWVudF9wYXlsb2FkIikgdGhlbiBjdHguZmxvdy50cmFuc2llbnRfcGF5bG9hZCBlbHNlIG51bGwsCiAgICBzY2hlbWFfaWQ6IGN0eC5pZGVudGl0eS5zY2hlbWFfaWQsCiAgICBmbG93X2lkOiBjdHguZmxvdy5pZCwKICAgIGZsb3dfdHlwZTogY3R4LmZsb3cudHlwZQp9Cg==
+                      auth:
+                        type: api_key
+                        config:
+                          name: Authorization
+                          value: callback_api_key
+                          in: header
+          verification:
+            use: code # Defines which method is used, one of 'code' or 'link'.
+            enabled: true
+            lifespan: 15m
+            # notify_unknown_recipients: false
+          recovery:
+            enabled: true
+            ui_url: http://api:4002/recovery
+          error:
+            ui_url: http://api:4002/error
+          logout:
+            after:
+              default_browser_return_url: http://api:4002/login
+      courier:
+        smtp:
+          connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true # TODO: need to make this a secret and connect to an SMTP server we verified our domain with (sendgrid, mailgun etc...) see https://www.ory.sh/docs/kratos/emails-sms/sending-emails-smtp
+          from_address: noreply@blink.sv
+          from_name: Blink Verification Code
+        templates:
+          recovery_code:
+            valid:
+              email:
+                subject: base64://eW91ciBjb2RlCg==
+                body:
+                  # courier/template/courier/builtin/templates/recovery_code/valid/email.body.plaintext.gotmpl
+                  # Hi,
+                  # You can confirm access to your blink account by entering the following code:
+                  # {{ .RecoveryCode }}
+                  # Don't share this code with anyone. Our employee will never ask for this code
+                  plaintext: base64://SGksCgpZb3UgY2FuIGNvbmZpcm0gYWNjZXNzIHRvIHlvdXIgYmxpbmsgYWNjb3VudCBieSBlbnRlcmluZyB0aGUgZm9sbG93aW5nIGNvZGU6Cgp7eyAuUmVjb3ZlcnlDb2RlIH19CgpEb24ndCBzaGFyZSB0aGlzIGNvZGUgd2l0aCBhbnlvbmUuIE91ciBlbXBsb3llZSB3aWxsIG5ldmVyIGFzayBmb3IgdGhpcyBjb2RlCg==
+                  html: base64://SGksCgpZb3UgY2FuIGNvbmZpcm0gYWNjZXNzIHRvIHlvdXIgYmxpbmsgYWNjb3VudCBieSBlbnRlcmluZyB0aGUgZm9sbG93aW5nIGNvZGU6Cgp7eyAuUmVjb3ZlcnlDb2RlIH19CgpEb24ndCBzaGFyZSB0aGlzIGNvZGUgd2l0aCBhbnlvbmUuIE91ciBlbXBsb3llZSB3aWxsIG5ldmVyIGFzayBmb3IgdGhpcyBjb2RlCg==
+      tracing: {}
+      identity:
+        schemas:
+          - id: phone_no_password_v0
+            url: file:///etc/config/identity.schema.json
+          - id: username_password_deviceid_v0
+            url: file:///etc/config/username_password_deviceid_v0.identity.schema.json
+          - id: email_no_password_v0
+            url: file:///etc/config/email_no_password_v0.identity.schema.json
+          - id: phone_email_no_password_v0
+            url: file:///etc/config/phone_email_no_password_v0.identity.schema.json
+        default_schema_id: phone_no_password_v0
+      session:
+        lifespan: "9360h" # 1 year and 1 month
+        earliest_possible_extend: "9360h" # 1 year and 1 month
+        whoami:
+          required_aal: highest_available
+      log:
+        level: debug
+        format: json
+        leak_sensitive_values: true
+      ciphers:
+        algorithm: xchacha20-poly1305
+      hashers:
+        algorithm: bcrypt
+        bcrypt:
+          cost: 8
+    identitySchemas:
+      "identity.schema.json": |
+        {
+          "$id": "https://schemas.ory.sh/presets/kratos/quickstart/phone-no-password/identity.schema.json",
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "PhoneOrEmailPassword",
+          "type": "object",
+          "properties": {
+            "traits": {
+              "type": "object",
+              "properties": {
+                "phone": {
+                  "type": "string",
+                  "format": "string",
+                  "title": "phone",
+                  "minLength": 3,
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    }
+                  }
+                },
+                "email": {
+                  "title": "E-Mail",
+                  "type": "string",
+                  "format": "email",
+                  "minLength": 3,
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    }
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      "username_password_deviceid_v0.identity.schema.json": |
+        {
+          "$id": "https://schemas.ory.sh/presets/kratos/quickstart/username-password-deviceid/identity.schema.json",
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "UsernamePasswordDeviceId",
+          "type": "object",
+          "properties": {
+            "traits": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      "email_no_password_v0.identity.schema.json": |
+        {
+          "$id": "http://mydomain.com/schemas/v2/customer.schema.json",
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "A email user",
+          "type": "object",
+          "properties": {
+            "traits": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "title": "E-Mail",
+                  "type": "string",
+                  "format": "email",
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    },
+                    "verification": {
+                      "via": "email"
+                    },
+                    "recovery": {
+                      "via": "email"
+                    }
+                  }
+                }
+              },
+              "required": ["email"],
+              "additionalProperties": false
+            }
+          }
+        }
+      "phone_email_no_password_v0.identity.schema.json": |
+        {
+          "$id": "http://mydomain.com/schemas/v2/customer.schema.json",
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "A phone+email user",
+          "type": "object",
+          "properties": {
+            "traits": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "title": "E-Mail",
+                  "type": "string",
+                  "format": "email",
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    },
+                    "verification": {
+                      "via": "email"
+                    },
+                    "recovery": {
+                      "via": "email"
+                    }
+                  }
+                },
+                "phone": {
+                  "title": "Phone",
+                  "type": "string",
+                  "format": "string",
+                  "ory.sh/kratos": {
+                    "credentials": {
+                      "password": {
+                        "identifier": true
+                      }
+                    }
+                  }
+                }
+              },
+              "required": ["email", "phone"],
+              "additionalProperties": false
+            }
+          }
+        }
+    emailTemplates: {}
+router:
+  supergraphFilePath: apollo-router/supergraph.graphql
+  extraEnvVars:
+    - name: APOLLO_ROUTER_SUPERGRAPH_PATH
+      value: /etc/apollo/supergraph-schema.graphql
+    - name: ALWAYS_UPGRADE_DEPLOYMENT
+      value: "{{ now }}"
+  extraVolumeMounts:
+    - name: supergraph
+      mountPath: /etc/apollo/supergraph-schema.graphql
+      subPath: supergraph-schema.graphql
+  extraVolumes:
+    - name: supergraph
+      configMap:
+        name: galoy-supergraph
+  router:
+    configuration:
+      include_subgraph_errors:
+        all: true
+      sandbox:
+        enabled: true
+      homepage:
+        enabled: false
+      supergraph:
+        introspection: true
+        path: /graphql
+      override_subgraph_url:
+        public: http://api:4002/graphql
+      headers:
+        all:
+          request:
+            - propagate:
+                matching: .*
+      traffic_shaping:
+        router:
+          timeout: 180s # If client requests to the router take longer
+        all:
+          timeout: 180s # If subgraph requests takes longer
+      telemetry:
+        tracing:
+          otlp:
+            endpoint: http://localhost:4318
+            protocol: http
