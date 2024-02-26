@@ -101,8 +101,8 @@ postgresql:
     # database: price-history
     # existingSecret: price-history-postgres-creds
     username: kratos-pg
-    database: kratos-ps
-    password: dummyPw
+    database: kratos-pg
+    password: kratos-pg
 
 oathkeeper:
   replicaCount: 1
@@ -120,4 +120,4 @@ kratos:
     automigration:
       enabled: false
     config:
-      dsn: postgresql://kratos-pg:dummyPw@flash-postgresql-0.test.svc.cluster.local:5432/kratos-ps
+      dsn: postgresql://kratos-pg:kratos-pg@postgresql.staging-flash.svc.cluster.local:5432/kratos-pg
