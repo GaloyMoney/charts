@@ -1,6 +1,6 @@
 apiVersion: v2
 name: lnd
-version: 0.10.0-dev
+version: 0.10.1-dev
 appVersion: 0.16.1
 description: LND helm chart
 keywords:
