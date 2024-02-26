@@ -27783,6 +27783,21 @@ entries:
       version: 0.1.0
   bria:
     - apiVersion: v2
+      appVersion: 0.1.92
+      created: "2024-02-26T07:50:03.537403997Z"
+      dependencies:
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.6
+      description: Helm chart for deploying GaloyMoney/Bria
+      digest: 9a8e2a64fe922eb9c34c654233b594db2811ab3eb9fa369257982a35f81640a8
+      name: bria
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/bria-v0.10.3/bria-0.10.3.tgz
+      version: 0.10.3
+    - apiVersion: v2
       appVersion: 0.1.91
       created: "2024-02-15T10:42:45.886916627Z"
       dependencies:
@@ -29265,4 +29280,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-02-26T07:47:39.71984499Z"
+generated: "2024-02-26T07:50:03.540767849Z"
