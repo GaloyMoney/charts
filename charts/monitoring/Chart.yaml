@@ -24,4 +24,4 @@ dependencies:
     version: 7.3.3
   - name: prometheus
     repository: https://prometheus-community.github.io/helm-charts
-    version: 25.14.0
+    version: 25.15.0
