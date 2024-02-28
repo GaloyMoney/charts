@@ -115,7 +115,7 @@ opentelemetry-collector:
         error_mode: ignore
         traces:
           spanevent:
-            - 'name == ""'
+            - 'name == "" and IsMatch(resource.attributes["service.name"], ".*-router")'
     receivers:
       jaeger:
         protocols:
