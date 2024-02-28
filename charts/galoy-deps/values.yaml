@@ -111,6 +111,11 @@ opentelemetry-collector:
         override: false
       k8sattributes:
         passthrough: true
+      filter/ottl:
+        error_mode: ignore
+        traces:
+          spanevent:
+            - 'name == ""'
     receivers:
       jaeger:
         protocols:
@@ -162,12 +167,13 @@ opentelemetry-collector:
             - logging
             - otlp
           processors:
-          - memory_limiter
-          - resourcedetection
-          - attributes
-          - k8sattributes
-          - tail_sampling
-          - batch
+            - filter/ottl
+            - memory_limiter
+            - resourcedetection
+            - attributes
+            - k8sattributes
+            - tail_sampling
+            - batch
           receivers:
             - jaeger
             - otlp
