@@ -13,7 +13,7 @@ dependencies:
     version: 13.18.4
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 11.9.13
+    version: 14.2.3
     condition: postgresql.enabled
   - name: oathkeeper
     repository: https://k8s.ory.sh/helm/charts

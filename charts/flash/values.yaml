@@ -21,7 +21,7 @@ galoy:
       repository: lnflash/flash-dev:latest
       imagePullPolicy: Always
       ## TODO: remove digest and commit hash
-      digest: sha256:df8d5b820ea0a84642e8ed37cf485a5cce29dbde976801962100a002931130c2
+      digest: sha256:f33cf8d96fda821c32334570b7c9f415370d8207e982da81f1a936718f782c67
       git_ref: "d2a438"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-app-websocket
@@ -332,7 +332,7 @@ mongodb:
     connectionStringExistingSecret: galoy-mongodb-connection-string
     # Autocreated at MongoDB initialization
     # There should be one and only one username in the array here.
-    usernames: [testGaloy]
+    usernames: [testUser]
     # Autocreated at MongoDB initialization
     # There should be one and only one database in the array here.
     databases: [galoy]
@@ -410,7 +410,7 @@ secrets:
   ## Secrets for Redis
   redisPassword:
   ## Secrets for PostgreSQL
-  postgresPassword:
+  postgresPassword: "dummy-password"
   ## Secrets for Geetest
   geetestId:
   geetestSecretKey:
@@ -451,20 +451,25 @@ tracing:
   ## Prefix for tracing
   ##
   prefix: galoy-dev
+
 price:
   realtime:
-    host: galoy-price-realtime
+    host: flash-price-realtime
   history:
-    postgresqlHost: galoy-postgresql
-    host: galoy-price-history
+    postgresqlHost: price-postgresql # see postgres chart
+    postgresqlUsername: price-history
+    postgresqlDatabase: price-history
+    host: flash-price-history
     port: 50052
+
 postgresql:
   enabled: true
+  primary:
   auth:
     enablePostgresUser: false
-    username: price-history
-    database: price-history
-    existingSecret: price-history-postgres-creds
+    # username: price-history
+    # database: price-history
+    # existingSecret: price-history-postgres-creds
 
 loop:
   enabled: true
@@ -675,7 +680,7 @@ kratos:
     automigration:
       enabled: true
     config:
-      dsn: postgresql://kratos-pg:kratos-pg@flash-postgresql-0.test.svc.cluster.local:5432/kratos-pg
+      # dsn: postgresql://kratos-pg:kratos-pg@flash-postgresql-0.test.svc.cluster.local:5432/kratos-pg
       cookies:
         domain: localhost # var.root_domain
       serve:

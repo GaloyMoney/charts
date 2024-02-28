@@ -91,18 +91,36 @@ price:
   service:
     type: NodePort
 
+## REMOVE?
 postgresql:
   primary:
+    initdb:
+      user: postgres
+      password: dummy-user
+      scripts:
+        ## TODO: REFERENCE values defined in Kratos & Price-history
+        kratos_init.sh: |
+          #!/bin/sh
+          psql -c "CREATE DATABASE \"kratos-pg\";"
+          psql -c "CREATE USER \"kratos-pg\" WITH ENCRYPTED PASSWORD 'kratos-pg';"
+          psql -c "GRANT ALL PRIVILEGES ON DATABASE \"kratos-pg\" TO \"kratos-pg\";"
+        price_history_init.sh: |
+          #!/bin/sh
+          psql -c "CREATE DATABASE \"price-history\";"
+          psql -c "CREATE USER \"price-history\" WITH ENCRYPTED PASSWORD 'dummy-password';"
+          psql -c "GRANT ALL PRIVILEGES ON DATABASE \"price-history\" TO \"price-history\";"
     persistence:
       enabled: false
   auth:
+    existingSecret: flash-price-history-postgres-creds # coupled with price subchart
     enablePostgresUser: true
+    secretKeys:
+      adminPasswordKey: password 
     # username: price-history
     # database: price-history
-    # existingSecret: price-history-postgres-creds
-    username: kratos-pg
-    database: kratos-pg
-    password: kratos-pg
+    # username: kratos-pg
+    # database: kratos-pg
+    # password: kratos-pg
 
 oathkeeper:
   replicaCount: 1
@@ -110,6 +128,11 @@ oathkeeper:
     enabled: false
 
 kratos:
+  ### Temp: testing overriding pre-install hook defined by kratos
+  # job:
+  #   annotations:
+  #     helm.sh/hook: "" # "pre-install, pre-upgrade"
+  ### End temp
   replicaCount: 1
   ingress:
     admin:
@@ -118,6 +141,6 @@ kratos:
       enabled: false
   kratos:
     automigration:
-      enabled: false
+      enabled: true
     config:
-      dsn: postgresql://kratos-pg:kratos-pg@postgresql.staging-flash.svc.cluster.local:5432/kratos-pg
+      dsn: postgresql://kratos-pg:kratos-pg@kratos-postgresql.staging-flash.svc.cluster.local:5432/kratos-pg

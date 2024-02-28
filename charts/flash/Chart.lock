@@ -7,7 +7,7 @@ dependencies:
   version: 13.18.4
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.9.13
+  version: 14.2.3
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
   version: 0.36.0
@@ -17,5 +17,5 @@ dependencies:
 - name: router
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
-digest: sha256:018db134da65825cadb6af293311b21fbec7dff4221e9108bdc60c3554a84f4c
-generated: "2023-09-20T07:01:14.008158455Z"
+digest: sha256:0603cdd7f5d72a2551c448b3c41233802d012d30de5703b3e90fd0dad1acaf69
+generated: "2024-02-26T17:39:28.852018951-06:00"

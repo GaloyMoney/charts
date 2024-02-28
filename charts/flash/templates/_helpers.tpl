@@ -104,7 +104,7 @@ Return Galoy environment variables for MongoDB configuration
 {{ if eq .Values.mongodb.architecture "replicaset" }}
 - name: MONGODB_ADDRESS
   value: "{{ range until (.Values.mongodb.replicaCount | int) }}
-  {{- printf "galoy-mongodb-%d.galoy-mongodb-headless" . -}}
+  {{- printf "flash-mongodb-%d.galoy-mongodb-headless" . -}}
   {{- if lt . (sub $.Values.mongodb.replicaCount 1 | int) -}},{{- end -}}
   {{ end }}"
 - name: MONGODB_USER
@@ -116,7 +116,7 @@ Return Galoy environment variables for MongoDB configuration
       key: mongodb-passwords
 {{ else if eq .Values.mongodb.architecture "standalone" }}
 - name: MONGODB_ADDRESS
-  value: "galoy-mongodb"
+  value: "flash-mongodb"
 - name: MONGODB_USER
   value: {{ index .Values.mongodb.auth.usernames 0 | quote }}
 - name: MONGODB_PASSWORD
@@ -214,7 +214,7 @@ Define kratos env vars
 - name: KRATOS_PG_CON
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.kratos.secret.nameOverride | default "galoy-kratos" }}
+      name: {{ .Values.kratos.secret.nameOverride | default "flash-kratos" }}
       key: dsn
 - name: KRATOS_PUBLIC_API
   value: {{ .Values.galoy.kratos.publicApiUrl | quote }}
@@ -268,7 +268,7 @@ Return Galoy environment variables for Redis configuration
       key: {{ .Values.redis.auth.existingSecretPasswordKey | quote }}
 {{ range until (.Values.redis.replica.replicaCount | int) }}
 - name: {{ printf "REDIS_%d_DNS" . }}
-  value: {{ printf "galoy-redis-node-%d.galoy-redis-headless" . | quote }}
+  value: {{ printf "flash-redis-node-%d.flash-redis-headless" . | quote }}
 {{ end }}
 {{- end -}}
 

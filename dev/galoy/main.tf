@@ -17,7 +17,7 @@ locals {
   postgres_password = "price-history"
 
   galoy-oathkeeper-proxy-host = "galoy-oathkeeper-proxy.${local.galoy_namespace}.svc.cluster.local"
-  kratos_pg_host              = "postgresql.${local.galoy_namespace}.svc.cluster.local" # gets added to kratos dsn
+  kratos_pg_host              = "postgresql.${local.galoy_namespace}.svc.cluster.local" # updated in postgresql update: flash-postgresql.staging-flash.svc.cluster.local
 }
 
 resource "kubernetes_namespace" "galoy" {
