@@ -11,10 +11,6 @@ dependencies:
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
     version: 13.18.4
-  - name: postgresql
-    repository: https://charts.bitnami.com/bitnami
-    version: 14.2.3
-    condition: postgresql.enabled
   - name: oathkeeper
     repository: https://k8s.ory.sh/helm/charts
     version: 0.36.0
@@ -24,3 +20,6 @@ dependencies:
   - name: router
     repository: oci://ghcr.io/apollographql/helm-charts
     version: 1.25.0
+  - name: price
+    version: 0.2.0
+    repository: "file://../price" 

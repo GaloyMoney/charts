@@ -1,0 +1,18 @@
+{{ if .Values.postgresql.enabled }}
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "price.history.fullname" . }}-postgres-creds
+  labels:
+    app: {{ include "price.history.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/component: postgres
+type: Opaque
+data:
+  password: {{ .Values.postgresql.auth.password | toString | b64enc }}
+  username: {{ .Values.postgresql.auth.username | toString | b64enc }}
+  database: {{ .Values.postgresql.auth.database | toString | b64enc }}
+
+{{ end }}
