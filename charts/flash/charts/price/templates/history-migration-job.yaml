@@ -13,7 +13,7 @@ spec:
           {{ toYaml .Values.history.migrationJob.resources | nindent 10 }}
         env:
         - name: DB_HOST
-          value: {{ .Values.history.postgresqlHost }}
+          value: {{ include "price.history.db" . }}
         - name: DB_PWD
           valueFrom:
             secretKeyRef:

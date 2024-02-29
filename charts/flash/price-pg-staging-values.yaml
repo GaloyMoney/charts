@@ -1,8 +1,0 @@
-
-persistence:
-  enabled: false
-auth:
-  enablePostgresUser: false
-  username: price-history
-  database: price-history
-  password: price-history

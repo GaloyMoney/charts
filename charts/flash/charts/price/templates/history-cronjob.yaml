@@ -20,7 +20,7 @@ spec:
               {{ toYaml .Values.history.cron.resources | nindent 14 }}
             env:
             - name: DB_HOST
-              value: {{ .Values.history.postgresqlHost }}
+              value: {{ include "price.history.db" . }}
             - name: DB_PWD
               valueFrom:
                 secretKeyRef:

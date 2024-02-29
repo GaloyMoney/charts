@@ -456,9 +456,9 @@ price:
   realtime:
     host: flash-price-realtime
   history:
-    postgresqlHost: price-postgresql # see postgres chart
-    postgresqlUsername: price-history
-    postgresqlDatabase: price-history
+    # postgresqlHost: price-postgresql # see postgres chart
+    # postgresqlUsername: price-history
+    # postgresqlDatabase: price-history
     host: flash-price-history
     port: 50052
 
