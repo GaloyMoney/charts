@@ -57,6 +57,8 @@ spec:
             value: {{ .Values.history.tracing.otelExporterOtlpEndpoint }}
           - name: OTEL_SERVICE_NAME
             value: {{ .Values.history.tracing.otelServiceName }}
+          - name: NOTIFICATIONS_ENDPOINT
+            value: {{ .Values.history.notificationsEndpoint }}
           volumeMounts:
             - name: custom-yaml
               mountPath: "/var/yaml/"
