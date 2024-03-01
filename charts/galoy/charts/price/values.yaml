@@ -49,7 +49,7 @@ realtime:
     prometheus.io/port: "9464"
     prometheus.io/scrape: "true"
 history:
-  notificationsEndpoint: http://notifications:6685
+  notificationsEndpoint: notifications:6685
   tracing:
     otelExporterOtlpEndpoint: http://localhost:4318/v1/traces
     otelServiceName: galoy-price-history-dev
