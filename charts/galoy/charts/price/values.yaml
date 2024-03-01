@@ -56,14 +56,14 @@ history:
   valuesOverride: {}
   image:
     repository: us.gcr.io/galoy-org/price-history
-    digest: "sha256:b85c45c1fca6f532e0052888153ad35a9bf54766e9d243e768d0a95b1cb336e4"
+    digest: "sha256:5e5896e1df3543d37129aea882f95671ee8f3906eb1a296c4aa394cc0b240d48"
   service:
     type: ClusterIP
     prometheus: 9464
     grpc: 50052
   migrateImage:
     repository: us.gcr.io/galoy-org/price-history-migrate
-    digest: sha256:32ccd1838afe5fef7b9d0267cc1f999e1b2cb1381e142cd95876764fc7600c5d
+    digest: sha256:cfb893aff3fe1eb15542b2ce503c1a6d769f87d5bb4a462bbca564e743579b55
   postgresqlHost: postgresql
   cron:
     resources: {}
