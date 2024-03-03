@@ -4914,6 +4914,21 @@ entries:
   galoy-pay:
     - apiVersion: v2
       appVersion: 0.6.23
+      created: "2024-03-03T19:06:04.80659595Z"
+      dependencies:
+        - condition: galoy-nostr.enabled
+          name: galoy-nostr
+          repository: ""
+          version: x.x.x
+      description: A Helm chart for the admin panel addon to Galoy
+      digest: 1f67afd3b6dde55f9c6c3d6cbfc21d64d4849bc2622cc5c0ff3427eb73ba6dfa
+      name: galoy-pay
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/galoy-pay-v0.11.15/galoy-pay-0.11.15.tgz
+      version: 0.11.15
+    - apiVersion: v2
+      appVersion: 0.6.23
       created: "2024-03-01T15:02:07.954879573Z"
       dependencies:
         - condition: galoy-nostr.enabled
@@ -29883,4 +29898,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-03-03T02:09:30.923637788Z"
+generated: "2024-03-03T19:06:04.809748059Z"
