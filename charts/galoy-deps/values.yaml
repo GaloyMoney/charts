@@ -115,7 +115,7 @@ opentelemetry-collector:
         error_mode: ignore
         traces:
           span:
-            - 'name == "sql-conn-query" and IsMatch(resource.attributes["service.name"], ".*-kratos")'
+            - 'span.kind != "server"'
           spanevent:
             - 'name == "" and IsMatch(resource.attributes["service.name"], ".*-router")'
     receivers:
