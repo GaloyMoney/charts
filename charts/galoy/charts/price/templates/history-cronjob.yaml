@@ -43,8 +43,8 @@ spec:
               value: {{ .Values.history.tracing.otelExporterOtlpEndpoint }}
             - name: OTEL_SERVICE_NAME
               value: {{ .Values.history.tracing.otelServiceName }}-cron
-            - name: NOTIFICATIONS_ENDPOINT
-              value: {{ .Values.history.notificationsEndpoint }}
+            # - name: NOTIFICATIONS_ENDPOINT
+            #   value: {{ .Values.history.notificationsEndpoint }}
             volumeMounts:
             - name: custom-yaml
               mountPath: "/var/yaml/"
