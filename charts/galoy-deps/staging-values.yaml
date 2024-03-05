@@ -1,9 +1,0 @@
-kubemonkey:
-  enabled: false
-
-cert-manager:
-  enabled: false
-
-ingress-nginx:
-  controller:
-    replicaCount: 1

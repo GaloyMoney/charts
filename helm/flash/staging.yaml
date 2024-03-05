@@ -1,0 +1,92 @@
+
+galoy: 
+  api:
+    replicas: 1
+    ingress:
+      enabled: true
+      hosts: ["api.staging.flashapp.me"]
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      extraPaths:
+      - path: /(graphql|kratos|browser|healthz|metrics|auth)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: api
+            port:
+              number: 4002
+              
+  admin:
+    ingress:
+      enabled: false
+      hosts: ["admin.staging.flashapp.me"]
+      annotations:
+        nginx.ingress.kubernetes.io/use-regex: "true"
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      extraPaths:
+      - path: /admin/?(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: graphql-admin
+            port:
+              number: 4001
+  ibex:
+    url: https://api-sandbox.poweredbyibex.io
+    email: mail2michaelennis@gmail.com
+    webhook:
+      ingress:
+        enabled: false
+      externalUri: https://ibex.staging.flashapp.me:8080 
+
+  websocket:
+    ingress:
+      enabled: false
+
+mongodb:
+  architecture: standalone
+  persistence:
+    enabled: false
+  replicaCount: 1
+  metrics:
+    enabled: false
+  initDbScripts: {}
+
+redis:
+  replica:
+    replicaCount: 1
+  master:
+    persistence:
+      enabled: false
+  metrics:
+    enabled: false
+  sentinel:
+    getMasterTimeout: 5
+
+price:
+  service:
+    type: NodePort
+
+oathkeeper:
+  replicaCount: 1
+  secret:
+    enabled: false
+
+kratos:
+  replicaCount: 1
+  ingress:
+    admin:
+      enabled: false
+    public:
+      enabled: false
+  kratos:
+    automigration:
+      enabled: true
+    # config:
+    #   dsn: postgresql://kratos-pg:kratos-pg@kratos-pg-postgresql.flash.svc.cluster.local:5432/kratos-pg
+
+ingress-nginx:
+  enabled: false
+  controller:
+    replicaCount: 1

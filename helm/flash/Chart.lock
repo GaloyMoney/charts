@@ -1,0 +1,21 @@
+dependencies:
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 18.0.4
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 13.18.4
+- name: oathkeeper
+  repository: https://k8s.ory.sh/helm/charts
+  version: 0.36.0
+- name: kratos
+  repository: https://k8s.ory.sh/helm/charts
+  version: 0.36.0
+- name: router
+  repository: oci://ghcr.io/apollographql/helm-charts
+  version: 1.25.0
+- name: price
+  repository: file://../price
+  version: 0.2.0
+digest: sha256:eb5a597cc7facf80a0235470b751252f8d52d2eaeb260b1419f03e72392197ab
+generated: "2024-02-29T20:38:11.341224135-06:00"

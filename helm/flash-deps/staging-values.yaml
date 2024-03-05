@@ -1,0 +1,20 @@
+strimzi-kafka-operator:
+  enabled: false
+
+kubemonkey:
+  enabled: false
+
+opentelemetry-collector:
+  enabled: false
+
+cert-manager:
+  enabled: true
+  namespace: cert-manager # move to values.yaml
+
+ingress-nginx: 
+  enabled: true
+  namespace: ingress # move to values.yaml
+  controller:
+    replicaCount: 1
+    config:
+      enable-opentracing: false

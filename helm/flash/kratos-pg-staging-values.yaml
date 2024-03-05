@@ -1,0 +1,9 @@
+# This has been moved to flash staging folder. Please Remove
+persistence:
+  enabled: false
+
+auth:
+  enablePostgresUser: false
+  username: kratos-pg
+  database: kratos-pg
+  password: kratos-pg

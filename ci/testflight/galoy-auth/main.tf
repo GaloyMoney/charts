@@ -1,5 +1,3 @@
-variable "testflight_namespace" {}
-
 locals {
   cluster_name     = "galoy-staging-cluster"
   cluster_location = "us-east1"
