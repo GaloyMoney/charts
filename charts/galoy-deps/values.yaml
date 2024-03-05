@@ -115,7 +115,7 @@ opentelemetry-collector:
         error_mode: ignore
         traces:
           span:
-            - 'name != "/sessions/whoami" and IsMatch(resource.attributes["service.name"], ".*-kratos")'
+            - 'kind.string != "Server" and IsMatch(resource.attributes["service.name"], ".*-kratos")'
           spanevent:
             - 'name == "" and IsMatch(resource.attributes["service.name"], ".*-router")'
     receivers:
