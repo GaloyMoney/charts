@@ -24556,6 +24556,21 @@ entries:
       version: 0.1.0
   stablesats:
     - apiVersion: v2
+      appVersion: 0.12.4
+      created: "2024-03-06T16:04:38.801299779Z"
+      dependencies:
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.6
+      description: A Helm chart for Kubernetes
+      digest: 2bc6d7c25aca4ef1bd931d91dbc34f39f2b5410409dcedc5bc8ded23e493007b
+      name: stablesats
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/stablesats-v0.18.1/stablesats-0.18.1.tgz
+      version: 0.18.1
+    - apiVersion: v2
       appVersion: 0.12.3
       created: "2024-03-06T14:06:33.122967235Z"
       dependencies:
@@ -30262,4 +30277,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-03-06T15:00:47.265795811Z"
+generated: "2024-03-06T16:04:38.805470175Z"
