@@ -35,6 +35,7 @@ resource "helm_release" "kratos_pg" {
   ]
 }
 
+# TODO: Change to connection_details
 output "values" {
   value = templatefile("${path.module}/kratos-values.yml.tmpl", {
     kratos_pg_host          = "kratos-pg-postgresql.${var.namespace}.svc.cluster.local"

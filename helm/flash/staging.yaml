@@ -64,9 +64,9 @@ redis:
   sentinel:
     getMasterTimeout: 5
 
-price:
-  service:
-    type: NodePort
+# price:
+#   service:
+#     type: NodePort
 
 oathkeeper:
   replicaCount: 1

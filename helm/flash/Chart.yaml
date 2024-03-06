@@ -2,7 +2,7 @@ apiVersion: v2 # https://helm.sh/docs/topics/charts/#the-apiversion-field
 name: flash
 description: A Helm chart for the Flash application backend
 type: application
-version: 0.0.1-dev
+version: 0.0.2-dev
 # appVersion: perhaps git commit set by CI/CD? ""
 dependencies:
   - name: redis
@@ -21,7 +21,7 @@ dependencies:
     repository: oci://ghcr.io/apollographql/helm-charts
     version: 1.25.0
   - name: price
-    version: 0.2.0
+    version: 0.3.0
     repository: "file://../price" 
   # - name: "ingress-nginx"
   #   repository: "https://kubernetes.github.io/ingress-nginx"

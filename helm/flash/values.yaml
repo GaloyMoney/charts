@@ -464,11 +464,11 @@ price:
     host: flash-price-history
     port: 50052
 
-postgresql:
-  enabled: true
-  primary:
-  auth:
-    enablePostgresUser: false
+# postgresql:
+#   enabled: true
+#   primary:
+#   auth:
+#     enablePostgresUser: false
     # username: price-history
     # database: price-history
     # existingSecret: price-history-postgres-creds
