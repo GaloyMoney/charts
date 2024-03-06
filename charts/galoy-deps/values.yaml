@@ -116,6 +116,7 @@ opentelemetry-collector:
         traces:
           span:
             - 'kind.string != "Server" and IsMatch(resource.attributes["service.name"], ".*-kratos")'
+            - 'name == "query_planning" and IsMatch(resource.attributes["service.name"], ".*-router")'
           spanevent:
             - 'name == "" and IsMatch(resource.attributes["service.name"], ".*-router")'
     receivers:
