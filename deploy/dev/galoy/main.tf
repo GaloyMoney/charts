@@ -325,7 +325,7 @@ resource "kubernetes_secret" "proxy_check_api_key" {
 
 resource "helm_release" "galoy" {
   name      = "galoy"
-  chart     = "${path.module}/../../charts/galoy"
+  chart     = "${path.module}/../../helm/flash"
   namespace = kubernetes_namespace.galoy.metadata[0].name
 
   values = [

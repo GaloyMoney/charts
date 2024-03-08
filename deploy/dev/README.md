@@ -1,3 +1,5 @@
+⚠️⚠️⚠️ Warning: This setup has not been updated for the Flash project.⚠️⚠️⚠️
+
 # Charts dev setup
 
 Intended as a local environment to test changes to the charts. Not as a dev backend for the mobile app.
