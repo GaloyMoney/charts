@@ -39,6 +39,18 @@ resource "helm_release" "galoy_pay" {
   ]
 }
 
+resource "kubernetes_secret" "galoy_pay" {
+  metadata {
+    name      = "galoy-pay"
+    namespace = local.testflight_namespace
+  }
+
+  data = {
+    "next-auth-secret" : "dummy123"
+    "client-secret" : "dummy"
+  }
+}
+
 data "kubernetes_secret" "redis_creds" {
   metadata {
     name      = "galoy-redis-pw"

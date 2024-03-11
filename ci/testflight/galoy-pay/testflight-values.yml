@@ -12,3 +12,4 @@ redis:
 coreGqlUrlIntranet: http://api.galoy-staging-galoy.svc.cluster.local/graphql
 payUrl: http://pay.galoy-staging-galoy.svc.cluster.local/graphql
 payDomain: galoy-staging-galoy.svc.cluster.local
+nextAuthUrl: "http://galoy-pay:3000"
