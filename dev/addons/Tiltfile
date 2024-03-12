@@ -43,6 +43,14 @@ k8s_yaml(secret_from_dict(
 
 
 ## Galoy Pay
+k8s_yaml(secret_from_dict(
+  name='galoy-pay',
+  namespace=addons_namespace,
+  inputs={
+    'next-auth-secret' : 'dummy123',
+    'client-secret' : 'dummy'
+  }
+))
 
 k8s_yaml(secret_from_dict(
   name='galoy-nostr-private-key',

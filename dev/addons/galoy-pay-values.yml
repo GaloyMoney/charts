@@ -1,3 +1,6 @@
+secrets:
+  create: false
+
 galoy-nostr:
   redis:
     redis0Dns: "galoy-redis-node-0.galoy-redis-headless.galoy-dev-galoy.svc.cluster.local"

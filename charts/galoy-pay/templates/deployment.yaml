@@ -40,6 +40,22 @@ spec:
           value: "{{ .Values.payDomain }}"
         - name: CORE_GQL_URL_INTRANET
           value: "{{ .Values.coreGqlUrlIntranet }}"
+        - name: CLIENT_ID
+          value: {{ .Values.clientId }}
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoyPay.fullname" . }}
+              key: "client-secret"
+        - name: HYDRA_PUBLIC
+          value: {{ .Values.hydraPublicUrl }}
+        - name: NEXTAUTH_URL
+          value: {{ .Values.nextAuthUrl }}
+        - name: NEXTAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoyPay.fullname" . }}
+              key: "next-auth-secret"
         - name: NOSTR_PUBKEY
           value: "{{ .Values.nostrPubkey }}"
         - name: REDIS_MASTER_NAME
