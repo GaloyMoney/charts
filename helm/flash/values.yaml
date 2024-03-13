@@ -46,8 +46,7 @@ galoy:
     ingress:
       enabled: true
       hosts: ["api.staging.flashapp.me"]
-      ## Cluster Issuer (Default: LetsEncrypt Certificate Isser defined at galoy-infra)
-      clusterIssuer: letsencrypt-issuer
+      clusterIssuer: letsencrypt-issuer # name references k8s 'Issuer' defined in terraform
     firebaseNotifications:
       enabled: false
       existingSecret:
@@ -83,9 +82,9 @@ galoy:
       resources: {}
       externalUri:
       ingress:
-        enabled: true
-        hosts: ["ibex.staging.flashapp.me"]
-        clusterIssuer: letsencrypt-issuer
+        enabled: 
+        hosts: 
+        clusterIssuer: 
       probes:
         enabled: false
         liveness:
@@ -266,8 +265,8 @@ galoy:
     resources: {}
   ## Kratos
   kratos:
-    publicApiUrl: http://galoy-kratos-public
-    adminApiUrl: http://galoy-kratos-admin
+    publicApiUrl: http://flash-kratos-public
+    adminApiUrl: http://flash-kratos-admin
     existingSecret:
       name: kratos-secret
       master_user_password: master_user_password
@@ -498,7 +497,7 @@ oathkeeper:
         bearer_token:
           enabled: true
           config:
-            check_session_url: http://galoy-kratos-public:80/sessions/whoami
+            check_session_url: http://flash-kratos-public:80/sessions/whoami
             preserve_path: true
             subject_from: identity.id
             extra_from: identity.traits
@@ -509,7 +508,7 @@ oathkeeper:
         cookie_session:
           enabled: true
           config:
-            check_session_url: http://galoy-kratos-public:80/sessions/whoami
+            check_session_url: http://flash-kratos-public:80/sessions/whoami
             preserve_path: true
             subject_from: identity.id
             extra_from: identity.traits
@@ -524,7 +523,7 @@ oathkeeper:
         id_token:
           enabled: true
           config:
-            jwks_url: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
+            jwks_url: "http://flash-oathkeeper-api:4456/.well-known/jwks.json"
             issuer_url: "galoy.io"
       errors:
         fallback:
@@ -536,7 +535,7 @@ oathkeeper:
               verbose: true
       access_rules:
         matching_strategy: regexp
-    mutatorIdTokenJWKs: "http://galoy-oathkeeper-api:4456/.well-known/jwks.json"
+    mutatorIdTokenJWKs: "http://flash-oathkeeper-api:4456/.well-known/jwks.json"
     accessRules: |
       [
         {
@@ -576,9 +575,9 @@ oathkeeper:
           "mutators": [{ "handler": "noop" }]
         },
         {
-          "id": "galoy-router",
+          "id": "flash-router",
           "upstream": {
-            "url": "http://galoy-router:80"
+            "url": "http://flash-router:80"
           },
           "match": {
             "url": "<(http|https)>://<[a-zA-Z0-9-.:]+>/graphql",
@@ -588,7 +587,7 @@ oathkeeper:
             {
               "handler": "cookie_session",
               "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "check_session_url": "http://flash-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
@@ -598,7 +597,7 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "check_session_url": "http://flash-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
@@ -631,7 +630,7 @@ oathkeeper:
             {
               "handler": "cookie_session",
               "config": {
-                "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+                "check_session_url": "http://flash-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
@@ -641,7 +640,7 @@ oathkeeper:
             {
               "handler": "bearer_token",
               "config": {
-              "check_session_url": "http://galoy-kratos-public:80/sessions/whoami",
+              "check_session_url": "http://flash-kratos-public:80/sessions/whoami",
                 "preserve_path": true,
                 "preserve_query": true,
                 "subject_from": "identity.id",
@@ -688,7 +687,7 @@ kratos:
         domain: localhost # var.root_domain
       serve:
         public:
-          base_url: http://galoy-kratos-public:80/
+          base_url: http://flash-kratos-public:80/
           cors:
             enabled: true
             allow_credentials: true
@@ -708,7 +707,7 @@ kratos:
               - Set-Cookie
             debug: true
         admin:
-          base_url: http://galoy-kratos-admin:80/
+          base_url: http://flash-kratos-admin:80/
       selfservice:
         default_browser_return_url: http://localhost:3000/
         methods:

@@ -1,0 +1,12 @@
+
+ingress:
+  enabled: true
+  hosts: ["pay.staging.flashapp.me"]
+
+# hardcoded is bad
+graphqlUrl: https://api.staging.flashapp.me/graphql
+graphqlHost: api.staging.flashapp.me
+graphqlWebsocketUrl: wss://ws.staging.flashapp.me/graphql
+
+galoy-nostr:
+  enabled: false

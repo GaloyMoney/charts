@@ -187,7 +187,6 @@ opentelemetry-collector:
 
 cert-manager:
   enabled: true
-  installCRDs: true
   resources: {}
 
 ingress-nginx:

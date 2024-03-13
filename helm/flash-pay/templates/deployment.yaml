@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoyPay.fullname" . }}
+  labels:
+    app: {{ template "galoyPay.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "galoyPay.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "galoyPay.fullname" . }}
+        release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: pay
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_GRAPHQL_URL
+          value: "{{ .Values.graphqlUrl }}"
+        - name: NEXT_PUBLIC_GRAPHQL_WEBSOCKET_URL
+          value: "{{ .Values.graphqlWebsocketUrl }}"
+        - name: GRAPHQL_HOSTNAME_INTERNAL
+          value: "{{ .Values.graphqlHost }}"
+        - name: NOSTR_PUBKEY
+          value: "{{ .Values.nostrPubkey }}"
+        - name: REDIS_MASTER_NAME
+          value: "mymaster"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: galoy-redis-pw
+              key: "redis-password"
+        - name: REDIS_0_DNS
+          value: {{.Values.redis.redis0Dns}}
+        - name: REDIS_1_DNS
+          value: {{.Values.redis.redis1Dns}}
+        - name: REDIS_2_DNS
+          value: {{.Values.redis.redis2Dns}}
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}

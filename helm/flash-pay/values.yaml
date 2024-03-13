@@ -1,0 +1,25 @@
+image:
+  repository: lnflash/flash-pay:latest
+  digest: "sha256:5171bdc1827be0726f348b2331492a1a50af6ae78954bd733a7fbe8cecab4438"
+  git_ref: "cf1ff28" # Not used by helm
+ingress:
+  enabled: false
+service:
+  port: 80
+  type: ClusterIP
+graphqlUrl: 
+graphqlHost: 
+graphqlWebsocketUrl: 
+nostrPubkey: "npub1qqqqqqrm4aehwh4t0mknaxvaqvhxdrvrnquz7a7npdgll3lezkpqq3j5a5"
+galoy-nostr:
+  enabled: true
+  fullnameOverride: galoy-nostr
+redis:
+  redis0Dns: "galoy-redis-node-0.galoy-redis-headless"
+  redis1Dns: "galoy-redis-node-1.galoy-redis-headless"
+  redis2Dns: "galoy-redis-node-2.galoy-redis-headless"
+  auth:
+    existingSecret: galoy-redis-pw
+    existingSecretPasswordKey: redis-password
+resources: {}
+

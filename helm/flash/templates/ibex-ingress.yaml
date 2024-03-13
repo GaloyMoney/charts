@@ -37,7 +37,7 @@ spec:
   rules:
   {{- range .Values.galoy.ibex.webhook.ingress.hosts }}
     - host: {{ . }}
-      http:
+      http: 
         paths:
             {{- if $.Values.galoy.ibex.webhook.ingress.extraPaths }}
             {{- toYaml $.Values.galoy.ibex.webhook.ingress.extraPaths | nindent 10 }}

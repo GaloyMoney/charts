@@ -88,7 +88,7 @@ spec:
 {{ include "galoy.ibex.env" . | indent 12 }}
 
             - name: OATHKEEPER_DECISION_ENDPOINT
-              value: http://galoy-oathkeeper-api:4456
+              value: http://flash-oathkeeper-api:4456
 
             - name: SVIX_SECRET
               valueFrom:

@@ -37,12 +37,9 @@ galoy:
     email: mail2michaelennis@gmail.com
     webhook:
       ingress:
-        enabled: false
-      externalUri: https://ibex.staging.flashapp.me:8080 
-
-  websocket:
-    ingress:
-      enabled: false
+        enabled: true
+        hosts: ["ibex.staging.flashapp.me"]
+        clusterIssuer: letsencrypt-issuer
 
 mongodb:
   architecture: standalone

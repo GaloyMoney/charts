@@ -247,7 +247,8 @@ Define kratos env vars
 - name: IBEX_LISTENER_PORT
   value: {{ .Values.galoy.ibex.webhook.port | quote }}
 - name: IBEX_EXTERNAL_URI
-  value: {{ .Values.galoy.ibex.webhook.externalUri | quote }}
+  {{- $HOST := index .Values.galoy.ibex.webhook.ingress.hosts 0 }}
+  value: {{ printf "https://%s" $HOST | quote }}
 - name: IBEX_WEBHOOK_SECRET
   valueFrom:
     secretKeyRef:

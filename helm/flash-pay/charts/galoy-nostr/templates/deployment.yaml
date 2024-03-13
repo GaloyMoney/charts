@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoyNostr.fullname" . }}
+  labels:
+    app: {{ template "galoyNostr.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "galoyNostr.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "galoyNostr.fullname" . }}
+        release: "{{ .Release.Name }}"
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: galoy-nostr
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NOSTR_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.nostr.existingSecret }}
+              key: key
+        - name: LND1_DNS
+          value: "{{ .Values.lnd1.dns }}"
+        - name: LND1_MACAROON
+          valueFrom:
+            secretKeyRef:
+              name: lnd-credentials
+              key: readonly_macaroon_base64
+        - name: LND1_TLS
+          valueFrom:
+            secretKeyRef:
+              name: lnd-credentials
+              key: tls_base64
+
+        - name: REDIS_MASTER_NAME
+          value: "mymaster"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: galoy-redis-pw
+              key: "redis-password"
+        - name: REDIS_0_DNS
+          value: {{.Values.redis.redis0Dns}}
+        - name: REDIS_1_DNS
+          value: {{.Values.redis.redis1Dns}}
+        - name: REDIS_2_DNS
+          value: {{.Values.redis.redis2Dns}}
