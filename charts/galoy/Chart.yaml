@@ -30,13 +30,13 @@ dependencies:
     condition: postgresql.enabled
   - name: oathkeeper
     repository: https://k8s.ory.sh/helm/charts
-    version: 0.40.0
+    version: 0.39.1
   - name: kratos
     repository: https://k8s.ory.sh/helm/charts
     version: 0.39.1
   - name: hydra
     repository: https://k8s.ory.sh/helm/charts
-    version: 0.40.0
+    version: 0.39.1
     condition: hydra.enabled
   - name: router
     repository: oci://ghcr.io/apollographql/helm-charts
