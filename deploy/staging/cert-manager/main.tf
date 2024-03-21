@@ -68,8 +68,8 @@ resource "kubernetes_manifest" "issuer" {
     }
     spec = {
       acme = {
-        # server = "https://acme-v02.api.letsencrypt.org/directory"  
-        server = "https://acme-staging-v02.api.letsencrypt.org/directory" # https://letsencrypt.org/docs/staging-environment/
+        server = "https://acme-v02.api.letsencrypt.org/directory"  
+        # server = "https://acme-staging-v02.api.letsencrypt.org/directory" # https://letsencrypt.org/docs/staging-environment/
         email  = var.cloudflare_email # TODO: Look into if this should be a LetsEncrypt email
         privateKeySecretRef = {
           name = "letsencrypt-issuer"

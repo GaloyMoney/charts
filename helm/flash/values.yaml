@@ -21,7 +21,7 @@ galoy:
       repository: lnflash/flash-dev:latest
       imagePullPolicy: Always
       ## TODO: remove digest and commit hash
-      digest: sha256:f33cf8d96fda821c32334570b7c9f415370d8207e982da81f1a936718f782c67
+      digest: sha256:0f4c5aa2f011eb657e05d2a4cf5f01ae02c6bc202305a7146d1c2023cd0b912b
       git_ref: "d2a438"
     websocket:
       repository: us.gcr.io/galoy-org/galoy-app-websocket

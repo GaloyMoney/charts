@@ -44,7 +44,10 @@ galoy:
 mongodb:
   architecture: standalone
   persistence:
-    enabled: false
+    enabled: true
+    storageClass: do-block-storage-xfs-retain # for staging, possibly do-block-storage-xfs
+    size: 8Gi
+    resourcePolicy: keep # avoid removing PVCs during a helm delete operation
   replicaCount: 1
   metrics:
     enabled: false

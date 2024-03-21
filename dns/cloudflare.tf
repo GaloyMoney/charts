@@ -52,7 +52,7 @@ provider "cloudflare" {
 resource "cloudflare_record" "set" {
   zone_id = "e7454b5ba25146abe8f61821528d0a23" # data.cloudflare_zones.staging.id # "d41d8cd98f00b204e9800998ecf8427e" # get from data.cloudflare_zones
   name    = "*.staging.flashapp.me"
-  value   = "143.244.202.98"
+  value   = "161.35.254.122"
   type    = "A"
   ttl     = 3600
   allow_overwrite = true
