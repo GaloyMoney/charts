@@ -43,7 +43,7 @@ spec:
           - name: OTEL_SERVICE_NAME
             value: {{ .Values.realtime.tracing.otelServiceName }}
           - name: TRACING_ENABLE_FILTER
-            value: {{ .Values.realtime.tracing.enableFilter | toString }}
+            value: {{ .Values.realtime.tracing.enableFilter }}
           volumeMounts:
             - name: custom-yaml
               mountPath: "/var/yaml/"
