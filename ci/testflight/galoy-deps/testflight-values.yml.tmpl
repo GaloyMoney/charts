@@ -11,3 +11,6 @@ ingress-nginx:
     config:
       jaeger-service-name: ${service_name}
       jaeger-collector-host: ${jaeger_host}
+opentelemetry-collector:
+  clusterRole:
+    create: false
