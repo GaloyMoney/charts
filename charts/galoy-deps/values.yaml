@@ -20,6 +20,8 @@ kubemonkey:
   resources: {}
 
 opentelemetry-collector:
+  service:
+    enabled: true
   extraEnvs:
   - name: K8S_NODE_NAME
     valueFrom:
