@@ -138,6 +138,9 @@ opentelemetry-collector:
         collection_interval: 60s
         auth_type: "serviceAccount"
         endpoint: "https://${env:K8S_NODE_NAME}:10250"
+        metrics_groups:
+          - pod
+          - container
       jaeger:
         protocols:
           grpc:
