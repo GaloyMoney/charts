@@ -42,11 +42,6 @@ opentelemetry-collector:
         headers:
           "x-honeycomb-team": ${HONEYCOMB_API_KEY}
           "x-honeycomb-dataset": ${HONEYCOMB_DATASET}
-      otlp/metrics:
-        endpoint: "api.honeycomb.io:443"
-        headers:
-          "x-honeycomb-team": ${HONEYCOMB_API_KEY}
-          "x-honeycomb-dataset": ${HONEYCOMB_METRICS_DATASET}
     extensions:
       health_check: {}
     processors:
@@ -173,7 +168,7 @@ opentelemetry-collector:
             - otlp
         metrics:
           exporters:
-            - otlp/metrics
+            - otlp
             - logging
           processors:
             - filter/ottl
