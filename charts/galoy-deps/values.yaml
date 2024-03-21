@@ -33,7 +33,7 @@ opentelemetry-collector:
       resources: ["nodes/stats"]
       verbs: ["get"]
   resources: {}
-  mode: deployment
+  mode: daemonset
   config:
     exporters:
       logging: {}
