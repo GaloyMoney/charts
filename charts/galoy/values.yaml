@@ -433,7 +433,7 @@ galoy:
         relayHost: ""
         relayPort: 587
       jobs:
-        kickoffLinkEmailRemainderDelay: 21600
+        kickoffLinkEmailReminderDelay: 21600
       linkEmailReminder:
         accountLivenessThresholdMinutes: 30240
         accountAgeThresholdMinutes: 30240
