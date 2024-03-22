@@ -436,7 +436,7 @@ galoy:
         kickoffLinkEmailReminderDelay: 5
       linkEmailReminder:
         accountLivenessThresholdMinutes: 30240
-        accountAgedThresholdMinutes: 30240
+        accountAgeThresholdMinutes: 30240
         notificationCoolOffThresholdMinutes: 129600
   consent:
     resources: {}

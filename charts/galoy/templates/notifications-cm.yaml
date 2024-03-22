@@ -31,5 +31,5 @@ data:
           kickoff_link_email_remainder_delay: {{ .Values.galoy.notifications.config.jobs.kickoffLinkEmailRemainderDelay }}
         link_email_reminder:
           account_liveness_threshold_minutes: {{ .Values.galoy.notifications.config.linkEmailReminder.accountLivenessThresholdMinutes }}
-          account_aged_threshold_minutes: {{ .Values.galoy.notifications.config.linkEmailReminder.accountAgedThresholdMinutes }}
+          account_aged_threshold_minutes: {{ .Values.galoy.notifications.config.linkEmailReminder.accountAgeThresholdMinutes }}
           notification_cool_off_threshold_minutes: {{ .Values.galoy.notifications.config.linkEmailReminder.notificationCoolOffThresholdMinutes }}
