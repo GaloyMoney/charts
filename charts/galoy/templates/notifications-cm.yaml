@@ -28,7 +28,7 @@ data:
           relay: {{ .Values.galoy.notifications.config.smtp.relayHost }}
           port: {{ .Values.galoy.notifications.config.smtp.relayPort }}
         jobs:
-          kickoff_link_email_remainder_delay: {{ .Values.galoy.notifications.config.jobs.kickoffLinkEmailRemainderDelay }}
+          kickoff_link_email_remainder_delay: {{ .Values.galoy.notifications.config.jobs.kickoffLinkEmailReminderDelay }}
         link_email_reminder:
           account_liveness_threshold_minutes: {{ .Values.galoy.notifications.config.linkEmailReminder.accountLivenessThresholdMinutes }}
           account_aged_threshold_minutes: {{ .Values.galoy.notifications.config.linkEmailReminder.accountAgeThresholdMinutes }}
