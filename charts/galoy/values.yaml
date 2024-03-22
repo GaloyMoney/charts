@@ -75,7 +75,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-notifications
       ## Digest of the image
       ##
-      digest: "sha256:21fb3caae150b425142439d6f0c0b8d7c84d63377649c2831cfad3519e4b976b" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=8e5f140;app=notifications;monorepo_subdir=core/notifications;
+      digest: "sha256:45c50242325e3b3e84f16d3f4911f69e7f1530ced06ba0b2c1a4794123bcc97f" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=5423df7;app=notifications;monorepo_subdir=core/notifications;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -432,6 +432,12 @@ galoy:
         fromName: ""
         relayHost: ""
         relayPort: 587
+      jobs:
+        kickoffLinkEmailReminderDelay: 5
+      linkEmailReminder:
+        accountLivenessThresholdMinutes: 30240
+        accountAgedThresholdMinutes: 30240
+        notificationCoolOffThresholdMinutes: 129600
   consent:
     resources: {}
     port: 80
