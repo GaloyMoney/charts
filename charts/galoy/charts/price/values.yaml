@@ -35,7 +35,7 @@ realtime:
   tracing:
     otelExporterOtlpEndpoint: http://localhost:4318/v1/traces
     otelServiceName: galoy-price-realtime-dev
-    enableFilter: "true"
+    enableFilter: true
   config: {}
   image:
     repository: us.gcr.io/galoy-org/price
