@@ -432,6 +432,12 @@ galoy:
         fromName: ""
         relayHost: ""
         relayPort: 587
+      jobs:
+        kickoffLinkEmailReminderDelay: 5
+      linkEmailReminder:
+        accountLivenessThresholdMinutes: 30240
+        accountAgedThresholdMinutes: 30240
+        notificationCoolOffThresholdMinutes: 129600
   consent:
     resources: {}
     port: 80
