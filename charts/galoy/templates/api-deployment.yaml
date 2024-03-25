@@ -71,6 +71,8 @@ spec:
           value: {{ .Values.galoy.websocket.port | quote }}
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
+        - name: OTEL_TRACES_SAMPLER
+          value: {{ .Values.tracing.otelTracesSampler | quote }}
         - name: TRACING_SERVICE_NAME
           value: "{{ .Values.tracing.prefix }}-{{ template "galoy.api.fullname" . }}"
         - name: SVIX_SECRET
