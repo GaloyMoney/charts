@@ -696,6 +696,9 @@ tracing:
   ## Prefix for tracing
   ##
   prefix: galoy-dev
+  ## OTEL sampling config
+  ##
+  otelTracesSampler: always_on
 price:
   realtime:
     host: galoy-price-realtime
