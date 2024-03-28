@@ -1,6 +1,6 @@
 image:
   repository: us.gcr.io/galoy-org/galoy-admin-panel
-  digest: "sha256:52d90eddb62154dd4cfb4f5d108c0bbf09769f90df2aae87291b6daf91a93227" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=67fdf00;app=admin-panel;monorepo_subdir=apps/admin-panel;
+  digest: "sha256:6c051f82ca94cfb520b166bad6e94eca9272a94a734a90baca7c7cbd7aa12b19" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=6ee4ac8;app=admin-panel;monorepo_subdir=apps/admin-panel;
   git_ref: "ef99dc0" # Not used by helm
 ingress:
   enabled: false
