@@ -300,6 +300,18 @@ resource "kubernetes_secret" "proxy_check_api_key" {
   }
 }
 
+# open ai api key
+resource "kubernetes_secret" "open_ai_api_key" {
+  metadata {
+    name      = "openai-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+  data = {
+    "api-key"      = "dummy"
+    "assistant-id" = "dummy"
+  }
+}
+
 resource "kubernetes_secret" "api_keys" {
   metadata {
     name      = "api-keys"

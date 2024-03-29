@@ -128,6 +128,16 @@ k8s_yaml(secret_from_dict(
   }
 ))
 
+# open-ai
+k8s_yaml(secret_from_dict(
+  name='openai-secret',
+  namespace=galoy_namespace,
+  inputs={
+    'api-key': 'dummy',
+    'assistant-id': 'dummy'
+  }
+))
+
 # kratos-secret secret
 k8s_yaml(secret_from_dict(
   name='kratos-secret',

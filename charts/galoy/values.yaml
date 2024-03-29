@@ -532,6 +532,12 @@ galoy:
     id_key: id
     # Geetest Key Secret Key
     secret_key: key
+  ## OpenAI Assistant Configuration
+  openAi:
+    assistantId: "assistant-id"
+    existingSecret:
+      name: openai-secret
+      key: api-key
   ## Twilio Configuration
   ##
   twilioExistingSecret:
@@ -683,6 +689,9 @@ secrets:
   notificationsSmtpPassword:
   ## Service account to send firebase noitifications
   firebaseServiceAccountJson:
+  ## OpenAI
+  openAiApiKey:
+  openAiAssistantId:
 ## Tracing details
 ##
 tracing:
