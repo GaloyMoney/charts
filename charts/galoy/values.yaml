@@ -689,9 +689,8 @@ secrets:
   notificationsSmtpPassword:
   ## Service account to send firebase noitifications
   firebaseServiceAccountJson:
-  ## OpenAI
+  ## OpenAI api key
   openAiApiKey:
-  openAiAssistantId:
 ## Tracing details
 ##
 tracing:

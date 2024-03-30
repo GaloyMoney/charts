@@ -307,8 +307,7 @@ resource "kubernetes_secret" "open_ai_api_key" {
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
   data = {
-    "api-key"      = "dummy"
-    "assistant-id" = "dummy"
+    "api-key" = "dummy"
   }
 }
 
