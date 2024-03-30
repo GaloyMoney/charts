@@ -130,7 +130,7 @@ spec:
               name: {{ .Values.galoy.openAi.existingSecret.name }}
               key: {{ .Values.galoy.openAi.existingSecret.key }}
         - name: OPENAI_ASSISTANT_ID
-          value: {{ .Values.galoy.openAiAssistantId | quote }}
+          value: {{ .Values.galoy.openAi.assistantId | quote }}
 
         - name: MATTERMOST_WEBHOOK_URL
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
