@@ -32,7 +32,7 @@ resource "helm_release" "kratos_pg" {
   namespace  = var.namespace
 
   values = [
-    file("${path.module}/pg-values.yaml")
+    file("${path.module}/staging-values.yaml")
   ]
 }
 

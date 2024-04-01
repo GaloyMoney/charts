@@ -45,7 +45,7 @@ mongodb:
   architecture: standalone
   persistence:
     enabled: true
-    storageClass: do-block-storage-xfs-retain # for staging, possibly do-block-storage-xfs
+    storageClass: do-block-storage-xfs-retain # for staging purposes, possibly do-block-storage-xfs
     size: 8Gi
     resourcePolicy: keep # avoid removing PVCs during a helm delete operation
   replicaCount: 1

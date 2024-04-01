@@ -1,0 +1,16 @@
+
+persistence:
+  enabled: true
+  storageClass: do-block-storage-xfs-retain # xfs is file system format
+  size: 8Gi # default
+  # annotations: consider backups 
+
+# This becomes relevant when scaling the persistent volume
+persistentVolumeClaimRetentionPolicy:
+  enabled: false
+
+auth:
+  enablePostgresUser: false
+  username: kratos-pg
+  database: kratos-pg
+  password: kratos-pg
