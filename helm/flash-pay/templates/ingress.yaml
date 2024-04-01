@@ -29,6 +29,16 @@ spec:
                   number: {{ $.Values.service.port }}
     {{- end -}}
     {{- end }}
+    - host: staging.flashapp.me
+      http:
+        paths:
+        - backend:
+            service:
+              name: flash-pay
+              port:
+                number: 80
+          path: /.well-known/lnurlp
+          pathType: Prefix
   tls:
     {{- range .Values.ingress.hosts }}
     - hosts:
@@ -38,4 +48,7 @@ spec:
     {{- if .Values.ingress.extraTls }}
     {{- toYaml .Values.ingress.extraTls | nindent 4 }}
     {{- end }}
+    - hosts:
+      - staging.flashapp.me
+      secretName: staging.flashapp.me-tls
 {{- end }}
