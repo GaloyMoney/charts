@@ -4331,6 +4331,16 @@ entries:
   admin-panel:
     - apiVersion: v2
       appVersion: 0.7.6
+      created: "2024-04-02T16:07:09.634440109Z"
+      description: A Helm chart for the admin panel addon to Galoy
+      digest: ee555372df484db8d5bfb7e1c8f6b9c226b5c1ef84aedf8b0e066f1066fa5a2a
+      name: admin-panel
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/admin-panel-v0.13.17/admin-panel-0.13.17.tgz
+      version: 0.13.17
+    - apiVersion: v2
+      appVersion: 0.7.6
       created: "2024-03-25T09:09:33.301702818Z"
       description: A Helm chart for the admin panel addon to Galoy
       digest: 2133349018496f1f4e0b8323628c7c6fa67b81b9a8e40398751097ec82a49a20
@@ -31722,4 +31732,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-04-01T07:35:29.778151877Z"
+generated: "2024-04-02T16:07:09.637575725Z"
