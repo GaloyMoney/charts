@@ -533,7 +533,7 @@ galoy:
     # Geetest Key Secret Key
     secret_key: key
   ## OpenAI Assistant Configuration
-  openAi:
+  openai:
     assistantId: "assistant-id"
     existingSecret:
       name: openai-secret
@@ -690,7 +690,7 @@ secrets:
   ## Service account to send firebase noitifications
   firebaseServiceAccountJson:
   ## OpenAI api key
-  openAiApiKey:
+  openaiApiKey:
 ## Tracing details
 ##
 tracing:
