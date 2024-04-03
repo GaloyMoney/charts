@@ -127,10 +127,10 @@ spec:
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.galoy.openAi.existingSecret.name }}
-              key: {{ .Values.galoy.openAi.existingSecret.key }}
+              name: {{ .Values.galoy.openai.existingSecret.name }}
+              key: {{ .Values.galoy.openai.existingSecret.key }}
         - name: OPENAI_ASSISTANT_ID
-          value: {{ .Values.galoy.openAi.assistantId | quote }}
+          value: {{ .Values.galoy.openai.assistantId | quote }}
 
         - name: MATTERMOST_WEBHOOK_URL
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
