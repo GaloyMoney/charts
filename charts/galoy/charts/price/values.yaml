@@ -39,7 +39,7 @@ realtime:
   config: {}
   image:
     repository: us.gcr.io/galoy-org/price
-    digest: "sha256:b815c6d73ee1f1ccbaf2550a71337c3052fd0a5e03974ae29440b74c1c1dd351"
+    digest: "sha256:3dd09937dcc4bc53899f24e554af55371d950f97a2ac9293db864aa2840872c2"
     git_ref: "70bda11"
   service:
     type: ClusterIP
