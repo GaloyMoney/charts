@@ -16,9 +16,9 @@ dependencies:
   version: 0.39.1
 - name: hydra
   repository: https://k8s.ory.sh/helm/charts
-  version: 0.39.1
+  version: 0.41.0
 - name: router
   repository: oci://ghcr.io/apollographql/helm-charts
   version: 1.25.0
-digest: sha256:2203ce9c1f4703bc4bd4d3e651574531ccb2da640dc9dcded9a44951cc817787
-generated: "2024-04-08T13:29:41.374156305Z"
+digest: sha256:5abb24f4b404ebbaddff88cc5953b6757cd852fd06d2d3ba16aa6ac445ab5b3a
+generated: "2024-04-10T08:31:58.843748051Z"
