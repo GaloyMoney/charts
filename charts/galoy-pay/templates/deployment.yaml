@@ -71,5 +71,9 @@ spec:
           value: {{.Values.redis.redis1Dns}}
         - name: REDIS_2_DNS
           value: {{.Values.redis.redis2Dns}}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.otelExporterOtlpEndpoint }}
+        - name: TRACING_SERVICE_NAME
+          value: {{ .Values.tracingServiceName }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}

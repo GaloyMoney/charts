@@ -13,6 +13,8 @@ nostrPubkey: "pubkey"
 clientId: "dummyValue"
 hydraPublicUrl: "http://galoy-hydra-public.galoy-dev-galoy.svc.cluster.local:4444"
 nextAuthUrl: "https://pay.domain.com"
+otelExporterOtlpEndpoint: http://localhost:4318
+tracingServiceName: "pay"
 secrets:
   create: true
   nextAuthSecret: "dummy"
