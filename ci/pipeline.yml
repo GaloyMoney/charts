@@ -17,7 +17,8 @@
 #@   "bitcoin_charts",
 #@   "addons_charts",
 #@   "task_image_config",
-#@   "repo_resource")
+#@   "repo_resource",
+#@   "build_task")
 
 #@ def galoy_chart_vars():
 testflight_backups_creds: #@ data.values.testflight_backups_creds
@@ -115,22 +116,7 @@ jobs:
   serial: true
   plan:
   - {get: chain-dl-image-def, trigger: true}
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: chain-dl-image-def
-      outputs:
-      - name: image
-      params:
-        CONTEXT: chain-dl-image-def/images/chain-dl
-      run:
-        path: build
+  - #@ build_task("chain-dl-image-def", "chain-dl-image-def/images/chain-dl")
   - put: chain-dl-image
     params:
       image: image/image.tar
@@ -139,22 +125,7 @@ jobs:
   serial: true
   plan:
   - {get: lnd-sidecar-image-def, trigger: true}
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: lnd-sidecar-image-def
-      outputs:
-      - name: image
-      params:
-        CONTEXT: lnd-sidecar-image-def/images/lnd-sidecar
-      run:
-        path: build
+  - #@ build_task("lnd-sidecar-image-def", "lnd-sidecar-image-def/images/lnd-sidecar")
   - put: lnd-sidecar-image
     params:
       image: image/image.tar
@@ -219,22 +190,7 @@ jobs:
   serial: true
   plan:
   - {get: mongo-backup-image-def, trigger: true}
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: mongo-backup-image-def
-      outputs:
-      - name: image
-      params:
-        CONTEXT: mongo-backup-image-def/images/mongo-backup
-      run:
-        path: build
+  - #@ build_task("mongo-backup-image-def", "mongo-backup-image-def/images/mongo-backup")
   - put: mongo-backup-image
     params:
       image: image/image.tar
@@ -299,22 +255,7 @@ jobs:
   serial: true
   plan:
   - {get: kafka-connect-image-def, trigger: true}
-  - task: build
-    privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      inputs:
-      - name: kafka-connect-image-def
-      outputs:
-      - name: image
-      params:
-        CONTEXT: kafka-connect-image-def/images/kafka-connect
-      run:
-        path: build
+  - #@ build_task("kafka-connect-image-def", "kafka-connect-image-def/images/kafka-connect")
   - put: kafka-connect-image
     params:
       image: image/image.tar
