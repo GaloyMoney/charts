@@ -1,8 +1,8 @@
-# Use alpine Linux as the base image
-FROM alpine:latest
+FROM python:3.8-buster
 
-# Install curl
-RUN apk add --no-cache curl
+RUN apt-get update \
+  && apt-get install -y bash curl wget tar git gettext jq perl \
+  && apt-get clean
 
-# Define the command to run when the container starts
-CMD ["echo", "Hello, Kaniko!"]
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/root/google-cloud-sdk/bin
