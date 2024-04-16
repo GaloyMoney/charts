@@ -40,6 +40,31 @@ source:
 #@   return chart + "-chart"
 #@ end
 
+#@ def build_task(input_name, context_path):
+task: build
+config:
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: gcr.io/kaniko-project/executor
+      tag: debug
+  inputs:
+  - name: #@ input_name
+  outputs:
+  - name: image
+  run:
+    path: /kaniko/executor
+    args:
+      - --dockerfile=Dockerfile
+      - #@ "--context=" + context_path
+      - --use-new-run
+      - --single-snapshot
+      - --cache=false
+      - --no-push
+      - --tar-path=image/image.tar
+#@ end
+
 #@ monitoring_charts = ["monitoring", "kafka-connect"]
 
 #@ bitcoin_charts = ["bitcoind", "lnd", "specter", "bria", "fulcrum", "mempool"]
