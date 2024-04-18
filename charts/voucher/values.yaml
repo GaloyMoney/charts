@@ -1,0 +1,23 @@
+secrets:
+  create: true
+  nextAuthSecret: ""
+  clientSecret: ""
+  escrowApiKey: ""
+  pgCon: ""
+voucher:
+  hydraPublic: "http://galoy-hydra-public.galoy-dev-galoy.svc.cluster.local:4444"
+  coreUrl: "http://galoy-oathkeeper-proxy.galoy-dev-galoy.svc.cluster.local:4455/graphql"
+  voucherUrl: "http://localhost:3000"
+  nextAuthUrl: ""
+  clientId: ""
+  otelExporterOtlpEndpoint: http://localhost:4318
+  tracingServiceName: "voucher"
+image:
+  repository: us.gcr.io/galoy-org/galoy-voucher
+  digest: "sha256:0cd052d4b2e1e6673ba4b36cff373a9918792fa9051bffa7af0f2713b39f7483" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=da49c22;app=voucher;monorepo_subdir=apps/voucher;
+ingress:
+  enabled: false
+service:
+  port: 3000
+  type: ClusterIP
+resources: {}
