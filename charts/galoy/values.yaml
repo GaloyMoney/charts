@@ -425,6 +425,8 @@ galoy:
     grpcPort: 6685
     graphqlPort: 6684
     config:
+      db:
+        poolSize: 20
       importFromKratos: false
       smtp:
         enabled: false
