@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "voucher.fullname" . }}
+  labels:
+    app: {{ template "voucher.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    kube-monkey/identifier: {{ template "voucher.fullname" . }}
+    kube-monkey/enabled: enabled
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "3"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "voucher.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "voucher.fullname" . }}
+        release: "{{ .Release.Name }}"
+        kube-monkey/identifier: {{ template "voucher.fullname" . }}
+        kube-monkey/enabled: enabled
+{{- with .Values.labels }}
+{{ toYaml . | trim | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: voucher
+        image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        env:
+        - name: HYDRA_PUBLIC
+          value: {{ .Values.voucher.hydraPublic }}
+        - name: NEXT_PUBLIC_CORE_URL
+          value: {{ .Values.voucher.coreUrl }}
+        - name: NEXT_PUBLIC_VOUCHER_URL
+          value: {{ .Values.voucher.voucherUrl }}
+        - name: NEXTAUTH_URL
+          value: {{ .Values.voucher.nextAuthUrl }}
+        - name: CLIENT_ID
+          value: {{ .Values.voucher.clientId }}
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.voucher.otelExporterOtlpEndpoint }}
+        - name: TRACING_SERVICE_NAME
+          value: {{ .Values.voucher.tracingServiceName }}
+        - name: NEXTAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "voucher.fullname" . }}
+              key: "next-auth-secret"
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "voucher.fullname" . }}
+              key: "client-secret"
+        - name: ESCROW_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "voucher.fullname" . }}
+              key: escrow-api-key
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "voucher.fullname" . }}
+              key: pg-con
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
