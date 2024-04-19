@@ -10,6 +10,10 @@ metadata:
 spec:
   type: {{ .Values.galoy.notifications.serviceType }}
   ports:
+    - port: {{ .Values.galoy.notifications.graphqlPort }}
+      targetPort: {{ .Values.galoy.notifications.graphqlPort }}
+      protocol: TCP
+      name: graphql
     - port: {{ .Values.galoy.notifications.grpcPort }}
       targetPort: {{ .Values.galoy.notifications.grpcPort }}
       protocol: TCP

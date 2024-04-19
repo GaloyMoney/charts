@@ -423,6 +423,7 @@ galoy:
     serviceType: ClusterIP
     resources: {}
     grpcPort: 6685
+    graphqlPort: 6684
     config:
       importFromKratos: false
       smtp:

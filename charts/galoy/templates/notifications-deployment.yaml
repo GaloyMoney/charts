@@ -33,6 +33,9 @@ spec:
         resources:
           {{ toYaml .Values.galoy.notifications.resources | nindent 10 }}
         ports:
+        - name: graphql
+          containerPort: {{ .Values.galoy.notifications.graphqlPort }}
+          protocol: TCP
         - name: grpc
           containerPort: {{ .Values.galoy.notifications.grpcPort }}
           protocol: TCP
