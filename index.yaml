@@ -2298,6 +2298,23 @@ entries:
   monitoring:
     - apiVersion: v2
       appVersion: 0.1.0
+      created: "2024-04-22T07:21:20.443295717Z"
+      dependencies:
+        - name: grafana
+          repository: https://grafana.github.io/helm-charts
+          version: 7.3.9
+        - name: prometheus
+          repository: https://prometheus-community.github.io/helm-charts
+          version: 25.20.0
+      description: A Helm chart for Kubernetes
+      digest: f806f6ad063c189790c3ecc7e85b8de57d890202d87033031d454461ebafcba3
+      name: monitoring
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/monitoring-v0.12.15/monitoring-0.12.15.tgz
+      version: 0.12.15
+    - apiVersion: v2
+      appVersion: 0.1.0
       created: "2024-04-18T14:32:48.137467323Z"
       dependencies:
         - name: grafana
@@ -32727,4 +32744,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-04-21T14:55:01.989752161Z"
+generated: "2024-04-22T07:21:20.446960489Z"
