@@ -45,6 +45,11 @@ spec:
             secretKeyRef:
               name: {{ template "galoy.notifications.fullname" . }}
               key: pg-con
+        - name: PG_READ_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoy.notifications.fullname" . }}
+              key: pg-read-con
         - name: EMAIL_PASSWORD
           valueFrom:
             secretKeyRef:

@@ -339,6 +339,7 @@ resource "kubernetes_secret" "notifications" {
   }
   data = {
     pg-con : "postgres://notifications:notifications@notifications-postgresql:5432/notifications"
+    pg-read-con : "postgres://notifications:notifications@notifications-postgresql:5432/notifications"
     smtp-password : "dummy"
     firebase-service-account = file("${path.module}/fake-firebase-service-account.json")
   }
