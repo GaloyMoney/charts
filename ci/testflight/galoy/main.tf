@@ -301,9 +301,20 @@ resource "kubernetes_secret" "proxy_check_api_key" {
 }
 
 # open ai api key
-resource "kubernetes_secret" "open_ai_api_key" {
+resource "kubernetes_secret" "openai_api_key" {
   metadata {
     name      = "openai-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+  data = {
+    "api-key" = "dummy"
+  }
+}
+
+# pinecone api key
+resource "kubernetes_secret" "pinecone_api_key" {
+  metadata {
+    name      = "pinecone-secret"
     namespace = kubernetes_namespace.testflight.metadata[0].name
   }
   data = {

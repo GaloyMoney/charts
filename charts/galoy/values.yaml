@@ -538,6 +538,9 @@ galoy:
     existingSecret:
       name: openai-secret
       key: api-key
+  pineconeExistingSecret:
+    name: pinecone-secret
+    key: api-key
   ## Twilio Configuration
   ##
   twilioExistingSecret:
@@ -691,6 +694,8 @@ secrets:
   firebaseServiceAccountJson:
   ## OpenAI api key
   openaiApiKey:
+  ## Pinecone api key
+  pineconeApiKey:
 ## Tracing details
 ##
 tracing:
