@@ -75,7 +75,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-notifications
       ## Digest of the image
       ##
-      digest: "sha256:25b0e7aa924de385eff201b1b2daa6843d73311d883abdec8703307903597dfd" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=5646c01;app=notifications;monorepo_subdir=core/notifications;
+      digest: "sha256:1ddd342ace640d895fecfae7fa3dc08c7ae2b58f30ff0749aabb2e225665a964" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=58a5a0c;app=notifications;monorepo_subdir=core/notifications;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
