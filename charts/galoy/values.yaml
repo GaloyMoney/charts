@@ -75,7 +75,7 @@ galoy:
       repository: us.gcr.io/galoy-org/galoy-notifications
       ## Digest of the image
       ##
-      digest: "sha256:0dfab4a610b9bb52a93844fb34998fabdcc98db52de0c0eb819766844dc36cdb" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=8dcce4d;app=notifications;monorepo_subdir=core/notifications;
+      digest: "sha256:5932be0e7003fbfadca16b29353a9df3618c9d3144b7a177889e0c0a99e62260" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=8a2305f;app=notifications;monorepo_subdir=core/notifications;
     ## Galoy Application MongoDB Migration Image details
     ##
     mongodbMigrate:
@@ -420,8 +420,10 @@ galoy:
   notifications:
     nameOverride:
     replicas: 2
+    jobs_replicas: 2
     serviceType: ClusterIP
     resources: {}
+    jobsResources: {}
     grpcPort: 6685
     graphqlPort: 6684
     config:

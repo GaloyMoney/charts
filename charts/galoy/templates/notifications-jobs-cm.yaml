@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "galoy.notifications.fullname" . }}-jobs
+data:
+  notifications.yml: |-
+    db:
+      pool_size: {{ .Values.galoy.notifications.config.db.poolSize }}
+    tracing:
+      endpoint: {{ .Values.tracing.otelExporterOtlpEndpoint }}
+      service_name: "{{ .Values.tracing.prefix }}-{{ template "galoy.notifications.fullname" . }}-jobs"
+    app:
+      push_executor:
+        fcm:
+          google_application_credentials_path: "/tmp/firebase-service-account/service-account.json"
+      email_executor:
+        enabled: {{ .Values.galoy.notifications.config.smtp.enabled }}
+        smtp:
+          username: {{ .Values.galoy.notifications.config.smtp.username }}
+          from_email: {{ .Values.galoy.notifications.config.smtp.fromEmail }}
+          from_name: {{ .Values.galoy.notifications.config.smtp.fromName }}
+          relay: {{ .Values.galoy.notifications.config.smtp.relayHost }}
+          port: {{ .Values.galoy.notifications.config.smtp.relayPort }}
+      jobs:
+        enabled: true
+        kickoff_link_email_reminder_delay: {{ .Values.galoy.notifications.config.jobs.kickoffLinkEmailReminderDelay }}
