@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "galoy.notifications.fullname" . }}-jobs
+  labels:
+    app: {{ template "galoy.notifications.fullname" . }}-jobs
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: Helm
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: {{ template "galoy.notifications.fullname" . }}-jobs
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "3"
+spec:
+  replicas: {{ .Values.galoy.notifications.jobs_replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "galoy.notifications.fullname" . }}-jobs
+  template:
+    metadata:
+      name: {{ template "galoy.notifications.fullname" . }}-jobs
+      labels:
+        app: {{ template "galoy.notifications.fullname" . }}-jobs
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: {{ template "galoy.notifications.fullname" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/notifications-jobs-cm.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: notifications
+        image: "{{ .Values.galoy.images.notifications.repository }}@{{ .Values.galoy.images.notifications.digest }}"
+        resources:
+          {{ toYaml .Values.galoy.notifications.jobsResources | nindent 10 }}
+        env:
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoy.notifications.fullname" . }}
+              key: pg-con
+        - name: PG_READ_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoy.notifications.fullname" . }}
+              key: pg-read-con
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "galoy.notifications.fullname" . }}
+              key: smtp-password
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: {{ .Values.tracing.otelExporterGrpcEndpoint | quote }}
+        - name: NOTIFICATIONS_CONFIG
+          value: "/notifications.yml"
+        volumeMounts:
+        - name: config
+          mountPath: "/notifications.yml"
+          subPath: "notifications.yml"
+          readOnly: true
+        - name: firebase-notifications-service-account
+          mountPath: /tmp/firebase-service-account/
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "galoy.notifications.fullname" . }}-jobs
+      - name: firebase-notifications-service-account
+        secret:
+          secretName: {{ template "galoy.notifications.fullname" . }}
+          items:
+          - key: firebase-service-account
+            path: service-account.json

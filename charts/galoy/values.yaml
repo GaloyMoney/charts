@@ -420,8 +420,10 @@ galoy:
   notifications:
     nameOverride:
     replicas: 2
+    jobs_replicas: 2
     serviceType: ClusterIP
     resources: {}
+    jobsResources: {}
     grpcPort: 6685
     graphqlPort: 6684
     config:
