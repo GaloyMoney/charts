@@ -7,7 +7,7 @@ map:
   tracingServiceName: "map"
 image:
   repository: us.gcr.io/galoy-org/galoy-map
-  digest: "sha256:56648ec45ff4537aa98b312559b9a859840de3731a51f7d4a0e16a36b3d80f5f" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=ad30dd9;app=map;monorepo_subdir=apps/map;
+  digest: "sha256:c9a76783f0117d133fef622ca073a2fc28f03ebb0cff73917650f753cea228ef" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=5171ff7;app=map;monorepo_subdir=apps/map;
 ingress:
   enabled: false
 service:
