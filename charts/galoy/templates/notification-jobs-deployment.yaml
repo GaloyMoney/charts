@@ -13,7 +13,7 @@ metadata:
     kube-monkey/kill-value: "1"
     kube-monkey/mtbf: "3"
 spec:
-  replicas: {{ .Values.galoy.notifications.jobs_replicas }}
+  replicas: {{ .Values.galoy.notifications.jobsDeployment.replicas }}
   selector:
     matchLabels:
       app: {{ template "galoy.notifications.fullname" . }}-jobs
@@ -31,7 +31,7 @@ spec:
       - name: notifications
         image: "{{ .Values.galoy.images.notifications.repository }}@{{ .Values.galoy.images.notifications.digest }}"
         resources:
-          {{ toYaml .Values.galoy.notifications.jobsResources | nindent 10 }}
+          {{ toYaml .Values.galoy.notifications.jobsDeployment.resources | nindent 10 }}
         env:
         - name: PG_CON
           valueFrom:

@@ -419,11 +419,13 @@ galoy:
       keyPrefix: galoy
   notifications:
     nameOverride:
-    replicas: 2
-    jobs_replicas: 2
+    serverDeployment:
+      replicas: 2
+      resources: {}
+    jobsDeployment:
+      replicas: 2
+      resources: {}
     serviceType: ClusterIP
-    resources: {}
-    jobsResources: {}
     grpcPort: 6685
     graphqlPort: 6684
     config:
