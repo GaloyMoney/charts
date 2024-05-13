@@ -36,9 +36,9 @@ spec:
         env:
         - name: HYDRA_PUBLIC
           value: {{ .Values.voucher.hydraPublic }}
-        - name: NEXT_PUBLIC_CORE_URL
+        - name: CORE_URL
           value: {{ .Values.voucher.coreUrl }}
-        - name: NEXT_PUBLIC_VOUCHER_URL
+        - name: VOUCHER_URL
           value: {{ .Values.voucher.voucherUrl }}
         - name: NEXTAUTH_URL
           value: {{ .Values.voucher.nextAuthUrl }}
