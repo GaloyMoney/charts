@@ -132,6 +132,12 @@ spec:
         - name: OPENAI_ASSISTANT_ID
           value: {{ .Values.galoy.openai.assistantId | quote }}
 
+        - name: PINECONE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.galoy.pineconeExistingSecret.name }}
+              key: {{ .Values.galoy.pineconeExistingSecret.key }}
+
         - name: MATTERMOST_WEBHOOK_URL
           value: {{ .Values.galoy.mattermostWebhookUrl | quote }}
 
