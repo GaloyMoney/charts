@@ -1,0 +1,21 @@
+vapiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "strfry-chart.fullname" . }}-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "strfry-chart.fullname" . }}-conf-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "100Mi"
