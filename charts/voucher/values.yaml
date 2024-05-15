@@ -14,7 +14,7 @@ voucher:
   tracingServiceName: "voucher"
 image:
   repository: us.gcr.io/galoy-org/galoy-voucher
-  digest: "sha256:4256ce12819f7b84ade7db7151bc29c51050081dd60b9bd162afc0d9dca3d08a" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=535c0cc;app=voucher;monorepo_subdir=apps/voucher;
+  digest: "sha256:c8d65cdd1b7ef68cf76bf3a71f94d622913c7188784a24d990f5b6741f118d34" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=ded7657;app=voucher;monorepo_subdir=apps/voucher;
 ingress:
   enabled: false
 service:
