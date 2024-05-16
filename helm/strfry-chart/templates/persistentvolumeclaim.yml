@@ -1,4 +1,4 @@
-vapiVersion: v1
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "strfry-chart.fullname" . }}-db-pvc

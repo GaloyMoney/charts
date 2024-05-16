@@ -1,27 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "strfry-chart.fullname" . }}
+  name: strfry
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ include "strfry-chart.name" . }}
+      app: strfry
   template:
     metadata:
       labels:
-        app: {{ include "strfry-chart.name" . }}
+        app: strfry
     spec:
       containers:
-      - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: {{ .Values.service.port }}
-        volumeMounts:
-        - name: store-conf
-          mountPath: /path/to/store.conf
-          subPath: store.conf
+        - name: strfry
+          image: dockurr/strfry
+          ports:
+            - containerPort: 7777
+          volumeMounts:
+            - name: strfry-db
+              mountPath: /app/strfry-db
+            - name: strfry-conf
+              mountPath: /etc/
+              subPath: strfry.conf
       volumes:
-      - name: store-conf
-        configMap:
-          name: {{ include "strfry-chart.fullname" . }}-configmap
+        - name: strfry-db
+          persistentVolumeClaim:
+            claimName: strfry-chart-db-pvc
+        - name: strfry-conf
+          configMap:
+            name: strfry-chart-configmap
