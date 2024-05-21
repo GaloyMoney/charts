@@ -26,6 +26,11 @@ resource "kubernetes_secret" "smoketest" {
   }
 }
 
+resource "random_password" "postgresql" {
+  length  = 20
+  special = false
+}
+
 resource "kubernetes_secret" "voucher" {
   metadata {
     name      = "voucher"
@@ -36,7 +41,8 @@ resource "kubernetes_secret" "voucher" {
     "next-auth-secret" : "dummy123"
     "client-secret" : "dummy"
     "escrow-api-key" : "dummy"
-    "pg-con" : "dummy"
+    pg-user-pw : random_password.postgresql.result
+    pg-con : "postgres://voucher:${random_password.postgresql.result}@voucher-postgresql:5432/voucher"
   }
 }
 

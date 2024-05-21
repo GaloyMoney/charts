@@ -2,6 +2,7 @@ load('ext://helm_resource', 'helm_resource')
 load('ext://namespace', 'namespace_create')
 load('ext://secret', 'secret_from_dict')
 load('../common/Tiltfile', 'copy_secret')
+load('../common/Tiltfile', 'helm_release')
 
 name_prefix = 'galoy-dev'
 galoy_namespace = '{}-galoy'.format(name_prefix)
@@ -139,15 +140,17 @@ k8s_yaml(secret_from_dict(
     "next-auth-secret" : "dummy",
     "client-secret" : "dummy",
     "escrow-api-key" : "dummy",
-    "pg-con" : "dummy"
+    "pg-con" : 'postgres://voucher:voucher@voucher-postgresql:5432/voucher'
   }
 ))
 
-k8s_yaml(helm(
+helm_release(
   '../../charts/voucher',
   name = 'voucher',
   namespace = addons_namespace,
-  values = ['./voucher-values.yml']
-))
+  values = ['./voucher-values.yml'],
+  dependency_build=True,
+  add_repos=True
+)
 
 k8s_resource(workload='voucher', labels='addons')
