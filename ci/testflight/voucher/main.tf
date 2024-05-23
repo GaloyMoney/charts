@@ -41,8 +41,8 @@ resource "kubernetes_secret" "voucher" {
     "next-auth-secret" : "dummy123"
     "client-secret" : "dummy"
     "escrow-api-key" : "dummy"
-    pg-user-pw : random_password.postgresql.result
-    pg-con : "postgres://voucher:${random_password.postgresql.result}@voucher-postgresql:5432/voucher"
+    "pg-user-pw" : random_password.postgresql.result
+    "pg-con" : "postgres://voucher:${random_password.postgresql.result}@voucher-postgresql:5432/voucher"
   }
 }
 
@@ -55,6 +55,10 @@ resource "helm_release" "voucher" {
   values = [
     file("${path.module}/testflight-values.yml")
   ]
+
+  depends_on = [kubernetes_secret.voucher]
+
+  dependency_update = true
 }
 
 data "google_container_cluster" "primary" {
