@@ -6,3 +6,9 @@ voucher:
   coreUrl: "http://galoy-oathkeeper-proxy.galoy-staging-galoy.svc.cluster.local:4455/graphql"
   voucherUrl: "http://localhost:3000"
   nextAuthUrl: "http://voucher:3000"
+
+postgresql:
+  auth:
+    existingSecret: voucher
+    secretKeys:
+      userPasswordKey: "pg-user-pw"
