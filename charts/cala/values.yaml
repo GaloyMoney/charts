@@ -20,8 +20,7 @@ cala:
   labels: {}
   image:
     repository: us.gcr.io/galoy-org/cala
-    # digest: "sha256:a30153267117f0304a38f6928626c9312a489a253f0b8c63d4752d96b82081e1" # METADATA:: repository=https://github.com/GaloyMoney/bria;commit_ref=ba216a4;app=bria;
-    # git_ref: "55654e2"
+    digest: "sha256:7871cec775980508de018a16a5ae19d166688b58be33a4aa7e18633d5a4d379f"
   replicas: 2
   annotations:
   secrets:
