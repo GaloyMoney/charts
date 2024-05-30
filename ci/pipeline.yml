@@ -15,6 +15,7 @@
 #@   "slack_resource",
 #@   "monitoring_charts",
 #@   "bitcoin_charts",
+#@   "cala_charts",
 #@   "addons_charts",
 #@   "task_image_config",
 #@   "repo_resource",
@@ -52,6 +53,12 @@ groups:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
+- name: cala
+  jobs:
+#@ for chart in cala_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
 - name: addons
   jobs:
 #@ for chart in addons_charts:
@@ -63,6 +70,10 @@ groups:
   - galoy-testflight
   - bump-galoy-in-deployments
 #@ for chart in monitoring_charts:
+  - #@ testflight_job_name(chart)
+  - #@ bump_in_deployments_job_name(chart)
+#@ end
+#@ for chart in cala_charts:
   - #@ testflight_job_name(chart)
   - #@ bump_in_deployments_job_name(chart)
 #@ end
@@ -95,6 +106,10 @@ groups:
 jobs:
 #@ for chart in monitoring_charts:
 - #@ testflight_job(chart, "monitoring")
+- #@ bump_in_deployments_job(chart)
+#@ end
+#@ for chart in cala_charts:
+- #@ testflight_job(chart, "cala")
 - #@ bump_in_deployments_job(chart)
 #@ end
 #@ for chart in bitcoin_charts:
@@ -322,6 +337,12 @@ resources:
 - #@ testflight_tf_resource(chart)
 #@ end
 - #@ slack_resource("monitoring")
+
+#@ for chart in cala_charts:
+- #@ chart_repo_resource(chart)
+- #@ testflight_tf_resource(chart)
+#@ end
+- #@ slack_resource("cala")
 
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)

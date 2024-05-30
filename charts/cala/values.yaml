@@ -1,0 +1,37 @@
+fullnameOverride: ""
+nameOverride: ""
+cala:
+  resources: {}
+  tracing:
+    serviceName: cala-dev
+    serviceInstanceId: cala-dev
+  app:
+    jobExecution:
+      pollInterval: 5
+      serverId: "" # UUID
+  db:
+    poolSize: 20
+  server:
+    service:
+      type: ClusterIP
+      port: 2252
+      staticIP: ""
+      annotations: {}
+  labels: {}
+  image:
+    repository: us.gcr.io/galoy-org/cala
+    digest: "sha256:7871cec775980508de018a16a5ae19d166688b58be33a4aa7e18633d5a4d379f" # METADATA:: repository=https://github.com/GaloyMoney/cala;commit_ref=cf7c526;app=cala;
+  replicas: 2
+  annotations:
+  secrets:
+    create: true
+    pgCon: ""
+    annotations:
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: user
+    password: password
+    database: pg 
+resources: {}

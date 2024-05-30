@@ -1,0 +1,24 @@
+serverVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cala.fullname" . }}
+  labels:
+    app: {{ template "cala.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+  {{ with .Values.cala.server.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 -}}
+  {{ end }}
+spec:
+  type: {{ .Values.cala.server.service.type }}
+  {{ if and (eq .Values.cala.server.service.type "LoadBalancer") .Values.cala.server.service.staticIP }}
+  loadBalancerIP: {{ .Values.cala.server.service.staticIP }}
+  {{ end }}
+  ports:
+  - port: {{ .Values.cala.server.service.port }}
+    targetPort: {{ .Values.cala.server.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ template "cala.fullname" . }}
