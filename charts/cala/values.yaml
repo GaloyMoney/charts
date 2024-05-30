@@ -31,7 +31,7 @@ postgresql:
   enabled: true
   auth:
     enablePostgresUser: false
-    username: user
-    password: password
-    database: pg 
+    username: cala
+    password: cala
+    database: cala
 resources: {}
