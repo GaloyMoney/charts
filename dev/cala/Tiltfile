@@ -1,0 +1,38 @@
+load('ext://helm_resource', 'helm_resource')
+load('ext://namespace', 'namespace_create')
+load('ext://secret', 'secret_from_dict')
+load('../common/Tiltfile', 'helm_release')
+update_settings(k8s_upsert_timeout_secs=120)
+
+name_prefix = 'galoy-dev'
+cala_namespace = '{}-cala'.format(name_prefix)
+smoketest_namespace = '{}-smoketest'.format(name_prefix)
+
+namespace_create(cala_namespace)
+
+k8s_yaml(secret_from_dict(
+  name='cala-smoketest',
+  namespace=cala_namespace,
+  inputs={
+    'key': 'value'
+  },
+))
+
+k8s_yaml(secret_from_dict(
+  name='cala',
+  namespace=cala_namespace,
+  inputs={
+    'pg-con': 'postgres://cala:cala@cala-postgresql:5432/cala',
+  },
+))
+
+helm_release(
+  '../../charts/cala',
+  name='cala',
+  namespace=cala_namespace,
+  values=['./cala-values.yml'],
+  dependency_build=True,
+  add_repos=True
+)
+
+k8s_resource(workload='cala', labels='cala')
