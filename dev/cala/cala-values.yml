@@ -1,0 +1,8 @@
+cala:
+  secrets:
+    create: false
+
+postgresql:
+  primary:
+    persistence:
+      enabled: false

@@ -81,10 +81,12 @@ spec:
               apiVersion: v1
               fieldPath: spec.nodeName
         startupProbe:
-          grpc:
+          httpGet:
+            path: /graphql
             port: {{ .Values.cala.server.service.port }}
         livenessProbe:
-          grpc:
+          httpGet:
+            path: /graphql
             port: {{ .Values.cala.server.service.port }}
         resources:
         {{- toYaml .Values.cala.resources | nindent 10 }}
