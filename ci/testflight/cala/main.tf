@@ -39,7 +39,7 @@ resource "helm_release" "cala" {
   namespace = kubernetes_namespace.testflight.metadata[0].name
 
   values = [
-    templatefile("${path.module}/testflight-values.yml.tmpl")
+    file("${path.module}/testflight-values.yml.tmpl")
   ]
 
   depends_on = [kubernetes_secret.cala]
