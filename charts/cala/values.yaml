@@ -5,6 +5,7 @@ cala:
   tracing:
     serviceName: cala-dev
     serviceInstanceId: cala-dev
+    otelExporterOtlpEndpoint: "http://localhost:4317"
   app:
     jobExecution:
       pollInterval: 5
