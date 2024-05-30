@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cala.fullname" . }}
+  labels:
+    app: {{ template "cala.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    kube-monkey/identifier: {{ template "cala.fullname" . }}
+    kube-monkey/enabled: enabled
+    kube-monkey/kill-mode: fixed
+    kube-monkey/kill-value: "1"
+    kube-monkey/mtbf: "3"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cala.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.cala.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cala.fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: "{{ .Release.Name }}"
+        kube-monkey/identifier: {{ template "cala.fullname" . }}
+        kube-monkey/enabled: enabled
+      {{- with .Values.cala.labels }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/cala-cm.yaml") . | sha256sum }}
+    spec:
+      {{ if .Values.cala.provisionAdmin }}
+      serviceAccountName: {{ template "cala.fullname" . }}
+      {{ end }}
+      initContainers:
+      - name: wait-for-postgresql
+        image: postgres
+        command:
+          - "bash"
+          - "-c"
+          - |
+            while ! pg_isready -d $PG_CON > /dev/null 2>&1
+            do
+              echo "waiting for postgres to come up"
+              sleep 5
+            done
+        env:
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "cala.fullname" . }}
+              key: "pg-con"
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.cala.image.repository }}@{{ .Values.cala.image.digest }}"
+        ports:
+        - name: server
+          containerPort: {{ .Values.cala.server.service.port }}
+          protocol: TCP
+        args:
+        - cala-server
+
+        volumeMounts:
+        - name: "config"
+          mountPath: "/cala.yml"
+          subPath: "cala.yml"
+        resources:
+          {{ toYaml .Values.resources | nindent 10 }}
+        env:
+        - name: CALA_CONFIG
+          value: "/cala.yml"
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "cala.fullname" . }}
+              key: "pg-con"
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        startupProbe:
+          grpc:
+            port: {{ .Values.cala.server.service.port }}
+        livenessProbe:
+          grpc:
+            port: {{ .Values.cala.server.service.port }}
+        resources:
+        {{- toYaml .Values.cala.resources | nindent 10 }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "cala.fullname" . }}-config

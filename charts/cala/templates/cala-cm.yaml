@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cala.fullname" . }}-config
+data:
+  cala.yml: |-
+    app:
+      job_execution:
+        poll_interval: {{ .Values.cala.app.jobExecution.pollInterval }}
+        server_id: {{ .Values.cala.app.jobExecution.serverId }}
+    db:
+      migrate_on_start: true
+      pool_size: {{ .Values.cala.db.poolSize }}
+    tracing:
+      service_name: {{ .Values.cala.tracing.serviceName }}
+      service_instance_id: {{ .Values.cala.tracing.serviceInstanceId }}
+    server:
+      port: {{ .Values.cala.server.service.port }}

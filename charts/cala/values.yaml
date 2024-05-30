@@ -1,0 +1,38 @@
+fullnameOverride: ""
+nameOverride: ""
+cala:
+  resources: {}
+  tracing:
+    serviceName: cala-dev
+    serviceInstanceId: cala-dev
+  app:
+    jobExecution:
+      pollInterval: 5
+      serverId: "" # UUID
+  db:
+    poolSize: 20
+  server:
+    service:
+      type: ClusterIP
+      port: 2252
+      staticIP: ""
+      annotations: {}
+  labels: {}
+  image:
+    repository: us.gcr.io/galoy-org/cala
+    # digest: "sha256:a30153267117f0304a38f6928626c9312a489a253f0b8c63d4752d96b82081e1" # METADATA:: repository=https://github.com/GaloyMoney/bria;commit_ref=ba216a4;app=bria;
+    # git_ref: "55654e2"
+  replicas: 2
+  annotations:
+  secrets:
+    create: true
+    pgCon: ""
+    annotations:
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    username: user
+    password: password
+    database: pg 
+resources: {}
