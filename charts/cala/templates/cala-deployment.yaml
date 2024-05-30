@@ -31,9 +31,6 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/cala-cm.yaml") . | sha256sum }}
     spec:
-      {{ if .Values.cala.provisionAdmin }}
-      serviceAccountName: {{ template "cala.fullname" . }}
-      {{ end }}
       initContainers:
       - name: wait-for-postgresql
         image: postgres
