@@ -69,7 +69,7 @@ spec:
         - name: CALA_CONFIG
           value: "/cala.yml"
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: {{ .Values.tracing.otelExporterOtlpEndpoint | quote }}
+          value: {{ .Values.cala.tracing.otelExporterOtlpEndpoint | quote }}
         - name: PG_CON
           valueFrom:
             secretKeyRef:
