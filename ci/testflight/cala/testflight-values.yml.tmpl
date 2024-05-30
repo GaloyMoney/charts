@@ -1,0 +1,9 @@
+cala:
+  secrets:
+    create: false
+
+postgresql:
+  auth:
+    existingSecret: cala
+    secretKeys:
+      userPasswordKey: "pg-user-pw"
