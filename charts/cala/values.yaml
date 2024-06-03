@@ -4,12 +4,10 @@ cala:
   resources: {}
   tracing:
     serviceName: cala-dev
-    serviceInstanceId: cala-dev
     otelExporterOtlpEndpoint: "http://localhost:4317"
   app:
     jobExecution:
       pollInterval: 5
-      serverId: "" # UUID
   db:
     poolSize: 20
   server:
