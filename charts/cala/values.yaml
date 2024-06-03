@@ -7,7 +7,7 @@ cala:
     otelExporterOtlpEndpoint: "http://localhost:4317"
   app:
     jobExecution:
-      pollInterval: 5
+      pollInterval: 20
   db:
     poolSize: 20
   server:
