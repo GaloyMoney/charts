@@ -1,0 +1,41 @@
+{{- if .Values.cala.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "cala.fullname" . }}
+  labels:
+    app: {{ include "cala.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    {{- if .Values.cala.ingress.rulesOverride }}
+    {{- toYaml .Values.cala.ingress.rulesOverride | nindent 4 }}
+    {{- else }}
+    {{- range .Values.cala.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: {{ include "cala.fullname" $ }}
+                port:
+                  number: {{ $.Values.cala.server.service.port }}
+    {{- end -}}
+    {{- end }}
+  tls:
+    {{- range .Values.cala.ingress.hosts }}
+    - hosts:
+      - {{ . }}
+      secretName: {{ printf "%s-tls" . }}
+    {{- end }}
+    {{- if .Values.cala.ingress.extraTls }}
+    {{- toYaml .Values.cala.ingress.extraTls | nindent 4 }}
+    {{- end }}
+{{- end }}
+

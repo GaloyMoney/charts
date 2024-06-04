@@ -1,6 +1,8 @@
 fullnameOverride: ""
 nameOverride: ""
 cala:
+  ingress:
+    enabled: false
   resources: {}
   tracing:
     serviceName: cala-dev
