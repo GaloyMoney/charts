@@ -10,6 +10,15 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/cala-v0.1.7-dev/cala-0.1.7-dev.tgz
       version: 0.1.7-dev
+    - apiVersion: v2
+      appVersion: 0.1.106
+      created: "2024-06-02T12:45:09.12048888Z"
+      description: Helm chart for deploying GaloyMoney/Cala
+      name: cala
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/cala-v0.1.7-dev/cala-0.1.7-dev.tgz
+      version: 0.1.7-dev
   bitcoind:
     - apiVersion: v2
       appVersion: 0.21.0
@@ -34015,4 +34024,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-06-05T22:19:11.360144682Z"
+generated: "2024-06-06T19:44:37.821915973Z"
