@@ -12,6 +12,7 @@ voucher:
   clientId: ""
   otelExporterOtlpEndpoint: http://localhost:4318
   tracingServiceName: "voucher"
+  platformFeesInPpm: 2000
 image:
   repository: us.gcr.io/galoy-org/galoy-voucher
   digest: "sha256:bd4ca9980cb9f26902a195106e6e5e5b1af5ce9afbb2e60cdbaed968d123f65e" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=0091351;app=voucher;monorepo_subdir=apps/voucher;
