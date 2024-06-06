@@ -48,6 +48,8 @@ spec:
           value: {{ .Values.voucher.otelExporterOtlpEndpoint }}
         - name: TRACING_SERVICE_NAME
           value: {{ .Values.voucher.tracingServiceName }}
+        - name: PLATFORM_FEES_IN_PPM
+          value: {{ .Values.voucher.platformFeesInPpm }}
         - name: NEXTAUTH_SECRET
           valueFrom:
             secretKeyRef:
