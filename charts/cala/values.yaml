@@ -28,6 +28,7 @@ cala:
     create: true
     pgCon: ""
     annotations:
+  extraEnvSecrets: {}
 postgresql:
   enabled: true
   auth:

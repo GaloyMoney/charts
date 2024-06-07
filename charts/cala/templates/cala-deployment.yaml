@@ -80,6 +80,15 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
+
+        {{- range .Values.cala.extraEnvSecrets }}
+        - name: {{ .key }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .name }}
+              key: {{ .key }}
+        {{- end }}
+
         startupProbe:
           httpGet:
             path: /graphql
