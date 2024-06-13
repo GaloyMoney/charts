@@ -83,7 +83,7 @@ spec:
 
         {{- range .Values.cala.extraEnvs }}
         - name: {{ .name }}
-          value: {{ .value }}
+          value: {{ .value | quote }}
         {{- end }}
 
         {{- range .Values.cala.extraEnvSecrets }}
