@@ -81,12 +81,17 @@ spec:
               apiVersion: v1
               fieldPath: spec.nodeName
 
+        {{- range .Values.cala.extraEnvs }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end }}
+
         {{- range .Values.cala.extraEnvSecrets }}
-        - name: {{ .key }}
+        - name: {{ .name }}
           valueFrom:
             secretKeyRef:
-              name: {{ .name }}
-              key: {{ .key }}
+              name: {{ .secretName }}
+              key: {{ .secretKey }}
         {{- end }}
 
         startupProbe:

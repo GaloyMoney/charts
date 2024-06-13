@@ -29,6 +29,7 @@ cala:
     pgCon: ""
     annotations:
   extraEnvSecrets: {}
+  extraEnvs: {}
   cmd: cala-server
 postgresql:
   enabled: true
