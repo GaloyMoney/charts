@@ -15,7 +15,7 @@ voucher:
   platformFeesInPpm: 2000
 image:
   repository: us.gcr.io/galoy-org/galoy-voucher
-  digest: "sha256:94f443d386f7fb0efa7e91ea7d75ce500caa154fef37a2259b17fb8ca30510ca" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=17a234f;app=voucher;monorepo_subdir=apps/voucher;
+  digest: "sha256:041f618ba840028a9145ec3c05e8665d8b21596cb0db0f457fd994845fd77565" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=1ea9cfb;app=voucher;monorepo_subdir=apps/voucher;
 ingress:
   enabled: false
 service:
