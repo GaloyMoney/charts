@@ -1,9 +1,10 @@
+name: cleanup-after-pr-closed
 on:
   pull_request:
     types: [closed]
 jobs:
   cancel-runs:
-    name: 'Cleanup after PR closed'
+    name: Cleanup after PR closed
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
