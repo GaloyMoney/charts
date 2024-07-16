@@ -23,7 +23,7 @@ dependencies:
     version: 19.6.0
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
-    version: 15.6.8
+    version: 15.6.13
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 11.9.13
