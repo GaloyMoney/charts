@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.galoy.api.ingress.clusterIssuer }}
+    nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" # 1 hour
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600" # 1 hour
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "1s"
