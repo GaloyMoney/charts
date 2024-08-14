@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   cala:
     - apiVersion: v2
+      appVersion: 0.2.33
+      created: "2024-08-14T12:34:30.331783598Z"
+      dependencies:
+        - condition: postgresql.enabled
+          name: postgresql
+          repository: https://charts.bitnami.com/bitnami
+          version: 11.9.6
+      description: Helm chart for deploying GaloyMoney/Cala
+      digest: 10e373915f0a70afeb2b2ce1f7cc7cfe844264cc853a6bf7abc74e4175e5ceda
+      name: cala
+      type: application
+      urls:
+        - https://github.com/GaloyMoney/charts/releases/download/cala-v0.1.7/cala-0.1.7.tgz
+      version: 0.1.7
+    - apiVersion: v2
       appVersion: 0.2.32
       created: "2024-08-13T12:08:05.770442731Z"
       dependencies:
@@ -34426,4 +34441,4 @@ entries:
       urls:
         - https://github.com/GaloyMoney/charts/releases/download/fulcrum-v0.1.0/fulcrum-0.1.0.tgz
       version: 0.1.0
-generated: "2024-08-13T12:08:05.775391354Z"
+generated: "2024-08-14T12:34:30.352005747Z"
