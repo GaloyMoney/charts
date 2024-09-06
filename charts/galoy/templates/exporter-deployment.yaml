@@ -41,7 +41,7 @@ spec:
 
       initContainers:
       - name: wait-for-mongodb-migrate
-        image: "groundnuty/k8s-wait-for:v1.5.1"
+        image: "groundnuty/k8s-wait-for:v2.0"
         args:
         - job-wr
         - {{ template "galoy.migration.jobname" . }}
