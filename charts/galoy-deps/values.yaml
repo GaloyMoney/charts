@@ -20,6 +20,8 @@ kubemonkey:
   resources: {}
 
 opentelemetry-collector:
+  image:
+    repository: "otel/opentelemetry-collector-k8s"
   service:
     enabled: true
   extraEnvs:
