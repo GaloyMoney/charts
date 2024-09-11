@@ -40,7 +40,7 @@ opentelemetry-collector:
   mode: daemonset
   config:
     exporters:
-      logging: {}
+      debug: {}
       otlp:
         endpoint: "api.honeycomb.io:443"
         headers:
@@ -164,7 +164,7 @@ opentelemetry-collector:
       pipelines:
         logs:
           exporters:
-            - logging
+            - debug
           processors:
             - memory_limiter
             - batch
@@ -173,7 +173,7 @@ opentelemetry-collector:
         metrics:
           exporters:
             - otlp
-            - logging
+            - debug
           processors:
             - filter/ottl
             - memory_limiter
@@ -183,7 +183,7 @@ opentelemetry-collector:
             - kubeletstats
         traces:
           exporters:
-            - logging
+            - debug
             - otlp
           processors:
             - filter/ottl
