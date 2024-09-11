@@ -204,7 +204,7 @@ spec:
               command:
               - sh
               - -c
-              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE"
+              - "lncli -n {{ $.Values.global.network}} state | grep -q SERVER_ACTIVE && lncli -n {{ $.Values.global.network}} getinfo"
             periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
