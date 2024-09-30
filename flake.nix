@@ -32,11 +32,11 @@
               ytt
               yq-go
               kubernetes-helm
-              terraform
+              opentofu
             ];
 
             shellHook = ''
-              alias tf=terraform
+              alias tf=tofu
               alias k=kubectl
             '';
           });
