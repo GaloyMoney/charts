@@ -45,11 +45,11 @@ for i in 1 2 3; do
 done
 set -e
 
-terraform init
+tofu init
 
 set +e
 for i in 1 2 3; do
-  terraform apply -auto-approve && break
+  tofu apply -auto-approve && break
   sleep 5
 done
 
@@ -65,7 +65,7 @@ for i in {1..15}; do
   sleep 1
 done
 
-terraform destroy -auto-approve
+tofu destroy -auto-approve
 
 if [[ "$success" != "true" ]]; then echo "Smoke test failed" && exit 1; fi
 
