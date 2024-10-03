@@ -1,4 +1,3 @@
-TF:=terraform
 REPO:=$(shell git rev-parse --show-toplevel)
 
 create-cluster:
