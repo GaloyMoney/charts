@@ -129,7 +129,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if and .Values.descriptor.secretName .Values.descriptor.secretKey }}
         - name: descriptor-import
-          image: lncm/bitcoind:v25.1
+          image: lncm/bitcoind:v27.0
           command: ['/bin/sh']
           args:
           - '-c'
