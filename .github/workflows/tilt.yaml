@@ -16,6 +16,7 @@ jobs:
       name: "Create Single Cluster"
       with:
         cluster-name: "k3s-default"
+        k3d-version: v5.7.4
         args: >-
           --image rancher/k3s:v1.30.4-k3s1
           -v "$(pwd):/charts"
