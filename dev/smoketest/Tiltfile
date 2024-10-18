@@ -87,7 +87,7 @@ metadata:
 spec:
   containers:
   - name: smoketest
-    image: us.gcr.io/galoy-org/blink-deployments-pipeline
+    image: us.gcr.io/galoy-org/galoy-deployments-pipeline
     imagePullPolicy: IfNotPresent
     command:
     - sleep

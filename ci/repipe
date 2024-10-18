@@ -31,7 +31,7 @@ cat <<EOF >$CIJOBS
 #@ load("@ytt:data", "data")
 
 #@ def pipeline_image():
-#@   return data.values.docker_registry + "/blink-deployments-pipeline"
+#@   return data.values.docker_registry + "/galoy-deployments-pipeline"
 #@ end
 
 #@ def task_image_config():
