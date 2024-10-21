@@ -154,7 +154,7 @@ plan:
     - #@ testflight_job_name(chart)
     trigger: true
   - { get: pipeline-tasks }
-  - { get: galoy-deployments }
+  - { get: blink-deployments }
 - task: #@ "bump-" + chart
   config:
     platform: linux
@@ -163,18 +163,18 @@ plan:
     - name: #@ chart_resource_name(chart)
       path: chart
     - name: pipeline-tasks
-    - name: galoy-deployments
+    - name: blink-deployments
     outputs:
-    - name: galoy-deployments
+    - name: blink-deployments
     params:
       CHART: #@ chart
       BRANCH: #@ data.values.deployments_git_branch
       GITHUB_SSH_KEY: #@ data.values.github_private_key
     run:
       path: pipeline-tasks/ci/tasks/bump-chart.sh
-- put: galoy-deployments
+- put: blink-deployments
   params:
-    repository: galoy-deployments
+    repository: blink-deployments
     rebase: true
 #@ end
 

@@ -2,7 +2,7 @@
 
 set -eu
 
-cd galoy-deployments
+cd blink-deployments
 
 cat > github.key <<EOF
 ${GITHUB_SSH_KEY}
