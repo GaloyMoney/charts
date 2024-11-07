@@ -5,7 +5,7 @@ galoy:
     backups:
       gcs:
         enabled: true
-        bucketName: galoy-staging-backups
+        bucketName: blink-staging-backups
   api:
     replicas: 1
 
