@@ -21,7 +21,7 @@ cala:
   labels: {}
   image:
     repository: us.gcr.io/galoy-org/cala
-    digest: "sha256:a9eb1a7bbe28ac8f54dad805862dd57ef888da17f077357db7cf45464be2c15b" # METADATA:: repository=https://github.com/GaloyMoney/cala;commit_ref=a783e53;app=cala;
+    digest: "sha256:847a887e252976fa735a25c631500f750eb9d80e1674c243b107167ff6754f0a" # METADATA:: repository=https://github.com/GaloyMoney/cala;commit_ref=ef6f865;app=cala;
   replicas: 2
   annotations:
   secrets:
