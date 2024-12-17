@@ -7,12 +7,12 @@ dependencies:
   version: 4.7.1
 - name: strimzi-kafka-operator
   repository: https://strimzi.io/charts/
-  version: 0.39.0
+  version: 0.45.0
 - name: kube-monkey
   repository: https://asobti.github.io/kube-monkey/charts/repo
   version: 1.5.2
 - name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   version: 0.108.0
-digest: sha256:e2b4306eac185d9ee0827e570187a6b88e07ab4454d75153b84d2298d5379393
-generated: "2024-10-04T19:59:12.231527006Z"
+digest: sha256:642560993fb74be0848228420f06f38b976212eb54e4c566d06dfc01321070bf
+generated: "2024-12-17T17:09:10.298097047Z"
