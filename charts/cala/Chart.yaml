@@ -21,6 +21,6 @@ version: 0.1.13-dev
 appVersion: 0.2.41
 dependencies:
   - name: postgresql
-    version: 16.0.1
+    version: 16.3.4
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
