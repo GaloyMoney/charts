@@ -32,5 +32,4 @@ addons_slack_webhook_url: ((addons-slack.api_url))
 auth_slack_webhook_url: ((auth-slack.api_url))
 stablesats_slack_webhook_url: ((addons-slack.api_url))
 galoy_deps_slack_webhook_url: ((galoy-deps-slack.api_url))
-cala_slack_webhook_url: ((galoy-deps-slack.api_url))
 slack_username: concourse
