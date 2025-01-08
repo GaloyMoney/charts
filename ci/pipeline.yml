@@ -322,11 +322,6 @@ resources:
 - #@ testflight_tf_resource(chart)
 #@ end
 
-#@ for chart in cala_charts:
-- #@ chart_repo_resource(chart)
-- #@ testflight_tf_resource(chart)
-#@ end
-
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
