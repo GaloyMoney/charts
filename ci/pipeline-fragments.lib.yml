@@ -67,7 +67,6 @@ config:
 
 #@ monitoring_charts = ["monitoring", "kafka-connect"]
 
-#@ cala_charts = ["cala"]
 #@ bitcoin_charts = ["bitcoind", "lnd", "specter", "bria", "fulcrum", "mempool"]
 
 #@ addons_charts = ["admin-panel", "galoy-pay", "api-dashboard", "map", "voucher"]
