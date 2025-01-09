@@ -321,31 +321,25 @@ resources:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
-- #@ slack_resource("monitoring")
 
 #@ for chart in bitcoin_charts:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
-- #@ slack_resource("bitcoin")
 
 #@ for chart in addons_charts:
 - #@ chart_repo_resource(chart)
 - #@ testflight_tf_resource(chart)
 #@ end
-- #@ slack_resource("addons")
 
 - #@ chart_repo_resource("galoy")
 - #@ testflight_tf_resource("galoy")
-- #@ slack_resource("galoy")
 
 - #@ chart_repo_resource("stablesats")
 - #@ testflight_tf_resource("stablesats")
-- #@ slack_resource("stablesats")
 
 - #@ chart_repo_resource("galoy-deps")
 - #@ testflight_tf_resource("galoy-deps")
-- #@ slack_resource("galoy-deps")
 
 - name: charts-repo
   type: git

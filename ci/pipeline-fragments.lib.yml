@@ -140,8 +140,6 @@ plan:
     action: destroy
     vars: #@ vars
   get_params: { action: destroy }
-- #@ slack_success_notification(deployment)
-on_failure: #@ slack_failure_notification(deployment)
 #@ end
 
 #@ def bump_in_deployments_job(chart):
