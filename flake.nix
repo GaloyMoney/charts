@@ -33,6 +33,7 @@
               yq-go
               kubernetes-helm
               opentofu
+              fly
             ];
 
             shellHook = ''
