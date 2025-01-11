@@ -39,8 +39,8 @@ realtime:
   config: {}
   image:
     repository: us.gcr.io/galoy-org/price
-    digest: "sha256:30036c9aff7d43790c6bf3cf62b33055a548500abda63b37c642d5ad08a86d04"
-    git_ref: "70bda11"
+    digest: "sha256:bd9d8af02efb15ffb8036141d6114e1b306017eb56af3c3cc53615b2c4007c60"
+    git_ref: "a33aa76"
   service:
     type: ClusterIP
     prometheus: 9464
@@ -58,14 +58,14 @@ history:
   valuesOverride: {}
   image:
     repository: us.gcr.io/galoy-org/price-history
-    digest: "sha256:3c1ee7b64c3b93adb3340146c68a2040d67cc89c7e92fe2c6da3869b15aa72f0"
+    digest: "sha256:181a705f4c9aad0e9cd346f37585655178e09dfc0344daff7d1409f0033c0012"
   service:
     type: ClusterIP
     prometheus: 9464
     grpc: 50052
   migrateImage:
     repository: us.gcr.io/galoy-org/price-history-migrate
-    digest: sha256:c25a41ea4166b6505600ded23ce96eab38e8256b723d341f0be6316cfc469010
+    digest: sha256:70abff0cfcb5cc67a2eedc2424fb30bb1ded28c4f3919c7410bfc9f7c17617d0
   postgresqlHost: postgresql
   cron:
     resources: {}
