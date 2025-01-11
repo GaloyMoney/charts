@@ -54,6 +54,7 @@ history:
   tracing:
     otelExporterOtlpEndpoint: http://localhost:4318/v1/traces
     otelServiceName: galoy-price-history-dev
+    enableFilter: true
   valuesOverride: {}
   image:
     repository: us.gcr.io/galoy-org/price-history
