@@ -95,8 +95,8 @@ spec:
           livenessProbe:
             tcpSocket:
               port: ssl
-            # allow 10h for initial sync
-            initialDelaySeconds: 36000
+            # allow up to ~4 days for initial sync
+            initialDelaySeconds: 360000
             periodSeconds: 10
             failureThreshold: 2
           # Define the resources to be created

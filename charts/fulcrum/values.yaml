@@ -30,6 +30,7 @@ service:
     ws: 50003
     wss: 50004
     stats: 8080
+    admin: 8000
 
 ingress:
   enabled: false
@@ -40,6 +41,8 @@ ingress:
   tls: []
 
 resources: {}
+
+terminationGracePeriodSeconds: 600
 
 persistence:
   enabled: true
