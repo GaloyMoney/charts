@@ -8,7 +8,4 @@ voucher:
   nextAuthUrl: "http://voucher:3000"
 
 postgresql:
-  auth:
-    existingSecret: voucher
-    secretKeys:
-      userPasswordKey: "pg-user-pw"
+  enabled: false
