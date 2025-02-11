@@ -28,6 +28,24 @@ spec:
 {{ toYaml . | trim | indent 8 }}
 {{- end }}
     spec:
+      initContainers:
+      - name: wait-for-postgresql
+        image: postgres
+        command:
+          - "bash"
+          - "-c"
+          - |
+            while ! pg_isready -d $PG_CON > /dev/null 2>&1
+            do
+              echo "waiting for postgres to come up"
+              sleep 5
+            done
+        env:
+        - name: PG_CON
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "voucher.fullname" . }}
+              key: "pg-con"
       containers:
       - name: voucher
         image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
