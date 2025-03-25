@@ -4,6 +4,6 @@ dependencies:
   version: 8.10.3
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 25.29.0
-digest: sha256:225de9c11726ffec28c4756516c971007e92210c6012750558c46eae4dbdf97a
-generated: "2025-03-11T10:47:42.636584813Z"
+  version: 27.7.1
+digest: sha256:b741f7394e817c4c41e70f3210aa77ec33a1dad8e0f8e8c8435ce0330994c7d5
+generated: "2025-03-25T17:09:38.20150185Z"
