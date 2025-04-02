@@ -99,6 +99,18 @@ resource "kubernetes_secret" "twilio_secret" {
   }
 }
 
+resource "kubernetes_secret" "telegram_secret" {
+  metadata {
+    name      = "telegram-secret"
+    namespace = kubernetes_namespace.testflight.metadata[0].name
+  }
+
+  data = {
+    TELEGRAM_PASSPORT_PRIVATE_KEY = "dummy"
+    TELEGRAM_BOT_API_TOKEN        = "dummy"
+  }
+}
+
 data "kubernetes_secret" "bitcoin_rpcpassword" {
   metadata {
     name      = "bitcoind-rpcpassword"

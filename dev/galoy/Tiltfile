@@ -110,6 +110,16 @@ k8s_yaml(secret_from_dict(
   }
 ))
 
+# telegram-secret secret
+k8s_yaml(secret_from_dict(
+  name='telegram-secret',
+  namespace=galoy_namespace,
+  inputs={
+    'TELEGRAM_PASSPORT_PRIVATE_KEY' : 'dummy',
+    'TELEGRAM_BOT_API_TOKEN' : 'dummy'
+  }
+))
+
 # svix-secret secret
 k8s_yaml(secret_from_dict(
   name='svix-secret',

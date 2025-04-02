@@ -275,6 +275,19 @@ Return Galoy environment variables for Geetest
       key: {{ .Values.galoy.geetestExistingSecret.secret_key }}
 {{- end -}}
 
+{{- define "galoy.telegram.env" -}}
+- name: TELEGRAM_PASSPORT_PRIVATE_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.telegramExistingSecret.name }}
+      key: {{ .Values.galoy.telegramExistingSecret.private_key }}
+- name: TELEGRAM_BOT_API_TOKEN
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.galoy.telegramExistingSecret.name }}
+      key: {{ .Values.galoy.telegramExistingSecret.api_token_key }}
+{{- end -}}
+
 # TODO: Remove this once https://github.com/apollographql/router/issues/4002 is resolved
 # This is copied from https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_tplvalues.tpl
 {{- define "common.tplvalues.render" -}}
