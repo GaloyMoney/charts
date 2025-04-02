@@ -559,6 +559,14 @@ galoy:
     account_sid_key: TWILIO_ACCOUNT_SID
     # Twilio Authentication Token
     auth_token_key: TWILIO_AUTH_TOKEN
+  ## Telegram Configuration
+  telegramExistingSecret:
+    # Secret Name
+    name: telegram-secret
+    # Telegram passport private key
+    private_key: TELEGRAM_PASSPORT_PRIVATE_KEY
+    # Telegram bot API Token
+    api_token_key: TELEGRAM_BOT_API_TOKEN
   ## Svix secret
   svixExistingSecret:
     # Secret Name
@@ -674,6 +682,9 @@ secrets:
   twilioVerifyService:
   twilioAccountSid:
   twilioAuthToken:
+  ## Secrets for Telegram
+  telegramPrivateKey:
+  telegramApiToken:
   ## Secrets for LND1
   lnd1Macaroon:
   lnd1Tls:
