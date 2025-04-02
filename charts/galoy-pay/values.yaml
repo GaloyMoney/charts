@@ -22,8 +22,9 @@ secrets:
 galoy-nostr:
   enabled: true
   fullnameOverride: galoy-nostr
-  repository: krtk6160/galoy-nostr
-  digest: "sha256:cc82a694f81870c0becdc1b243ea9d4fca8b4ce497e70f4733d7b0539b462f19"
+  image:
+    repository: krtk6160/galoy-nostr
+    digest: "sha256:cc82a694f81870c0becdc1b243ea9d4fca8b4ce497e70f4733d7b0539b462f19"
 redis:
   redis0Dns: "galoy-redis-node-0.galoy-redis-headless"
   redis1Dns: "galoy-redis-node-1.galoy-redis-headless"
