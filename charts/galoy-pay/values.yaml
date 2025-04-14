@@ -1,6 +1,6 @@
 image:
   repository: us.gcr.io/galoy-org/galoy-pay
-  digest: "sha256:23d63081fb7f536dc07cb0c0ce5d69fc8d56165363aab71746315b0e90e1029f" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=62cd3f3;app=pay;monorepo_subdir=apps/pay;
+  digest: "sha256:2bac4af096ddef553e2c453f0972fbaf5189b0167e1e3e8421474a1b799efa06" # METADATA:: repository=https://github.com/GaloyMoney/galoy;commit_ref=105248a;app=pay;monorepo_subdir=apps/pay;
 ingress:
   enabled: false
 service:
@@ -25,7 +25,6 @@ galoy-nostr:
   image:
     repository: us.gcr.io/galoy-org/blink-nostr
     digest: "sha256:a5b1b1372b5d92295fdc19636302b732347cc5b69e763053cae68dbf96780266"
-    
 redis:
   redis0Dns: "galoy-redis-node-0.galoy-redis-headless"
   redis1Dns: "galoy-redis-node-1.galoy-redis-headless"
